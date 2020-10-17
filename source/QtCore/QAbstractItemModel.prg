@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -77,7 +77,7 @@ CLASS QAbstractItemModel INHERIT QObject
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QAbstractItemModel
+PROCEDURE destroyObject() CLASS QAbstractItemModel
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -94,25 +94,28 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtCore/QAbstractItemModel>
 #endif
 
-#include <QtCore/QStringList>
 #include <QtCore/QSize>
+#include <QtCore/QStringList>
 
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_DELETE )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -121,11 +124,11 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_DELETE )
 }
 
 /*
-virtual QModelIndex buddy ( const QModelIndex & index ) const
+virtual QModelIndex buddy( const QModelIndex & index ) const
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_BUDDY )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -133,24 +136,24 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_BUDDY )
     if( ISNUMPAR(1) && ISQMODELINDEX(1) )
     {
 #endif
-      QModelIndex * ptr = new QModelIndex( obj->buddy ( *PQMODELINDEX(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QMODELINDEX", true );
+      auto ptr = new QModelIndex( obj->buddy( *PQMODELINDEX(1) ) );
+      Qt5xHb::createReturnClass( ptr, "QMODELINDEX", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual bool canFetchMore ( const QModelIndex & parent ) const
+virtual bool canFetchMore( const QModelIndex & parent ) const
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_CANFETCHMORE )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -158,23 +161,23 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_CANFETCHMORE )
     if( ISNUMPAR(1) && ISQMODELINDEX(1) )
     {
 #endif
-      RBOOL( obj->canFetchMore ( *PQMODELINDEX(1) ) );
+      RBOOL( obj->canFetchMore( *PQMODELINDEX(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual int columnCount ( const QModelIndex & parent = QModelIndex() ) const = 0
+virtual int columnCount( const QModelIndex & parent = QModelIndex() ) const = 0
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_COLUMNCOUNT )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -182,23 +185,23 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_COLUMNCOUNT )
     if( ISBETWEEN(0,1) && (ISQMODELINDEX(1)||ISNIL(1)) )
     {
 #endif
-      RINT( obj->columnCount ( ISNIL(1)? QModelIndex() : *(QModelIndex *) _qt5xhb_itemGetPtr(1) ) );
+      RINT( obj->columnCount( ISNIL(1)? QModelIndex() : *(QModelIndex *) Qt5xHb::itemGetPtr(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual QVariant data ( const QModelIndex & index, int role = Qt::DisplayRole ) const = 0
+virtual QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const = 0
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_DATA )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -206,24 +209,24 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_DATA )
     if( ISBETWEEN(1,2) && ISQMODELINDEX(1) && ISOPTNUM(2) )
     {
 #endif
-      QVariant * ptr = new QVariant( obj->data ( *PQMODELINDEX(1), OPINT(2,Qt::DisplayRole) ) );
-      _qt5xhb_createReturnClass ( ptr, "QVARIANT", true );
+      auto ptr = new QVariant( obj->data( *PQMODELINDEX(1), OPINT(2,Qt::DisplayRole) ) );
+      Qt5xHb::createReturnClass( ptr, "QVARIANT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual bool dropMimeData ( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent )
+virtual bool dropMimeData( const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent )
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_DROPMIMEDATA )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -231,23 +234,23 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_DROPMIMEDATA )
     if( ISNUMPAR(5) && ISQMIMEDATA(1) && ISNUM(2) && ISNUM(3) && ISNUM(4) && ISQMODELINDEX(5) )
     {
 #endif
-      RBOOL( obj->dropMimeData ( PQMIMEDATA(1), (Qt::DropAction) hb_parni(2), PINT(3), PINT(4), *PQMODELINDEX(5) ) );
+      RBOOL( obj->dropMimeData( PQMIMEDATA(1), (Qt::DropAction) hb_parni(2), PINT(3), PINT(4), *PQMODELINDEX(5) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual void fetchMore ( const QModelIndex & parent )
+virtual void fetchMore( const QModelIndex & parent )
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_FETCHMORE )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -255,12 +258,12 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_FETCHMORE )
     if( ISNUMPAR(1) && ISQMODELINDEX(1) )
     {
 #endif
-      obj->fetchMore ( *PQMODELINDEX(1) );
+      obj->fetchMore( *PQMODELINDEX(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -269,11 +272,11 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_FETCHMORE )
 }
 
 /*
-virtual Qt::ItemFlags flags ( const QModelIndex & index ) const
+virtual Qt::ItemFlags flags( const QModelIndex & index ) const
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_FLAGS )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -281,23 +284,23 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_FLAGS )
     if( ISNUMPAR(1) && ISQMODELINDEX(1) )
     {
 #endif
-      RENUM( obj->flags ( *PQMODELINDEX(1) ) );
+      RENUM( obj->flags( *PQMODELINDEX(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual bool hasChildren ( const QModelIndex & parent = QModelIndex() ) const
+virtual bool hasChildren( const QModelIndex & parent = QModelIndex() ) const
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_HASCHILDREN )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -305,23 +308,23 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_HASCHILDREN )
     if( ISBETWEEN(0,1) && (ISQMODELINDEX(1)||ISNIL(1)) )
     {
 #endif
-      RBOOL( obj->hasChildren ( ISNIL(1)? QModelIndex() : *(QModelIndex *) _qt5xhb_itemGetPtr(1) ) );
+      RBOOL( obj->hasChildren( ISNIL(1)? QModelIndex() : *(QModelIndex *) Qt5xHb::itemGetPtr(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-bool hasIndex ( int row, int column, const QModelIndex & parent = QModelIndex() ) const
+bool hasIndex( int row, int column, const QModelIndex & parent = QModelIndex() ) const
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_HASINDEX )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -329,23 +332,23 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_HASINDEX )
     if( ISBETWEEN(2,3) && ISNUM(1) && ISNUM(2) && (ISQMODELINDEX(3)||ISNIL(3)) )
     {
 #endif
-      RBOOL( obj->hasIndex ( PINT(1), PINT(2), ISNIL(3)? QModelIndex() : *(QModelIndex *) _qt5xhb_itemGetPtr(3) ) );
+      RBOOL( obj->hasIndex( PINT(1), PINT(2), ISNIL(3)? QModelIndex() : *(QModelIndex *) Qt5xHb::itemGetPtr(3) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual QVariant headerData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const
+virtual QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_HEADERDATA )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -353,24 +356,24 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_HEADERDATA )
     if( ISBETWEEN(2,3) && ISNUM(1) && ISNUM(2) && ISOPTNUM(3) )
     {
 #endif
-      QVariant * ptr = new QVariant( obj->headerData ( PINT(1), (Qt::Orientation) hb_parni(2), OPINT(3,Qt::DisplayRole) ) );
-      _qt5xhb_createReturnClass ( ptr, "QVARIANT", true );
+      auto ptr = new QVariant( obj->headerData( PINT(1), (Qt::Orientation) hb_parni(2), OPINT(3,Qt::DisplayRole) ) );
+      Qt5xHb::createReturnClass( ptr, "QVARIANT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual QModelIndex index ( int row, int column, const QModelIndex & parent = QModelIndex() ) const = 0
+virtual QModelIndex index( int row, int column, const QModelIndex & parent = QModelIndex() ) const = 0
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_INDEX )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -378,24 +381,24 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_INDEX )
     if( ISBETWEEN(2,3) && ISNUM(1) && ISNUM(2) && (ISQMODELINDEX(3)||ISNIL(3)) )
     {
 #endif
-      QModelIndex * ptr = new QModelIndex( obj->index ( PINT(1), PINT(2), ISNIL(3)? QModelIndex() : *(QModelIndex *) _qt5xhb_itemGetPtr(3) ) );
-      _qt5xhb_createReturnClass ( ptr, "QMODELINDEX", true );
+      auto ptr = new QModelIndex( obj->index( PINT(1), PINT(2), ISNIL(3)? QModelIndex() : *(QModelIndex *) Qt5xHb::itemGetPtr(3) ) );
+      Qt5xHb::createReturnClass( ptr, "QMODELINDEX", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-bool insertColumn ( int column, const QModelIndex & parent = QModelIndex() )
+bool insertColumn( int column, const QModelIndex & parent = QModelIndex() )
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_INSERTCOLUMN )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -403,23 +406,23 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_INSERTCOLUMN )
     if( ISBETWEEN(1,2) && ISNUM(1) && (ISQMODELINDEX(2)||ISNIL(2)) )
     {
 #endif
-      RBOOL( obj->insertColumn ( PINT(1), ISNIL(2)? QModelIndex() : *(QModelIndex *) _qt5xhb_itemGetPtr(2) ) );
+      RBOOL( obj->insertColumn( PINT(1), ISNIL(2)? QModelIndex() : *(QModelIndex *) Qt5xHb::itemGetPtr(2) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual bool insertColumns ( int column, int count, const QModelIndex & parent = QModelIndex() )
+virtual bool insertColumns( int column, int count, const QModelIndex & parent = QModelIndex() )
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_INSERTCOLUMNS )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -427,23 +430,23 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_INSERTCOLUMNS )
     if( ISBETWEEN(2,3) && ISNUM(1) && ISNUM(2) && (ISQMODELINDEX(3)||ISNIL(3)) )
     {
 #endif
-      RBOOL( obj->insertColumns ( PINT(1), PINT(2), ISNIL(3)? QModelIndex() : *(QModelIndex *) _qt5xhb_itemGetPtr(3) ) );
+      RBOOL( obj->insertColumns( PINT(1), PINT(2), ISNIL(3)? QModelIndex() : *(QModelIndex *) Qt5xHb::itemGetPtr(3) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-bool insertRow ( int row, const QModelIndex & parent = QModelIndex() )
+bool insertRow( int row, const QModelIndex & parent = QModelIndex() )
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_INSERTROW )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -451,23 +454,23 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_INSERTROW )
     if( ISBETWEEN(1,2) && ISNUM(1) && (ISQMODELINDEX(2)||ISNIL(2)) )
     {
 #endif
-      RBOOL( obj->insertRow ( PINT(1), ISNIL(2)? QModelIndex() : *(QModelIndex *) _qt5xhb_itemGetPtr(2) ) );
+      RBOOL( obj->insertRow( PINT(1), ISNIL(2)? QModelIndex() : *(QModelIndex *) Qt5xHb::itemGetPtr(2) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual bool insertRows ( int row, int count, const QModelIndex & parent = QModelIndex() )
+virtual bool insertRows( int row, int count, const QModelIndex & parent = QModelIndex() )
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_INSERTROWS )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -475,23 +478,23 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_INSERTROWS )
     if( ISBETWEEN(2,3) && ISNUM(1) && ISNUM(2) && (ISQMODELINDEX(3)||ISNIL(3)) )
     {
 #endif
-      RBOOL( obj->insertRows ( PINT(1), PINT(2), ISNIL(3)? QModelIndex() : *(QModelIndex *) _qt5xhb_itemGetPtr(3) ) );
+      RBOOL( obj->insertRows( PINT(1), PINT(2), ISNIL(3)? QModelIndex() : *(QModelIndex *) Qt5xHb::itemGetPtr(3) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual QModelIndexList match ( const QModelIndex & start, int role, const QVariant & value, int hits = 1, Qt::MatchFlags flags = Qt::MatchFlags( Qt::MatchStartsWith | Qt::MatchWrap ) ) const
+virtual QModelIndexList match( const QModelIndex & start, int role, const QVariant & value, int hits = 1, Qt::MatchFlags flags = Qt::MatchFlags( Qt::MatchStartsWith | Qt::MatchWrap ) ) const
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_MATCH )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -499,52 +502,51 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_MATCH )
     if( ISBETWEEN(3,5) && ISQMODELINDEX(1) && ISNUM(2) && ISQVARIANT(3) && ISOPTNUM(4) && ISOPTNUM(5) )
     {
 #endif
-      QModelIndexList list = obj->match ( *PQMODELINDEX(1), PINT(2), *PQVARIANT(3), OPINT(4,1), ISNIL(5)? (Qt::MatchFlags) Qt::MatchFlags( Qt::MatchStartsWith | Qt::MatchWrap ) : (Qt::MatchFlags) hb_parni(5) );
+      QModelIndexList list = obj->match( *PQMODELINDEX(1), PINT(2), *PQVARIANT(3), OPINT(4,1), ISNIL(5)? (Qt::MatchFlags) Qt::MatchFlags( Qt::MatchStartsWith | Qt::MatchWrap ) : (Qt::MatchFlags) hb_parni(5) );
       PHB_DYNS pDynSym = hb_dynsymFindName( "QMODELINDEX" );
       PHB_ITEM pArray = hb_itemArrayNew(0);
-      int i;
-      for(i=0;i<list.count();i++)
+      if( pDynSym )
       {
-        if( pDynSym )
+        for( auto i = 0; i < list.count(); i++ )
         {
           hb_vmPushDynSym( pDynSym );
           hb_vmPushNil();
           hb_vmDo( 0 );
-          PHB_ITEM pObject = hb_itemNew( NULL );
+          PHB_ITEM pObject = hb_itemNew( nullptr );
           hb_itemCopy( pObject, hb_stackReturnItem() );
-          PHB_ITEM pItem = hb_itemNew( NULL );
+          PHB_ITEM pItem = hb_itemNew( nullptr );
           hb_itemPutPtr( pItem, (QModelIndex *) new QModelIndex( list[i] ) );
           hb_objSendMsg( pObject, "_POINTER", 1, pItem );
           hb_itemRelease( pItem );
-          PHB_ITEM pDestroy = hb_itemNew( NULL );
+          PHB_ITEM pDestroy = hb_itemNew( nullptr );
           hb_itemPutL( pDestroy, true );
           hb_objSendMsg( pObject, "_SELF_DESTRUCTION", 1, pDestroy );
           hb_itemRelease( pDestroy );
           hb_arrayAddForward( pArray, pObject );
           hb_itemRelease( pObject );
         }
-        else
-        {
-          hb_errRT_BASE( EG_NOFUNC, 1001, NULL, "QMODELINDEX", HB_ERR_ARGS_BASEPARAMS );
-        }
+      }
+      else
+      {
+        hb_errRT_BASE( EG_NOFUNC, 1001, nullptr, "QMODELINDEX", HB_ERR_ARGS_BASEPARAMS );
       }
       hb_itemReturnRelease(pArray);
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual QStringList mimeTypes () const
+virtual QStringList mimeTypes() const
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_MIMETYPES )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -552,23 +554,23 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_MIMETYPES )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRINGLIST( obj->mimeTypes () );
+      RQSTRINGLIST( obj->mimeTypes() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual QModelIndex parent ( const QModelIndex & index ) const = 0
+virtual QModelIndex parent( const QModelIndex & index ) const = 0
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_PARENT )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -576,24 +578,24 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_PARENT )
     if( ISNUMPAR(1) && ISQMODELINDEX(1) )
     {
 #endif
-      QModelIndex * ptr = new QModelIndex( obj->parent ( *PQMODELINDEX(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QMODELINDEX", true );
+      auto ptr = new QModelIndex( obj->parent( *PQMODELINDEX(1) ) );
+      Qt5xHb::createReturnClass( ptr, "QMODELINDEX", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-bool removeColumn ( int column, const QModelIndex & parent = QModelIndex() )
+bool removeColumn( int column, const QModelIndex & parent = QModelIndex() )
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_REMOVECOLUMN )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -601,23 +603,23 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_REMOVECOLUMN )
     if( ISBETWEEN(1,2) && ISNUM(1) && (ISQMODELINDEX(2)||ISNIL(2)) )
     {
 #endif
-      RBOOL( obj->removeColumn ( PINT(1), ISNIL(2)? QModelIndex() : *(QModelIndex *) _qt5xhb_itemGetPtr(2) ) );
+      RBOOL( obj->removeColumn( PINT(1), ISNIL(2)? QModelIndex() : *(QModelIndex *) Qt5xHb::itemGetPtr(2) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual bool removeColumns ( int column, int count, const QModelIndex & parent = QModelIndex() )
+virtual bool removeColumns( int column, int count, const QModelIndex & parent = QModelIndex() )
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_REMOVECOLUMNS )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -625,23 +627,23 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_REMOVECOLUMNS )
     if( ISBETWEEN(2,3) && ISNUM(1) && ISNUM(2) && (ISQMODELINDEX(3)||ISNIL(3)) )
     {
 #endif
-      RBOOL( obj->removeColumns ( PINT(1), PINT(2), ISNIL(3)? QModelIndex() : *(QModelIndex *) _qt5xhb_itemGetPtr(3) ) );
+      RBOOL( obj->removeColumns( PINT(1), PINT(2), ISNIL(3)? QModelIndex() : *(QModelIndex *) Qt5xHb::itemGetPtr(3) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-bool removeRow ( int row, const QModelIndex & parent = QModelIndex() )
+bool removeRow( int row, const QModelIndex & parent = QModelIndex() )
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_REMOVEROW )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -649,23 +651,23 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_REMOVEROW )
     if( ISBETWEEN(1,2) && ISNUM(1) && (ISQMODELINDEX(2)||ISNIL(2)) )
     {
 #endif
-      RBOOL( obj->removeRow ( PINT(1), ISNIL(2)? QModelIndex() : *(QModelIndex *) _qt5xhb_itemGetPtr(2) ) );
+      RBOOL( obj->removeRow( PINT(1), ISNIL(2)? QModelIndex() : *(QModelIndex *) Qt5xHb::itemGetPtr(2) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual bool removeRows ( int row, int count, const QModelIndex & parent = QModelIndex() )
+virtual bool removeRows( int row, int count, const QModelIndex & parent = QModelIndex() )
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_REMOVEROWS )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -673,23 +675,23 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_REMOVEROWS )
     if( ISBETWEEN(2,3) && ISNUM(1) && ISNUM(2) && (ISQMODELINDEX(3)||ISNIL(3)) )
     {
 #endif
-      RBOOL( obj->removeRows ( PINT(1), PINT(2), ISNIL(3)? QModelIndex() : *(QModelIndex *) _qt5xhb_itemGetPtr(3) ) );
+      RBOOL( obj->removeRows( PINT(1), PINT(2), ISNIL(3)? QModelIndex() : *(QModelIndex *) Qt5xHb::itemGetPtr(3) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual int rowCount ( const QModelIndex & parent = QModelIndex() ) const = 0
+virtual int rowCount( const QModelIndex & parent = QModelIndex() ) const = 0
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_ROWCOUNT )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -697,23 +699,23 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ROWCOUNT )
     if( ISBETWEEN(0,1) && (ISQMODELINDEX(1)||ISNIL(1)) )
     {
 #endif
-      RINT( obj->rowCount ( ISNIL(1)? QModelIndex() : *(QModelIndex *) _qt5xhb_itemGetPtr(1) ) );
+      RINT( obj->rowCount( ISNIL(1)? QModelIndex() : *(QModelIndex *) Qt5xHb::itemGetPtr(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual bool setData ( const QModelIndex & index, const QVariant & value, int role = Qt::EditRole )
+virtual bool setData( const QModelIndex & index, const QVariant & value, int role = Qt::EditRole )
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_SETDATA )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -721,23 +723,23 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_SETDATA )
     if( ISBETWEEN(2,3) && ISQMODELINDEX(1) && ISQVARIANT(2) && ISOPTNUM(3) )
     {
 #endif
-      RBOOL( obj->setData ( *PQMODELINDEX(1), *PQVARIANT(2), OPINT(3,Qt::EditRole) ) );
+      RBOOL( obj->setData( *PQMODELINDEX(1), *PQVARIANT(2), OPINT(3,Qt::EditRole) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual bool setHeaderData ( int section, Qt::Orientation orientation, const QVariant & value, int role = Qt::EditRole )
+virtual bool setHeaderData( int section, Qt::Orientation orientation, const QVariant & value, int role = Qt::EditRole )
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_SETHEADERDATA )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -745,23 +747,23 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_SETHEADERDATA )
     if( ISBETWEEN(3,4) && ISNUM(1) && ISNUM(2) && ISQVARIANT(3) && ISOPTNUM(4) )
     {
 #endif
-      RBOOL( obj->setHeaderData ( PINT(1), (Qt::Orientation) hb_parni(2), *PQVARIANT(3), OPINT(4,Qt::EditRole) ) );
+      RBOOL( obj->setHeaderData( PINT(1), (Qt::Orientation) hb_parni(2), *PQVARIANT(3), OPINT(4,Qt::EditRole) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-QModelIndex sibling ( int row, int column, const QModelIndex & index ) const
+QModelIndex sibling( int row, int column, const QModelIndex & index ) const
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_SIBLING )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -769,24 +771,24 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_SIBLING )
     if( ISNUMPAR(3) && ISNUM(1) && ISNUM(2) && ISQMODELINDEX(3) )
     {
 #endif
-      QModelIndex * ptr = new QModelIndex( obj->sibling ( PINT(1), PINT(2), *PQMODELINDEX(3) ) );
-      _qt5xhb_createReturnClass ( ptr, "QMODELINDEX", true );
+      auto ptr = new QModelIndex( obj->sibling( PINT(1), PINT(2), *PQMODELINDEX(3) ) );
+      Qt5xHb::createReturnClass( ptr, "QMODELINDEX", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual void sort ( int column, Qt::SortOrder order = Qt::AscendingOrder )
+virtual void sort( int column, Qt::SortOrder order = Qt::AscendingOrder )
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_SORT )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -794,12 +796,12 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_SORT )
     if( ISBETWEEN(1,2) && ISNUM(1) && ISOPTNUM(2) )
     {
 #endif
-      obj->sort ( PINT(1), ISNIL(2)? (Qt::SortOrder) Qt::AscendingOrder : (Qt::SortOrder) hb_parni(2) );
+      obj->sort( PINT(1), ISNIL(2)? (Qt::SortOrder) Qt::AscendingOrder : (Qt::SortOrder) hb_parni(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -808,11 +810,11 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_SORT )
 }
 
 /*
-virtual QSize span ( const QModelIndex & index ) const
+virtual QSize span( const QModelIndex & index ) const
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_SPAN )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -820,24 +822,24 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_SPAN )
     if( ISNUMPAR(1) && ISQMODELINDEX(1) )
     {
 #endif
-      QSize * ptr = new QSize( obj->span ( *PQMODELINDEX(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QSIZE", true );
+      auto ptr = new QSize( obj->span( *PQMODELINDEX(1) ) );
+      Qt5xHb::createReturnClass( ptr, "QSIZE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-Qt::DropActions supportedDragActions () const
+Qt::DropActions supportedDragActions() const
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_SUPPORTEDDRAGACTIONS )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -845,23 +847,23 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_SUPPORTEDDRAGACTIONS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->supportedDragActions () );
+      RENUM( obj->supportedDragActions() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual Qt::DropActions supportedDropActions () const
+virtual Qt::DropActions supportedDropActions() const
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_SUPPORTEDDROPACTIONS )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -869,23 +871,23 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_SUPPORTEDDROPACTIONS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->supportedDropActions () );
+      RENUM( obj->supportedDropActions() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual void revert ()
+virtual void revert()
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_REVERT )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -893,12 +895,12 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_REVERT )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->revert ();
+      obj->revert();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -907,11 +909,11 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_REVERT )
 }
 
 /*
-virtual bool submit ()
+virtual bool submit()
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_SUBMIT )
 {
-  QAbstractItemModel * obj = (QAbstractItemModel *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -919,12 +921,12 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_SUBMIT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->submit () );
+      RBOOL( obj->submit() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -935,30 +937,31 @@ void columnsAboutToBeInserted( const QModelIndex & parent, int start, int end )
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONCOLUMNSABOUTTOBEINSERTED )
 {
-  QAbstractItemModel * sender = (QAbstractItemModel *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("columnsAboutToBeInserted(QModelIndex,int,int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("columnsAboutToBeInserted(QModelIndex,int,int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAbstractItemModel::columnsAboutToBeInserted, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (const QModelIndex & arg1, int arg2, int arg3) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QABSTRACTITEMMODEL" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) &arg1, "QMODELINDEX" );
-            PHB_ITEM pArg2 = hb_itemPutNI( NULL, arg2 );
-            PHB_ITEM pArg3 = hb_itemPutNI( NULL, arg3 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 4, pSender, pArg1, pArg2, pArg3 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QABSTRACTITEMMODEL" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) &arg1, "QMODELINDEX" );
+            PHB_ITEM pArg2 = hb_itemPutNI( nullptr, arg2 );
+            PHB_ITEM pArg3 = hb_itemPutNI( nullptr, arg3 );
+            hb_vmEvalBlockV( cb, 4, pSender, pArg1, pArg2, pArg3 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -967,7 +970,7 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONCOLUMNSABOUTTOBEINSERTED )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -978,9 +981,9 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONCOLUMNSABOUTTOBEINSERTED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1000,32 +1003,33 @@ void columnsAboutToBeMoved( const QModelIndex & sourceParent, int sourceStart, i
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONCOLUMNSABOUTTOBEMOVED )
 {
-  QAbstractItemModel * sender = (QAbstractItemModel *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("columnsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("columnsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAbstractItemModel::columnsAboutToBeMoved, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (const QModelIndex & arg1, int arg2, int arg3, const QModelIndex & arg4, int arg5) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QABSTRACTITEMMODEL" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) &arg1, "QMODELINDEX" );
-            PHB_ITEM pArg2 = hb_itemPutNI( NULL, arg2 );
-            PHB_ITEM pArg3 = hb_itemPutNI( NULL, arg3 );
-            PHB_ITEM pArg4 = Signals3_return_object( (void *) &arg4, "QMODELINDEX" );
-            PHB_ITEM pArg5 = hb_itemPutNI( NULL, arg5 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 6, pSender, pArg1, pArg2, pArg3, pArg4, pArg5 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QABSTRACTITEMMODEL" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) &arg1, "QMODELINDEX" );
+            PHB_ITEM pArg2 = hb_itemPutNI( nullptr, arg2 );
+            PHB_ITEM pArg3 = hb_itemPutNI( nullptr, arg3 );
+            PHB_ITEM pArg4 = Qt5xHb::Signals_return_object( (void *) &arg4, "QMODELINDEX" );
+            PHB_ITEM pArg5 = hb_itemPutNI( nullptr, arg5 );
+            hb_vmEvalBlockV( cb, 6, pSender, pArg1, pArg2, pArg3, pArg4, pArg5 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -1036,7 +1040,7 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONCOLUMNSABOUTTOBEMOVED )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1047,9 +1051,9 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONCOLUMNSABOUTTOBEMOVED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1069,30 +1073,31 @@ void columnsAboutToBeRemoved( const QModelIndex & parent, int start, int end )
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONCOLUMNSABOUTTOBEREMOVED )
 {
-  QAbstractItemModel * sender = (QAbstractItemModel *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("columnsAboutToBeRemoved(QModelIndex,int,int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("columnsAboutToBeRemoved(QModelIndex,int,int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAbstractItemModel::columnsAboutToBeRemoved, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (const QModelIndex & arg1, int arg2, int arg3) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QABSTRACTITEMMODEL" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) &arg1, "QMODELINDEX" );
-            PHB_ITEM pArg2 = hb_itemPutNI( NULL, arg2 );
-            PHB_ITEM pArg3 = hb_itemPutNI( NULL, arg3 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 4, pSender, pArg1, pArg2, pArg3 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QABSTRACTITEMMODEL" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) &arg1, "QMODELINDEX" );
+            PHB_ITEM pArg2 = hb_itemPutNI( nullptr, arg2 );
+            PHB_ITEM pArg3 = hb_itemPutNI( nullptr, arg3 );
+            hb_vmEvalBlockV( cb, 4, pSender, pArg1, pArg2, pArg3 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -1101,7 +1106,7 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONCOLUMNSABOUTTOBEREMOVED )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1112,9 +1117,9 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONCOLUMNSABOUTTOBEREMOVED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1134,30 +1139,31 @@ void columnsInserted( const QModelIndex & parent, int start, int end )
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONCOLUMNSINSERTED )
 {
-  QAbstractItemModel * sender = (QAbstractItemModel *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("columnsInserted(QModelIndex,int,int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("columnsInserted(QModelIndex,int,int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAbstractItemModel::columnsInserted, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (const QModelIndex & arg1, int arg2, int arg3) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QABSTRACTITEMMODEL" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) &arg1, "QMODELINDEX" );
-            PHB_ITEM pArg2 = hb_itemPutNI( NULL, arg2 );
-            PHB_ITEM pArg3 = hb_itemPutNI( NULL, arg3 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 4, pSender, pArg1, pArg2, pArg3 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QABSTRACTITEMMODEL" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) &arg1, "QMODELINDEX" );
+            PHB_ITEM pArg2 = hb_itemPutNI( nullptr, arg2 );
+            PHB_ITEM pArg3 = hb_itemPutNI( nullptr, arg3 );
+            hb_vmEvalBlockV( cb, 4, pSender, pArg1, pArg2, pArg3 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -1166,7 +1172,7 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONCOLUMNSINSERTED )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1177,9 +1183,9 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONCOLUMNSINSERTED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1199,32 +1205,33 @@ void columnsMoved( const QModelIndex & sourceParent, int sourceStart, int source
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONCOLUMNSMOVED )
 {
-  QAbstractItemModel * sender = (QAbstractItemModel *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("columnsMoved(QModelIndex,int,int,QModelIndex,int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("columnsMoved(QModelIndex,int,int,QModelIndex,int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAbstractItemModel::columnsMoved, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (const QModelIndex & arg1, int arg2, int arg3, const QModelIndex & arg4, int arg5) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QABSTRACTITEMMODEL" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) &arg1, "QMODELINDEX" );
-            PHB_ITEM pArg2 = hb_itemPutNI( NULL, arg2 );
-            PHB_ITEM pArg3 = hb_itemPutNI( NULL, arg3 );
-            PHB_ITEM pArg4 = Signals3_return_object( (void *) &arg4, "QMODELINDEX" );
-            PHB_ITEM pArg5 = hb_itemPutNI( NULL, arg5 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 6, pSender, pArg1, pArg2, pArg3, pArg4, pArg5 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QABSTRACTITEMMODEL" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) &arg1, "QMODELINDEX" );
+            PHB_ITEM pArg2 = hb_itemPutNI( nullptr, arg2 );
+            PHB_ITEM pArg3 = hb_itemPutNI( nullptr, arg3 );
+            PHB_ITEM pArg4 = Qt5xHb::Signals_return_object( (void *) &arg4, "QMODELINDEX" );
+            PHB_ITEM pArg5 = hb_itemPutNI( nullptr, arg5 );
+            hb_vmEvalBlockV( cb, 6, pSender, pArg1, pArg2, pArg3, pArg4, pArg5 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -1235,7 +1242,7 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONCOLUMNSMOVED )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1246,9 +1253,9 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONCOLUMNSMOVED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1268,30 +1275,31 @@ void columnsRemoved( const QModelIndex & parent, int start, int end )
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONCOLUMNSREMOVED )
 {
-  QAbstractItemModel * sender = (QAbstractItemModel *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("columnsRemoved(QModelIndex,int,int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("columnsRemoved(QModelIndex,int,int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAbstractItemModel::columnsRemoved, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (const QModelIndex & arg1, int arg2, int arg3) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QABSTRACTITEMMODEL" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) &arg1, "QMODELINDEX" );
-            PHB_ITEM pArg2 = hb_itemPutNI( NULL, arg2 );
-            PHB_ITEM pArg3 = hb_itemPutNI( NULL, arg3 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 4, pSender, pArg1, pArg2, pArg3 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QABSTRACTITEMMODEL" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) &arg1, "QMODELINDEX" );
+            PHB_ITEM pArg2 = hb_itemPutNI( nullptr, arg2 );
+            PHB_ITEM pArg3 = hb_itemPutNI( nullptr, arg3 );
+            hb_vmEvalBlockV( cb, 4, pSender, pArg1, pArg2, pArg3 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -1300,7 +1308,7 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONCOLUMNSREMOVED )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1311,9 +1319,9 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONCOLUMNSREMOVED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1333,29 +1341,30 @@ void dataChanged( const QModelIndex & topLeft, const QModelIndex & bottomRight )
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONDATACHANGED )
 {
-  QAbstractItemModel * sender = (QAbstractItemModel *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("dataChanged(QModelIndex,QModelIndex)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("dataChanged(QModelIndex,QModelIndex)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAbstractItemModel::dataChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (const QModelIndex & arg1, const QModelIndex & arg2) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QABSTRACTITEMMODEL" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) &arg1, "QMODELINDEX" );
-            PHB_ITEM pArg2 = Signals3_return_object( (void *) &arg2, "QMODELINDEX" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 3, pSender, pArg1, pArg2 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QABSTRACTITEMMODEL" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) &arg1, "QMODELINDEX" );
+            PHB_ITEM pArg2 = Qt5xHb::Signals_return_object( (void *) &arg2, "QMODELINDEX" );
+            hb_vmEvalBlockV( cb, 3, pSender, pArg1, pArg2 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -1363,7 +1372,7 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONDATACHANGED )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1374,9 +1383,9 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONDATACHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1396,30 +1405,31 @@ void headerDataChanged( Qt::Orientation orientation, int first, int last )
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONHEADERDATACHANGED )
 {
-  QAbstractItemModel * sender = (QAbstractItemModel *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("headerDataChanged(Qt::Orientation,int,int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("headerDataChanged(Qt::Orientation,int,int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAbstractItemModel::headerDataChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (Qt::Orientation arg1, int arg2, int arg3) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QABSTRACTITEMMODEL" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, (int) arg1 );
-            PHB_ITEM pArg2 = hb_itemPutNI( NULL, arg2 );
-            PHB_ITEM pArg3 = hb_itemPutNI( NULL, arg3 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 4, pSender, pArg1, pArg2, pArg3 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QABSTRACTITEMMODEL" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, (int) arg1 );
+            PHB_ITEM pArg2 = hb_itemPutNI( nullptr, arg2 );
+            PHB_ITEM pArg3 = hb_itemPutNI( nullptr, arg3 );
+            hb_vmEvalBlockV( cb, 4, pSender, pArg1, pArg2, pArg3 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -1428,7 +1438,7 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONHEADERDATACHANGED )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1439,9 +1449,9 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONHEADERDATACHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1461,33 +1471,34 @@ void layoutAboutToBeChanged()
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONLAYOUTABOUTTOBECHANGED )
 {
-  QAbstractItemModel * sender = (QAbstractItemModel *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("layoutAboutToBeChanged()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("layoutAboutToBeChanged()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAbstractItemModel::layoutAboutToBeChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QABSTRACTITEMMODEL" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QABSTRACTITEMMODEL" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1498,9 +1509,9 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONLAYOUTABOUTTOBECHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1520,33 +1531,34 @@ void layoutChanged()
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONLAYOUTCHANGED )
 {
-  QAbstractItemModel * sender = (QAbstractItemModel *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("layoutChanged()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("layoutChanged()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAbstractItemModel::layoutChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QABSTRACTITEMMODEL" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QABSTRACTITEMMODEL" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1557,9 +1569,9 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONLAYOUTCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1579,33 +1591,34 @@ void modelAboutToBeReset()
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONMODELABOUTTOBERESET )
 {
-  QAbstractItemModel * sender = (QAbstractItemModel *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("modelAboutToBeReset()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("modelAboutToBeReset()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAbstractItemModel::modelAboutToBeReset, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QABSTRACTITEMMODEL" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QABSTRACTITEMMODEL" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1616,9 +1629,9 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONMODELABOUTTOBERESET )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1638,33 +1651,34 @@ void modelReset()
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONMODELRESET )
 {
-  QAbstractItemModel * sender = (QAbstractItemModel *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("modelReset()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("modelReset()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAbstractItemModel::modelReset, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QABSTRACTITEMMODEL" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QABSTRACTITEMMODEL" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1675,9 +1689,9 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONMODELRESET )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1697,30 +1711,31 @@ void rowsAboutToBeInserted( const QModelIndex & parent, int start, int end )
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONROWSABOUTTOBEINSERTED )
 {
-  QAbstractItemModel * sender = (QAbstractItemModel *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("rowsAboutToBeInserted(QModelIndex,int,int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("rowsAboutToBeInserted(QModelIndex,int,int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAbstractItemModel::rowsAboutToBeInserted, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (const QModelIndex & arg1, int arg2, int arg3) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QABSTRACTITEMMODEL" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) &arg1, "QMODELINDEX" );
-            PHB_ITEM pArg2 = hb_itemPutNI( NULL, arg2 );
-            PHB_ITEM pArg3 = hb_itemPutNI( NULL, arg3 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 4, pSender, pArg1, pArg2, pArg3 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QABSTRACTITEMMODEL" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) &arg1, "QMODELINDEX" );
+            PHB_ITEM pArg2 = hb_itemPutNI( nullptr, arg2 );
+            PHB_ITEM pArg3 = hb_itemPutNI( nullptr, arg3 );
+            hb_vmEvalBlockV( cb, 4, pSender, pArg1, pArg2, pArg3 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -1729,7 +1744,7 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONROWSABOUTTOBEINSERTED )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1740,9 +1755,9 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONROWSABOUTTOBEINSERTED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1762,32 +1777,33 @@ void rowsAboutToBeMoved( const QModelIndex & sourceParent, int sourceStart, int 
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONROWSABOUTTOBEMOVED )
 {
-  QAbstractItemModel * sender = (QAbstractItemModel *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAbstractItemModel::rowsAboutToBeMoved, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (const QModelIndex & arg1, int arg2, int arg3, const QModelIndex & arg4, int arg5) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QABSTRACTITEMMODEL" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) &arg1, "QMODELINDEX" );
-            PHB_ITEM pArg2 = hb_itemPutNI( NULL, arg2 );
-            PHB_ITEM pArg3 = hb_itemPutNI( NULL, arg3 );
-            PHB_ITEM pArg4 = Signals3_return_object( (void *) &arg4, "QMODELINDEX" );
-            PHB_ITEM pArg5 = hb_itemPutNI( NULL, arg5 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 6, pSender, pArg1, pArg2, pArg3, pArg4, pArg5 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QABSTRACTITEMMODEL" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) &arg1, "QMODELINDEX" );
+            PHB_ITEM pArg2 = hb_itemPutNI( nullptr, arg2 );
+            PHB_ITEM pArg3 = hb_itemPutNI( nullptr, arg3 );
+            PHB_ITEM pArg4 = Qt5xHb::Signals_return_object( (void *) &arg4, "QMODELINDEX" );
+            PHB_ITEM pArg5 = hb_itemPutNI( nullptr, arg5 );
+            hb_vmEvalBlockV( cb, 6, pSender, pArg1, pArg2, pArg3, pArg4, pArg5 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -1798,7 +1814,7 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONROWSABOUTTOBEMOVED )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1809,9 +1825,9 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONROWSABOUTTOBEMOVED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1831,30 +1847,31 @@ void rowsAboutToBeRemoved( const QModelIndex & parent, int start, int end )
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONROWSABOUTTOBEREMOVED )
 {
-  QAbstractItemModel * sender = (QAbstractItemModel *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("rowsAboutToBeRemoved(QModelIndex,int,int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("rowsAboutToBeRemoved(QModelIndex,int,int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAbstractItemModel::rowsAboutToBeRemoved, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (const QModelIndex & arg1, int arg2, int arg3) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QABSTRACTITEMMODEL" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) &arg1, "QMODELINDEX" );
-            PHB_ITEM pArg2 = hb_itemPutNI( NULL, arg2 );
-            PHB_ITEM pArg3 = hb_itemPutNI( NULL, arg3 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 4, pSender, pArg1, pArg2, pArg3 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QABSTRACTITEMMODEL" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) &arg1, "QMODELINDEX" );
+            PHB_ITEM pArg2 = hb_itemPutNI( nullptr, arg2 );
+            PHB_ITEM pArg3 = hb_itemPutNI( nullptr, arg3 );
+            hb_vmEvalBlockV( cb, 4, pSender, pArg1, pArg2, pArg3 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -1863,7 +1880,7 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONROWSABOUTTOBEREMOVED )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1874,9 +1891,9 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONROWSABOUTTOBEREMOVED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1896,30 +1913,31 @@ void rowsInserted( const QModelIndex & parent, int start, int end )
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONROWSINSERTED )
 {
-  QAbstractItemModel * sender = (QAbstractItemModel *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("rowsInserted(QModelIndex,int,int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("rowsInserted(QModelIndex,int,int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAbstractItemModel::rowsInserted, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (const QModelIndex & arg1, int arg2, int arg3) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QABSTRACTITEMMODEL" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) &arg1, "QMODELINDEX" );
-            PHB_ITEM pArg2 = hb_itemPutNI( NULL, arg2 );
-            PHB_ITEM pArg3 = hb_itemPutNI( NULL, arg3 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 4, pSender, pArg1, pArg2, pArg3 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QABSTRACTITEMMODEL" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) &arg1, "QMODELINDEX" );
+            PHB_ITEM pArg2 = hb_itemPutNI( nullptr, arg2 );
+            PHB_ITEM pArg3 = hb_itemPutNI( nullptr, arg3 );
+            hb_vmEvalBlockV( cb, 4, pSender, pArg1, pArg2, pArg3 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -1928,7 +1946,7 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONROWSINSERTED )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1939,9 +1957,9 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONROWSINSERTED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1961,32 +1979,33 @@ void rowsMoved( const QModelIndex & sourceParent, int sourceStart, int sourceEnd
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONROWSMOVED )
 {
-  QAbstractItemModel * sender = (QAbstractItemModel *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("rowsMoved(QModelIndex,int,int,QModelIndex,int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("rowsMoved(QModelIndex,int,int,QModelIndex,int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAbstractItemModel::rowsMoved, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (const QModelIndex & arg1, int arg2, int arg3, const QModelIndex & arg4, int arg5) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QABSTRACTITEMMODEL" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) &arg1, "QMODELINDEX" );
-            PHB_ITEM pArg2 = hb_itemPutNI( NULL, arg2 );
-            PHB_ITEM pArg3 = hb_itemPutNI( NULL, arg3 );
-            PHB_ITEM pArg4 = Signals3_return_object( (void *) &arg4, "QMODELINDEX" );
-            PHB_ITEM pArg5 = hb_itemPutNI( NULL, arg5 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 6, pSender, pArg1, pArg2, pArg3, pArg4, pArg5 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QABSTRACTITEMMODEL" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) &arg1, "QMODELINDEX" );
+            PHB_ITEM pArg2 = hb_itemPutNI( nullptr, arg2 );
+            PHB_ITEM pArg3 = hb_itemPutNI( nullptr, arg3 );
+            PHB_ITEM pArg4 = Qt5xHb::Signals_return_object( (void *) &arg4, "QMODELINDEX" );
+            PHB_ITEM pArg5 = hb_itemPutNI( nullptr, arg5 );
+            hb_vmEvalBlockV( cb, 6, pSender, pArg1, pArg2, pArg3, pArg4, pArg5 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -1997,7 +2016,7 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONROWSMOVED )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -2008,9 +2027,9 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONROWSMOVED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -2030,30 +2049,31 @@ void rowsRemoved( const QModelIndex & parent, int start, int end )
 */
 HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONROWSREMOVED )
 {
-  QAbstractItemModel * sender = (QAbstractItemModel *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAbstractItemModel *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("rowsRemoved(QModelIndex,int,int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("rowsRemoved(QModelIndex,int,int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAbstractItemModel::rowsRemoved, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (const QModelIndex & arg1, int arg2, int arg3) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QABSTRACTITEMMODEL" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) &arg1, "QMODELINDEX" );
-            PHB_ITEM pArg2 = hb_itemPutNI( NULL, arg2 );
-            PHB_ITEM pArg3 = hb_itemPutNI( NULL, arg3 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 4, pSender, pArg1, pArg2, pArg3 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QABSTRACTITEMMODEL" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) &arg1, "QMODELINDEX" );
+            PHB_ITEM pArg2 = hb_itemPutNI( nullptr, arg2 );
+            PHB_ITEM pArg3 = hb_itemPutNI( nullptr, arg3 );
+            hb_vmEvalBlockV( cb, 4, pSender, pArg1, pArg2, pArg3 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -2062,7 +2082,7 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONROWSREMOVED )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -2073,9 +2093,9 @@ HB_FUNC_STATIC( QABSTRACTITEMMODEL_ONROWSREMOVED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }

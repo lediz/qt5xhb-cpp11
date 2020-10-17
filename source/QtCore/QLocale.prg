@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -110,7 +110,7 @@ CLASS QLocale
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QLocale
+PROCEDURE destroyObject() CLASS QLocale
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -127,7 +127,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtCore/QLocale>
@@ -139,53 +138,55 @@ RETURN
 /*
 QLocale ()
 */
-void QLocale_new1 ()
+void QLocale_new1()
 {
-  QLocale * o = new QLocale ();
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QLocale();
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QLocale ( const QString & name )
 */
-void QLocale_new2 ()
+void QLocale_new2()
 {
-  QLocale * o = new QLocale ( PQSTRING(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QLocale( PQSTRING(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QLocale ( Language language, Country country = AnyCountry )
 */
-void QLocale_new3 ()
+void QLocale_new3()
 {
-  QLocale * o = new QLocale ( (QLocale::Language) hb_parni(1), ISNIL(2)? (QLocale::Country) QLocale::AnyCountry : (QLocale::Country) hb_parni(2) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QLocale( (QLocale::Language) hb_parni(1), ISNIL(2)? (QLocale::Country) QLocale::AnyCountry : (QLocale::Country) hb_parni(2) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QLocale ( Language language, Script script, Country country )
 */
-void QLocale_new4 ()
+void QLocale_new4()
 {
-  QLocale * o = new QLocale ( (QLocale::Language) hb_parni(1), (QLocale::Script) hb_parni(2), (QLocale::Country) hb_parni(3) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QLocale( (QLocale::Language) hb_parni(1), (QLocale::Script) hb_parni(2), (QLocale::Country) hb_parni(3) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QLocale ( const QLocale & other )
 */
-void QLocale_new5 ()
+void QLocale_new5()
 {
-  QLocale * o = new QLocale ( *PQLOCALE(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QLocale( *PQLOCALE(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
-//[1] QLocale ()
-//[2] QLocale ( const QString & name )
-//[3] QLocale ( Language language, Country country = AnyCountry )
-//[4] QLocale ( Language language, Script script, Country country )
-//[5] QLocale ( const QLocale & other )
+/*
+[1] QLocale ()
+[2] QLocale ( const QString & name )
+[3] QLocale ( Language language, Country country = AnyCountry )
+[4] QLocale ( Language language, Script script, Country country )
+[5] QLocale ( const QLocale & other )
+*/
 
 HB_FUNC_STATIC( QLOCALE_NEW )
 {
@@ -211,20 +212,20 @@ HB_FUNC_STATIC( QLOCALE_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QLOCALE_DELETE )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -237,7 +238,7 @@ QString amText () const
 */
 HB_FUNC_STATIC( QLOCALE_AMTEXT )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -245,12 +246,12 @@ HB_FUNC_STATIC( QLOCALE_AMTEXT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->amText () );
+      RQSTRING( obj->amText() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -261,7 +262,7 @@ QString bcp47Name () const
 */
 HB_FUNC_STATIC( QLOCALE_BCP47NAME )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -269,12 +270,12 @@ HB_FUNC_STATIC( QLOCALE_BCP47NAME )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->bcp47Name () );
+      RQSTRING( obj->bcp47Name() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -285,7 +286,7 @@ Country country () const
 */
 HB_FUNC_STATIC( QLOCALE_COUNTRY )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -293,12 +294,12 @@ HB_FUNC_STATIC( QLOCALE_COUNTRY )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->country () );
+      RENUM( obj->country() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -309,7 +310,7 @@ QString createSeparatedList ( const QStringList & list ) const
 */
 HB_FUNC_STATIC( QLOCALE_CREATESEPARATEDLIST )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -317,12 +318,12 @@ HB_FUNC_STATIC( QLOCALE_CREATESEPARATEDLIST )
     if( ISNUMPAR(1) && ISARRAY(1) )
     {
 #endif
-      RQSTRING( obj->createSeparatedList ( PQSTRINGLIST(1) ) );
+      RQSTRING( obj->createSeparatedList( PQSTRINGLIST(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -333,7 +334,7 @@ QString currencySymbol ( CurrencySymbolFormat format = CurrencySymbol ) const
 */
 HB_FUNC_STATIC( QLOCALE_CURRENCYSYMBOL )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -341,12 +342,12 @@ HB_FUNC_STATIC( QLOCALE_CURRENCYSYMBOL )
     if( ISBETWEEN(0,1) && ISOPTNUM(1) )
     {
 #endif
-      RQSTRING( obj->currencySymbol ( ISNIL(1)? (QLocale::CurrencySymbolFormat) QLocale::CurrencySymbol : (QLocale::CurrencySymbolFormat) hb_parni(1) ) );
+      RQSTRING( obj->currencySymbol( ISNIL(1)? (QLocale::CurrencySymbolFormat) QLocale::CurrencySymbol : (QLocale::CurrencySymbolFormat) hb_parni(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -357,7 +358,7 @@ QString dateFormat ( FormatType format = LongFormat ) const
 */
 HB_FUNC_STATIC( QLOCALE_DATEFORMAT )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -365,12 +366,12 @@ HB_FUNC_STATIC( QLOCALE_DATEFORMAT )
     if( ISBETWEEN(0,1) && ISOPTNUM(1) )
     {
 #endif
-      RQSTRING( obj->dateFormat ( ISNIL(1)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(1) ) );
+      RQSTRING( obj->dateFormat( ISNIL(1)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -381,7 +382,7 @@ QString dateTimeFormat ( FormatType format = LongFormat ) const
 */
 HB_FUNC_STATIC( QLOCALE_DATETIMEFORMAT )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -389,12 +390,12 @@ HB_FUNC_STATIC( QLOCALE_DATETIMEFORMAT )
     if( ISBETWEEN(0,1) && ISOPTNUM(1) )
     {
 #endif
-      RQSTRING( obj->dateTimeFormat ( ISNIL(1)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(1) ) );
+      RQSTRING( obj->dateTimeFormat( ISNIL(1)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -405,7 +406,7 @@ QString dayName ( int day, FormatType type = LongFormat ) const
 */
 HB_FUNC_STATIC( QLOCALE_DAYNAME )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -413,12 +414,12 @@ HB_FUNC_STATIC( QLOCALE_DAYNAME )
     if( ISBETWEEN(1,2) && ISNUM(1) && ISOPTNUM(2) )
     {
 #endif
-      RQSTRING( obj->dayName ( PINT(1), ISNIL(2)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(2) ) );
+      RQSTRING( obj->dayName( PINT(1), ISNIL(2)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(2) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -429,7 +430,7 @@ QChar decimalPoint () const
 */
 HB_FUNC_STATIC( QLOCALE_DECIMALPOINT )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -437,13 +438,13 @@ HB_FUNC_STATIC( QLOCALE_DECIMALPOINT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QChar * ptr = new QChar( obj->decimalPoint () );
-      _qt5xhb_createReturnClass ( ptr, "QCHAR", true );
+      auto ptr = new QChar( obj->decimalPoint() );
+      Qt5xHb::createReturnClass( ptr, "QCHAR", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -454,7 +455,7 @@ QChar exponential () const
 */
 HB_FUNC_STATIC( QLOCALE_EXPONENTIAL )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -462,13 +463,13 @@ HB_FUNC_STATIC( QLOCALE_EXPONENTIAL )
     if( ISNUMPAR(0) )
     {
 #endif
-      QChar * ptr = new QChar( obj->exponential () );
-      _qt5xhb_createReturnClass ( ptr, "QCHAR", true );
+      auto ptr = new QChar( obj->exponential() );
+      Qt5xHb::createReturnClass( ptr, "QCHAR", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -479,7 +480,7 @@ Qt::DayOfWeek firstDayOfWeek () const
 */
 HB_FUNC_STATIC( QLOCALE_FIRSTDAYOFWEEK )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -487,12 +488,12 @@ HB_FUNC_STATIC( QLOCALE_FIRSTDAYOFWEEK )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->firstDayOfWeek () );
+      RENUM( obj->firstDayOfWeek() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -503,7 +504,7 @@ QChar groupSeparator () const
 */
 HB_FUNC_STATIC( QLOCALE_GROUPSEPARATOR )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -511,13 +512,13 @@ HB_FUNC_STATIC( QLOCALE_GROUPSEPARATOR )
     if( ISNUMPAR(0) )
     {
 #endif
-      QChar * ptr = new QChar( obj->groupSeparator () );
-      _qt5xhb_createReturnClass ( ptr, "QCHAR", true );
+      auto ptr = new QChar( obj->groupSeparator() );
+      Qt5xHb::createReturnClass( ptr, "QCHAR", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -528,7 +529,7 @@ Language language () const
 */
 HB_FUNC_STATIC( QLOCALE_LANGUAGE )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -536,12 +537,12 @@ HB_FUNC_STATIC( QLOCALE_LANGUAGE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->language () );
+      RENUM( obj->language() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -552,7 +553,7 @@ MeasurementSystem measurementSystem () const
 */
 HB_FUNC_STATIC( QLOCALE_MEASUREMENTSYSTEM )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -560,12 +561,12 @@ HB_FUNC_STATIC( QLOCALE_MEASUREMENTSYSTEM )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->measurementSystem () );
+      RENUM( obj->measurementSystem() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -576,7 +577,7 @@ QString monthName ( int month, FormatType type = LongFormat ) const
 */
 HB_FUNC_STATIC( QLOCALE_MONTHNAME )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -584,12 +585,12 @@ HB_FUNC_STATIC( QLOCALE_MONTHNAME )
     if( ISBETWEEN(1,2) && ISNUM(1) && ISOPTNUM(2) )
     {
 #endif
-      RQSTRING( obj->monthName ( PINT(1), ISNIL(2)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(2) ) );
+      RQSTRING( obj->monthName( PINT(1), ISNIL(2)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(2) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -600,7 +601,7 @@ QString name () const
 */
 HB_FUNC_STATIC( QLOCALE_NAME )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -608,12 +609,12 @@ HB_FUNC_STATIC( QLOCALE_NAME )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->name () );
+      RQSTRING( obj->name() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -624,7 +625,7 @@ QString nativeCountryName () const
 */
 HB_FUNC_STATIC( QLOCALE_NATIVECOUNTRYNAME )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -632,12 +633,12 @@ HB_FUNC_STATIC( QLOCALE_NATIVECOUNTRYNAME )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->nativeCountryName () );
+      RQSTRING( obj->nativeCountryName() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -648,7 +649,7 @@ QString nativeLanguageName () const
 */
 HB_FUNC_STATIC( QLOCALE_NATIVELANGUAGENAME )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -656,12 +657,12 @@ HB_FUNC_STATIC( QLOCALE_NATIVELANGUAGENAME )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->nativeLanguageName () );
+      RQSTRING( obj->nativeLanguageName() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -672,7 +673,7 @@ QChar negativeSign () const
 */
 HB_FUNC_STATIC( QLOCALE_NEGATIVESIGN )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -680,13 +681,13 @@ HB_FUNC_STATIC( QLOCALE_NEGATIVESIGN )
     if( ISNUMPAR(0) )
     {
 #endif
-      QChar * ptr = new QChar( obj->negativeSign () );
-      _qt5xhb_createReturnClass ( ptr, "QCHAR", true );
+      auto ptr = new QChar( obj->negativeSign() );
+      Qt5xHb::createReturnClass( ptr, "QCHAR", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -697,7 +698,7 @@ NumberOptions numberOptions () const
 */
 HB_FUNC_STATIC( QLOCALE_NUMBEROPTIONS )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -705,12 +706,12 @@ HB_FUNC_STATIC( QLOCALE_NUMBEROPTIONS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->numberOptions () );
+      RENUM( obj->numberOptions() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -721,7 +722,7 @@ QChar percent () const
 */
 HB_FUNC_STATIC( QLOCALE_PERCENT )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -729,13 +730,13 @@ HB_FUNC_STATIC( QLOCALE_PERCENT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QChar * ptr = new QChar( obj->percent () );
-      _qt5xhb_createReturnClass ( ptr, "QCHAR", true );
+      auto ptr = new QChar( obj->percent() );
+      Qt5xHb::createReturnClass( ptr, "QCHAR", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -746,7 +747,7 @@ QString pmText () const
 */
 HB_FUNC_STATIC( QLOCALE_PMTEXT )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -754,12 +755,12 @@ HB_FUNC_STATIC( QLOCALE_PMTEXT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->pmText () );
+      RQSTRING( obj->pmText() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -770,7 +771,7 @@ QChar positiveSign () const
 */
 HB_FUNC_STATIC( QLOCALE_POSITIVESIGN )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -778,13 +779,13 @@ HB_FUNC_STATIC( QLOCALE_POSITIVESIGN )
     if( ISNUMPAR(0) )
     {
 #endif
-      QChar * ptr = new QChar( obj->positiveSign () );
-      _qt5xhb_createReturnClass ( ptr, "QCHAR", true );
+      auto ptr = new QChar( obj->positiveSign() );
+      Qt5xHb::createReturnClass( ptr, "QCHAR", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -795,7 +796,7 @@ QString quoteString ( const QString & str, QuotationStyle style = StandardQuotat
 */
 HB_FUNC_STATIC( QLOCALE_QUOTESTRING1 )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -803,12 +804,12 @@ HB_FUNC_STATIC( QLOCALE_QUOTESTRING1 )
     if( ISBETWEEN(1,2) && ISCHAR(1) && ISOPTNUM(2) )
     {
 #endif
-      RQSTRING( obj->quoteString ( PQSTRING(1), ISNIL(2)? (QLocale::QuotationStyle) QLocale::StandardQuotation : (QLocale::QuotationStyle) hb_parni(2) ) );
+      RQSTRING( obj->quoteString( PQSTRING(1), ISNIL(2)? (QLocale::QuotationStyle) QLocale::StandardQuotation : (QLocale::QuotationStyle) hb_parni(2) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -819,7 +820,7 @@ QString quoteString ( const QStringRef & str, QuotationStyle style = StandardQuo
 */
 HB_FUNC_STATIC( QLOCALE_QUOTESTRING2 )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -827,19 +828,21 @@ HB_FUNC_STATIC( QLOCALE_QUOTESTRING2 )
     if( ISBETWEEN(1,2) && ISQSTRINGREF(1) && ISOPTNUM(2) )
     {
 #endif
-      RQSTRING( obj->quoteString ( *PQSTRINGREF(1), ISNIL(2)? (QLocale::QuotationStyle) QLocale::StandardQuotation : (QLocale::QuotationStyle) hb_parni(2) ) );
+      RQSTRING( obj->quoteString( *PQSTRINGREF(1), ISNIL(2)? (QLocale::QuotationStyle) QLocale::StandardQuotation : (QLocale::QuotationStyle) hb_parni(2) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
-//[1]QString quoteString ( const QString & str, QuotationStyle style = StandardQuotation ) const
-//[2]QString quoteString ( const QStringRef & str, QuotationStyle style = StandardQuotation ) const
+/*
+[1]QString quoteString ( const QString & str, QuotationStyle style = StandardQuotation ) const
+[2]QString quoteString ( const QStringRef & str, QuotationStyle style = StandardQuotation ) const
+*/
 
 HB_FUNC_STATIC( QLOCALE_QUOTESTRING )
 {
@@ -851,7 +854,7 @@ Script script () const
 */
 HB_FUNC_STATIC( QLOCALE_SCRIPT )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -859,12 +862,12 @@ HB_FUNC_STATIC( QLOCALE_SCRIPT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->script () );
+      RENUM( obj->script() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -875,7 +878,7 @@ void setNumberOptions ( NumberOptions options )
 */
 HB_FUNC_STATIC( QLOCALE_SETNUMBEROPTIONS )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -883,12 +886,12 @@ HB_FUNC_STATIC( QLOCALE_SETNUMBEROPTIONS )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setNumberOptions ( (QLocale::NumberOptions) hb_parni(1) );
+      obj->setNumberOptions( (QLocale::NumberOptions) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -901,7 +904,7 @@ QString standaloneDayName ( int day, FormatType type = LongFormat ) const
 */
 HB_FUNC_STATIC( QLOCALE_STANDALONEDAYNAME )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -909,12 +912,12 @@ HB_FUNC_STATIC( QLOCALE_STANDALONEDAYNAME )
     if( ISBETWEEN(1,2) && ISNUM(1) && ISOPTNUM(2) )
     {
 #endif
-      RQSTRING( obj->standaloneDayName ( PINT(1), ISNIL(2)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(2) ) );
+      RQSTRING( obj->standaloneDayName( PINT(1), ISNIL(2)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(2) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -925,7 +928,7 @@ QString standaloneMonthName ( int month, FormatType type = LongFormat ) const
 */
 HB_FUNC_STATIC( QLOCALE_STANDALONEMONTHNAME )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -933,12 +936,12 @@ HB_FUNC_STATIC( QLOCALE_STANDALONEMONTHNAME )
     if( ISBETWEEN(1,2) && ISNUM(1) && ISOPTNUM(2) )
     {
 #endif
-      RQSTRING( obj->standaloneMonthName ( PINT(1), ISNIL(2)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(2) ) );
+      RQSTRING( obj->standaloneMonthName( PINT(1), ISNIL(2)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(2) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -949,7 +952,7 @@ Qt::LayoutDirection textDirection () const
 */
 HB_FUNC_STATIC( QLOCALE_TEXTDIRECTION )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -957,12 +960,12 @@ HB_FUNC_STATIC( QLOCALE_TEXTDIRECTION )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->textDirection () );
+      RENUM( obj->textDirection() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -973,7 +976,7 @@ QString timeFormat ( FormatType format = LongFormat ) const
 */
 HB_FUNC_STATIC( QLOCALE_TIMEFORMAT )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -981,12 +984,12 @@ HB_FUNC_STATIC( QLOCALE_TIMEFORMAT )
     if( ISBETWEEN(0,1) && ISOPTNUM(1) )
     {
 #endif
-      RQSTRING( obj->timeFormat ( ISNIL(1)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(1) ) );
+      RQSTRING( obj->timeFormat( ISNIL(1)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -997,7 +1000,7 @@ QString toCurrencyString ( qlonglong value, const QString & symbol = QString() )
 */
 HB_FUNC_STATIC( QLOCALE_TOCURRENCYSTRING1 )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1005,12 +1008,12 @@ HB_FUNC_STATIC( QLOCALE_TOCURRENCYSTRING1 )
     if( ISBETWEEN(1,2) && ISNUM(1) && ISOPTCHAR(2) )
     {
 #endif
-      RQSTRING( obj->toCurrencyString ( PQLONGLONG(1), OPQSTRING(2,QString()) ) );
+      RQSTRING( obj->toCurrencyString( PQLONGLONG(1), OPQSTRING(2,QString()) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1021,7 +1024,7 @@ QString toCurrencyString ( short value, const QString & symbol = QString() ) con
 */
 HB_FUNC_STATIC( QLOCALE_TOCURRENCYSTRING2 )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1029,12 +1032,12 @@ HB_FUNC_STATIC( QLOCALE_TOCURRENCYSTRING2 )
     if( ISBETWEEN(1,2) && ISNUM(1) && ISOPTCHAR(2) )
     {
 #endif
-      RQSTRING( obj->toCurrencyString ( PSHORT(1), OPQSTRING(2,QString()) ) );
+      RQSTRING( obj->toCurrencyString( PSHORT(1), OPQSTRING(2,QString()) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1045,7 +1048,7 @@ QString toCurrencyString ( ushort value, const QString & symbol = QString() ) co
 */
 HB_FUNC_STATIC( QLOCALE_TOCURRENCYSTRING3 )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1053,12 +1056,12 @@ HB_FUNC_STATIC( QLOCALE_TOCURRENCYSTRING3 )
     if( ISBETWEEN(1,2) && ISNUM(1) && ISOPTCHAR(2) )
     {
 #endif
-      RQSTRING( obj->toCurrencyString ( PUSHORT(1), OPQSTRING(2,QString()) ) );
+      RQSTRING( obj->toCurrencyString( PUSHORT(1), OPQSTRING(2,QString()) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1069,7 +1072,7 @@ QString toCurrencyString ( int value, const QString & symbol = QString() ) const
 */
 HB_FUNC_STATIC( QLOCALE_TOCURRENCYSTRING4 )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1077,12 +1080,12 @@ HB_FUNC_STATIC( QLOCALE_TOCURRENCYSTRING4 )
     if( ISBETWEEN(1,2) && ISNUM(1) && ISOPTCHAR(2) )
     {
 #endif
-      RQSTRING( obj->toCurrencyString ( PINT(1), OPQSTRING(2,QString()) ) );
+      RQSTRING( obj->toCurrencyString( PINT(1), OPQSTRING(2,QString()) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1093,7 +1096,7 @@ QString toCurrencyString ( uint value, const QString & symbol = QString() ) cons
 */
 HB_FUNC_STATIC( QLOCALE_TOCURRENCYSTRING5 )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1101,12 +1104,12 @@ HB_FUNC_STATIC( QLOCALE_TOCURRENCYSTRING5 )
     if( ISBETWEEN(1,2) && ISNUM(1) && ISOPTCHAR(2) )
     {
 #endif
-      RQSTRING( obj->toCurrencyString ( PUINT(1), OPQSTRING(2,QString()) ) );
+      RQSTRING( obj->toCurrencyString( PUINT(1), OPQSTRING(2,QString()) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1117,7 +1120,7 @@ QString toCurrencyString ( float value, const QString & symbol = QString() ) con
 */
 HB_FUNC_STATIC( QLOCALE_TOCURRENCYSTRING6 )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1125,12 +1128,12 @@ HB_FUNC_STATIC( QLOCALE_TOCURRENCYSTRING6 )
     if( ISBETWEEN(1,2) && ISNUM(1) && ISOPTCHAR(2) )
     {
 #endif
-      RQSTRING( obj->toCurrencyString ( PFLOAT(1), OPQSTRING(2,QString()) ) );
+      RQSTRING( obj->toCurrencyString( PFLOAT(1), OPQSTRING(2,QString()) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1141,7 +1144,7 @@ QString toCurrencyString ( qulonglong value, const QString & symbol = QString() 
 */
 HB_FUNC_STATIC( QLOCALE_TOCURRENCYSTRING7 )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1149,12 +1152,12 @@ HB_FUNC_STATIC( QLOCALE_TOCURRENCYSTRING7 )
     if( ISBETWEEN(1,2) && ISNUM(1) && ISOPTCHAR(2) )
     {
 #endif
-      RQSTRING( obj->toCurrencyString ( PQULONGLONG(1), OPQSTRING(2,QString()) ) );
+      RQSTRING( obj->toCurrencyString( PQULONGLONG(1), OPQSTRING(2,QString()) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1165,7 +1168,7 @@ QString toCurrencyString ( double value, const QString & symbol = QString() ) co
 */
 HB_FUNC_STATIC( QLOCALE_TOCURRENCYSTRING8 )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1173,25 +1176,27 @@ HB_FUNC_STATIC( QLOCALE_TOCURRENCYSTRING8 )
     if( ISBETWEEN(1,2) && ISNUM(1) && ISOPTCHAR(2) )
     {
 #endif
-      RQSTRING( obj->toCurrencyString ( PDOUBLE(1), OPQSTRING(2,QString()) ) );
+      RQSTRING( obj->toCurrencyString( PDOUBLE(1), OPQSTRING(2,QString()) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
-//[1]QString toCurrencyString ( qlonglong value, const QString & symbol = QString() ) const
-//[2]QString toCurrencyString ( short value, const QString & symbol = QString() ) const
-//[3]QString toCurrencyString ( ushort value, const QString & symbol = QString() ) const
-//[4]QString toCurrencyString ( int value, const QString & symbol = QString() ) const
-//[5]QString toCurrencyString ( uint value, const QString & symbol = QString() ) const
-//[6]QString toCurrencyString ( float value, const QString & symbol = QString() ) const
-//[7]QString toCurrencyString ( qulonglong value, const QString & symbol = QString() ) const
-//[8]QString toCurrencyString ( double value, const QString & symbol = QString() ) const
+/*
+[1]QString toCurrencyString ( qlonglong value, const QString & symbol = QString() ) const
+[2]QString toCurrencyString ( short value, const QString & symbol = QString() ) const
+[3]QString toCurrencyString ( ushort value, const QString & symbol = QString() ) const
+[4]QString toCurrencyString ( int value, const QString & symbol = QString() ) const
+[5]QString toCurrencyString ( uint value, const QString & symbol = QString() ) const
+[6]QString toCurrencyString ( float value, const QString & symbol = QString() ) const
+[7]QString toCurrencyString ( qulonglong value, const QString & symbol = QString() ) const
+[8]QString toCurrencyString ( double value, const QString & symbol = QString() ) const
+*/
 
 HB_FUNC_STATIC( QLOCALE_TOCURRENCYSTRING )
 {
@@ -1200,33 +1205,35 @@ HB_FUNC_STATIC( QLOCALE_TOCURRENCYSTRING )
 /*
 QDate toDate ( const QString & string, FormatType format = LongFormat ) const
 */
-void QLocale_toDate1 ()
+void QLocale_toDate1()
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QDate * ptr = new QDate( obj->toDate ( PQSTRING(1), ISNIL(2)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(2) ) );
-      _qt5xhb_createReturnClass ( ptr, "QDATE", true );
+    auto ptr = new QDate( obj->toDate( PQSTRING(1), ISNIL(2)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(2) ) );
+    Qt5xHb::createReturnClass( ptr, "QDATE", true );
   }
 }
 
 /*
 QDate toDate ( const QString & string, const QString & format ) const
 */
-void QLocale_toDate2 ()
+void QLocale_toDate2()
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QDate * ptr = new QDate( obj->toDate ( PQSTRING(1), PQSTRING(2) ) );
-      _qt5xhb_createReturnClass ( ptr, "QDATE", true );
+    auto ptr = new QDate( obj->toDate( PQSTRING(1), PQSTRING(2) ) );
+    Qt5xHb::createReturnClass( ptr, "QDATE", true );
   }
 }
 
-//[1]QDate toDate ( const QString & string, FormatType format = LongFormat ) const
-//[2]QDate toDate ( const QString & string, const QString & format ) const
+/*
+[1]QDate toDate ( const QString & string, FormatType format = LongFormat ) const
+[2]QDate toDate ( const QString & string, const QString & format ) const
+*/
 
 HB_FUNC_STATIC( QLOCALE_TODATE )
 {
@@ -1240,40 +1247,42 @@ HB_FUNC_STATIC( QLOCALE_TODATE )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 /*
 QDateTime toDateTime ( const QString & string, FormatType format = LongFormat ) const
 */
-void QLocale_toDateTime1 ()
+void QLocale_toDateTime1()
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QDateTime * ptr = new QDateTime( obj->toDateTime ( PQSTRING(1), ISNIL(2)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(2) ) );
-      _qt5xhb_createReturnClass ( ptr, "QDATETIME", true );
+    auto ptr = new QDateTime( obj->toDateTime( PQSTRING(1), ISNIL(2)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(2) ) );
+    Qt5xHb::createReturnClass( ptr, "QDATETIME", true );
   }
 }
 
 /*
 QDateTime toDateTime ( const QString & string, const QString & format ) const
 */
-void QLocale_toDateTime2 ()
+void QLocale_toDateTime2()
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QDateTime * ptr = new QDateTime( obj->toDateTime ( PQSTRING(1), PQSTRING(2) ) );
-      _qt5xhb_createReturnClass ( ptr, "QDATETIME", true );
+    auto ptr = new QDateTime( obj->toDateTime( PQSTRING(1), PQSTRING(2) ) );
+    Qt5xHb::createReturnClass( ptr, "QDATETIME", true );
   }
 }
 
-//[1]QDateTime toDateTime ( const QString & string, FormatType format = LongFormat ) const
-//[2]QDateTime toDateTime ( const QString & string, const QString & format ) const
+/*
+[1]QDateTime toDateTime ( const QString & string, FormatType format = LongFormat ) const
+[2]QDateTime toDateTime ( const QString & string, const QString & format ) const
+*/
 
 HB_FUNC_STATIC( QLOCALE_TODATETIME )
 {
@@ -1287,7 +1296,7 @@ HB_FUNC_STATIC( QLOCALE_TODATETIME )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -1296,7 +1305,7 @@ double toDouble ( const QString & s, bool * ok = nullptr ) const
 */
 HB_FUNC_STATIC( QLOCALE_TODOUBLE )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1305,13 +1314,13 @@ HB_FUNC_STATIC( QLOCALE_TODOUBLE )
     {
 #endif
       bool par2;
-      RDOUBLE( obj->toDouble ( PQSTRING(1), &par2 ) );
+      RDOUBLE( obj->toDouble( PQSTRING(1), &par2 ) );
       hb_storl( par2, 2 );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1322,7 +1331,7 @@ float toFloat ( const QString & s, bool * ok = nullptr ) const
 */
 HB_FUNC_STATIC( QLOCALE_TOFLOAT )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1331,13 +1340,13 @@ HB_FUNC_STATIC( QLOCALE_TOFLOAT )
     {
 #endif
       bool par2;
-      RFLOAT( obj->toFloat ( PQSTRING(1), &par2 ) );
+      RFLOAT( obj->toFloat( PQSTRING(1), &par2 ) );
       hb_storl( par2, 2 );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1348,7 +1357,7 @@ QString toLower ( const QString & str ) const
 */
 HB_FUNC_STATIC( QLOCALE_TOLOWER )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1356,12 +1365,12 @@ HB_FUNC_STATIC( QLOCALE_TOLOWER )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      RQSTRING( obj->toLower ( PQSTRING(1) ) );
+      RQSTRING( obj->toLower( PQSTRING(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1372,7 +1381,7 @@ QString toString ( qlonglong i ) const
 */
 HB_FUNC_STATIC( QLOCALE_TOSTRING1 )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1380,12 +1389,12 @@ HB_FUNC_STATIC( QLOCALE_TOSTRING1 )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      RQSTRING( obj->toString ( PQLONGLONG(1) ) );
+      RQSTRING( obj->toString( PQLONGLONG(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1396,7 +1405,7 @@ QString toString ( const QDate & date, const QString & format ) const
 */
 HB_FUNC_STATIC( QLOCALE_TOSTRING2 )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1404,12 +1413,12 @@ HB_FUNC_STATIC( QLOCALE_TOSTRING2 )
     if( ISNUMPAR(2) && ISQDATE(1) && ISCHAR(2) )
     {
 #endif
-      RQSTRING( obj->toString ( *PQDATE(1), PQSTRING(2) ) );
+      RQSTRING( obj->toString( *PQDATE(1), PQSTRING(2) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1420,7 +1429,7 @@ QString toString ( const QDate & date, FormatType format = LongFormat ) const
 */
 HB_FUNC_STATIC( QLOCALE_TOSTRING3 )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1428,12 +1437,12 @@ HB_FUNC_STATIC( QLOCALE_TOSTRING3 )
     if( ISBETWEEN(1,2) && ISQDATE(1) && ISOPTNUM(2) )
     {
 #endif
-      RQSTRING( obj->toString ( *PQDATE(1), ISNIL(2)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(2) ) );
+      RQSTRING( obj->toString( *PQDATE(1), ISNIL(2)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(2) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1444,7 +1453,7 @@ QString toString ( const QTime & time, const QString & format ) const
 */
 HB_FUNC_STATIC( QLOCALE_TOSTRING4 )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1452,12 +1461,12 @@ HB_FUNC_STATIC( QLOCALE_TOSTRING4 )
     if( ISNUMPAR(2) && ISQTIME(1) && ISCHAR(2) )
     {
 #endif
-      RQSTRING( obj->toString ( *PQTIME(1), PQSTRING(2) ) );
+      RQSTRING( obj->toString( *PQTIME(1), PQSTRING(2) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1468,7 +1477,7 @@ QString toString ( const QTime & time, FormatType format = LongFormat ) const
 */
 HB_FUNC_STATIC( QLOCALE_TOSTRING5 )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1476,12 +1485,12 @@ HB_FUNC_STATIC( QLOCALE_TOSTRING5 )
     if( ISBETWEEN(1,2) && ISQTIME(1) && ISOPTNUM(2) )
     {
 #endif
-      RQSTRING( obj->toString ( *PQTIME(1), ISNIL(2)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(2) ) );
+      RQSTRING( obj->toString( *PQTIME(1), ISNIL(2)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(2) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1492,7 +1501,7 @@ QString toString ( const QDateTime & dateTime, FormatType format = LongFormat ) 
 */
 HB_FUNC_STATIC( QLOCALE_TOSTRING6 )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1500,12 +1509,12 @@ HB_FUNC_STATIC( QLOCALE_TOSTRING6 )
     if( ISBETWEEN(1,2) && ISQDATETIME(1) && ISOPTNUM(2) )
     {
 #endif
-      RQSTRING( obj->toString ( *PQDATETIME(1), ISNIL(2)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(2) ) );
+      RQSTRING( obj->toString( *PQDATETIME(1), ISNIL(2)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(2) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1516,7 +1525,7 @@ QString toString ( const QDateTime & dateTime, const QString & format ) const
 */
 HB_FUNC_STATIC( QLOCALE_TOSTRING7 )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1524,12 +1533,12 @@ HB_FUNC_STATIC( QLOCALE_TOSTRING7 )
     if( ISNUMPAR(2) && ISQDATETIME(1) && ISCHAR(2) )
     {
 #endif
-      RQSTRING( obj->toString ( *PQDATETIME(1), PQSTRING(2) ) );
+      RQSTRING( obj->toString( *PQDATETIME(1), PQSTRING(2) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1540,7 +1549,7 @@ QString toString ( short i ) const
 */
 HB_FUNC_STATIC( QLOCALE_TOSTRING8 )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1548,12 +1557,12 @@ HB_FUNC_STATIC( QLOCALE_TOSTRING8 )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      RQSTRING( obj->toString ( PSHORT(1) ) );
+      RQSTRING( obj->toString( PSHORT(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1564,7 +1573,7 @@ QString toString ( ushort i ) const
 */
 HB_FUNC_STATIC( QLOCALE_TOSTRING9 )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1572,12 +1581,12 @@ HB_FUNC_STATIC( QLOCALE_TOSTRING9 )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      RQSTRING( obj->toString ( PUSHORT(1) ) );
+      RQSTRING( obj->toString( PUSHORT(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1588,7 +1597,7 @@ QString toString ( int i ) const
 */
 HB_FUNC_STATIC( QLOCALE_TOSTRING10 )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1596,12 +1605,12 @@ HB_FUNC_STATIC( QLOCALE_TOSTRING10 )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      RQSTRING( obj->toString ( PINT(1) ) );
+      RQSTRING( obj->toString( PINT(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1612,7 +1621,7 @@ QString toString ( uint i ) const
 */
 HB_FUNC_STATIC( QLOCALE_TOSTRING11 )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1620,12 +1629,12 @@ HB_FUNC_STATIC( QLOCALE_TOSTRING11 )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      RQSTRING( obj->toString ( PUINT(1) ) );
+      RQSTRING( obj->toString( PUINT(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1636,7 +1645,7 @@ QString toString ( float i, char f = 'g', int prec = 6 ) const
 */
 HB_FUNC_STATIC( QLOCALE_TOSTRING12 )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1644,12 +1653,12 @@ HB_FUNC_STATIC( QLOCALE_TOSTRING12 )
     if( ISBETWEEN(1,3) && ISNUM(1) && ISOPTNUM(2) && ISOPTNUM(3) )
     {
 #endif
-      RQSTRING( obj->toString ( PFLOAT(1), OPCHAR(2,'g'), OPINT(3,6) ) );
+      RQSTRING( obj->toString( PFLOAT(1), OPCHAR(2,'g'), OPINT(3,6) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1660,7 +1669,7 @@ QString toString ( qulonglong i ) const
 */
 HB_FUNC_STATIC( QLOCALE_TOSTRING13 )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1668,12 +1677,12 @@ HB_FUNC_STATIC( QLOCALE_TOSTRING13 )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      RQSTRING( obj->toString ( PQULONGLONG(1) ) );
+      RQSTRING( obj->toString( PQULONGLONG(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1684,7 +1693,7 @@ QString toString ( double i, char f = 'g', int prec = 6 ) const
 */
 HB_FUNC_STATIC( QLOCALE_TOSTRING14 )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1692,31 +1701,33 @@ HB_FUNC_STATIC( QLOCALE_TOSTRING14 )
     if( ISBETWEEN(1,3) && ISNUM(1) && ISOPTNUM(2) && ISOPTNUM(3) )
     {
 #endif
-      RQSTRING( obj->toString ( PDOUBLE(1), OPCHAR(2,'g'), OPINT(3,6) ) );
+      RQSTRING( obj->toString( PDOUBLE(1), OPCHAR(2,'g'), OPINT(3,6) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
-//[01]QString toString ( qlonglong i ) const
-//[02]QString toString ( const QDate & date, const QString & format ) const
-//[03]QString toString ( const QDate & date, FormatType format = LongFormat ) const
-//[04]QString toString ( const QTime & time, const QString & format ) const
-//[05]QString toString ( const QTime & time, FormatType format = LongFormat ) const
-//[06]QString toString ( const QDateTime & dateTime, FormatType format = LongFormat ) const
-//[07]QString toString ( const QDateTime & dateTime, const QString & format ) const
-//[08]QString toString ( short i ) const
-//[09]QString toString ( ushort i ) const
-//[10]QString toString ( int i ) const
-//[11]QString toString ( uint i ) const
-//[12]QString toString ( float i, char f = 'g', int prec = 6 ) const
-//[13]QString toString ( qulonglong i ) const
-//[14]QString toString ( double i, char f = 'g', int prec = 6 ) const
+/*
+[01]QString toString ( qlonglong i ) const
+[02]QString toString ( const QDate & date, const QString & format ) const
+[03]QString toString ( const QDate & date, FormatType format = LongFormat ) const
+[04]QString toString ( const QTime & time, const QString & format ) const
+[05]QString toString ( const QTime & time, FormatType format = LongFormat ) const
+[06]QString toString ( const QDateTime & dateTime, FormatType format = LongFormat ) const
+[07]QString toString ( const QDateTime & dateTime, const QString & format ) const
+[08]QString toString ( short i ) const
+[09]QString toString ( ushort i ) const
+[10]QString toString ( int i ) const
+[11]QString toString ( uint i ) const
+[12]QString toString ( float i, char f = 'g', int prec = 6 ) const
+[13]QString toString ( qulonglong i ) const
+[14]QString toString ( double i, char f = 'g', int prec = 6 ) const
+*/
 
 HB_FUNC_STATIC( QLOCALE_TOSTRING )
 {
@@ -1750,40 +1761,42 @@ HB_FUNC_STATIC( QLOCALE_TOSTRING )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 /*
 QTime toTime ( const QString & string, FormatType format = LongFormat ) const
 */
-void QLocale_toTime1 ()
+void QLocale_toTime1()
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QTime * ptr = new QTime( obj->toTime ( PQSTRING(1), ISNIL(2)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(2) ) );
-      _qt5xhb_createReturnClass ( ptr, "QTIME", true );
+    auto ptr = new QTime( obj->toTime( PQSTRING(1), ISNIL(2)? (QLocale::FormatType) QLocale::LongFormat : (QLocale::FormatType) hb_parni(2) ) );
+    Qt5xHb::createReturnClass( ptr, "QTIME", true );
   }
 }
 
 /*
 QTime toTime ( const QString & string, const QString & format ) const
 */
-void QLocale_toTime2 ()
+void QLocale_toTime2()
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QTime * ptr = new QTime( obj->toTime ( PQSTRING(1), PQSTRING(2) ) );
-      _qt5xhb_createReturnClass ( ptr, "QTIME", true );
+    auto ptr = new QTime( obj->toTime( PQSTRING(1), PQSTRING(2) ) );
+    Qt5xHb::createReturnClass( ptr, "QTIME", true );
   }
 }
 
-//[1]QTime toTime ( const QString & string, FormatType format = LongFormat ) const
-//[2]QTime toTime ( const QString & string, const QString & format ) const
+/*
+[1]QTime toTime ( const QString & string, FormatType format = LongFormat ) const
+[2]QTime toTime ( const QString & string, const QString & format ) const
+*/
 
 HB_FUNC_STATIC( QLOCALE_TOTIME )
 {
@@ -1797,7 +1810,7 @@ HB_FUNC_STATIC( QLOCALE_TOTIME )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -1806,7 +1819,7 @@ QString toUpper ( const QString & str ) const
 */
 HB_FUNC_STATIC( QLOCALE_TOUPPER )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1814,12 +1827,12 @@ HB_FUNC_STATIC( QLOCALE_TOUPPER )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      RQSTRING( obj->toUpper ( PQSTRING(1) ) );
+      RQSTRING( obj->toUpper( PQSTRING(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1830,7 +1843,7 @@ QStringList uiLanguages () const
 */
 HB_FUNC_STATIC( QLOCALE_UILANGUAGES )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1838,12 +1851,12 @@ HB_FUNC_STATIC( QLOCALE_UILANGUAGES )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRINGLIST( obj->uiLanguages () );
+      RQSTRINGLIST( obj->uiLanguages() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1854,7 +1867,7 @@ QList<Qt::DayOfWeek> weekdays () const
 */
 HB_FUNC_STATIC( QLOCALE_WEEKDAYS )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1862,12 +1875,11 @@ HB_FUNC_STATIC( QLOCALE_WEEKDAYS )
     if( ISNUMPAR(0) )
     {
 #endif
-      QList<Qt::DayOfWeek> list = obj->weekdays ();
+      QList<Qt::DayOfWeek> list = obj->weekdays();
       PHB_ITEM pArray = hb_itemArrayNew(0);
-      int i;
-      for(i=0;i<list.count();i++)
+      for( auto i = 0; i < list.count(); i++ )
       {
-        PHB_ITEM pItem = hb_itemPutNI( NULL, (int) list[i] );
+        PHB_ITEM pItem = hb_itemPutNI( nullptr, (int) list[i] );
         hb_arrayAddForward( pArray, pItem );
         hb_itemRelease(pItem);
       }
@@ -1876,7 +1888,7 @@ HB_FUNC_STATIC( QLOCALE_WEEKDAYS )
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1887,7 +1899,7 @@ QChar zeroDigit () const
 */
 HB_FUNC_STATIC( QLOCALE_ZERODIGIT )
 {
-  QLocale * obj = (QLocale *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLocale *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1895,13 +1907,13 @@ HB_FUNC_STATIC( QLOCALE_ZERODIGIT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QChar * ptr = new QChar( obj->zeroDigit () );
-      _qt5xhb_createReturnClass ( ptr, "QCHAR", true );
+      auto ptr = new QChar( obj->zeroDigit() );
+      Qt5xHb::createReturnClass( ptr, "QCHAR", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1913,16 +1925,16 @@ static QLocale c ()
 HB_FUNC_STATIC( QLOCALE_C )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(0) )
+  if( ISNUMPAR(0) )
   {
 #endif
-      QLocale * ptr = new QLocale( QLocale::c () );
-      _qt5xhb_createReturnClass ( ptr, "QLOCALE", true );
+    auto ptr = new QLocale( QLocale::c() );
+    Qt5xHb::createReturnClass( ptr, "QLOCALE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
@@ -1933,15 +1945,15 @@ static QString countryToString ( Country country )
 HB_FUNC_STATIC( QLOCALE_COUNTRYTOSTRING )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISNUM(1) )
+  if( ISNUMPAR(1) && ISNUM(1) )
   {
 #endif
-      RQSTRING( QLocale::countryToString ( (QLocale::Country) hb_parni(1) ) );
+    RQSTRING( QLocale::countryToString( (QLocale::Country) hb_parni(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
@@ -1952,15 +1964,15 @@ static QString languageToString ( Language language )
 HB_FUNC_STATIC( QLOCALE_LANGUAGETOSTRING )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISNUM(1) )
+  if( ISNUMPAR(1) && ISNUM(1) )
   {
 #endif
-      RQSTRING( QLocale::languageToString ( (QLocale::Language) hb_parni(1) ) );
+    RQSTRING( QLocale::languageToString( (QLocale::Language) hb_parni(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
@@ -1971,44 +1983,43 @@ static QList<QLocale> matchingLocales ( QLocale::Language language, QLocale::Scr
 HB_FUNC_STATIC( QLOCALE_MATCHINGLOCALES )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(3) && ISNUM(1) && ISNUM(2) && ISNUM(3) )
+  if( ISNUMPAR(3) && ISNUM(1) && ISNUM(2) && ISNUM(3) )
   {
 #endif
-      QList<QLocale> list = QLocale::matchingLocales ( (QLocale::Language) hb_parni(1), (QLocale::Script) hb_parni(2), (QLocale::Country) hb_parni(3) );
-      PHB_DYNS pDynSym = hb_dynsymFindName( "QLOCALE" );
-      PHB_ITEM pArray = hb_itemArrayNew(0);
-      int i;
-      for(i=0;i<list.count();i++)
+    QList<QLocale> list = QLocale::matchingLocales( (QLocale::Language) hb_parni(1), (QLocale::Script) hb_parni(2), (QLocale::Country) hb_parni(3) );
+    PHB_DYNS pDynSym = hb_dynsymFindName( "QLOCALE" );
+    PHB_ITEM pArray = hb_itemArrayNew(0);
+    if( pDynSym )
+    {
+      for( auto i = 0; i < list.count(); i++ )
       {
-        if( pDynSym )
-        {
-          hb_vmPushDynSym( pDynSym );
-          hb_vmPushNil();
-          hb_vmDo( 0 );
-          PHB_ITEM pObject = hb_itemNew( NULL );
-          hb_itemCopy( pObject, hb_stackReturnItem() );
-          PHB_ITEM pItem = hb_itemNew( NULL );
-          hb_itemPutPtr( pItem, (QLocale *) new QLocale ( list[i] ) );
-          hb_objSendMsg( pObject, "_POINTER", 1, pItem );
-          hb_itemRelease( pItem );
-          PHB_ITEM pDestroy = hb_itemNew( NULL );
-          hb_itemPutL( pDestroy, true );
-          hb_objSendMsg( pObject, "_SELF_DESTRUCTION", 1, pDestroy );
-          hb_itemRelease( pDestroy );
-          hb_arrayAddForward( pArray, pObject );
-          hb_itemRelease( pObject );
-        }
-        else
-        {
-          hb_errRT_BASE( EG_NOFUNC, 1001, NULL, "QLOCALE", HB_ERR_ARGS_BASEPARAMS );
-        }
+        hb_vmPushDynSym( pDynSym );
+        hb_vmPushNil();
+        hb_vmDo( 0 );
+        PHB_ITEM pObject = hb_itemNew( nullptr );
+        hb_itemCopy( pObject, hb_stackReturnItem() );
+        PHB_ITEM pItem = hb_itemNew( nullptr );
+        hb_itemPutPtr( pItem, (QLocale *) new QLocale( list[i] ) );
+        hb_objSendMsg( pObject, "_POINTER", 1, pItem );
+        hb_itemRelease( pItem );
+        PHB_ITEM pDestroy = hb_itemNew( nullptr );
+        hb_itemPutL( pDestroy, true );
+        hb_objSendMsg( pObject, "_SELF_DESTRUCTION", 1, pDestroy );
+        hb_itemRelease( pDestroy );
+        hb_arrayAddForward( pArray, pObject );
+        hb_itemRelease( pObject );
       }
-      hb_itemReturnRelease(pArray);
+    }
+    else
+    {
+      hb_errRT_BASE( EG_NOFUNC, 1001, nullptr, "QLOCALE", HB_ERR_ARGS_BASEPARAMS );
+    }
+    hb_itemReturnRelease(pArray);
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
@@ -2019,15 +2030,15 @@ static QString scriptToString ( Script script )
 HB_FUNC_STATIC( QLOCALE_SCRIPTTOSTRING )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISNUM(1) )
+  if( ISNUMPAR(1) && ISNUM(1) )
   {
 #endif
-      RQSTRING( QLocale::scriptToString ( (QLocale::Script) hb_parni(1) ) );
+    RQSTRING( QLocale::scriptToString( (QLocale::Script) hb_parni(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
@@ -2038,15 +2049,15 @@ static void setDefault ( const QLocale & locale )
 HB_FUNC_STATIC( QLOCALE_SETDEFAULT )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISQLOCALE(1) )
+  if( ISNUMPAR(1) && ISQLOCALE(1) )
   {
 #endif
-      QLocale::setDefault ( *PQLOCALE(1) );
+    QLocale::setDefault( *PQLOCALE(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 
@@ -2059,16 +2070,16 @@ static QLocale system ()
 HB_FUNC_STATIC( QLOCALE_SYSTEM )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(0) )
+  if( ISNUMPAR(0) )
   {
 #endif
-      QLocale * ptr = new QLocale( QLocale::system () );
-      _qt5xhb_createReturnClass ( ptr, "QLOCALE", true );
+    auto ptr = new QLocale( QLocale::system() );
+    Qt5xHb::createReturnClass( ptr, "QLOCALE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
@@ -2079,25 +2090,25 @@ HB_FUNC_STATIC( QLOCALE_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -2124,13 +2135,13 @@ HB_FUNC_STATIC( QLOCALE_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

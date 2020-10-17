@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -35,7 +35,7 @@ CLASS QDBusMetaType
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QDBusMetaType
+PROCEDURE destroyObject() CLASS QDBusMetaType
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -52,7 +52,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtDBus/QDBusMetaType>
@@ -60,14 +59,14 @@ RETURN
 
 HB_FUNC_STATIC( QDBUSMETATYPE_DELETE )
 {
-  QDBusMetaType * obj = (QDBusMetaType *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDBusMetaType *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -76,58 +75,58 @@ HB_FUNC_STATIC( QDBUSMETATYPE_DELETE )
 }
 
 /*
-static bool demarshall(const QDBusArgument &, int id, void *data)
+static bool demarshall( const QDBusArgument &, int id, void * data )
 */
 HB_FUNC_STATIC( QDBUSMETATYPE_DEMARSHALL )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(3) && ISQDBUSARGUMENT(1) && ISNUM(2) && ISPOINTER(3) )
+  if( ISNUMPAR(3) && ISQDBUSARGUMENT(1) && ISNUM(2) && ISPOINTER(3) )
   {
 #endif
-      RBOOL( QDBusMetaType::demarshall ( *PQDBUSARGUMENT(1), PINT(2), (void *) hb_parptr(3) ) );
+    RBOOL( QDBusMetaType::demarshall( *PQDBUSARGUMENT(1), PINT(2), (void *) hb_parptr(3) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
 
 /*
-static int signatureToType(const char *signature)
+static int signatureToType( const char * signature )
 */
 HB_FUNC_STATIC( QDBUSMETATYPE_SIGNATURETOTYPE )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISCHAR(1) )
+  if( ISNUMPAR(1) && ISCHAR(1) )
   {
 #endif
-      RINT( QDBusMetaType::signatureToType ( PCONSTCHAR(1) ) );
+    RINT( QDBusMetaType::signatureToType( PCONSTCHAR(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
 
 /*
-static const char *typeToSignature(int type)
+static const char * typeToSignature( int type )
 */
 HB_FUNC_STATIC( QDBUSMETATYPE_TYPETOSIGNATURE )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISNUM(1) )
+  if( ISNUMPAR(1) && ISNUM(1) )
   {
 #endif
-      hb_retc( (const char *) QDBusMetaType::typeToSignature ( PINT(1) ) );
+    hb_retc( (const char *) QDBusMetaType::typeToSignature( PINT(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
@@ -138,25 +137,25 @@ HB_FUNC_STATIC( QDBUSMETATYPE_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -183,13 +182,13 @@ HB_FUNC_STATIC( QDBUSMETATYPE_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

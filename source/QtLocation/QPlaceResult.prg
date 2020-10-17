@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -31,7 +31,7 @@ CLASS QPlaceResult INHERIT QPlaceSearchResult
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QPlaceResult
+PROCEDURE destroyObject() CLASS QPlaceResult
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -50,7 +50,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #if (QT_VERSION >= QT_VERSION_CHECK(5,4,0))
@@ -66,12 +65,12 @@ HB_FUNC_STATIC( QPLACERESULT_NEW )
 #if (QT_VERSION >= QT_VERSION_CHECK(5,4,0))
   if( ISNUMPAR(0) )
   {
-    QPlaceResult * o = new QPlaceResult ();
-    _qt5xhb_returnNewObject( o, true );
+    auto obj = new QPlaceResult();
+    Qt5xHb::returnNewObject( obj, true );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
@@ -79,14 +78,14 @@ HB_FUNC_STATIC( QPLACERESULT_NEW )
 HB_FUNC_STATIC( QPLACERESULT_DELETE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,4,0))
-  QPlaceResult * obj = (QPlaceResult *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPlaceResult *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -101,7 +100,7 @@ qreal distance() const
 HB_FUNC_STATIC( QPLACERESULT_DISTANCE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,4,0))
-  QPlaceResult * obj = (QPlaceResult *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPlaceResult *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -109,12 +108,12 @@ HB_FUNC_STATIC( QPLACERESULT_DISTANCE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQREAL( obj->distance () );
+      RQREAL( obj->distance() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -127,7 +126,7 @@ void setDistance(qreal distance)
 HB_FUNC_STATIC( QPLACERESULT_SETDISTANCE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,4,0))
-  QPlaceResult * obj = (QPlaceResult *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPlaceResult *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -135,12 +134,12 @@ HB_FUNC_STATIC( QPLACERESULT_SETDISTANCE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setDistance ( PQREAL(1) );
+      obj->setDistance( PQREAL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -155,7 +154,7 @@ QPlace place() const
 HB_FUNC_STATIC( QPLACERESULT_PLACE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,4,0))
-  QPlaceResult * obj = (QPlaceResult *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPlaceResult *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -163,13 +162,13 @@ HB_FUNC_STATIC( QPLACERESULT_PLACE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QPlace * ptr = new QPlace( obj->place () );
-      _qt5xhb_createReturnClass ( ptr, "QPLACE", true );
+      auto ptr = new QPlace( obj->place() );
+      Qt5xHb::createReturnClass( ptr, "QPLACE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -182,7 +181,7 @@ void setPlace(const QPlace &place)
 HB_FUNC_STATIC( QPLACERESULT_SETPLACE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,4,0))
-  QPlaceResult * obj = (QPlaceResult *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPlaceResult *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -190,12 +189,12 @@ HB_FUNC_STATIC( QPLACERESULT_SETPLACE )
     if( ISNUMPAR(1) && ISQPLACE(1) )
     {
 #endif
-      obj->setPlace ( *PQPLACE(1) );
+      obj->setPlace( *PQPLACE(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -210,7 +209,7 @@ bool isSponsored() const
 HB_FUNC_STATIC( QPLACERESULT_ISSPONSORED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,4,0))
-  QPlaceResult * obj = (QPlaceResult *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPlaceResult *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -218,12 +217,12 @@ HB_FUNC_STATIC( QPLACERESULT_ISSPONSORED )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isSponsored () );
+      RBOOL( obj->isSponsored() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -236,7 +235,7 @@ void setSponsored(bool sponsored)
 HB_FUNC_STATIC( QPLACERESULT_SETSPONSORED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,4,0))
-  QPlaceResult * obj = (QPlaceResult *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPlaceResult *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -244,12 +243,12 @@ HB_FUNC_STATIC( QPLACERESULT_SETSPONSORED )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setSponsored ( PBOOL(1) );
+      obj->setSponsored( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

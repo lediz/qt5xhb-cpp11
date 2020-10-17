@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -29,7 +29,7 @@ CLASS QWidgetItemV2 INHERIT QWidgetItem
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QWidgetItemV2
+PROCEDURE destroyObject() CLASS QWidgetItemV2
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -46,7 +46,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtWidgets/QWidgetItemV2>
@@ -59,25 +58,25 @@ HB_FUNC_STATIC( QWIDGETITEMV2_NEW )
 {
   if( ISNUMPAR(1) && ISQWIDGET(1) )
   {
-    QWidgetItemV2 * o = new QWidgetItemV2 ( PQWIDGET(1) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QWidgetItemV2( PQWIDGET(1) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QWIDGETITEMV2_DELETE )
 {
-  QWidgetItemV2 * obj = (QWidgetItemV2 *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWidgetItemV2 *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -90,7 +89,7 @@ QSize sizeHint() const
 */
 HB_FUNC_STATIC( QWIDGETITEMV2_SIZEHINT )
 {
-  QWidgetItemV2 * obj = (QWidgetItemV2 *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWidgetItemV2 *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -98,13 +97,13 @@ HB_FUNC_STATIC( QWIDGETITEMV2_SIZEHINT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSize * ptr = new QSize( obj->sizeHint () );
-      _qt5xhb_createReturnClass ( ptr, "QSIZE", true );
+      auto ptr = new QSize( obj->sizeHint() );
+      Qt5xHb::createReturnClass( ptr, "QSIZE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -115,7 +114,7 @@ QSize minimumSize() const
 */
 HB_FUNC_STATIC( QWIDGETITEMV2_MINIMUMSIZE )
 {
-  QWidgetItemV2 * obj = (QWidgetItemV2 *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWidgetItemV2 *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -123,13 +122,13 @@ HB_FUNC_STATIC( QWIDGETITEMV2_MINIMUMSIZE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSize * ptr = new QSize( obj->minimumSize () );
-      _qt5xhb_createReturnClass ( ptr, "QSIZE", true );
+      auto ptr = new QSize( obj->minimumSize() );
+      Qt5xHb::createReturnClass( ptr, "QSIZE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -140,7 +139,7 @@ QSize maximumSize() const
 */
 HB_FUNC_STATIC( QWIDGETITEMV2_MAXIMUMSIZE )
 {
-  QWidgetItemV2 * obj = (QWidgetItemV2 *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWidgetItemV2 *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -148,13 +147,13 @@ HB_FUNC_STATIC( QWIDGETITEMV2_MAXIMUMSIZE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSize * ptr = new QSize( obj->maximumSize () );
-      _qt5xhb_createReturnClass ( ptr, "QSIZE", true );
+      auto ptr = new QSize( obj->maximumSize() );
+      Qt5xHb::createReturnClass( ptr, "QSIZE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -165,7 +164,7 @@ int heightForWidth(int width) const
 */
 HB_FUNC_STATIC( QWIDGETITEMV2_HEIGHTFORWIDTH )
 {
-  QWidgetItemV2 * obj = (QWidgetItemV2 *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWidgetItemV2 *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -173,12 +172,12 @@ HB_FUNC_STATIC( QWIDGETITEMV2_HEIGHTFORWIDTH )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      RINT( obj->heightForWidth ( PINT(1) ) );
+      RINT( obj->heightForWidth( PINT(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

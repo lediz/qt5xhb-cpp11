@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -43,7 +43,7 @@ CLASS QGlyphRun
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QGlyphRun
+PROCEDURE destroyObject() CLASS QGlyphRun
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -60,7 +60,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtGui/QGlyphRun>
@@ -69,23 +68,25 @@ RETURN
 /*
 QGlyphRun ()
 */
-void QGlyphRun_new1 ()
+void QGlyphRun_new1()
 {
-  QGlyphRun * o = new QGlyphRun ();
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QGlyphRun();
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QGlyphRun ( const QGlyphRun & other )
 */
-void QGlyphRun_new2 ()
+void QGlyphRun_new2()
 {
-  QGlyphRun * o = new QGlyphRun ( *PQGLYPHRUN(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QGlyphRun( *PQGLYPHRUN(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
-//[1]QGlyphRun ()
-//[2]QGlyphRun ( const QGlyphRun & other )
+/*
+[1]QGlyphRun ()
+[2]QGlyphRun ( const QGlyphRun & other )
+*/
 
 HB_FUNC_STATIC( QGLYPHRUN_NEW )
 {
@@ -99,20 +100,20 @@ HB_FUNC_STATIC( QGLYPHRUN_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QGLYPHRUN_DELETE )
 {
-  QGlyphRun * obj = (QGlyphRun *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGlyphRun *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -125,7 +126,7 @@ void clear ()
 */
 HB_FUNC_STATIC( QGLYPHRUN_CLEAR )
 {
-  QGlyphRun * obj = (QGlyphRun *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGlyphRun *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -133,12 +134,12 @@ HB_FUNC_STATIC( QGLYPHRUN_CLEAR )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->clear ();
+      obj->clear();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -151,7 +152,7 @@ bool overline () const
 */
 HB_FUNC_STATIC( QGLYPHRUN_OVERLINE )
 {
-  QGlyphRun * obj = (QGlyphRun *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGlyphRun *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -159,12 +160,12 @@ HB_FUNC_STATIC( QGLYPHRUN_OVERLINE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->overline () );
+      RBOOL( obj->overline() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -175,7 +176,7 @@ QRawFont rawFont () const
 */
 HB_FUNC_STATIC( QGLYPHRUN_RAWFONT )
 {
-  QGlyphRun * obj = (QGlyphRun *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGlyphRun *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -183,13 +184,13 @@ HB_FUNC_STATIC( QGLYPHRUN_RAWFONT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QRawFont * ptr = new QRawFont( obj->rawFont () );
-      _qt5xhb_createReturnClass ( ptr, "QRAWFONT", true );
+      auto ptr = new QRawFont( obj->rawFont() );
+      Qt5xHb::createReturnClass( ptr, "QRAWFONT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -200,7 +201,7 @@ void setOverline ( bool overline )
 */
 HB_FUNC_STATIC( QGLYPHRUN_SETOVERLINE )
 {
-  QGlyphRun * obj = (QGlyphRun *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGlyphRun *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -208,12 +209,12 @@ HB_FUNC_STATIC( QGLYPHRUN_SETOVERLINE )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setOverline ( PBOOL(1) );
+      obj->setOverline( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -230,7 +231,7 @@ void setRawFont ( const QRawFont & rawFont )
 */
 HB_FUNC_STATIC( QGLYPHRUN_SETRAWFONT )
 {
-  QGlyphRun * obj = (QGlyphRun *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGlyphRun *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -238,12 +239,12 @@ HB_FUNC_STATIC( QGLYPHRUN_SETRAWFONT )
     if( ISNUMPAR(1) && ISQRAWFONT(1) )
     {
 #endif
-      obj->setRawFont ( *PQRAWFONT(1) );
+      obj->setRawFont( *PQRAWFONT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -256,7 +257,7 @@ void setStrikeOut ( bool strikeOut )
 */
 HB_FUNC_STATIC( QGLYPHRUN_SETSTRIKEOUT )
 {
-  QGlyphRun * obj = (QGlyphRun *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGlyphRun *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -264,12 +265,12 @@ HB_FUNC_STATIC( QGLYPHRUN_SETSTRIKEOUT )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setStrikeOut ( PBOOL(1) );
+      obj->setStrikeOut( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -282,7 +283,7 @@ void setUnderline ( bool underline )
 */
 HB_FUNC_STATIC( QGLYPHRUN_SETUNDERLINE )
 {
-  QGlyphRun * obj = (QGlyphRun *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGlyphRun *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -290,12 +291,12 @@ HB_FUNC_STATIC( QGLYPHRUN_SETUNDERLINE )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setUnderline ( PBOOL(1) );
+      obj->setUnderline( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -308,7 +309,7 @@ bool strikeOut () const
 */
 HB_FUNC_STATIC( QGLYPHRUN_STRIKEOUT )
 {
-  QGlyphRun * obj = (QGlyphRun *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGlyphRun *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -316,12 +317,12 @@ HB_FUNC_STATIC( QGLYPHRUN_STRIKEOUT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->strikeOut () );
+      RBOOL( obj->strikeOut() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -332,7 +333,7 @@ bool underline () const
 */
 HB_FUNC_STATIC( QGLYPHRUN_UNDERLINE )
 {
-  QGlyphRun * obj = (QGlyphRun *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGlyphRun *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -340,12 +341,12 @@ HB_FUNC_STATIC( QGLYPHRUN_UNDERLINE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->underline () );
+      RBOOL( obj->underline() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -357,25 +358,25 @@ HB_FUNC_STATIC( QGLYPHRUN_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -402,13 +403,13 @@ HB_FUNC_STATIC( QGLYPHRUN_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

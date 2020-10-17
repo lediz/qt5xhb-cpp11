@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -64,7 +64,7 @@ CLASS QListWidget INHERIT QListView
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QListWidget
+PROCEDURE destroyObject() CLASS QListWidget
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -81,7 +81,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtWidgets/QListWidget>
@@ -94,25 +95,27 @@ HB_FUNC_STATIC( QLISTWIDGET_NEW )
 {
   if( ISBETWEEN(0,1) && (ISQWIDGET(1)||ISNIL(1)) )
   {
-    QListWidget * o = new QListWidget ( OPQWIDGET(1,nullptr) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QListWidget( OPQWIDGET(1,nullptr) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QLISTWIDGET_DELETE )
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -123,13 +126,13 @@ HB_FUNC_STATIC( QLISTWIDGET_DELETE )
 /*
 void addItem ( const QString & label )
 */
-void QListWidget_addItem1 ()
+void QListWidget_addItem1()
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->addItem ( PQSTRING(1) );
+    obj->addItem( PQSTRING(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -138,20 +141,22 @@ void QListWidget_addItem1 ()
 /*
 void addItem ( QListWidgetItem * item )
 */
-void QListWidget_addItem2 ()
+void QListWidget_addItem2()
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->addItem ( PQLISTWIDGETITEM(1) );
+    obj->addItem( PQLISTWIDGETITEM(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void addItem ( const QString & label )
-//[2]void addItem ( QListWidgetItem * item )
+/*
+[1]void addItem ( const QString & label )
+[2]void addItem ( QListWidgetItem * item )
+*/
 
 HB_FUNC_STATIC( QLISTWIDGET_ADDITEM )
 {
@@ -165,7 +170,7 @@ HB_FUNC_STATIC( QLISTWIDGET_ADDITEM )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -174,7 +179,7 @@ void addItems ( const QStringList & labels )
 */
 HB_FUNC_STATIC( QLISTWIDGET_ADDITEMS )
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -182,12 +187,12 @@ HB_FUNC_STATIC( QLISTWIDGET_ADDITEMS )
     if( ISNUMPAR(1) && ISARRAY(1) )
     {
 #endif
-      obj->addItems ( PQSTRINGLIST(1) );
+      obj->addItems( PQSTRINGLIST(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -200,7 +205,7 @@ void closePersistentEditor ( QListWidgetItem * item )
 */
 HB_FUNC_STATIC( QLISTWIDGET_CLOSEPERSISTENTEDITOR )
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -208,12 +213,12 @@ HB_FUNC_STATIC( QLISTWIDGET_CLOSEPERSISTENTEDITOR )
     if( ISNUMPAR(1) && ISQLISTWIDGETITEM(1) )
     {
 #endif
-      obj->closePersistentEditor ( PQLISTWIDGETITEM(1) );
+      obj->closePersistentEditor( PQLISTWIDGETITEM(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -226,7 +231,7 @@ int count () const
 */
 HB_FUNC_STATIC( QLISTWIDGET_COUNT )
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -234,12 +239,12 @@ HB_FUNC_STATIC( QLISTWIDGET_COUNT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->count () );
+      RINT( obj->count() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -250,7 +255,7 @@ QListWidgetItem * currentItem () const
 */
 HB_FUNC_STATIC( QLISTWIDGET_CURRENTITEM )
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -258,13 +263,13 @@ HB_FUNC_STATIC( QLISTWIDGET_CURRENTITEM )
     if( ISNUMPAR(0) )
     {
 #endif
-      QListWidgetItem * ptr = obj->currentItem ();
-      _qt5xhb_createReturnClass ( ptr, "QLISTWIDGETITEM", false );
+      QListWidgetItem * ptr = obj->currentItem();
+      Qt5xHb::createReturnClass( ptr, "QLISTWIDGETITEM", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -275,7 +280,7 @@ int currentRow () const
 */
 HB_FUNC_STATIC( QLISTWIDGET_CURRENTROW )
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -283,12 +288,12 @@ HB_FUNC_STATIC( QLISTWIDGET_CURRENTROW )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->currentRow () );
+      RINT( obj->currentRow() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -299,7 +304,7 @@ void editItem ( QListWidgetItem * item )
 */
 HB_FUNC_STATIC( QLISTWIDGET_EDITITEM )
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -307,12 +312,12 @@ HB_FUNC_STATIC( QLISTWIDGET_EDITITEM )
     if( ISNUMPAR(1) && ISQLISTWIDGETITEM(1) )
     {
 #endif
-      obj->editItem ( PQLISTWIDGETITEM(1) );
+      obj->editItem( PQLISTWIDGETITEM(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -323,13 +328,13 @@ HB_FUNC_STATIC( QLISTWIDGET_EDITITEM )
 /*
 void insertItem ( int row, QListWidgetItem * item )
 */
-void QListWidget_insertItem1 ()
+void QListWidget_insertItem1()
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->insertItem ( PINT(1), PQLISTWIDGETITEM(2) );
+    obj->insertItem( PINT(1), PQLISTWIDGETITEM(2) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -338,20 +343,22 @@ void QListWidget_insertItem1 ()
 /*
 void insertItem ( int row, const QString & label )
 */
-void QListWidget_insertItem2 ()
+void QListWidget_insertItem2()
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->insertItem ( PINT(1), PQSTRING(2) );
+    obj->insertItem( PINT(1), PQSTRING(2) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void insertItem ( int row, QListWidgetItem * item )
-//[2]void insertItem ( int row, const QString & label )
+/*
+[1]void insertItem ( int row, QListWidgetItem * item )
+[2]void insertItem ( int row, const QString & label )
+*/
 
 HB_FUNC_STATIC( QLISTWIDGET_INSERTITEM )
 {
@@ -365,7 +372,7 @@ HB_FUNC_STATIC( QLISTWIDGET_INSERTITEM )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -374,7 +381,7 @@ void insertItems ( int row, const QStringList & labels )
 */
 HB_FUNC_STATIC( QLISTWIDGET_INSERTITEMS )
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -382,12 +389,12 @@ HB_FUNC_STATIC( QLISTWIDGET_INSERTITEMS )
     if( ISNUMPAR(2) && ISNUM(1) && ISARRAY(2) )
     {
 #endif
-      obj->insertItems ( PINT(1), PQSTRINGLIST(2) );
+      obj->insertItems( PINT(1), PQSTRINGLIST(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -400,7 +407,7 @@ bool isSortingEnabled () const
 */
 HB_FUNC_STATIC( QLISTWIDGET_ISSORTINGENABLED )
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -408,12 +415,12 @@ HB_FUNC_STATIC( QLISTWIDGET_ISSORTINGENABLED )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isSortingEnabled () );
+      RBOOL( obj->isSortingEnabled() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -424,7 +431,7 @@ QListWidgetItem * item ( int row ) const
 */
 HB_FUNC_STATIC( QLISTWIDGET_ITEM )
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -432,13 +439,13 @@ HB_FUNC_STATIC( QLISTWIDGET_ITEM )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      QListWidgetItem * ptr = obj->item ( PINT(1) );
-      _qt5xhb_createReturnClass ( ptr, "QLISTWIDGETITEM", false );
+      QListWidgetItem * ptr = obj->item( PINT(1) );
+      Qt5xHb::createReturnClass( ptr, "QLISTWIDGETITEM", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -447,33 +454,35 @@ HB_FUNC_STATIC( QLISTWIDGET_ITEM )
 /*
 QListWidgetItem * itemAt ( const QPoint & p ) const
 */
-void QListWidget_itemAt1 ()
+void QListWidget_itemAt1()
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QListWidgetItem * ptr = obj->itemAt ( *PQPOINT(1) );
-      _qt5xhb_createReturnClass ( ptr, "QLISTWIDGETITEM", false );
+    QListWidgetItem * ptr = obj->itemAt( *PQPOINT(1) );
+    Qt5xHb::createReturnClass( ptr, "QLISTWIDGETITEM", false );
   }
 }
 
 /*
 QListWidgetItem * itemAt ( int x, int y ) const
 */
-void QListWidget_itemAt2 ()
+void QListWidget_itemAt2()
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QListWidgetItem * ptr = obj->itemAt ( PINT(1), PINT(2) );
-      _qt5xhb_createReturnClass ( ptr, "QLISTWIDGETITEM", false );
+    QListWidgetItem * ptr = obj->itemAt( PINT(1), PINT(2) );
+    Qt5xHb::createReturnClass( ptr, "QLISTWIDGETITEM", false );
   }
 }
 
-//[1]QListWidgetItem * itemAt ( const QPoint & p ) const
-//[2]QListWidgetItem * itemAt ( int x, int y ) const
+/*
+[1]QListWidgetItem * itemAt ( const QPoint & p ) const
+[2]QListWidgetItem * itemAt ( int x, int y ) const
+*/
 
 HB_FUNC_STATIC( QLISTWIDGET_ITEMAT )
 {
@@ -487,7 +496,7 @@ HB_FUNC_STATIC( QLISTWIDGET_ITEMAT )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -496,7 +505,7 @@ QWidget * itemWidget ( QListWidgetItem * item ) const
 */
 HB_FUNC_STATIC( QLISTWIDGET_ITEMWIDGET )
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -504,13 +513,13 @@ HB_FUNC_STATIC( QLISTWIDGET_ITEMWIDGET )
     if( ISNUMPAR(1) && ISQLISTWIDGETITEM(1) )
     {
 #endif
-      QWidget * ptr = obj->itemWidget ( PQLISTWIDGETITEM(1) );
-      _qt5xhb_createReturnQWidgetClass ( ptr, "QWIDGET" );
+      QWidget * ptr = obj->itemWidget( PQLISTWIDGETITEM(1) );
+      Qt5xHb::createReturnQWidgetClass( ptr, "QWIDGET" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -521,7 +530,7 @@ void openPersistentEditor ( QListWidgetItem * item )
 */
 HB_FUNC_STATIC( QLISTWIDGET_OPENPERSISTENTEDITOR )
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -529,12 +538,12 @@ HB_FUNC_STATIC( QLISTWIDGET_OPENPERSISTENTEDITOR )
     if( ISNUMPAR(1) && ISQLISTWIDGETITEM(1) )
     {
 #endif
-      obj->openPersistentEditor ( PQLISTWIDGETITEM(1) );
+      obj->openPersistentEditor( PQLISTWIDGETITEM(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -547,7 +556,7 @@ void removeItemWidget ( QListWidgetItem * item )
 */
 HB_FUNC_STATIC( QLISTWIDGET_REMOVEITEMWIDGET )
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -555,12 +564,12 @@ HB_FUNC_STATIC( QLISTWIDGET_REMOVEITEMWIDGET )
     if( ISNUMPAR(1) && ISQLISTWIDGETITEM(1) )
     {
 #endif
-      obj->removeItemWidget ( PQLISTWIDGETITEM(1) );
+      obj->removeItemWidget( PQLISTWIDGETITEM(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -573,7 +582,7 @@ int row ( const QListWidgetItem * item ) const
 */
 HB_FUNC_STATIC( QLISTWIDGET_ROW )
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -581,12 +590,12 @@ HB_FUNC_STATIC( QLISTWIDGET_ROW )
     if( ISNUMPAR(1) && ISQLISTWIDGETITEM(1) )
     {
 #endif
-      RINT( obj->row ( PQLISTWIDGETITEM(1) ) );
+      RINT( obj->row( PQLISTWIDGETITEM(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -595,13 +604,13 @@ HB_FUNC_STATIC( QLISTWIDGET_ROW )
 /*
 void setCurrentItem ( QListWidgetItem * item )
 */
-void QListWidget_setCurrentItem1 ()
+void QListWidget_setCurrentItem1()
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setCurrentItem ( PQLISTWIDGETITEM(1) );
+    obj->setCurrentItem( PQLISTWIDGETITEM(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -610,20 +619,22 @@ void QListWidget_setCurrentItem1 ()
 /*
 void setCurrentItem ( QListWidgetItem * item, QItemSelectionModel::SelectionFlags command )
 */
-void QListWidget_setCurrentItem2 ()
+void QListWidget_setCurrentItem2()
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setCurrentItem ( PQLISTWIDGETITEM(1), (QItemSelectionModel::SelectionFlags) hb_parni(2) );
+    obj->setCurrentItem( PQLISTWIDGETITEM(1), (QItemSelectionModel::SelectionFlags) hb_parni(2) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void setCurrentItem ( QListWidgetItem * item )
-//[2]void setCurrentItem ( QListWidgetItem * item, QItemSelectionModel::SelectionFlags command )
+/*
+[1]void setCurrentItem ( QListWidgetItem * item )
+[2]void setCurrentItem ( QListWidgetItem * item, QItemSelectionModel::SelectionFlags command )
+*/
 
 HB_FUNC_STATIC( QLISTWIDGET_SETCURRENTITEM )
 {
@@ -637,20 +648,20 @@ HB_FUNC_STATIC( QLISTWIDGET_SETCURRENTITEM )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 /*
 void setCurrentRow ( int row )
 */
-void QListWidget_setCurrentRow1 ()
+void QListWidget_setCurrentRow1()
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setCurrentRow ( PINT(1) );
+    obj->setCurrentRow( PINT(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -659,20 +670,22 @@ void QListWidget_setCurrentRow1 ()
 /*
 void setCurrentRow ( int row, QItemSelectionModel::SelectionFlags command )
 */
-void QListWidget_setCurrentRow2 ()
+void QListWidget_setCurrentRow2()
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setCurrentRow ( PINT(1), (QItemSelectionModel::SelectionFlags) hb_parni(2) );
+    obj->setCurrentRow( PINT(1), (QItemSelectionModel::SelectionFlags) hb_parni(2) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void setCurrentRow ( int row )
-//[2]void setCurrentRow ( int row, QItemSelectionModel::SelectionFlags command )
+/*
+[1]void setCurrentRow ( int row )
+[2]void setCurrentRow ( int row, QItemSelectionModel::SelectionFlags command )
+*/
 
 HB_FUNC_STATIC( QLISTWIDGET_SETCURRENTROW )
 {
@@ -686,7 +699,7 @@ HB_FUNC_STATIC( QLISTWIDGET_SETCURRENTROW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -695,7 +708,7 @@ void setItemWidget ( QListWidgetItem * item, QWidget * widget )
 */
 HB_FUNC_STATIC( QLISTWIDGET_SETITEMWIDGET )
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -703,12 +716,12 @@ HB_FUNC_STATIC( QLISTWIDGET_SETITEMWIDGET )
     if( ISNUMPAR(2) && ISQLISTWIDGETITEM(1) && ISQWIDGET(2) )
     {
 #endif
-      obj->setItemWidget ( PQLISTWIDGETITEM(1), PQWIDGET(2) );
+      obj->setItemWidget( PQLISTWIDGETITEM(1), PQWIDGET(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -721,7 +734,7 @@ void setSortingEnabled ( bool enable )
 */
 HB_FUNC_STATIC( QLISTWIDGET_SETSORTINGENABLED )
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -729,12 +742,12 @@ HB_FUNC_STATIC( QLISTWIDGET_SETSORTINGENABLED )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setSortingEnabled ( PBOOL(1) );
+      obj->setSortingEnabled( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -747,7 +760,7 @@ void sortItems ( Qt::SortOrder order = Qt::AscendingOrder )
 */
 HB_FUNC_STATIC( QLISTWIDGET_SORTITEMS )
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -755,12 +768,12 @@ HB_FUNC_STATIC( QLISTWIDGET_SORTITEMS )
     if( ISBETWEEN(0,1) && ISOPTNUM(1) )
     {
 #endif
-      obj->sortItems ( ISNIL(1)? (Qt::SortOrder) Qt::AscendingOrder : (Qt::SortOrder) hb_parni(1) );
+      obj->sortItems( ISNIL(1)? (Qt::SortOrder) Qt::AscendingOrder : (Qt::SortOrder) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -773,7 +786,7 @@ QListWidgetItem * takeItem ( int row )
 */
 HB_FUNC_STATIC( QLISTWIDGET_TAKEITEM )
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -781,13 +794,13 @@ HB_FUNC_STATIC( QLISTWIDGET_TAKEITEM )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      QListWidgetItem * ptr = obj->takeItem ( PINT(1) );
-      _qt5xhb_createReturnClass ( ptr, "QLISTWIDGETITEM", false );
+      QListWidgetItem * ptr = obj->takeItem( PINT(1) );
+      Qt5xHb::createReturnClass( ptr, "QLISTWIDGETITEM", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -798,7 +811,7 @@ QRect visualItemRect ( const QListWidgetItem * item ) const
 */
 HB_FUNC_STATIC( QLISTWIDGET_VISUALITEMRECT )
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -806,13 +819,13 @@ HB_FUNC_STATIC( QLISTWIDGET_VISUALITEMRECT )
     if( ISNUMPAR(1) && ISQLISTWIDGETITEM(1) )
     {
 #endif
-      QRect * ptr = new QRect( obj->visualItemRect ( PQLISTWIDGETITEM(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QRECT", true );
+      auto ptr = new QRect( obj->visualItemRect( PQLISTWIDGETITEM(1) ) );
+      Qt5xHb::createReturnClass( ptr, "QRECT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -823,7 +836,7 @@ virtual void dropEvent ( QDropEvent * event )
 */
 HB_FUNC_STATIC( QLISTWIDGET_DROPEVENT )
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -831,12 +844,12 @@ HB_FUNC_STATIC( QLISTWIDGET_DROPEVENT )
     if( ISNUMPAR(1) && ISQDROPEVENT(1) )
     {
 #endif
-      obj->dropEvent ( PQDROPEVENT(1) );
+      obj->dropEvent( PQDROPEVENT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -849,7 +862,7 @@ void clear ()
 */
 HB_FUNC_STATIC( QLISTWIDGET_CLEAR )
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -857,12 +870,12 @@ HB_FUNC_STATIC( QLISTWIDGET_CLEAR )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->clear ();
+      obj->clear();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -875,7 +888,7 @@ void scrollToItem ( const QListWidgetItem * item, QAbstractItemView::ScrollHint 
 */
 HB_FUNC_STATIC( QLISTWIDGET_SCROLLTOITEM )
 {
-  QListWidget * obj = (QListWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -883,12 +896,12 @@ HB_FUNC_STATIC( QLISTWIDGET_SCROLLTOITEM )
     if( ISBETWEEN(1,2) && ISQLISTWIDGETITEM(1) && ISOPTNUM(2) )
     {
 #endif
-      obj->scrollToItem ( PQLISTWIDGETITEM(1), ISNIL(2)? (QAbstractItemView::ScrollHint) QAbstractItemView::EnsureVisible : (QAbstractItemView::ScrollHint) hb_parni(2) );
+      obj->scrollToItem( PQLISTWIDGETITEM(1), ISNIL(2)? (QAbstractItemView::ScrollHint) QAbstractItemView::EnsureVisible : (QAbstractItemView::ScrollHint) hb_parni(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -901,29 +914,30 @@ void currentItemChanged( QListWidgetItem * current, QListWidgetItem * previous )
 */
 HB_FUNC_STATIC( QLISTWIDGET_ONCURRENTITEMCHANGED )
 {
-  QListWidget * sender = (QListWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("currentItemChanged(QListWidgetItem*,QListWidgetItem*)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("currentItemChanged(QListWidgetItem*,QListWidgetItem*)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QListWidget::currentItemChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QListWidgetItem * arg1, QListWidgetItem * arg2) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QLISTWIDGET" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) arg1, "QLISTWIDGETITEM" );
-            PHB_ITEM pArg2 = Signals3_return_object( (void *) arg2, "QLISTWIDGETITEM" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 3, pSender, pArg1, pArg2 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QLISTWIDGET" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) arg1, "QLISTWIDGETITEM" );
+            PHB_ITEM pArg2 = Qt5xHb::Signals_return_object( (void *) arg2, "QLISTWIDGETITEM" );
+            hb_vmEvalBlockV( cb, 3, pSender, pArg1, pArg2 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -931,7 +945,7 @@ HB_FUNC_STATIC( QLISTWIDGET_ONCURRENTITEMCHANGED )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -942,9 +956,9 @@ HB_FUNC_STATIC( QLISTWIDGET_ONCURRENTITEMCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -964,35 +978,36 @@ void currentRowChanged( int currentRow )
 */
 HB_FUNC_STATIC( QLISTWIDGET_ONCURRENTROWCHANGED )
 {
-  QListWidget * sender = (QListWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("currentRowChanged(int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("currentRowChanged(int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QListWidget::currentRowChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QLISTWIDGET" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QLISTWIDGET" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1003,9 +1018,9 @@ HB_FUNC_STATIC( QLISTWIDGET_ONCURRENTROWCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1025,35 +1040,36 @@ void currentTextChanged( const QString & currentText )
 */
 HB_FUNC_STATIC( QLISTWIDGET_ONCURRENTTEXTCHANGED )
 {
-  QListWidget * sender = (QListWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("currentTextChanged(QString)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("currentTextChanged(QString)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QListWidget::currentTextChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (const QString & arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QLISTWIDGET" );
-            PHB_ITEM pArg1 = hb_itemPutC( NULL, QSTRINGTOSTRING(arg1) );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QLISTWIDGET" );
+            PHB_ITEM pArg1 = hb_itemPutC( nullptr, QSTRINGTOSTRING(arg1) );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1064,9 +1080,9 @@ HB_FUNC_STATIC( QLISTWIDGET_ONCURRENTTEXTCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1086,35 +1102,36 @@ void itemActivated( QListWidgetItem * item )
 */
 HB_FUNC_STATIC( QLISTWIDGET_ONITEMACTIVATED )
 {
-  QListWidget * sender = (QListWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("itemActivated(QListWidgetItem*)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("itemActivated(QListWidgetItem*)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QListWidget::itemActivated, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QListWidgetItem * arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QLISTWIDGET" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) arg1, "QLISTWIDGETITEM" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QLISTWIDGET" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) arg1, "QLISTWIDGETITEM" );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1125,9 +1142,9 @@ HB_FUNC_STATIC( QLISTWIDGET_ONITEMACTIVATED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1147,35 +1164,36 @@ void itemChanged( QListWidgetItem * item )
 */
 HB_FUNC_STATIC( QLISTWIDGET_ONITEMCHANGED )
 {
-  QListWidget * sender = (QListWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("itemChanged(QListWidgetItem*)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("itemChanged(QListWidgetItem*)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QListWidget::itemChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QListWidgetItem * arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QLISTWIDGET" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) arg1, "QLISTWIDGETITEM" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QLISTWIDGET" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) arg1, "QLISTWIDGETITEM" );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1186,9 +1204,9 @@ HB_FUNC_STATIC( QLISTWIDGET_ONITEMCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1208,35 +1226,36 @@ void itemClicked( QListWidgetItem * item )
 */
 HB_FUNC_STATIC( QLISTWIDGET_ONITEMCLICKED )
 {
-  QListWidget * sender = (QListWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("itemClicked(QListWidgetItem*)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("itemClicked(QListWidgetItem*)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QListWidget::itemClicked, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QListWidgetItem * arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QLISTWIDGET" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) arg1, "QLISTWIDGETITEM" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QLISTWIDGET" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) arg1, "QLISTWIDGETITEM" );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1247,9 +1266,9 @@ HB_FUNC_STATIC( QLISTWIDGET_ONITEMCLICKED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1269,35 +1288,36 @@ void itemDoubleClicked( QListWidgetItem * item )
 */
 HB_FUNC_STATIC( QLISTWIDGET_ONITEMDOUBLECLICKED )
 {
-  QListWidget * sender = (QListWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("itemDoubleClicked(QListWidgetItem*)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("itemDoubleClicked(QListWidgetItem*)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QListWidget::itemDoubleClicked, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QListWidgetItem * arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QLISTWIDGET" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) arg1, "QLISTWIDGETITEM" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QLISTWIDGET" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) arg1, "QLISTWIDGETITEM" );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1308,9 +1328,9 @@ HB_FUNC_STATIC( QLISTWIDGET_ONITEMDOUBLECLICKED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1330,35 +1350,36 @@ void itemEntered( QListWidgetItem * item )
 */
 HB_FUNC_STATIC( QLISTWIDGET_ONITEMENTERED )
 {
-  QListWidget * sender = (QListWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("itemEntered(QListWidgetItem*)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("itemEntered(QListWidgetItem*)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QListWidget::itemEntered, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QListWidgetItem * arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QLISTWIDGET" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) arg1, "QLISTWIDGETITEM" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QLISTWIDGET" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) arg1, "QLISTWIDGETITEM" );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1369,9 +1390,9 @@ HB_FUNC_STATIC( QLISTWIDGET_ONITEMENTERED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1391,35 +1412,36 @@ void itemPressed( QListWidgetItem * item )
 */
 HB_FUNC_STATIC( QLISTWIDGET_ONITEMPRESSED )
 {
-  QListWidget * sender = (QListWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("itemPressed(QListWidgetItem*)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("itemPressed(QListWidgetItem*)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QListWidget::itemPressed, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QListWidgetItem * arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QLISTWIDGET" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) arg1, "QLISTWIDGETITEM" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QLISTWIDGET" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) arg1, "QLISTWIDGETITEM" );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1430,9 +1452,9 @@ HB_FUNC_STATIC( QLISTWIDGET_ONITEMPRESSED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1452,33 +1474,34 @@ void itemSelectionChanged()
 */
 HB_FUNC_STATIC( QLISTWIDGET_ONITEMSELECTIONCHANGED )
 {
-  QListWidget * sender = (QListWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QListWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("itemSelectionChanged()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("itemSelectionChanged()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QListWidget::itemSelectionChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QLISTWIDGET" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QLISTWIDGET" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1489,9 +1512,9 @@ HB_FUNC_STATIC( QLISTWIDGET_ONITEMSELECTIONCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }

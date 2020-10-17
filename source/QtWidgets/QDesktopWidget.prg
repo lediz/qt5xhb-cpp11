@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -36,7 +36,7 @@ CLASS QDesktopWidget INHERIT QWidget
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QDesktopWidget
+PROCEDURE destroyObject() CLASS QDesktopWidget
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -53,7 +53,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtWidgets/QDesktopWidget>
@@ -61,14 +62,16 @@ RETURN
 
 HB_FUNC_STATIC( QDESKTOPWIDGET_DELETE )
 {
-  QDesktopWidget * obj = (QDesktopWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDesktopWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -79,48 +82,50 @@ HB_FUNC_STATIC( QDESKTOPWIDGET_DELETE )
 /*
 const QRect availableGeometry ( int screen = -1 ) const
 */
-void QDesktopWidget_availableGeometry1 ()
+void QDesktopWidget_availableGeometry1()
 {
-  QDesktopWidget * obj = (QDesktopWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDesktopWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QRect * ptr = new QRect( obj->availableGeometry ( OPINT(1,-1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QRECT", true );
+    auto ptr = new QRect( obj->availableGeometry( OPINT(1,-1) ) );
+    Qt5xHb::createReturnClass( ptr, "QRECT", true );
   }
 }
 
 /*
 const QRect availableGeometry ( const QWidget * widget ) const
 */
-void QDesktopWidget_availableGeometry2 ()
+void QDesktopWidget_availableGeometry2()
 {
-  QDesktopWidget * obj = (QDesktopWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDesktopWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QRect * ptr = new QRect( obj->availableGeometry ( PQWIDGET(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QRECT", true );
+    auto ptr = new QRect( obj->availableGeometry( PQWIDGET(1) ) );
+    Qt5xHb::createReturnClass( ptr, "QRECT", true );
   }
 }
 
 /*
 const QRect availableGeometry ( const QPoint & p ) const
 */
-void QDesktopWidget_availableGeometry3 ()
+void QDesktopWidget_availableGeometry3()
 {
-  QDesktopWidget * obj = (QDesktopWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDesktopWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QRect * ptr = new QRect( obj->availableGeometry ( *PQPOINT(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QRECT", true );
+    auto ptr = new QRect( obj->availableGeometry( *PQPOINT(1) ) );
+    Qt5xHb::createReturnClass( ptr, "QRECT", true );
   }
 }
 
-//[1]const QRect availableGeometry ( int screen = -1 ) const
-//[2]const QRect availableGeometry ( const QWidget * widget ) const
-//[3]const QRect availableGeometry ( const QPoint & p ) const
+/*
+[1]const QRect availableGeometry ( int screen = -1 ) const
+[2]const QRect availableGeometry ( const QWidget * widget ) const
+[3]const QRect availableGeometry ( const QPoint & p ) const
+*/
 
 HB_FUNC_STATIC( QDESKTOPWIDGET_AVAILABLEGEOMETRY )
 {
@@ -138,7 +143,7 @@ HB_FUNC_STATIC( QDESKTOPWIDGET_AVAILABLEGEOMETRY )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -147,7 +152,7 @@ bool isVirtualDesktop () const
 */
 HB_FUNC_STATIC( QDESKTOPWIDGET_ISVIRTUALDESKTOP )
 {
-  QDesktopWidget * obj = (QDesktopWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDesktopWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -155,12 +160,12 @@ HB_FUNC_STATIC( QDESKTOPWIDGET_ISVIRTUALDESKTOP )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isVirtualDesktop () );
+      RBOOL( obj->isVirtualDesktop() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -171,7 +176,7 @@ int primaryScreen () const
 */
 HB_FUNC_STATIC( QDESKTOPWIDGET_PRIMARYSCREEN )
 {
-  QDesktopWidget * obj = (QDesktopWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDesktopWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -179,12 +184,12 @@ HB_FUNC_STATIC( QDESKTOPWIDGET_PRIMARYSCREEN )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->primaryScreen () );
+      RINT( obj->primaryScreen() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -195,7 +200,7 @@ QWidget * screen ( int screen = -1 )
 */
 HB_FUNC_STATIC( QDESKTOPWIDGET_SCREEN )
 {
-  QDesktopWidget * obj = (QDesktopWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDesktopWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -203,13 +208,13 @@ HB_FUNC_STATIC( QDESKTOPWIDGET_SCREEN )
     if( ISBETWEEN(0,1) && ISOPTNUM(1) )
     {
 #endif
-      QWidget * ptr = obj->screen ( OPINT(1,-1) );
-      _qt5xhb_createReturnQWidgetClass ( ptr, "QWIDGET" );
+      QWidget * ptr = obj->screen( OPINT(1,-1) );
+      Qt5xHb::createReturnQWidgetClass( ptr, "QWIDGET" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -220,7 +225,7 @@ int screenCount () const
 */
 HB_FUNC_STATIC( QDESKTOPWIDGET_SCREENCOUNT )
 {
-  QDesktopWidget * obj = (QDesktopWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDesktopWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -228,12 +233,12 @@ HB_FUNC_STATIC( QDESKTOPWIDGET_SCREENCOUNT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->screenCount () );
+      RINT( obj->screenCount() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -242,48 +247,50 @@ HB_FUNC_STATIC( QDESKTOPWIDGET_SCREENCOUNT )
 /*
 const QRect screenGeometry ( int screen = -1 ) const
 */
-void QDesktopWidget_screenGeometry1 ()
+void QDesktopWidget_screenGeometry1()
 {
-  QDesktopWidget * obj = (QDesktopWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDesktopWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QRect * ptr = new QRect( obj->screenGeometry ( OPINT(1,-1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QRECT", true );
+    auto ptr = new QRect( obj->screenGeometry( OPINT(1,-1) ) );
+    Qt5xHb::createReturnClass( ptr, "QRECT", true );
   }
 }
 
 /*
 const QRect screenGeometry ( const QWidget * widget ) const
 */
-void QDesktopWidget_screenGeometry2 ()
+void QDesktopWidget_screenGeometry2()
 {
-  QDesktopWidget * obj = (QDesktopWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDesktopWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QRect * ptr = new QRect( obj->screenGeometry ( PQWIDGET(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QRECT", true );
+    auto ptr = new QRect( obj->screenGeometry( PQWIDGET(1) ) );
+    Qt5xHb::createReturnClass( ptr, "QRECT", true );
   }
 }
 
 /*
 const QRect screenGeometry ( const QPoint & p ) const
 */
-void QDesktopWidget_screenGeometry3 ()
+void QDesktopWidget_screenGeometry3()
 {
-  QDesktopWidget * obj = (QDesktopWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDesktopWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QRect * ptr = new QRect( obj->screenGeometry ( *PQPOINT(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QRECT", true );
+    auto ptr = new QRect( obj->screenGeometry( *PQPOINT(1) ) );
+    Qt5xHb::createReturnClass( ptr, "QRECT", true );
   }
 }
 
-//[1]const QRect screenGeometry ( int screen = -1 ) const
-//[2]const QRect screenGeometry ( const QWidget * widget ) const
-//[3]const QRect screenGeometry ( const QPoint & p ) const
+/*
+[1]const QRect screenGeometry ( int screen = -1 ) const
+[2]const QRect screenGeometry ( const QWidget * widget ) const
+[3]const QRect screenGeometry ( const QPoint & p ) const
+*/
 
 HB_FUNC_STATIC( QDESKTOPWIDGET_SCREENGEOMETRY )
 {
@@ -301,38 +308,40 @@ HB_FUNC_STATIC( QDESKTOPWIDGET_SCREENGEOMETRY )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 /*
 int screenNumber ( const QWidget * widget = nullptr ) const
 */
-void QDesktopWidget_screenNumber1 ()
+void QDesktopWidget_screenNumber1()
 {
-  QDesktopWidget * obj = (QDesktopWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDesktopWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RINT( obj->screenNumber ( OPQWIDGET(1,nullptr) ) );
+    RINT( obj->screenNumber( OPQWIDGET(1,nullptr) ) );
   }
 }
 
 /*
 int screenNumber ( const QPoint & point ) const
 */
-void QDesktopWidget_screenNumber2 ()
+void QDesktopWidget_screenNumber2()
 {
-  QDesktopWidget * obj = (QDesktopWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDesktopWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RINT( obj->screenNumber ( *PQPOINT(1) ) );
+    RINT( obj->screenNumber( *PQPOINT(1) ) );
   }
 }
 
-//[1]int screenNumber ( const QWidget * widget = 0 ) const
-//[2]int screenNumber ( const QPoint & point ) const
+/*
+[1]int screenNumber ( const QWidget * widget = 0 ) const
+[2]int screenNumber ( const QPoint & point ) const
+*/
 
 HB_FUNC_STATIC( QDESKTOPWIDGET_SCREENNUMBER )
 {
@@ -346,7 +355,7 @@ HB_FUNC_STATIC( QDESKTOPWIDGET_SCREENNUMBER )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -355,35 +364,36 @@ void resized( int screen )
 */
 HB_FUNC_STATIC( QDESKTOPWIDGET_ONRESIZED )
 {
-  QDesktopWidget * sender = (QDesktopWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QDesktopWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("resized(int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("resized(int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QDesktopWidget::resized, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QDESKTOPWIDGET" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QDESKTOPWIDGET" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -394,9 +404,9 @@ HB_FUNC_STATIC( QDESKTOPWIDGET_ONRESIZED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -416,35 +426,36 @@ void screenCountChanged( int newCount )
 */
 HB_FUNC_STATIC( QDESKTOPWIDGET_ONSCREENCOUNTCHANGED )
 {
-  QDesktopWidget * sender = (QDesktopWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QDesktopWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("screenCountChanged(int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("screenCountChanged(int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QDesktopWidget::screenCountChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QDESKTOPWIDGET" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QDESKTOPWIDGET" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -455,9 +466,9 @@ HB_FUNC_STATIC( QDESKTOPWIDGET_ONSCREENCOUNTCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -477,35 +488,36 @@ void workAreaResized( int screen )
 */
 HB_FUNC_STATIC( QDESKTOPWIDGET_ONWORKAREARESIZED )
 {
-  QDesktopWidget * sender = (QDesktopWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QDesktopWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("workAreaResized(int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("workAreaResized(int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QDesktopWidget::workAreaResized, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QDESKTOPWIDGET" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QDESKTOPWIDGET" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -516,9 +528,9 @@ HB_FUNC_STATIC( QDESKTOPWIDGET_ONWORKAREARESIZED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }

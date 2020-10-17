@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -41,7 +41,7 @@ CLASS QXmlSerializer INHERIT QAbstractXmlReceiver
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QXmlSerializer
+PROCEDURE destroyObject() CLASS QXmlSerializer
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -58,7 +58,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtXmlPatterns/QXmlSerializer>
@@ -73,25 +72,25 @@ HB_FUNC_STATIC( QXMLSERIALIZER_NEW )
 {
   if( ISNUMPAR(2) && ISQXMLQUERY(1) && ISQIODEVICE(2) )
   {
-    QXmlSerializer * o = new QXmlSerializer ( *PQXMLQUERY(1), PQIODEVICE(2) );
-    _qt5xhb_returnNewObject( o, true );
+    auto obj = new QXmlSerializer( *PQXMLQUERY(1), PQIODEVICE(2) );
+    Qt5xHb::returnNewObject( obj, true );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QXMLSERIALIZER_DELETE )
 {
-  QXmlSerializer * obj = (QXmlSerializer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlSerializer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -104,7 +103,7 @@ const QTextCodec * codec () const
 */
 HB_FUNC_STATIC( QXMLSERIALIZER_CODEC )
 {
-  QXmlSerializer * obj = (QXmlSerializer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlSerializer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -112,13 +111,13 @@ HB_FUNC_STATIC( QXMLSERIALIZER_CODEC )
     if( ISNUMPAR(0) )
     {
 #endif
-      const QTextCodec * ptr = obj->codec ();
-      _qt5xhb_createReturnClass ( ptr, "QTEXTCODEC", false );
+      const QTextCodec * ptr = obj->codec();
+      Qt5xHb::createReturnClass( ptr, "QTEXTCODEC", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -129,7 +128,7 @@ QIODevice * outputDevice () const
 */
 HB_FUNC_STATIC( QXMLSERIALIZER_OUTPUTDEVICE )
 {
-  QXmlSerializer * obj = (QXmlSerializer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlSerializer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -137,13 +136,13 @@ HB_FUNC_STATIC( QXMLSERIALIZER_OUTPUTDEVICE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QIODevice * ptr = obj->outputDevice ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QIODEVICE" );
+      QIODevice * ptr = obj->outputDevice();
+      Qt5xHb::createReturnQObjectClass( ptr, "QIODEVICE" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -154,7 +153,7 @@ void setCodec ( const QTextCodec * outputCodec )
 */
 HB_FUNC_STATIC( QXMLSERIALIZER_SETCODEC )
 {
-  QXmlSerializer * obj = (QXmlSerializer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlSerializer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -162,12 +161,12 @@ HB_FUNC_STATIC( QXMLSERIALIZER_SETCODEC )
     if( ISNUMPAR(1) && ISQTEXTCODEC(1) )
     {
 #endif
-      obj->setCodec ( PQTEXTCODEC(1) );
+      obj->setCodec( PQTEXTCODEC(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -180,7 +179,7 @@ virtual void atomicValue ( const QVariant & value )
 */
 HB_FUNC_STATIC( QXMLSERIALIZER_ATOMICVALUE )
 {
-  QXmlSerializer * obj = (QXmlSerializer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlSerializer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -188,12 +187,12 @@ HB_FUNC_STATIC( QXMLSERIALIZER_ATOMICVALUE )
     if( ISNUMPAR(1) && ISQVARIANT(1) )
     {
 #endif
-      obj->atomicValue ( *PQVARIANT(1) );
+      obj->atomicValue( *PQVARIANT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -206,7 +205,7 @@ virtual void attribute ( const QXmlName & name, const QStringRef & value )
 */
 HB_FUNC_STATIC( QXMLSERIALIZER_ATTRIBUTE )
 {
-  QXmlSerializer * obj = (QXmlSerializer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlSerializer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -214,12 +213,12 @@ HB_FUNC_STATIC( QXMLSERIALIZER_ATTRIBUTE )
     if( ISNUMPAR(2) && ISQXMLNAME(1) && ISQSTRINGREF(2) )
     {
 #endif
-      obj->attribute ( *PQXMLNAME(1), *PQSTRINGREF(2) );
+      obj->attribute( *PQXMLNAME(1), *PQSTRINGREF(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -232,7 +231,7 @@ virtual void characters ( const QStringRef & value )
 */
 HB_FUNC_STATIC( QXMLSERIALIZER_CHARACTERS )
 {
-  QXmlSerializer * obj = (QXmlSerializer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlSerializer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -240,12 +239,12 @@ HB_FUNC_STATIC( QXMLSERIALIZER_CHARACTERS )
     if( ISNUMPAR(1) && ISQSTRINGREF(1) )
     {
 #endif
-      obj->characters ( *PQSTRINGREF(1) );
+      obj->characters( *PQSTRINGREF(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -258,7 +257,7 @@ virtual void comment ( const QString & value )
 */
 HB_FUNC_STATIC( QXMLSERIALIZER_COMMENT )
 {
-  QXmlSerializer * obj = (QXmlSerializer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlSerializer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -266,12 +265,12 @@ HB_FUNC_STATIC( QXMLSERIALIZER_COMMENT )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->comment ( PQSTRING(1) );
+      obj->comment( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -284,7 +283,7 @@ virtual void endDocument ()
 */
 HB_FUNC_STATIC( QXMLSERIALIZER_ENDDOCUMENT )
 {
-  QXmlSerializer * obj = (QXmlSerializer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlSerializer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -292,12 +291,12 @@ HB_FUNC_STATIC( QXMLSERIALIZER_ENDDOCUMENT )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->endDocument ();
+      obj->endDocument();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -310,7 +309,7 @@ virtual void endElement ()
 */
 HB_FUNC_STATIC( QXMLSERIALIZER_ENDELEMENT )
 {
-  QXmlSerializer * obj = (QXmlSerializer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlSerializer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -318,12 +317,12 @@ HB_FUNC_STATIC( QXMLSERIALIZER_ENDELEMENT )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->endElement ();
+      obj->endElement();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -336,7 +335,7 @@ virtual void endOfSequence ()
 */
 HB_FUNC_STATIC( QXMLSERIALIZER_ENDOFSEQUENCE )
 {
-  QXmlSerializer * obj = (QXmlSerializer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlSerializer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -344,12 +343,12 @@ HB_FUNC_STATIC( QXMLSERIALIZER_ENDOFSEQUENCE )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->endOfSequence ();
+      obj->endOfSequence();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -362,7 +361,7 @@ virtual void namespaceBinding ( const QXmlName & nb )
 */
 HB_FUNC_STATIC( QXMLSERIALIZER_NAMESPACEBINDING )
 {
-  QXmlSerializer * obj = (QXmlSerializer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlSerializer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -370,12 +369,12 @@ HB_FUNC_STATIC( QXMLSERIALIZER_NAMESPACEBINDING )
     if( ISNUMPAR(1) && ISQXMLNAME(1) )
     {
 #endif
-      obj->namespaceBinding ( *PQXMLNAME(1) );
+      obj->namespaceBinding( *PQXMLNAME(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -388,7 +387,7 @@ virtual void processingInstruction ( const QXmlName & name, const QString & valu
 */
 HB_FUNC_STATIC( QXMLSERIALIZER_PROCESSINGINSTRUCTION )
 {
-  QXmlSerializer * obj = (QXmlSerializer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlSerializer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -396,12 +395,12 @@ HB_FUNC_STATIC( QXMLSERIALIZER_PROCESSINGINSTRUCTION )
     if( ISNUMPAR(2) && ISQXMLNAME(1) && ISCHAR(2) )
     {
 #endif
-      obj->processingInstruction ( *PQXMLNAME(1), PQSTRING(2) );
+      obj->processingInstruction( *PQXMLNAME(1), PQSTRING(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -414,7 +413,7 @@ virtual void startDocument ()
 */
 HB_FUNC_STATIC( QXMLSERIALIZER_STARTDOCUMENT )
 {
-  QXmlSerializer * obj = (QXmlSerializer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlSerializer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -422,12 +421,12 @@ HB_FUNC_STATIC( QXMLSERIALIZER_STARTDOCUMENT )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->startDocument ();
+      obj->startDocument();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -440,7 +439,7 @@ virtual void startElement ( const QXmlName & name )
 */
 HB_FUNC_STATIC( QXMLSERIALIZER_STARTELEMENT )
 {
-  QXmlSerializer * obj = (QXmlSerializer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlSerializer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -448,12 +447,12 @@ HB_FUNC_STATIC( QXMLSERIALIZER_STARTELEMENT )
     if( ISNUMPAR(1) && ISQXMLNAME(1) )
     {
 #endif
-      obj->startElement ( *PQXMLNAME(1) );
+      obj->startElement( *PQXMLNAME(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -466,7 +465,7 @@ virtual void startOfSequence ()
 */
 HB_FUNC_STATIC( QXMLSERIALIZER_STARTOFSEQUENCE )
 {
-  QXmlSerializer * obj = (QXmlSerializer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlSerializer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -474,12 +473,12 @@ HB_FUNC_STATIC( QXMLSERIALIZER_STARTOFSEQUENCE )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->startOfSequence ();
+      obj->startOfSequence();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

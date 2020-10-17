@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -65,7 +65,7 @@ CLASS QQuickWindow INHERIT QWindow
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QQuickWindow
+PROCEDURE destroyObject() CLASS QQuickWindow
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -82,15 +82,16 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtQuick/QQuickWindow>
 #endif
 
+#include <QtGui/QOpenGLContext>
 #include <QtQuick/QQuickItem>
 #include <QtQuick/QSGTexture>
-#include <QtGui/QOpenGLContext>
 
 /*
 QQuickWindow(QWindow * parent = nullptr)
@@ -99,25 +100,27 @@ HB_FUNC_STATIC( QQUICKWINDOW_NEW )
 {
   if( ISBETWEEN(0,1) && (ISQWINDOW(1)||ISNIL(1)) )
   {
-    QQuickWindow * o = new QQuickWindow ( OPQWINDOW(1,nullptr) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QQuickWindow( OPQWINDOW(1,nullptr) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QQUICKWINDOW_DELETE )
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -130,7 +133,7 @@ QQuickItem * activeFocusItem() const
 */
 HB_FUNC_STATIC( QQUICKWINDOW_ACTIVEFOCUSITEM )
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -138,13 +141,13 @@ HB_FUNC_STATIC( QQUICKWINDOW_ACTIVEFOCUSITEM )
     if( ISNUMPAR(0) )
     {
 #endif
-      QQuickItem * ptr = obj->activeFocusItem ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QQUICKITEM" );
+      QQuickItem * ptr = obj->activeFocusItem();
+      Qt5xHb::createReturnQObjectClass( ptr, "QQUICKITEM" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -155,7 +158,7 @@ bool clearBeforeRendering() const
 */
 HB_FUNC_STATIC( QQUICKWINDOW_CLEARBEFORERENDERING )
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -163,12 +166,12 @@ HB_FUNC_STATIC( QQUICKWINDOW_CLEARBEFORERENDERING )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->clearBeforeRendering () );
+      RBOOL( obj->clearBeforeRendering() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -179,7 +182,7 @@ QColor color() const
 */
 HB_FUNC_STATIC( QQUICKWINDOW_COLOR )
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -187,13 +190,13 @@ HB_FUNC_STATIC( QQUICKWINDOW_COLOR )
     if( ISNUMPAR(0) )
     {
 #endif
-      QColor * ptr = new QColor( obj->color () );
-      _qt5xhb_createReturnClass ( ptr, "QCOLOR", true );
+      auto ptr = new QColor( obj->color() );
+      Qt5xHb::createReturnClass( ptr, "QCOLOR", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -204,7 +207,7 @@ QQuickItem * contentItem() const
 */
 HB_FUNC_STATIC( QQUICKWINDOW_CONTENTITEM )
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -212,13 +215,13 @@ HB_FUNC_STATIC( QQUICKWINDOW_CONTENTITEM )
     if( ISNUMPAR(0) )
     {
 #endif
-      QQuickItem * ptr = obj->contentItem ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QQUICKITEM" );
+      QQuickItem * ptr = obj->contentItem();
+      Qt5xHb::createReturnQObjectClass( ptr, "QQUICKITEM" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -229,7 +232,7 @@ QSGTexture * createTextureFromId(uint id, const QSize & size, CreateTextureOptio
 */
 HB_FUNC_STATIC( QQUICKWINDOW_CREATETEXTUREFROMID )
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -237,13 +240,13 @@ HB_FUNC_STATIC( QQUICKWINDOW_CREATETEXTUREFROMID )
     if( ISBETWEEN(2,3) && ISNUM(1) && ISQSIZE(2) && ISOPTNUM(3) )
     {
 #endif
-      QSGTexture * ptr = obj->createTextureFromId ( PUINT(1), *PQSIZE(2), ISNIL(3)? (QQuickWindow::CreateTextureOptions) QQuickWindow::CreateTextureOption( 0 ) : (QQuickWindow::CreateTextureOptions) hb_parni(3) );
-      _qt5xhb_createReturnQObjectClass ( ptr, "QSGTEXTURE" );
+      QSGTexture * ptr = obj->createTextureFromId( PUINT(1), *PQSIZE(2), ISNIL(3)? (QQuickWindow::CreateTextureOptions) QQuickWindow::CreateTextureOption( 0 ) : (QQuickWindow::CreateTextureOptions) hb_parni(3) );
+      Qt5xHb::createReturnQObjectClass( ptr, "QSGTEXTURE" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -254,7 +257,7 @@ QSGTexture * createTextureFromImage(const QImage & image) const
 */
 HB_FUNC_STATIC( QQUICKWINDOW_CREATETEXTUREFROMIMAGE )
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -262,13 +265,13 @@ HB_FUNC_STATIC( QQUICKWINDOW_CREATETEXTUREFROMIMAGE )
     if( ISNUMPAR(1) && ISQIMAGE(1) )
     {
 #endif
-      QSGTexture * ptr = obj->createTextureFromImage ( *PQIMAGE(1) );
-      _qt5xhb_createReturnQObjectClass ( ptr, "QSGTEXTURE" );
+      QSGTexture * ptr = obj->createTextureFromImage( *PQIMAGE(1) );
+      Qt5xHb::createReturnQObjectClass( ptr, "QSGTEXTURE" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -279,7 +282,7 @@ QImage grabWindow()
 */
 HB_FUNC_STATIC( QQUICKWINDOW_GRABWINDOW )
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -287,13 +290,13 @@ HB_FUNC_STATIC( QQUICKWINDOW_GRABWINDOW )
     if( ISNUMPAR(0) )
     {
 #endif
-      QImage * ptr = new QImage( obj->grabWindow () );
-      _qt5xhb_createReturnClass ( ptr, "QIMAGE", true );
+      auto ptr = new QImage( obj->grabWindow() );
+      Qt5xHb::createReturnClass( ptr, "QIMAGE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -304,7 +307,7 @@ QQmlIncubationController * incubationController() const
 */
 HB_FUNC_STATIC( QQUICKWINDOW_INCUBATIONCONTROLLER )
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -312,13 +315,13 @@ HB_FUNC_STATIC( QQUICKWINDOW_INCUBATIONCONTROLLER )
     if( ISNUMPAR(0) )
     {
 #endif
-      QQmlIncubationController * ptr = obj->incubationController ();
-      _qt5xhb_createReturnClass ( ptr, "QQMLINCUBATIONCONTROLLER", false );
+      QQmlIncubationController * ptr = obj->incubationController();
+      Qt5xHb::createReturnClass( ptr, "QQMLINCUBATIONCONTROLLER", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -329,7 +332,7 @@ bool isPersistentOpenGLContext() const
 */
 HB_FUNC_STATIC( QQUICKWINDOW_ISPERSISTENTOPENGLCONTEXT )
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -337,12 +340,12 @@ HB_FUNC_STATIC( QQUICKWINDOW_ISPERSISTENTOPENGLCONTEXT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isPersistentOpenGLContext () );
+      RBOOL( obj->isPersistentOpenGLContext() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -353,7 +356,7 @@ bool isPersistentSceneGraph() const
 */
 HB_FUNC_STATIC( QQUICKWINDOW_ISPERSISTENTSCENEGRAPH )
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -361,12 +364,12 @@ HB_FUNC_STATIC( QQUICKWINDOW_ISPERSISTENTSCENEGRAPH )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isPersistentSceneGraph () );
+      RBOOL( obj->isPersistentSceneGraph() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -377,7 +380,7 @@ QQuickItem * mouseGrabberItem() const
 */
 HB_FUNC_STATIC( QQUICKWINDOW_MOUSEGRABBERITEM )
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -385,13 +388,13 @@ HB_FUNC_STATIC( QQUICKWINDOW_MOUSEGRABBERITEM )
     if( ISNUMPAR(0) )
     {
 #endif
-      QQuickItem * ptr = obj->mouseGrabberItem ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QQUICKITEM" );
+      QQuickItem * ptr = obj->mouseGrabberItem();
+      Qt5xHb::createReturnQObjectClass( ptr, "QQUICKITEM" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -402,7 +405,7 @@ QOpenGLContext * openglContext() const
 */
 HB_FUNC_STATIC( QQUICKWINDOW_OPENGLCONTEXT )
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -410,13 +413,13 @@ HB_FUNC_STATIC( QQUICKWINDOW_OPENGLCONTEXT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QOpenGLContext * ptr = obj->openglContext ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QOPENGLCONTEXT" );
+      QOpenGLContext * ptr = obj->openglContext();
+      Qt5xHb::createReturnQObjectClass( ptr, "QOPENGLCONTEXT" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -427,7 +430,7 @@ QOpenGLFramebufferObject * renderTarget() const
 */
 HB_FUNC_STATIC( QQUICKWINDOW_RENDERTARGET )
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -435,13 +438,13 @@ HB_FUNC_STATIC( QQUICKWINDOW_RENDERTARGET )
     if( ISNUMPAR(0) )
     {
 #endif
-      QOpenGLFramebufferObject * ptr = obj->renderTarget ();
-      _qt5xhb_createReturnClass ( ptr, "QOPENGLFRAMEBUFFEROBJECT", false );
+      QOpenGLFramebufferObject * ptr = obj->renderTarget();
+      Qt5xHb::createReturnClass( ptr, "QOPENGLFRAMEBUFFEROBJECT", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -452,7 +455,7 @@ uint renderTargetId() const
 */
 HB_FUNC_STATIC( QQUICKWINDOW_RENDERTARGETID )
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -460,12 +463,12 @@ HB_FUNC_STATIC( QQUICKWINDOW_RENDERTARGETID )
     if( ISNUMPAR(0) )
     {
 #endif
-      RUINT( obj->renderTargetId () );
+      RUINT( obj->renderTargetId() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -476,7 +479,7 @@ QSize renderTargetSize() const
 */
 HB_FUNC_STATIC( QQUICKWINDOW_RENDERTARGETSIZE )
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -484,13 +487,13 @@ HB_FUNC_STATIC( QQUICKWINDOW_RENDERTARGETSIZE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSize * ptr = new QSize( obj->renderTargetSize () );
-      _qt5xhb_createReturnClass ( ptr, "QSIZE", true );
+      auto ptr = new QSize( obj->renderTargetSize() );
+      Qt5xHb::createReturnClass( ptr, "QSIZE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -501,7 +504,7 @@ bool sendEvent(QQuickItem * item, QEvent * e)
 */
 HB_FUNC_STATIC( QQUICKWINDOW_SENDEVENT )
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -509,12 +512,12 @@ HB_FUNC_STATIC( QQUICKWINDOW_SENDEVENT )
     if( ISNUMPAR(2) && ISQQUICKITEM(1) && ISQEVENT(2) )
     {
 #endif
-      RBOOL( obj->sendEvent ( PQQUICKITEM(1), PQEVENT(2) ) );
+      RBOOL( obj->sendEvent( PQQUICKITEM(1), PQEVENT(2) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -525,7 +528,7 @@ void setClearBeforeRendering(bool enabled)
 */
 HB_FUNC_STATIC( QQUICKWINDOW_SETCLEARBEFORERENDERING )
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -533,12 +536,12 @@ HB_FUNC_STATIC( QQUICKWINDOW_SETCLEARBEFORERENDERING )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setClearBeforeRendering ( PBOOL(1) );
+      obj->setClearBeforeRendering( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -551,7 +554,7 @@ void setColor(const QColor & color)
 */
 HB_FUNC_STATIC( QQUICKWINDOW_SETCOLOR )
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -559,12 +562,12 @@ HB_FUNC_STATIC( QQUICKWINDOW_SETCOLOR )
     if( ISNUMPAR(1) && (ISQCOLOR(1)||ISCHAR(1)) )
     {
 #endif
-      obj->setColor ( ISOBJECT(1)? *(QColor *) _qt5xhb_itemGetPtr(1) : QColor(hb_parc(1)) );
+      obj->setColor( ISOBJECT(1)? *(QColor *) Qt5xHb::itemGetPtr(1) : QColor(hb_parc(1)) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -577,7 +580,7 @@ void setPersistentOpenGLContext(bool persistent)
 */
 HB_FUNC_STATIC( QQUICKWINDOW_SETPERSISTENTOPENGLCONTEXT )
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -585,12 +588,12 @@ HB_FUNC_STATIC( QQUICKWINDOW_SETPERSISTENTOPENGLCONTEXT )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setPersistentOpenGLContext ( PBOOL(1) );
+      obj->setPersistentOpenGLContext( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -603,7 +606,7 @@ void setPersistentSceneGraph(bool persistent)
 */
 HB_FUNC_STATIC( QQUICKWINDOW_SETPERSISTENTSCENEGRAPH )
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -611,12 +614,12 @@ HB_FUNC_STATIC( QQUICKWINDOW_SETPERSISTENTSCENEGRAPH )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setPersistentSceneGraph ( PBOOL(1) );
+      obj->setPersistentSceneGraph( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -627,13 +630,13 @@ HB_FUNC_STATIC( QQUICKWINDOW_SETPERSISTENTSCENEGRAPH )
 /*
 void setRenderTarget(QOpenGLFramebufferObject * fbo)
 */
-void QQuickWindow_setRenderTarget1 ()
+void QQuickWindow_setRenderTarget1()
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setRenderTarget ( PQOPENGLFRAMEBUFFEROBJECT(1) );
+    obj->setRenderTarget( PQOPENGLFRAMEBUFFEROBJECT(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -642,20 +645,22 @@ void QQuickWindow_setRenderTarget1 ()
 /*
 void setRenderTarget(uint fboId, const QSize & size)
 */
-void QQuickWindow_setRenderTarget2 ()
+void QQuickWindow_setRenderTarget2()
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setRenderTarget ( PUINT(1), *PQSIZE(2) );
+    obj->setRenderTarget( PUINT(1), *PQSIZE(2) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void setRenderTarget(QOpenGLFramebufferObject * fbo)
-//[2]void setRenderTarget(uint fboId, const QSize & size)
+/*
+[1]void setRenderTarget(QOpenGLFramebufferObject * fbo)
+[2]void setRenderTarget(uint fboId, const QSize & size)
+*/
 
 HB_FUNC_STATIC( QQUICKWINDOW_SETRENDERTARGET )
 {
@@ -669,7 +674,7 @@ HB_FUNC_STATIC( QQUICKWINDOW_SETRENDERTARGET )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -678,7 +683,7 @@ virtual QAccessibleInterface * accessibleRoot() const
 */
 HB_FUNC_STATIC( QQUICKWINDOW_ACCESSIBLEROOT )
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -686,13 +691,13 @@ HB_FUNC_STATIC( QQUICKWINDOW_ACCESSIBLEROOT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QAccessibleInterface * ptr = obj->accessibleRoot ();
-      _qt5xhb_createReturnClass ( ptr, "QACCESSIBLEINTERFACE", false );
+      QAccessibleInterface * ptr = obj->accessibleRoot();
+      Qt5xHb::createReturnClass( ptr, "QACCESSIBLEINTERFACE", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -703,7 +708,7 @@ void releaseResources()
 */
 HB_FUNC_STATIC( QQUICKWINDOW_RELEASERESOURCES )
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -711,12 +716,12 @@ HB_FUNC_STATIC( QQUICKWINDOW_RELEASERESOURCES )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->releaseResources ();
+      obj->releaseResources();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -729,7 +734,7 @@ void update()
 */
 HB_FUNC_STATIC( QQUICKWINDOW_UPDATE )
 {
-  QQuickWindow * obj = (QQuickWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -737,12 +742,12 @@ HB_FUNC_STATIC( QQUICKWINDOW_UPDATE )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->update ();
+      obj->update();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -755,33 +760,34 @@ void afterRendering()
 */
 HB_FUNC_STATIC( QQUICKWINDOW_ONAFTERRENDERING )
 {
-  QQuickWindow * sender = (QQuickWindow *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("afterRendering()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("afterRendering()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QQuickWindow::afterRendering, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QQUICKWINDOW" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QQUICKWINDOW" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -792,9 +798,9 @@ HB_FUNC_STATIC( QQUICKWINDOW_ONAFTERRENDERING )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -814,33 +820,34 @@ void beforeRendering()
 */
 HB_FUNC_STATIC( QQUICKWINDOW_ONBEFORERENDERING )
 {
-  QQuickWindow * sender = (QQuickWindow *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("beforeRendering()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("beforeRendering()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QQuickWindow::beforeRendering, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QQUICKWINDOW" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QQUICKWINDOW" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -851,9 +858,9 @@ HB_FUNC_STATIC( QQUICKWINDOW_ONBEFORERENDERING )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -873,33 +880,34 @@ void beforeSynchronizing()
 */
 HB_FUNC_STATIC( QQUICKWINDOW_ONBEFORESYNCHRONIZING )
 {
-  QQuickWindow * sender = (QQuickWindow *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("beforeSynchronizing()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("beforeSynchronizing()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QQuickWindow::beforeSynchronizing, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QQUICKWINDOW" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QQUICKWINDOW" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -910,9 +918,9 @@ HB_FUNC_STATIC( QQUICKWINDOW_ONBEFORESYNCHRONIZING )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -932,35 +940,36 @@ void colorChanged( const QColor & color )
 */
 HB_FUNC_STATIC( QQUICKWINDOW_ONCOLORCHANGED )
 {
-  QQuickWindow * sender = (QQuickWindow *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("colorChanged(QColor)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("colorChanged(QColor)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QQuickWindow::colorChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (const QColor & arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QQUICKWINDOW" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) &arg1, "QCOLOR" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QQUICKWINDOW" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) &arg1, "QCOLOR" );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -971,9 +980,9 @@ HB_FUNC_STATIC( QQUICKWINDOW_ONCOLORCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -993,33 +1002,34 @@ void frameSwapped()
 */
 HB_FUNC_STATIC( QQUICKWINDOW_ONFRAMESWAPPED )
 {
-  QQuickWindow * sender = (QQuickWindow *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("frameSwapped()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("frameSwapped()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QQuickWindow::frameSwapped, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QQUICKWINDOW" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QQUICKWINDOW" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1030,9 +1040,9 @@ HB_FUNC_STATIC( QQUICKWINDOW_ONFRAMESWAPPED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1052,33 +1062,34 @@ void sceneGraphInitialized()
 */
 HB_FUNC_STATIC( QQUICKWINDOW_ONSCENEGRAPHINITIALIZED )
 {
-  QQuickWindow * sender = (QQuickWindow *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("sceneGraphInitialized()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("sceneGraphInitialized()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QQuickWindow::sceneGraphInitialized, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QQUICKWINDOW" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QQUICKWINDOW" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1089,9 +1100,9 @@ HB_FUNC_STATIC( QQUICKWINDOW_ONSCENEGRAPHINITIALIZED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1111,33 +1122,34 @@ void sceneGraphInvalidated()
 */
 HB_FUNC_STATIC( QQUICKWINDOW_ONSCENEGRAPHINVALIDATED )
 {
-  QQuickWindow * sender = (QQuickWindow *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QQuickWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("sceneGraphInvalidated()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("sceneGraphInvalidated()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QQuickWindow::sceneGraphInvalidated, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QQUICKWINDOW" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QQUICKWINDOW" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1148,9 +1160,9 @@ HB_FUNC_STATIC( QQUICKWINDOW_ONSCENEGRAPHINVALIDATED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }

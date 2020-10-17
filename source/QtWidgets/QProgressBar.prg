@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -50,7 +50,7 @@ CLASS QProgressBar INHERIT QWidget
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QProgressBar
+PROCEDURE destroyObject() CLASS QProgressBar
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -67,7 +67,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtWidgets/QProgressBar>
@@ -80,25 +81,27 @@ HB_FUNC_STATIC( QPROGRESSBAR_NEW )
 {
   if( ISBETWEEN(0,1) && (ISQWIDGET(1)||ISNIL(1)) )
   {
-    QProgressBar * o = new QProgressBar ( OPQWIDGET(1,nullptr) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QProgressBar( OPQWIDGET(1,nullptr) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QPROGRESSBAR_DELETE )
 {
-  QProgressBar * obj = (QProgressBar *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QProgressBar *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -111,7 +114,7 @@ Qt::Alignment alignment () const
 */
 HB_FUNC_STATIC( QPROGRESSBAR_ALIGNMENT )
 {
-  QProgressBar * obj = (QProgressBar *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QProgressBar *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -119,12 +122,12 @@ HB_FUNC_STATIC( QPROGRESSBAR_ALIGNMENT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->alignment () );
+      RENUM( obj->alignment() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -135,7 +138,7 @@ QString format () const
 */
 HB_FUNC_STATIC( QPROGRESSBAR_FORMAT )
 {
-  QProgressBar * obj = (QProgressBar *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QProgressBar *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -143,12 +146,12 @@ HB_FUNC_STATIC( QPROGRESSBAR_FORMAT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->format () );
+      RQSTRING( obj->format() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -159,7 +162,7 @@ bool invertedAppearance ()
 */
 HB_FUNC_STATIC( QPROGRESSBAR_INVERTEDAPPEARANCE )
 {
-  QProgressBar * obj = (QProgressBar *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QProgressBar *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -167,12 +170,12 @@ HB_FUNC_STATIC( QPROGRESSBAR_INVERTEDAPPEARANCE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->invertedAppearance () );
+      RBOOL( obj->invertedAppearance() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -183,7 +186,7 @@ bool isTextVisible () const
 */
 HB_FUNC_STATIC( QPROGRESSBAR_ISTEXTVISIBLE )
 {
-  QProgressBar * obj = (QProgressBar *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QProgressBar *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -191,12 +194,12 @@ HB_FUNC_STATIC( QPROGRESSBAR_ISTEXTVISIBLE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isTextVisible () );
+      RBOOL( obj->isTextVisible() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -207,7 +210,7 @@ int maximum () const
 */
 HB_FUNC_STATIC( QPROGRESSBAR_MAXIMUM )
 {
-  QProgressBar * obj = (QProgressBar *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QProgressBar *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -215,12 +218,12 @@ HB_FUNC_STATIC( QPROGRESSBAR_MAXIMUM )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->maximum () );
+      RINT( obj->maximum() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -231,7 +234,7 @@ int minimum () const
 */
 HB_FUNC_STATIC( QPROGRESSBAR_MINIMUM )
 {
-  QProgressBar * obj = (QProgressBar *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QProgressBar *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -239,12 +242,12 @@ HB_FUNC_STATIC( QPROGRESSBAR_MINIMUM )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->minimum () );
+      RINT( obj->minimum() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -255,7 +258,7 @@ Qt::Orientation orientation () const
 */
 HB_FUNC_STATIC( QPROGRESSBAR_ORIENTATION )
 {
-  QProgressBar * obj = (QProgressBar *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QProgressBar *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -263,12 +266,12 @@ HB_FUNC_STATIC( QPROGRESSBAR_ORIENTATION )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->orientation () );
+      RENUM( obj->orientation() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -279,7 +282,7 @@ void setAlignment ( Qt::Alignment alignment )
 */
 HB_FUNC_STATIC( QPROGRESSBAR_SETALIGNMENT )
 {
-  QProgressBar * obj = (QProgressBar *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QProgressBar *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -287,12 +290,12 @@ HB_FUNC_STATIC( QPROGRESSBAR_SETALIGNMENT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setAlignment ( (Qt::Alignment) hb_parni(1) );
+      obj->setAlignment( (Qt::Alignment) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -305,7 +308,7 @@ void setFormat ( const QString & format )
 */
 HB_FUNC_STATIC( QPROGRESSBAR_SETFORMAT )
 {
-  QProgressBar * obj = (QProgressBar *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QProgressBar *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -313,12 +316,12 @@ HB_FUNC_STATIC( QPROGRESSBAR_SETFORMAT )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->setFormat ( PQSTRING(1) );
+      obj->setFormat( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -331,7 +334,7 @@ void setInvertedAppearance ( bool invert )
 */
 HB_FUNC_STATIC( QPROGRESSBAR_SETINVERTEDAPPEARANCE )
 {
-  QProgressBar * obj = (QProgressBar *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QProgressBar *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -339,12 +342,12 @@ HB_FUNC_STATIC( QPROGRESSBAR_SETINVERTEDAPPEARANCE )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setInvertedAppearance ( PBOOL(1) );
+      obj->setInvertedAppearance( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -357,7 +360,7 @@ void setTextDirection ( QProgressBar::Direction textDirection )
 */
 HB_FUNC_STATIC( QPROGRESSBAR_SETTEXTDIRECTION )
 {
-  QProgressBar * obj = (QProgressBar *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QProgressBar *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -365,12 +368,12 @@ HB_FUNC_STATIC( QPROGRESSBAR_SETTEXTDIRECTION )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setTextDirection ( (QProgressBar::Direction) hb_parni(1) );
+      obj->setTextDirection( (QProgressBar::Direction) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -383,7 +386,7 @@ void setTextVisible ( bool visible )
 */
 HB_FUNC_STATIC( QPROGRESSBAR_SETTEXTVISIBLE )
 {
-  QProgressBar * obj = (QProgressBar *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QProgressBar *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -391,12 +394,12 @@ HB_FUNC_STATIC( QPROGRESSBAR_SETTEXTVISIBLE )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setTextVisible ( PBOOL(1) );
+      obj->setTextVisible( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -409,7 +412,7 @@ virtual QString text () const
 */
 HB_FUNC_STATIC( QPROGRESSBAR_TEXT )
 {
-  QProgressBar * obj = (QProgressBar *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QProgressBar *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -417,12 +420,12 @@ HB_FUNC_STATIC( QPROGRESSBAR_TEXT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->text () );
+      RQSTRING( obj->text() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -433,7 +436,7 @@ QProgressBar::Direction textDirection ()
 */
 HB_FUNC_STATIC( QPROGRESSBAR_TEXTDIRECTION )
 {
-  QProgressBar * obj = (QProgressBar *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QProgressBar *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -441,12 +444,12 @@ HB_FUNC_STATIC( QPROGRESSBAR_TEXTDIRECTION )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->textDirection () );
+      RENUM( obj->textDirection() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -457,7 +460,7 @@ int value () const
 */
 HB_FUNC_STATIC( QPROGRESSBAR_VALUE )
 {
-  QProgressBar * obj = (QProgressBar *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QProgressBar *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -465,12 +468,12 @@ HB_FUNC_STATIC( QPROGRESSBAR_VALUE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->value () );
+      RINT( obj->value() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -481,7 +484,7 @@ virtual QSize minimumSizeHint () const
 */
 HB_FUNC_STATIC( QPROGRESSBAR_MINIMUMSIZEHINT )
 {
-  QProgressBar * obj = (QProgressBar *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QProgressBar *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -489,13 +492,13 @@ HB_FUNC_STATIC( QPROGRESSBAR_MINIMUMSIZEHINT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSize * ptr = new QSize( obj->minimumSizeHint () );
-      _qt5xhb_createReturnClass ( ptr, "QSIZE", true );
+      auto ptr = new QSize( obj->minimumSizeHint() );
+      Qt5xHb::createReturnClass( ptr, "QSIZE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -506,7 +509,7 @@ virtual QSize sizeHint () const
 */
 HB_FUNC_STATIC( QPROGRESSBAR_SIZEHINT )
 {
-  QProgressBar * obj = (QProgressBar *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QProgressBar *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -514,13 +517,13 @@ HB_FUNC_STATIC( QPROGRESSBAR_SIZEHINT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSize * ptr = new QSize( obj->sizeHint () );
-      _qt5xhb_createReturnClass ( ptr, "QSIZE", true );
+      auto ptr = new QSize( obj->sizeHint() );
+      Qt5xHb::createReturnClass( ptr, "QSIZE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -531,7 +534,7 @@ void reset ()
 */
 HB_FUNC_STATIC( QPROGRESSBAR_RESET )
 {
-  QProgressBar * obj = (QProgressBar *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QProgressBar *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -539,12 +542,12 @@ HB_FUNC_STATIC( QPROGRESSBAR_RESET )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->reset ();
+      obj->reset();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -557,7 +560,7 @@ void setMaximum ( int maximum )
 */
 HB_FUNC_STATIC( QPROGRESSBAR_SETMAXIMUM )
 {
-  QProgressBar * obj = (QProgressBar *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QProgressBar *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -565,12 +568,12 @@ HB_FUNC_STATIC( QPROGRESSBAR_SETMAXIMUM )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setMaximum ( PINT(1) );
+      obj->setMaximum( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -583,7 +586,7 @@ void setMinimum ( int minimum )
 */
 HB_FUNC_STATIC( QPROGRESSBAR_SETMINIMUM )
 {
-  QProgressBar * obj = (QProgressBar *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QProgressBar *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -591,12 +594,12 @@ HB_FUNC_STATIC( QPROGRESSBAR_SETMINIMUM )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setMinimum ( PINT(1) );
+      obj->setMinimum( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -609,7 +612,7 @@ void setOrientation ( Qt::Orientation )
 */
 HB_FUNC_STATIC( QPROGRESSBAR_SETORIENTATION )
 {
-  QProgressBar * obj = (QProgressBar *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QProgressBar *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -617,12 +620,12 @@ HB_FUNC_STATIC( QPROGRESSBAR_SETORIENTATION )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setOrientation ( (Qt::Orientation) hb_parni(1) );
+      obj->setOrientation( (Qt::Orientation) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -635,7 +638,7 @@ void setRange ( int minimum, int maximum )
 */
 HB_FUNC_STATIC( QPROGRESSBAR_SETRANGE )
 {
-  QProgressBar * obj = (QProgressBar *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QProgressBar *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -643,12 +646,12 @@ HB_FUNC_STATIC( QPROGRESSBAR_SETRANGE )
     if( ISNUMPAR(2) && ISNUM(1) && ISNUM(2) )
     {
 #endif
-      obj->setRange ( PINT(1), PINT(2) );
+      obj->setRange( PINT(1), PINT(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -661,7 +664,7 @@ void setValue ( int value )
 */
 HB_FUNC_STATIC( QPROGRESSBAR_SETVALUE )
 {
-  QProgressBar * obj = (QProgressBar *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QProgressBar *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -669,12 +672,12 @@ HB_FUNC_STATIC( QPROGRESSBAR_SETVALUE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setValue ( PINT(1) );
+      obj->setValue( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -687,35 +690,36 @@ void valueChanged( int value )
 */
 HB_FUNC_STATIC( QPROGRESSBAR_ONVALUECHANGED )
 {
-  QProgressBar * sender = (QProgressBar *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QProgressBar *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("valueChanged(int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("valueChanged(int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QProgressBar::valueChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QPROGRESSBAR" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QPROGRESSBAR" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -726,9 +730,9 @@ HB_FUNC_STATIC( QPROGRESSBAR_ONVALUECHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }

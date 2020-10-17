@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -28,7 +28,7 @@ CLASS QAudioRoleControl INHERIT QMediaControl
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QAudioRoleControl
+PROCEDURE destroyObject() CLASS QAudioRoleControl
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -47,7 +47,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #if (QT_VERSION >= QT_VERSION_CHECK(5,6,0))
@@ -65,14 +66,16 @@ virtual ~QAudioRoleControl()
 HB_FUNC_STATIC( QAUDIOROLECONTROL_DELETE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,6,0))
-  QAudioRoleControl * obj = (QAudioRoleControl *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAudioRoleControl *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -87,7 +90,7 @@ virtual QAudio::Role audioRole() const = 0
 HB_FUNC_STATIC( QAUDIOROLECONTROL_AUDIOROLE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,6,0))
-  QAudioRoleControl * obj = (QAudioRoleControl *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAudioRoleControl *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -95,12 +98,12 @@ HB_FUNC_STATIC( QAUDIOROLECONTROL_AUDIOROLE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->audioRole () );
+      RENUM( obj->audioRole() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -113,7 +116,7 @@ virtual void setAudioRole(QAudio::Role role) = 0
 HB_FUNC_STATIC( QAUDIOROLECONTROL_SETAUDIOROLE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,6,0))
-  QAudioRoleControl * obj = (QAudioRoleControl *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAudioRoleControl *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -121,12 +124,12 @@ HB_FUNC_STATIC( QAUDIOROLECONTROL_SETAUDIOROLE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setAudioRole ( (QAudio::Role) hb_parni(1) );
+      obj->setAudioRole( (QAudio::Role) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -141,7 +144,7 @@ virtual QList<QAudio::Role> supportedAudioRoles() const = 0
 HB_FUNC_STATIC( QAUDIOROLECONTROL_SUPPORTEDAUDIOROLES )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,6,0))
-  QAudioRoleControl * obj = (QAudioRoleControl *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAudioRoleControl *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -149,12 +152,11 @@ HB_FUNC_STATIC( QAUDIOROLECONTROL_SUPPORTEDAUDIOROLES )
     if( ISNUMPAR(0) )
     {
 #endif
-      QList<QAudio::Role> list = obj->supportedAudioRoles ();
+      QList<QAudio::Role> list = obj->supportedAudioRoles();
       PHB_ITEM pArray = hb_itemArrayNew(0);
-      int i;
-      for(i=0;i<list.count();i++)
+      for( auto i = 0; i < list.count(); i++ )
       {
-        PHB_ITEM pItem = hb_itemPutNI( NULL, (int) list[i] );
+        PHB_ITEM pItem = hb_itemPutNI( nullptr, (int) list[i] );
         hb_arrayAddForward( pArray, pItem );
         hb_itemRelease(pItem);
       }
@@ -163,7 +165,7 @@ HB_FUNC_STATIC( QAUDIOROLECONTROL_SUPPORTEDAUDIOROLES )
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -176,35 +178,36 @@ void audioRoleChanged(QAudio::Role role)
 HB_FUNC_STATIC( QAUDIOROLECONTROL_ONAUDIOROLECHANGED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,6,0))
-  QAudioRoleControl * sender = (QAudioRoleControl *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAudioRoleControl *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("audioRoleChanged(QAudio::Role)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("audioRoleChanged(QAudio::Role)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAudioRoleControl::audioRoleChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QAudio::Role arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QAUDIOROLECONTROL" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, (int) arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QAUDIOROLECONTROL" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, (int) arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -215,9 +218,9 @@ HB_FUNC_STATIC( QAUDIOROLECONTROL_ONAUDIOROLECHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -231,7 +234,7 @@ HB_FUNC_STATIC( QAUDIOROLECONTROL_ONAUDIOROLECHANGED )
     hb_retl( false );
   }
 #else
-hb_retl( false );
+  hb_retl( false );
 #endif
 }
 

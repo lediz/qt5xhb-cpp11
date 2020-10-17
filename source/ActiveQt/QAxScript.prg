@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -39,7 +39,7 @@ CLASS QAxScript INHERIT QObject
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QAxScript
+PROCEDURE destroyObject() CLASS QAxScript
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -56,7 +56,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <ActiveQt/QAxScript>
@@ -65,31 +66,33 @@ RETURN
 #include <QtCore/QStringList>
 
 /*
-QAxScript ( const QString & name, QAxScriptManager * manager )
+QAxScript( const QString & name, QAxScriptManager * manager )
 */
 HB_FUNC_STATIC( QAXSCRIPT_NEW )
 {
   if( ISNUMPAR(2) && ISCHAR(1) && ISQAXSCRIPTMANAGER(2) )
   {
-    QAxScript * o = new QAxScript ( PQSTRING(1), PQAXSCRIPTMANAGER(2) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QAxScript( PQSTRING(1), PQAXSCRIPTMANAGER(2) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QAXSCRIPT_DELETE )
 {
-  QAxScript * obj = (QAxScript *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAxScript *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -98,35 +101,32 @@ HB_FUNC_STATIC( QAXSCRIPT_DELETE )
 }
 
 /*
-QVariant call ( const QString & function, const QVariant & var1 = QVariant(), const QVariant & var2 = QVariant(), const QVariant & var3 = QVariant(), const QVariant & var4 = QVariant(), const QVariant & var5 = QVariant(), const QVariant & var6 = QVariant(), const QVariant & var7 = QVariant(), const QVariant & var8 = QVariant() )
+QVariant call( const QString & function, const QVariant & var1 = QVariant(), const QVariant & var2 = QVariant(), const QVariant & var3 = QVariant(), const QVariant & var4 = QVariant(), const QVariant & var5 = QVariant(), const QVariant & var6 = QVariant(), const QVariant & var7 = QVariant(), const QVariant & var8 = QVariant() )
 */
-void QAxScript_call1 ()
+void QAxScript_call1()
 {
-  QAxScript * obj = (QAxScript *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAxScript *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QVariant * ptr = new QVariant( obj->call ( PQSTRING(1), ISNIL(2)? QVariant() : *(QVariant *) _qt5xhb_itemGetPtr(2), ISNIL(3)? QVariant() : *(QVariant *) _qt5xhb_itemGetPtr(3), ISNIL(4)? QVariant() : *(QVariant *) _qt5xhb_itemGetPtr(4), ISNIL(5)? QVariant() : *(QVariant *) _qt5xhb_itemGetPtr(5), ISNIL(6)? QVariant() : *(QVariant *) _qt5xhb_itemGetPtr(6), ISNIL(7)? QVariant() : *(QVariant *) _qt5xhb_itemGetPtr(7), ISNIL(8)? QVariant() : *(QVariant *) _qt5xhb_itemGetPtr(8), ISNIL(9)? QVariant() : *(QVariant *) _qt5xhb_itemGetPtr(9) ) );
-      _qt5xhb_createReturnClass ( ptr, "QVARIANT", true );
+    auto ptr = new QVariant( obj->call( PQSTRING(1), ISNIL(2)? QVariant() : *(QVariant *) Qt5xHb::itemGetPtr(2), ISNIL(3)? QVariant() : *(QVariant *) Qt5xHb::itemGetPtr(3), ISNIL(4)? QVariant() : *(QVariant *) Qt5xHb::itemGetPtr(4), ISNIL(5)? QVariant() : *(QVariant *) Qt5xHb::itemGetPtr(5), ISNIL(6)? QVariant() : *(QVariant *) Qt5xHb::itemGetPtr(6), ISNIL(7)? QVariant() : *(QVariant *) Qt5xHb::itemGetPtr(7), ISNIL(8)? QVariant() : *(QVariant *) Qt5xHb::itemGetPtr(8), ISNIL(9)? QVariant() : *(QVariant *) Qt5xHb::itemGetPtr(9) ) );
+    Qt5xHb::createReturnClass( ptr, "QVARIANT", true );
   }
 }
 
 /*
-QVariant call ( const QString & function, QList<QVariant> & arguments )
+QVariant call( const QString & function, QList<QVariant> & arguments )
 */
-void QAxScript_call2 ()
+void QAxScript_call2()
 {
-  QAxScript * obj = (QAxScript *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAxScript *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QVariant * ptr = new QVariant( obj->call ( PQSTRING(1), PQVARIANTLIST(2) ) );
-      _qt5xhb_createReturnClass ( ptr, "QVARIANT", true );
+    auto ptr = new QVariant( obj->call( PQSTRING(1), PQVARIANTLIST(2) ) );
+    Qt5xHb::createReturnClass( ptr, "QVARIANT", true );
   }
 }
-
-//[1]QVariant call ( const QString & function, const QVariant & var1 = QVariant(), const QVariant & var2 = QVariant(), const QVariant & var3 = QVariant(), const QVariant & var4 = QVariant(), const QVariant & var5 = QVariant(), const QVariant & var6 = QVariant(), const QVariant & var7 = QVariant(), const QVariant & var8 = QVariant() )
-//[2]QVariant call ( const QString & function, QList<QVariant> & arguments )
 
 HB_FUNC_STATIC( QAXSCRIPT_CALL )
 {
@@ -140,64 +140,64 @@ HB_FUNC_STATIC( QAXSCRIPT_CALL )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 /*
-QStringList functions ( FunctionFlags flags = FunctionNames ) const
+QStringList functions( QAxScript::FunctionFlags flags = QAxScript::FunctionNames ) const
 */
 HB_FUNC_STATIC( QAXSCRIPT_FUNCTIONS )
 {
-  QAxScript * obj = (QAxScript *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAxScript *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISBETWEEN(0,1) && ISOPTNUM(1) )
+    if( ISBETWEEN(0,1) && (ISNUM(1)||ISNIL(1)) )
     {
 #endif
-      RQSTRINGLIST( obj->functions ( ISNIL(1)? (QAxScript::FunctionFlags) QAxScript::FunctionNames : (QAxScript::FunctionFlags) hb_parni(1) ) );
+      RQSTRINGLIST( obj->functions( ISNIL(1)? (QAxScript::FunctionFlags) QAxScript::FunctionNames : (QAxScript::FunctionFlags) hb_parni(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-bool load ( const QString & code, const QString & language = QString() )
+bool load( const QString & code, const QString & language = QString() )
 */
 HB_FUNC_STATIC( QAXSCRIPT_LOAD )
 {
-  QAxScript * obj = (QAxScript *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAxScript *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISBETWEEN(1,2) && ISCHAR(1) && ISOPTCHAR(2) )
+    if( ISBETWEEN(1,2) && ISCHAR(1) && (ISCHAR(2)||ISNIL(2)) )
     {
 #endif
-      RBOOL( obj->load ( PQSTRING(1), OPQSTRING(2,QString()) ) );
+      RBOOL( obj->load( PQSTRING(1), OPQSTRING(2,QString()) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-QString scriptCode () const
+QString scriptCode() const
 */
 HB_FUNC_STATIC( QAXSCRIPT_SCRIPTCODE )
 {
-  QAxScript * obj = (QAxScript *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAxScript *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -205,23 +205,23 @@ HB_FUNC_STATIC( QAXSCRIPT_SCRIPTCODE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->scriptCode () );
+      RQSTRING( obj->scriptCode() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-QAxScriptEngine * scriptEngine () const
+QAxScriptEngine * scriptEngine() const
 */
 HB_FUNC_STATIC( QAXSCRIPT_SCRIPTENGINE )
 {
-  QAxScript * obj = (QAxScript *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAxScript *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -229,24 +229,24 @@ HB_FUNC_STATIC( QAXSCRIPT_SCRIPTENGINE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QAxScriptEngine * ptr = obj->scriptEngine ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QAXSCRIPTENGINE" );
+      QAxScriptEngine * ptr = obj->scriptEngine();
+      Qt5xHb::createReturnQObjectClass( ptr, "QAXSCRIPTENGINE" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-QString scriptName () const
+QString scriptName() const
 */
 HB_FUNC_STATIC( QAXSCRIPT_SCRIPTNAME )
 {
-  QAxScript * obj = (QAxScript *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAxScript *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -254,12 +254,12 @@ HB_FUNC_STATIC( QAXSCRIPT_SCRIPTNAME )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->scriptName () );
+      RQSTRING( obj->scriptName() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -270,33 +270,34 @@ void entered()
 */
 HB_FUNC_STATIC( QAXSCRIPT_ONENTERED )
 {
-  QAxScript * sender = (QAxScript *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAxScript *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("entered()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("entered()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAxScript::entered, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QAXSCRIPT" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QAXSCRIPT" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -307,9 +308,9 @@ HB_FUNC_STATIC( QAXSCRIPT_ONENTERED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -329,31 +330,32 @@ void error( int code, const QString & description, int sourcePosition, const QSt
 */
 HB_FUNC_STATIC( QAXSCRIPT_ONERROR )
 {
-  QAxScript * sender = (QAxScript *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAxScript *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("error(int,QString,int,QString)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("error(int,QString,int,QString)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAxScript::error, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1, const QString & arg2, int arg3, const QString & arg4) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QAXSCRIPT" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            PHB_ITEM pArg2 = hb_itemPutC( NULL, QSTRINGTOSTRING(arg2) );
-            PHB_ITEM pArg3 = hb_itemPutNI( NULL, arg3 );
-            PHB_ITEM pArg4 = hb_itemPutC( NULL, QSTRINGTOSTRING(arg4) );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 5, pSender, pArg1, pArg2, pArg3, pArg4 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QAXSCRIPT" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            PHB_ITEM pArg2 = hb_itemPutC( nullptr, QSTRINGTOSTRING(arg2) );
+            PHB_ITEM pArg3 = hb_itemPutNI( nullptr, arg3 );
+            PHB_ITEM pArg4 = hb_itemPutC( nullptr, QSTRINGTOSTRING(arg4) );
+            hb_vmEvalBlockV( cb, 5, pSender, pArg1, pArg2, pArg3, pArg4 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -363,7 +365,7 @@ HB_FUNC_STATIC( QAXSCRIPT_ONERROR )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -374,9 +376,9 @@ HB_FUNC_STATIC( QAXSCRIPT_ONERROR )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -396,33 +398,34 @@ void finished()
 */
 HB_FUNC_STATIC( QAXSCRIPT_ONFINISHED1 )
 {
-  QAxScript * sender = (QAxScript *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAxScript *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("finished()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("finished()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               QOverload<>::of(&QAxScript::finished), 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QAXSCRIPT" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QAXSCRIPT" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -433,9 +436,9 @@ HB_FUNC_STATIC( QAXSCRIPT_ONFINISHED1 )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -455,35 +458,36 @@ void finished( const QVariant & result )
 */
 HB_FUNC_STATIC( QAXSCRIPT_ONFINISHED2 )
 {
-  QAxScript * sender = (QAxScript *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAxScript *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("finished(QVariant)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("finished(QVariant)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               QOverload<const QVariant &>::of(&QAxScript::finished), 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (const QVariant & arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QAXSCRIPT" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) &arg1, "QVARIANT" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QAXSCRIPT" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) &arg1, "QVARIANT" );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -494,9 +498,9 @@ HB_FUNC_STATIC( QAXSCRIPT_ONFINISHED2 )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -516,31 +520,32 @@ void finished( int code, const QString & source, const QString & description, co
 */
 HB_FUNC_STATIC( QAXSCRIPT_ONFINISHED3 )
 {
-  QAxScript * sender = (QAxScript *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAxScript *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("finished(int,QString,QString,QString)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("finished(int,QString,QString,QString)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               QOverload<int,const QString &,const QString &,const QString &>::of(&QAxScript::finished), 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1, const QString & arg2, const QString & arg3, const QString & arg4) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QAXSCRIPT" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            PHB_ITEM pArg2 = hb_itemPutC( NULL, QSTRINGTOSTRING(arg2) );
-            PHB_ITEM pArg3 = hb_itemPutC( NULL, QSTRINGTOSTRING(arg3) );
-            PHB_ITEM pArg4 = hb_itemPutC( NULL, QSTRINGTOSTRING(arg4) );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 5, pSender, pArg1, pArg2, pArg3, pArg4 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QAXSCRIPT" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            PHB_ITEM pArg2 = hb_itemPutC( nullptr, QSTRINGTOSTRING(arg2) );
+            PHB_ITEM pArg3 = hb_itemPutC( nullptr, QSTRINGTOSTRING(arg3) );
+            PHB_ITEM pArg4 = hb_itemPutC( nullptr, QSTRINGTOSTRING(arg4) );
+            hb_vmEvalBlockV( cb, 5, pSender, pArg1, pArg2, pArg3, pArg4 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -550,7 +555,7 @@ HB_FUNC_STATIC( QAXSCRIPT_ONFINISHED3 )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -561,9 +566,9 @@ HB_FUNC_STATIC( QAXSCRIPT_ONFINISHED3 )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -583,35 +588,36 @@ void stateChanged( int state )
 */
 HB_FUNC_STATIC( QAXSCRIPT_ONSTATECHANGED )
 {
-  QAxScript * sender = (QAxScript *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAxScript *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("stateChanged(int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("stateChanged(int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAxScript::stateChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QAXSCRIPT" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QAXSCRIPT" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -622,9 +628,9 @@ HB_FUNC_STATIC( QAXSCRIPT_ONSTATECHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }

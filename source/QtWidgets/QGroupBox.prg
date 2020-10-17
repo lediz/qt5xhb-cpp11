@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -39,7 +39,7 @@ CLASS QGroupBox INHERIT QWidget
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QGroupBox
+PROCEDURE destroyObject() CLASS QGroupBox
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -56,7 +56,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtWidgets/QGroupBox>
@@ -65,23 +66,25 @@ RETURN
 /*
 QGroupBox ( QWidget * parent = nullptr )
 */
-void QGroupBox_new1 ()
+void QGroupBox_new1()
 {
-  QGroupBox * o = new QGroupBox ( OPQWIDGET(1,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QGroupBox( OPQWIDGET(1,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
 /*
 QGroupBox ( const QString & title, QWidget * parent = nullptr )
 */
-void QGroupBox_new2 ()
+void QGroupBox_new2()
 {
-  QGroupBox * o = new QGroupBox ( PQSTRING(1), OPQWIDGET(2,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QGroupBox( PQSTRING(1), OPQWIDGET(2,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
-//[1]QGroupBox ( QWidget * parent = nullptr )
-//[2]QGroupBox ( const QString & title, QWidget * parent = nullptr )
+/*
+[1]QGroupBox ( QWidget * parent = nullptr )
+[2]QGroupBox ( const QString & title, QWidget * parent = nullptr )
+*/
 
 HB_FUNC_STATIC( QGROUPBOX_NEW )
 {
@@ -95,20 +98,22 @@ HB_FUNC_STATIC( QGROUPBOX_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QGROUPBOX_DELETE )
 {
-  QGroupBox * obj = (QGroupBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -121,7 +126,7 @@ Qt::Alignment alignment () const
 */
 HB_FUNC_STATIC( QGROUPBOX_ALIGNMENT )
 {
-  QGroupBox * obj = (QGroupBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -129,12 +134,12 @@ HB_FUNC_STATIC( QGROUPBOX_ALIGNMENT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->alignment () );
+      RENUM( obj->alignment() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -145,7 +150,7 @@ bool isCheckable () const
 */
 HB_FUNC_STATIC( QGROUPBOX_ISCHECKABLE )
 {
-  QGroupBox * obj = (QGroupBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -153,12 +158,12 @@ HB_FUNC_STATIC( QGROUPBOX_ISCHECKABLE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isCheckable () );
+      RBOOL( obj->isCheckable() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -169,7 +174,7 @@ bool isChecked () const
 */
 HB_FUNC_STATIC( QGROUPBOX_ISCHECKED )
 {
-  QGroupBox * obj = (QGroupBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -177,12 +182,12 @@ HB_FUNC_STATIC( QGROUPBOX_ISCHECKED )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isChecked () );
+      RBOOL( obj->isChecked() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -193,7 +198,7 @@ bool isFlat () const
 */
 HB_FUNC_STATIC( QGROUPBOX_ISFLAT )
 {
-  QGroupBox * obj = (QGroupBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -201,12 +206,12 @@ HB_FUNC_STATIC( QGROUPBOX_ISFLAT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isFlat () );
+      RBOOL( obj->isFlat() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -217,7 +222,7 @@ void setAlignment ( int alignment )
 */
 HB_FUNC_STATIC( QGROUPBOX_SETALIGNMENT )
 {
-  QGroupBox * obj = (QGroupBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -225,12 +230,12 @@ HB_FUNC_STATIC( QGROUPBOX_SETALIGNMENT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setAlignment ( PINT(1) );
+      obj->setAlignment( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -243,7 +248,7 @@ void setCheckable ( bool checkable )
 */
 HB_FUNC_STATIC( QGROUPBOX_SETCHECKABLE )
 {
-  QGroupBox * obj = (QGroupBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -251,12 +256,12 @@ HB_FUNC_STATIC( QGROUPBOX_SETCHECKABLE )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setCheckable ( PBOOL(1) );
+      obj->setCheckable( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -269,7 +274,7 @@ void setFlat ( bool flat )
 */
 HB_FUNC_STATIC( QGROUPBOX_SETFLAT )
 {
-  QGroupBox * obj = (QGroupBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -277,12 +282,12 @@ HB_FUNC_STATIC( QGROUPBOX_SETFLAT )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setFlat ( PBOOL(1) );
+      obj->setFlat( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -295,7 +300,7 @@ void setTitle ( const QString & title )
 */
 HB_FUNC_STATIC( QGROUPBOX_SETTITLE )
 {
-  QGroupBox * obj = (QGroupBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -303,12 +308,12 @@ HB_FUNC_STATIC( QGROUPBOX_SETTITLE )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->setTitle ( PQSTRING(1) );
+      obj->setTitle( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -321,7 +326,7 @@ QString title () const
 */
 HB_FUNC_STATIC( QGROUPBOX_TITLE )
 {
-  QGroupBox * obj = (QGroupBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -329,12 +334,12 @@ HB_FUNC_STATIC( QGROUPBOX_TITLE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->title () );
+      RQSTRING( obj->title() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -345,7 +350,7 @@ virtual QSize minimumSizeHint () const
 */
 HB_FUNC_STATIC( QGROUPBOX_MINIMUMSIZEHINT )
 {
-  QGroupBox * obj = (QGroupBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -353,13 +358,13 @@ HB_FUNC_STATIC( QGROUPBOX_MINIMUMSIZEHINT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSize * ptr = new QSize( obj->minimumSizeHint () );
-      _qt5xhb_createReturnClass ( ptr, "QSIZE", true );
+      auto ptr = new QSize( obj->minimumSizeHint() );
+      Qt5xHb::createReturnClass( ptr, "QSIZE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -370,7 +375,7 @@ void setChecked ( bool checked )
 */
 HB_FUNC_STATIC( QGROUPBOX_SETCHECKED )
 {
-  QGroupBox * obj = (QGroupBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -378,12 +383,12 @@ HB_FUNC_STATIC( QGROUPBOX_SETCHECKED )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setChecked ( PBOOL(1) );
+      obj->setChecked( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -396,35 +401,36 @@ void clicked( bool checked = false )
 */
 HB_FUNC_STATIC( QGROUPBOX_ONCLICKED )
 {
-  QGroupBox * sender = (QGroupBox *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("clicked(bool)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("clicked(bool)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QGroupBox::clicked, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (bool arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QGROUPBOX" );
-            PHB_ITEM pArg1 = hb_itemPutL( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QGROUPBOX" );
+            PHB_ITEM pArg1 = hb_itemPutL( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -435,9 +441,9 @@ HB_FUNC_STATIC( QGROUPBOX_ONCLICKED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -457,35 +463,36 @@ void toggled( bool on )
 */
 HB_FUNC_STATIC( QGROUPBOX_ONTOGGLED )
 {
-  QGroupBox * sender = (QGroupBox *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("toggled(bool)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("toggled(bool)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QGroupBox::toggled, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (bool arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QGROUPBOX" );
-            PHB_ITEM pArg1 = hb_itemPutL( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QGROUPBOX" );
+            PHB_ITEM pArg1 = hb_itemPutL( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -496,9 +503,9 @@ HB_FUNC_STATIC( QGROUPBOX_ONTOGGLED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }

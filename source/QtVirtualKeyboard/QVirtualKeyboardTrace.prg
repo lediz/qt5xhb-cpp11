@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -47,7 +47,7 @@ CLASS QVirtualKeyboardTrace INHERIT QObject
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QVirtualKeyboardTrace
+PROCEDURE destroyObject() CLASS QVirtualKeyboardTrace
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -64,7 +64,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtVirtualKeyboard/QVirtualKeyboardTrace>
@@ -77,12 +78,12 @@ HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_NEW )
 {
   if( ISBETWEEN(0,1) && (ISQOBJECT(1)||ISNIL(1)) )
   {
-    QVirtualKeyboardTrace * o = new QVirtualKeyboardTrace ( OPQOBJECT(1,nullptr) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QVirtualKeyboardTrace( OPQOBJECT(1,nullptr) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -91,14 +92,16 @@ HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_NEW )
 */
 HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_DELETE )
 {
-  QVirtualKeyboardTrace * obj = (QVirtualKeyboardTrace *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QVirtualKeyboardTrace *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -111,7 +114,7 @@ int traceId() const
 */
 HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_TRACEID )
 {
-  QVirtualKeyboardTrace * obj = (QVirtualKeyboardTrace *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QVirtualKeyboardTrace *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -119,12 +122,12 @@ HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_TRACEID )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->traceId () );
+      RINT( obj->traceId() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -135,7 +138,7 @@ void setTraceId(int id)
 */
 HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_SETTRACEID )
 {
-  QVirtualKeyboardTrace * obj = (QVirtualKeyboardTrace *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QVirtualKeyboardTrace *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -143,12 +146,12 @@ HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_SETTRACEID )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setTraceId ( PINT(1) );
+      obj->setTraceId( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -161,7 +164,7 @@ QStringList channels() const
 */
 HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_CHANNELS )
 {
-  QVirtualKeyboardTrace * obj = (QVirtualKeyboardTrace *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QVirtualKeyboardTrace *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -169,12 +172,12 @@ HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_CHANNELS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRINGLIST( obj->channels () );
+      RQSTRINGLIST( obj->channels() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -185,7 +188,7 @@ void setChannels(const QStringList &channels)
 */
 HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_SETCHANNELS )
 {
-  QVirtualKeyboardTrace * obj = (QVirtualKeyboardTrace *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QVirtualKeyboardTrace *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -193,12 +196,12 @@ HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_SETCHANNELS )
     if( ISNUMPAR(1) && ISARRAY(1) )
     {
 #endif
-      obj->setChannels ( PQSTRINGLIST(1) );
+      obj->setChannels( PQSTRINGLIST(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -211,7 +214,7 @@ int length() const
 */
 HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_LENGTH )
 {
-  QVirtualKeyboardTrace * obj = (QVirtualKeyboardTrace *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QVirtualKeyboardTrace *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -219,12 +222,12 @@ HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_LENGTH )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->length () );
+      RINT( obj->length() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -235,7 +238,7 @@ bool isFinal() const
 */
 HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_ISFINAL )
 {
-  QVirtualKeyboardTrace * obj = (QVirtualKeyboardTrace *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QVirtualKeyboardTrace *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -243,12 +246,12 @@ HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_ISFINAL )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isFinal () );
+      RBOOL( obj->isFinal() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -259,7 +262,7 @@ void setFinal(bool final)
 */
 HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_SETFINAL )
 {
-  QVirtualKeyboardTrace * obj = (QVirtualKeyboardTrace *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QVirtualKeyboardTrace *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -267,12 +270,12 @@ HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_SETFINAL )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setFinal ( PBOOL(1) );
+      obj->setFinal( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -285,7 +288,7 @@ bool isCanceled() const
 */
 HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_ISCANCELED )
 {
-  QVirtualKeyboardTrace * obj = (QVirtualKeyboardTrace *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QVirtualKeyboardTrace *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -293,12 +296,12 @@ HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_ISCANCELED )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isCanceled () );
+      RBOOL( obj->isCanceled() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -309,7 +312,7 @@ void setCanceled(bool canceled)
 */
 HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_SETCANCELED )
 {
-  QVirtualKeyboardTrace * obj = (QVirtualKeyboardTrace *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QVirtualKeyboardTrace *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -317,12 +320,12 @@ HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_SETCANCELED )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setCanceled ( PBOOL(1) );
+      obj->setCanceled( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -335,7 +338,7 @@ qreal opacity() const
 */
 HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_OPACITY )
 {
-  QVirtualKeyboardTrace * obj = (QVirtualKeyboardTrace *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QVirtualKeyboardTrace *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -343,12 +346,12 @@ HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_OPACITY )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQREAL( obj->opacity () );
+      RQREAL( obj->opacity() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -359,7 +362,7 @@ void setOpacity(qreal opacity)
 */
 HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_SETOPACITY )
 {
-  QVirtualKeyboardTrace * obj = (QVirtualKeyboardTrace *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QVirtualKeyboardTrace *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -367,12 +370,12 @@ HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_SETOPACITY )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setOpacity ( PQREAL(1) );
+      obj->setOpacity( PQREAL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -385,7 +388,7 @@ Q_INVOKABLE QVariantList points(int pos = 0, int count = -1) const
 */
 HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_POINTS )
 {
-  QVirtualKeyboardTrace * obj = (QVirtualKeyboardTrace *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QVirtualKeyboardTrace *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -393,41 +396,40 @@ HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_POINTS )
     if( ISBETWEEN(0,2) && ISOPTNUM(1) && ISOPTNUM(2) )
     {
 #endif
-      QVariantList list = obj->points ( OPINT(1,0), OPINT(2,-1) );
+      QVariantList list = obj->points( OPINT(1,0), OPINT(2,-1) );
       PHB_DYNS pDynSym = hb_dynsymFindName( "QVARIANT" );
       PHB_ITEM pArray = hb_itemArrayNew(0);
-      int i;
-      for(i=0;i<list.count();i++)
+      if( pDynSym )
       {
-        if( pDynSym )
+        for( auto i = 0; i < list.count(); i++ )
         {
           hb_vmPushDynSym( pDynSym );
           hb_vmPushNil();
           hb_vmDo( 0 );
-          PHB_ITEM pObject = hb_itemNew( NULL );
+          PHB_ITEM pObject = hb_itemNew( nullptr );
           hb_itemCopy( pObject, hb_stackReturnItem() );
-          PHB_ITEM pItem = hb_itemNew( NULL );
+          PHB_ITEM pItem = hb_itemNew( nullptr );
           hb_itemPutPtr( pItem, (QVariant *) new QVariant( list[i] ) );
           hb_objSendMsg( pObject, "_POINTER", 1, pItem );
           hb_itemRelease( pItem );
-          PHB_ITEM pDestroy = hb_itemNew( NULL );
+          PHB_ITEM pDestroy = hb_itemNew( nullptr );
           hb_itemPutL( pDestroy, true );
           hb_objSendMsg( pObject, "_SELF_DESTRUCTION", 1, pDestroy );
           hb_itemRelease( pDestroy );
           hb_arrayAddForward( pArray, pObject );
           hb_itemRelease( pObject );
         }
-        else
-        {
-          hb_errRT_BASE( EG_NOFUNC, 1001, NULL, "QVARIANT", HB_ERR_ARGS_BASEPARAMS );
-        }
+      }
+      else
+      {
+        hb_errRT_BASE( EG_NOFUNC, 1001, nullptr, "QVARIANT", HB_ERR_ARGS_BASEPARAMS );
       }
       hb_itemReturnRelease(pArray);
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -438,7 +440,7 @@ Q_INVOKABLE int addPoint(const QPointF &point)
 */
 HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_ADDPOINT )
 {
-  QVirtualKeyboardTrace * obj = (QVirtualKeyboardTrace *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QVirtualKeyboardTrace *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -446,12 +448,12 @@ HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_ADDPOINT )
     if( ISNUMPAR(1) && ISQPOINTF(1) )
     {
 #endif
-      RINT( obj->addPoint ( *PQPOINTF(1) ) );
+      RINT( obj->addPoint( *PQPOINTF(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -462,7 +464,7 @@ Q_INVOKABLE void setChannelData(const QString &channel, int index, const QVarian
 */
 HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_SETCHANNELDATA )
 {
-  QVirtualKeyboardTrace * obj = (QVirtualKeyboardTrace *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QVirtualKeyboardTrace *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -470,12 +472,12 @@ HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_SETCHANNELDATA )
     if( ISNUMPAR(3) && ISCHAR(1) && ISNUM(2) && ISQVARIANT(3) )
     {
 #endif
-      obj->setChannelData ( PQSTRING(1), PINT(2), *PQVARIANT(3) );
+      obj->setChannelData( PQSTRING(1), PINT(2), *PQVARIANT(3) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -488,7 +490,7 @@ Q_INVOKABLE QVariantList channelData(const QString &channel, int pos = 0, int co
 */
 HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_CHANNELDATA )
 {
-  QVirtualKeyboardTrace * obj = (QVirtualKeyboardTrace *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QVirtualKeyboardTrace *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -496,41 +498,40 @@ HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_CHANNELDATA )
     if( ISBETWEEN(1,3) && ISCHAR(1) && ISOPTNUM(2) && ISOPTNUM(3) )
     {
 #endif
-      QVariantList list = obj->channelData ( PQSTRING(1), OPINT(2,0), OPINT(3,-1) );
+      QVariantList list = obj->channelData( PQSTRING(1), OPINT(2,0), OPINT(3,-1) );
       PHB_DYNS pDynSym = hb_dynsymFindName( "QVARIANT" );
       PHB_ITEM pArray = hb_itemArrayNew(0);
-      int i;
-      for(i=0;i<list.count();i++)
+      if( pDynSym )
       {
-        if( pDynSym )
+        for( auto i = 0; i < list.count(); i++ )
         {
           hb_vmPushDynSym( pDynSym );
           hb_vmPushNil();
           hb_vmDo( 0 );
-          PHB_ITEM pObject = hb_itemNew( NULL );
+          PHB_ITEM pObject = hb_itemNew( nullptr );
           hb_itemCopy( pObject, hb_stackReturnItem() );
-          PHB_ITEM pItem = hb_itemNew( NULL );
+          PHB_ITEM pItem = hb_itemNew( nullptr );
           hb_itemPutPtr( pItem, (QVariant *) new QVariant( list[i] ) );
           hb_objSendMsg( pObject, "_POINTER", 1, pItem );
           hb_itemRelease( pItem );
-          PHB_ITEM pDestroy = hb_itemNew( NULL );
+          PHB_ITEM pDestroy = hb_itemNew( nullptr );
           hb_itemPutL( pDestroy, true );
           hb_objSendMsg( pObject, "_SELF_DESTRUCTION", 1, pDestroy );
           hb_itemRelease( pDestroy );
           hb_arrayAddForward( pArray, pObject );
           hb_itemRelease( pObject );
         }
-        else
-        {
-          hb_errRT_BASE( EG_NOFUNC, 1001, NULL, "QVARIANT", HB_ERR_ARGS_BASEPARAMS );
-        }
+      }
+      else
+      {
+        hb_errRT_BASE( EG_NOFUNC, 1001, nullptr, "QVARIANT", HB_ERR_ARGS_BASEPARAMS );
       }
       hb_itemReturnRelease(pArray);
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -541,35 +542,36 @@ void traceIdChanged( int traceId )
 */
 HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_ONTRACEIDCHANGED )
 {
-  QVirtualKeyboardTrace * sender = (QVirtualKeyboardTrace *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QVirtualKeyboardTrace *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("traceIdChanged(int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("traceIdChanged(int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QVirtualKeyboardTrace::traceIdChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QVIRTUALKEYBOARDTRACE" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QVIRTUALKEYBOARDTRACE" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -580,9 +582,9 @@ HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_ONTRACEIDCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -602,33 +604,34 @@ void channelsChanged()
 */
 HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_ONCHANNELSCHANGED )
 {
-  QVirtualKeyboardTrace * sender = (QVirtualKeyboardTrace *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QVirtualKeyboardTrace *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("channelsChanged()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("channelsChanged()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QVirtualKeyboardTrace::channelsChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QVIRTUALKEYBOARDTRACE" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QVIRTUALKEYBOARDTRACE" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -639,9 +642,9 @@ HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_ONCHANNELSCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -661,35 +664,36 @@ void lengthChanged( int length )
 */
 HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_ONLENGTHCHANGED )
 {
-  QVirtualKeyboardTrace * sender = (QVirtualKeyboardTrace *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QVirtualKeyboardTrace *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("lengthChanged(int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("lengthChanged(int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QVirtualKeyboardTrace::lengthChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QVIRTUALKEYBOARDTRACE" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QVIRTUALKEYBOARDTRACE" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -700,9 +704,9 @@ HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_ONLENGTHCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -722,35 +726,36 @@ void finalChanged( bool isFinal )
 */
 HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_ONFINALCHANGED )
 {
-  QVirtualKeyboardTrace * sender = (QVirtualKeyboardTrace *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QVirtualKeyboardTrace *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("finalChanged(bool)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("finalChanged(bool)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QVirtualKeyboardTrace::finalChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (bool arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QVIRTUALKEYBOARDTRACE" );
-            PHB_ITEM pArg1 = hb_itemPutL( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QVIRTUALKEYBOARDTRACE" );
+            PHB_ITEM pArg1 = hb_itemPutL( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -761,9 +766,9 @@ HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_ONFINALCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -783,35 +788,36 @@ void canceledChanged( bool isCanceled )
 */
 HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_ONCANCELEDCHANGED )
 {
-  QVirtualKeyboardTrace * sender = (QVirtualKeyboardTrace *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QVirtualKeyboardTrace *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("canceledChanged(bool)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("canceledChanged(bool)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QVirtualKeyboardTrace::canceledChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (bool arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QVIRTUALKEYBOARDTRACE" );
-            PHB_ITEM pArg1 = hb_itemPutL( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QVIRTUALKEYBOARDTRACE" );
+            PHB_ITEM pArg1 = hb_itemPutL( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -822,9 +828,9 @@ HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_ONCANCELEDCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -844,35 +850,36 @@ void opacityChanged( qreal opacity )
 */
 HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_ONOPACITYCHANGED )
 {
-  QVirtualKeyboardTrace * sender = (QVirtualKeyboardTrace *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QVirtualKeyboardTrace *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("opacityChanged(qreal)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("opacityChanged(qreal)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QVirtualKeyboardTrace::opacityChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (qreal arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QVIRTUALKEYBOARDTRACE" );
-            PHB_ITEM pArg1 = hb_itemPutND( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QVIRTUALKEYBOARDTRACE" );
+            PHB_ITEM pArg1 = hb_itemPutND( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -883,9 +890,9 @@ HB_FUNC_STATIC( QVIRTUALKEYBOARDTRACE_ONOPACITYCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }

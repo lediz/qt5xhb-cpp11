@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -44,7 +44,7 @@ CLASS Q3DScatter INHERIT QAbstract3DGraph
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS Q3DScatter
+PROCEDURE destroyObject() CLASS Q3DScatter
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -63,7 +63,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
@@ -74,19 +75,19 @@ RETURN
 using namespace QtDataVisualization;
 
 /*
-explicit Q3DScatter(const QSurfaceFormat *format = nullptr, QWindow *parent = nullptr)
+Q3DScatter( const QSurfaceFormat * format = nullptr, QWindow * parent = nullptr )
 */
 HB_FUNC_STATIC( Q3DSCATTER_NEW )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
   if( ISBETWEEN(0,2) && (ISQSURFACEFORMAT(1)||ISNIL(1)) && (ISQWINDOW(2)||ISNIL(2)) )
   {
-    Q3DScatter * o = new Q3DScatter ( ISNIL(1)? nullptr : (QSurfaceFormat *) _qt5xhb_itemGetPtr(1), OPQWINDOW(2,nullptr) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new Q3DScatter( ISNIL(1)? nullptr : (QSurfaceFormat *) Qt5xHb::itemGetPtr(1), OPQWINDOW(2,nullptr) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
@@ -97,14 +98,16 @@ virtual ~Q3DScatter()
 HB_FUNC_STATIC( Q3DSCATTER_DELETE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  Q3DScatter * obj = (Q3DScatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (Q3DScatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -114,12 +117,12 @@ HB_FUNC_STATIC( Q3DSCATTER_DELETE )
 }
 
 /*
-QValue3DAxis *axisX() const
+QValue3DAxis * axisX() const
 */
 HB_FUNC_STATIC( Q3DSCATTER_AXISX )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  Q3DScatter * obj = (Q3DScatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (Q3DScatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -127,13 +130,13 @@ HB_FUNC_STATIC( Q3DSCATTER_AXISX )
     if( ISNUMPAR(0) )
     {
 #endif
-      QValue3DAxis * ptr = obj->axisX ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QVALUE3DAXIS" );
+      QValue3DAxis * ptr = obj->axisX();
+      Qt5xHb::createReturnQObjectClass( ptr, "QVALUE3DAXIS" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -141,12 +144,12 @@ HB_FUNC_STATIC( Q3DSCATTER_AXISX )
 }
 
 /*
-void setAxisX(QValue3DAxis *axis)
+void setAxisX( QValue3DAxis * axis )
 */
 HB_FUNC_STATIC( Q3DSCATTER_SETAXISX )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  Q3DScatter * obj = (Q3DScatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (Q3DScatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -154,12 +157,12 @@ HB_FUNC_STATIC( Q3DSCATTER_SETAXISX )
     if( ISNUMPAR(1) && ISQVALUE3DAXIS(1) )
     {
 #endif
-      obj->setAxisX ( PQVALUE3DAXIS(1) );
+      obj->setAxisX( PQVALUE3DAXIS(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -169,12 +172,12 @@ HB_FUNC_STATIC( Q3DSCATTER_SETAXISX )
 }
 
 /*
-QValue3DAxis *axisY() const
+QValue3DAxis * axisY() const
 */
 HB_FUNC_STATIC( Q3DSCATTER_AXISY )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  Q3DScatter * obj = (Q3DScatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (Q3DScatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -182,13 +185,13 @@ HB_FUNC_STATIC( Q3DSCATTER_AXISY )
     if( ISNUMPAR(0) )
     {
 #endif
-      QValue3DAxis * ptr = obj->axisY ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QVALUE3DAXIS" );
+      QValue3DAxis * ptr = obj->axisY();
+      Qt5xHb::createReturnQObjectClass( ptr, "QVALUE3DAXIS" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -196,12 +199,12 @@ HB_FUNC_STATIC( Q3DSCATTER_AXISY )
 }
 
 /*
-void setAxisY(QValue3DAxis *axis)
+void setAxisY( QValue3DAxis * axis )
 */
 HB_FUNC_STATIC( Q3DSCATTER_SETAXISY )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  Q3DScatter * obj = (Q3DScatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (Q3DScatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -209,12 +212,12 @@ HB_FUNC_STATIC( Q3DSCATTER_SETAXISY )
     if( ISNUMPAR(1) && ISQVALUE3DAXIS(1) )
     {
 #endif
-      obj->setAxisY ( PQVALUE3DAXIS(1) );
+      obj->setAxisY( PQVALUE3DAXIS(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -224,12 +227,12 @@ HB_FUNC_STATIC( Q3DSCATTER_SETAXISY )
 }
 
 /*
-QValue3DAxis *axisZ() const
+QValue3DAxis * axisZ() const
 */
 HB_FUNC_STATIC( Q3DSCATTER_AXISZ )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  Q3DScatter * obj = (Q3DScatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (Q3DScatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -237,13 +240,13 @@ HB_FUNC_STATIC( Q3DSCATTER_AXISZ )
     if( ISNUMPAR(0) )
     {
 #endif
-      QValue3DAxis * ptr = obj->axisZ ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QVALUE3DAXIS" );
+      QValue3DAxis * ptr = obj->axisZ();
+      Qt5xHb::createReturnQObjectClass( ptr, "QVALUE3DAXIS" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -251,12 +254,12 @@ HB_FUNC_STATIC( Q3DSCATTER_AXISZ )
 }
 
 /*
-void setAxisZ(QValue3DAxis *axis)
+void setAxisZ( QValue3DAxis * axis )
 */
 HB_FUNC_STATIC( Q3DSCATTER_SETAXISZ )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  Q3DScatter * obj = (Q3DScatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (Q3DScatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -264,12 +267,12 @@ HB_FUNC_STATIC( Q3DSCATTER_SETAXISZ )
     if( ISNUMPAR(1) && ISQVALUE3DAXIS(1) )
     {
 #endif
-      obj->setAxisZ ( PQVALUE3DAXIS(1) );
+      obj->setAxisZ( PQVALUE3DAXIS(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -279,12 +282,12 @@ HB_FUNC_STATIC( Q3DSCATTER_SETAXISZ )
 }
 
 /*
-QScatter3DSeries *selectedSeries() const
+QScatter3DSeries * selectedSeries() const
 */
 HB_FUNC_STATIC( Q3DSCATTER_SELECTEDSERIES )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  Q3DScatter * obj = (Q3DScatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (Q3DScatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -292,13 +295,13 @@ HB_FUNC_STATIC( Q3DSCATTER_SELECTEDSERIES )
     if( ISNUMPAR(0) )
     {
 #endif
-      QScatter3DSeries * ptr = obj->selectedSeries ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QSCATTER3DSERIES" );
+      QScatter3DSeries * ptr = obj->selectedSeries();
+      Qt5xHb::createReturnQObjectClass( ptr, "QSCATTER3DSERIES" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -306,12 +309,12 @@ HB_FUNC_STATIC( Q3DSCATTER_SELECTEDSERIES )
 }
 
 /*
-void addSeries(QScatter3DSeries *series)
+void addSeries( QScatter3DSeries * series )
 */
 HB_FUNC_STATIC( Q3DSCATTER_ADDSERIES )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  Q3DScatter * obj = (Q3DScatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (Q3DScatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -319,12 +322,12 @@ HB_FUNC_STATIC( Q3DSCATTER_ADDSERIES )
     if( ISNUMPAR(1) && ISQSCATTER3DSERIES(1) )
     {
 #endif
-      obj->addSeries ( PQSCATTER3DSERIES(1) );
+      obj->addSeries( PQSCATTER3DSERIES(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -334,12 +337,12 @@ HB_FUNC_STATIC( Q3DSCATTER_ADDSERIES )
 }
 
 /*
-void removeSeries(QScatter3DSeries *series)
+void removeSeries( QScatter3DSeries * series )
 */
 HB_FUNC_STATIC( Q3DSCATTER_REMOVESERIES )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  Q3DScatter * obj = (Q3DScatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (Q3DScatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -347,12 +350,12 @@ HB_FUNC_STATIC( Q3DSCATTER_REMOVESERIES )
     if( ISNUMPAR(1) && ISQSCATTER3DSERIES(1) )
     {
 #endif
-      obj->removeSeries ( PQSCATTER3DSERIES(1) );
+      obj->removeSeries( PQSCATTER3DSERIES(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -367,7 +370,7 @@ QList<QScatter3DSeries *> seriesList() const
 HB_FUNC_STATIC( Q3DSCATTER_SERIESLIST )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  Q3DScatter * obj = (Q3DScatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (Q3DScatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -375,37 +378,36 @@ HB_FUNC_STATIC( Q3DSCATTER_SERIESLIST )
     if( ISNUMPAR(0) )
     {
 #endif
-      QList<QScatter3DSeries *> list = obj->seriesList ();
+      QList<QScatter3DSeries *> list = obj->seriesList();
       PHB_DYNS pDynSym = hb_dynsymFindName( "QSCATTER3DSERIES" );
       PHB_ITEM pArray = hb_itemArrayNew(0);
-      int i;
-      for(i=0;i<list.count();i++)
+      if( pDynSym )
       {
-        if( pDynSym )
+        for( auto i = 0; i < list.count(); i++ )
         {
           hb_vmPushDynSym( pDynSym );
           hb_vmPushNil();
           hb_vmDo( 0 );
-          PHB_ITEM pObject = hb_itemNew( NULL );
+          PHB_ITEM pObject = hb_itemNew( nullptr );
           hb_itemCopy( pObject, hb_stackReturnItem() );
-          PHB_ITEM pItem = hb_itemNew( NULL );
+          PHB_ITEM pItem = hb_itemNew( nullptr );
           hb_itemPutPtr( pItem, (QScatter3DSeries *) list[i] );
           hb_objSendMsg( pObject, "_POINTER", 1, pItem );
           hb_itemRelease( pItem );
           hb_arrayAddForward( pArray, pObject );
           hb_itemRelease( pObject );
         }
-        else
-        {
-          hb_errRT_BASE( EG_NOFUNC, 1001, NULL, "QSCATTER3DSERIES", HB_ERR_ARGS_BASEPARAMS );
-        }
+      }
+      else
+      {
+        hb_errRT_BASE( EG_NOFUNC, 1001, nullptr, "QSCATTER3DSERIES", HB_ERR_ARGS_BASEPARAMS );
       }
       hb_itemReturnRelease(pArray);
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -413,12 +415,12 @@ HB_FUNC_STATIC( Q3DSCATTER_SERIESLIST )
 }
 
 /*
-void addAxis(QValue3DAxis *axis)
+void addAxis( QValue3DAxis * axis )
 */
 HB_FUNC_STATIC( Q3DSCATTER_ADDAXIS )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  Q3DScatter * obj = (Q3DScatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (Q3DScatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -426,12 +428,12 @@ HB_FUNC_STATIC( Q3DSCATTER_ADDAXIS )
     if( ISNUMPAR(1) && ISQVALUE3DAXIS(1) )
     {
 #endif
-      obj->addAxis ( PQVALUE3DAXIS(1) );
+      obj->addAxis( PQVALUE3DAXIS(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -441,12 +443,12 @@ HB_FUNC_STATIC( Q3DSCATTER_ADDAXIS )
 }
 
 /*
-void releaseAxis(QValue3DAxis *axis)
+void releaseAxis( QValue3DAxis * axis )
 */
 HB_FUNC_STATIC( Q3DSCATTER_RELEASEAXIS )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  Q3DScatter * obj = (Q3DScatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (Q3DScatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -454,12 +456,12 @@ HB_FUNC_STATIC( Q3DSCATTER_RELEASEAXIS )
     if( ISNUMPAR(1) && ISQVALUE3DAXIS(1) )
     {
 #endif
-      obj->releaseAxis ( PQVALUE3DAXIS(1) );
+      obj->releaseAxis( PQVALUE3DAXIS(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -474,7 +476,7 @@ QList<QValue3DAxis *> axes() const
 HB_FUNC_STATIC( Q3DSCATTER_AXES )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  Q3DScatter * obj = (Q3DScatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (Q3DScatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -482,37 +484,36 @@ HB_FUNC_STATIC( Q3DSCATTER_AXES )
     if( ISNUMPAR(0) )
     {
 #endif
-      QList<QValue3DAxis *> list = obj->axes ();
+      QList<QValue3DAxis *> list = obj->axes();
       PHB_DYNS pDynSym = hb_dynsymFindName( "QVALUE3DAXIS" );
       PHB_ITEM pArray = hb_itemArrayNew(0);
-      int i;
-      for(i=0;i<list.count();i++)
+      if( pDynSym )
       {
-        if( pDynSym )
+        for( auto i = 0; i < list.count(); i++ )
         {
           hb_vmPushDynSym( pDynSym );
           hb_vmPushNil();
           hb_vmDo( 0 );
-          PHB_ITEM pObject = hb_itemNew( NULL );
+          PHB_ITEM pObject = hb_itemNew( nullptr );
           hb_itemCopy( pObject, hb_stackReturnItem() );
-          PHB_ITEM pItem = hb_itemNew( NULL );
+          PHB_ITEM pItem = hb_itemNew( nullptr );
           hb_itemPutPtr( pItem, (QValue3DAxis *) list[i] );
           hb_objSendMsg( pObject, "_POINTER", 1, pItem );
           hb_itemRelease( pItem );
           hb_arrayAddForward( pArray, pObject );
           hb_itemRelease( pObject );
         }
-        else
-        {
-          hb_errRT_BASE( EG_NOFUNC, 1001, NULL, "QVALUE3DAXIS", HB_ERR_ARGS_BASEPARAMS );
-        }
+      }
+      else
+      {
+        hb_errRT_BASE( EG_NOFUNC, 1001, nullptr, "QVALUE3DAXIS", HB_ERR_ARGS_BASEPARAMS );
       }
       hb_itemReturnRelease(pArray);
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -525,35 +526,36 @@ void axisXChanged( QValue3DAxis * axis )
 HB_FUNC_STATIC( Q3DSCATTER_ONAXISXCHANGED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  Q3DScatter * sender = (Q3DScatter *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (Q3DScatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("axisXChanged(QValue3DAxis*)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("axisXChanged(QValue3DAxis*)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &Q3DScatter::axisXChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QValue3DAxis * arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "Q3DSCATTER" );
-            PHB_ITEM pArg1 = Signals3_return_qobject( (QObject *) arg1, "QVALUE3DAXIS" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "Q3DSCATTER" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_qobject( (QObject *) arg1, "QVALUE3DAXIS" );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -564,9 +566,9 @@ HB_FUNC_STATIC( Q3DSCATTER_ONAXISXCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -580,7 +582,7 @@ HB_FUNC_STATIC( Q3DSCATTER_ONAXISXCHANGED )
     hb_retl( false );
   }
 #else
-hb_retl( false );
+  hb_retl( false );
 #endif
 }
 
@@ -590,35 +592,36 @@ void axisYChanged( QValue3DAxis * axis )
 HB_FUNC_STATIC( Q3DSCATTER_ONAXISYCHANGED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  Q3DScatter * sender = (Q3DScatter *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (Q3DScatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("axisYChanged(QValue3DAxis*)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("axisYChanged(QValue3DAxis*)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &Q3DScatter::axisYChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QValue3DAxis * arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "Q3DSCATTER" );
-            PHB_ITEM pArg1 = Signals3_return_qobject( (QObject *) arg1, "QVALUE3DAXIS" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "Q3DSCATTER" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_qobject( (QObject *) arg1, "QVALUE3DAXIS" );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -629,9 +632,9 @@ HB_FUNC_STATIC( Q3DSCATTER_ONAXISYCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -645,7 +648,7 @@ HB_FUNC_STATIC( Q3DSCATTER_ONAXISYCHANGED )
     hb_retl( false );
   }
 #else
-hb_retl( false );
+  hb_retl( false );
 #endif
 }
 
@@ -655,35 +658,36 @@ void axisZChanged( QValue3DAxis * axis )
 HB_FUNC_STATIC( Q3DSCATTER_ONAXISZCHANGED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  Q3DScatter * sender = (Q3DScatter *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (Q3DScatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("axisZChanged(QValue3DAxis*)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("axisZChanged(QValue3DAxis*)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &Q3DScatter::axisZChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QValue3DAxis * arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "Q3DSCATTER" );
-            PHB_ITEM pArg1 = Signals3_return_qobject( (QObject *) arg1, "QVALUE3DAXIS" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "Q3DSCATTER" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_qobject( (QObject *) arg1, "QVALUE3DAXIS" );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -694,9 +698,9 @@ HB_FUNC_STATIC( Q3DSCATTER_ONAXISZCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -710,7 +714,7 @@ HB_FUNC_STATIC( Q3DSCATTER_ONAXISZCHANGED )
     hb_retl( false );
   }
 #else
-hb_retl( false );
+  hb_retl( false );
 #endif
 }
 
@@ -720,35 +724,36 @@ void selectedSeriesChanged( QScatter3DSeries * series )
 HB_FUNC_STATIC( Q3DSCATTER_ONSELECTEDSERIESCHANGED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  Q3DScatter * sender = (Q3DScatter *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (Q3DScatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("selectedSeriesChanged(QScatter3DSeries*)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("selectedSeriesChanged(QScatter3DSeries*)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &Q3DScatter::selectedSeriesChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QScatter3DSeries * arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "Q3DSCATTER" );
-            PHB_ITEM pArg1 = Signals3_return_qobject( (QObject *) arg1, "QSCATTER3DSERIES" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "Q3DSCATTER" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_qobject( (QObject *) arg1, "QSCATTER3DSERIES" );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -759,9 +764,9 @@ HB_FUNC_STATIC( Q3DSCATTER_ONSELECTEDSERIESCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -775,7 +780,7 @@ HB_FUNC_STATIC( Q3DSCATTER_ONSELECTEDSERIESCHANGED )
     hb_retl( false );
   }
 #else
-hb_retl( false );
+  hb_retl( false );
 #endif
 }
 

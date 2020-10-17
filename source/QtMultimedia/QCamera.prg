@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -67,7 +67,7 @@ CLASS QCamera INHERIT QMediaObject
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QCamera
+PROCEDURE destroyObject() CLASS QCamera
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -84,7 +84,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtMultimedia/QCamera>
@@ -93,47 +94,49 @@ RETURN
 /*
 explicit QCamera(QObject *parent = nullptr)
 */
-void QCamera_new1 ()
+void QCamera_new1()
 {
-  QCamera * o = new QCamera ( OPQOBJECT(1,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QCamera( OPQOBJECT(1,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
 /*
 explicit QCamera(const QByteArray& deviceName, QObject *parent = nullptr)
 */
-void QCamera_new2 ()
+void QCamera_new2()
 {
-  QCamera * o = new QCamera ( *PQBYTEARRAY(1), OPQOBJECT(2,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QCamera( *PQBYTEARRAY(1), OPQOBJECT(2,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
 /*
 explicit QCamera(const QCameraInfo& cameraInfo, QObject *parent = nullptr)
 */
-void QCamera_new3 ()
+void QCamera_new3()
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QCamera * o = new QCamera ( *PQCAMERAINFO(1), OPQOBJECT(2,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QCamera( *PQCAMERAINFO(1), OPQOBJECT(2,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 #endif
 }
 
 /*
 explicit QCamera(QCamera::Position position, QObject *parent = nullptr)
 */
-void QCamera_new4 ()
+void QCamera_new4()
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QCamera * o = new QCamera ( (QCamera::Position) hb_parni(1), OPQOBJECT(2,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QCamera( (QCamera::Position) hb_parni(1), OPQOBJECT(2,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 #endif
 }
 
-//[1]explicit QCamera(QObject *parent = nullptr)
-//[2]explicit QCamera(const QByteArray& deviceName, QObject *parent = nullptr)
-//[3]explicit QCamera(const QCameraInfo& cameraInfo, QObject *parent = nullptr)
-//[4]explicit QCamera(QCamera::Position position, QObject *parent = nullptr)
+/*
+[1]explicit QCamera(QObject *parent = nullptr)
+[2]explicit QCamera(const QByteArray& deviceName, QObject *parent = nullptr)
+[3]explicit QCamera(const QCameraInfo& cameraInfo, QObject *parent = nullptr)
+[4]explicit QCamera(QCamera::Position position, QObject *parent = nullptr)
+*/
 
 HB_FUNC_STATIC( QCAMERA_NEW )
 {
@@ -155,7 +158,7 @@ HB_FUNC_STATIC( QCAMERA_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -164,14 +167,16 @@ HB_FUNC_STATIC( QCAMERA_NEW )
 */
 HB_FUNC_STATIC( QCAMERA_DELETE )
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -184,7 +189,7 @@ State state() const
 */
 HB_FUNC_STATIC( QCAMERA_STATE )
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -192,12 +197,12 @@ HB_FUNC_STATIC( QCAMERA_STATE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->state () );
+      RENUM( obj->state() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -208,7 +213,7 @@ Status status() const
 */
 HB_FUNC_STATIC( QCAMERA_STATUS )
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -216,12 +221,12 @@ HB_FUNC_STATIC( QCAMERA_STATUS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->status () );
+      RENUM( obj->status() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -232,7 +237,7 @@ CaptureModes captureMode() const
 */
 HB_FUNC_STATIC( QCAMERA_CAPTUREMODE )
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -240,12 +245,12 @@ HB_FUNC_STATIC( QCAMERA_CAPTUREMODE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->captureMode () );
+      RENUM( obj->captureMode() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -256,7 +261,7 @@ void setCaptureMode(QCamera::CaptureModes mode)
 */
 HB_FUNC_STATIC( QCAMERA_SETCAPTUREMODE )
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -264,12 +269,12 @@ HB_FUNC_STATIC( QCAMERA_SETCAPTUREMODE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setCaptureMode ( (QCamera::CaptureModes) hb_parni(1) );
+      obj->setCaptureMode( (QCamera::CaptureModes) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -280,31 +285,33 @@ HB_FUNC_STATIC( QCAMERA_SETCAPTUREMODE )
 /*
 QCamera::LockStatus lockStatus() const
 */
-void QCamera_lockStatus1 ()
+void QCamera_lockStatus1()
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RENUM( obj->lockStatus () );
+    RENUM( obj->lockStatus() );
   }
 }
 
 /*
 QCamera::LockStatus lockStatus(QCamera::LockType lockType) const
 */
-void QCamera_lockStatus2 ()
+void QCamera_lockStatus2()
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RENUM( obj->lockStatus ( (QCamera::LockType) hb_parni(1) ) );
+    RENUM( obj->lockStatus( (QCamera::LockType) hb_parni(1) ) );
   }
 }
 
-//[1]QCamera::LockStatus lockStatus() const
-//[2]QCamera::LockStatus lockStatus(QCamera::LockType lockType) const
+/*
+[1]QCamera::LockStatus lockStatus() const
+[2]QCamera::LockStatus lockStatus(QCamera::LockType lockType) const
+*/
 
 HB_FUNC_STATIC( QCAMERA_LOCKSTATUS )
 {
@@ -318,7 +325,7 @@ HB_FUNC_STATIC( QCAMERA_LOCKSTATUS )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -327,7 +334,7 @@ Error error() const
 */
 HB_FUNC_STATIC( QCAMERA_ERROR )
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -335,12 +342,12 @@ HB_FUNC_STATIC( QCAMERA_ERROR )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->error () );
+      RENUM( obj->error() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -351,7 +358,7 @@ QString errorString() const
 */
 HB_FUNC_STATIC( QCAMERA_ERRORSTRING )
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -359,12 +366,12 @@ HB_FUNC_STATIC( QCAMERA_ERRORSTRING )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->errorString () );
+      RQSTRING( obj->errorString() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -375,7 +382,7 @@ QCameraExposure * exposure() const
 */
 HB_FUNC_STATIC( QCAMERA_EXPOSURE )
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -383,13 +390,13 @@ HB_FUNC_STATIC( QCAMERA_EXPOSURE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QCameraExposure * ptr = obj->exposure ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QCAMERAEXPOSURE" );
+      QCameraExposure * ptr = obj->exposure();
+      Qt5xHb::createReturnQObjectClass( ptr, "QCAMERAEXPOSURE" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -400,7 +407,7 @@ QCameraFocus * focus() const
 */
 HB_FUNC_STATIC( QCAMERA_FOCUS )
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -408,13 +415,13 @@ HB_FUNC_STATIC( QCAMERA_FOCUS )
     if( ISNUMPAR(0) )
     {
 #endif
-      QCameraFocus * ptr = obj->focus ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QCAMERAFOCUS" );
+      QCameraFocus * ptr = obj->focus();
+      Qt5xHb::createReturnQObjectClass( ptr, "QCAMERAFOCUS" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -425,7 +432,7 @@ QCameraImageProcessing * imageProcessing() const
 */
 HB_FUNC_STATIC( QCAMERA_IMAGEPROCESSING )
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -433,13 +440,13 @@ HB_FUNC_STATIC( QCAMERA_IMAGEPROCESSING )
     if( ISNUMPAR(0) )
     {
 #endif
-      QCameraImageProcessing * ptr = obj->imageProcessing ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QCAMERAIMAGEPROCESSING" );
+      QCameraImageProcessing * ptr = obj->imageProcessing();
+      Qt5xHb::createReturnQObjectClass( ptr, "QCAMERAIMAGEPROCESSING" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -450,7 +457,7 @@ bool isCaptureModeSupported(CaptureModes mode) const
 */
 HB_FUNC_STATIC( QCAMERA_ISCAPTUREMODESUPPORTED )
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -458,12 +465,12 @@ HB_FUNC_STATIC( QCAMERA_ISCAPTUREMODESUPPORTED )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      RBOOL( obj->isCaptureModeSupported ( (QCamera::CaptureModes) hb_parni(1) ) );
+      RBOOL( obj->isCaptureModeSupported( (QCamera::CaptureModes) hb_parni(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -474,7 +481,7 @@ QCamera::LockTypes requestedLocks() const
 */
 HB_FUNC_STATIC( QCAMERA_REQUESTEDLOCKS )
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -482,12 +489,12 @@ HB_FUNC_STATIC( QCAMERA_REQUESTEDLOCKS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->requestedLocks () );
+      RENUM( obj->requestedLocks() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -496,13 +503,13 @@ HB_FUNC_STATIC( QCAMERA_REQUESTEDLOCKS )
 /*
 void setViewfinder(QVideoWidget * viewfinder)
 */
-void QCamera_setViewfinder1 ()
+void QCamera_setViewfinder1()
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setViewfinder ( PQVIDEOWIDGET(1) );
+    obj->setViewfinder( PQVIDEOWIDGET(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -511,13 +518,13 @@ void QCamera_setViewfinder1 ()
 /*
 void setViewfinder(QGraphicsVideoItem * viewfinder)
 */
-void QCamera_setViewfinder2 ()
+void QCamera_setViewfinder2()
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setViewfinder ( PQGRAPHICSVIDEOITEM(1) );
+    obj->setViewfinder( PQGRAPHICSVIDEOITEM(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -526,21 +533,23 @@ void QCamera_setViewfinder2 ()
 /*
 void setViewfinder(QAbstractVideoSurface * surface)
 */
-void QCamera_setViewfinder3 ()
+void QCamera_setViewfinder3()
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setViewfinder ( PQABSTRACTVIDEOSURFACE(1) );
+    obj->setViewfinder( PQABSTRACTVIDEOSURFACE(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void setViewfinder(QVideoWidget * viewfinder)
-//[2]void setViewfinder(QGraphicsVideoItem * viewfinder)
-//[3]void setViewfinder(QAbstractVideoSurface * surface)
+/*
+[1]void setViewfinder(QVideoWidget * viewfinder)
+[2]void setViewfinder(QGraphicsVideoItem * viewfinder)
+[3]void setViewfinder(QAbstractVideoSurface * surface)
+*/
 
 HB_FUNC_STATIC( QCAMERA_SETVIEWFINDER )
 {
@@ -558,7 +567,7 @@ HB_FUNC_STATIC( QCAMERA_SETVIEWFINDER )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -567,7 +576,7 @@ QCamera::LockTypes supportedLocks() const
 */
 HB_FUNC_STATIC( QCAMERA_SUPPORTEDLOCKS )
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -575,12 +584,12 @@ HB_FUNC_STATIC( QCAMERA_SUPPORTEDLOCKS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->supportedLocks () );
+      RENUM( obj->supportedLocks() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -591,7 +600,7 @@ void load()
 */
 HB_FUNC_STATIC( QCAMERA_LOAD )
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -599,12 +608,12 @@ HB_FUNC_STATIC( QCAMERA_LOAD )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->load ();
+      obj->load();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -615,13 +624,13 @@ HB_FUNC_STATIC( QCAMERA_LOAD )
 /*
 void searchAndLock()
 */
-void QCamera_searchAndLock1 ()
+void QCamera_searchAndLock1()
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->searchAndLock ();
+    obj->searchAndLock();
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -630,20 +639,22 @@ void QCamera_searchAndLock1 ()
 /*
 void searchAndLock(QCamera::LockTypes locks)
 */
-void QCamera_searchAndLock2 ()
+void QCamera_searchAndLock2()
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->searchAndLock ( (QCamera::LockTypes) hb_parni(1) );
+    obj->searchAndLock( (QCamera::LockTypes) hb_parni(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void searchAndLock()
-//[2]void searchAndLock(QCamera::LockTypes locks)
+/*
+[1]void searchAndLock()
+[2]void searchAndLock(QCamera::LockTypes locks)
+*/
 
 HB_FUNC_STATIC( QCAMERA_SEARCHANDLOCK )
 {
@@ -657,7 +668,7 @@ HB_FUNC_STATIC( QCAMERA_SEARCHANDLOCK )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -666,7 +677,7 @@ void start()
 */
 HB_FUNC_STATIC( QCAMERA_START )
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -674,12 +685,12 @@ HB_FUNC_STATIC( QCAMERA_START )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->start ();
+      obj->start();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -692,7 +703,7 @@ void stop()
 */
 HB_FUNC_STATIC( QCAMERA_STOP )
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -700,12 +711,12 @@ HB_FUNC_STATIC( QCAMERA_STOP )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->stop ();
+      obj->stop();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -718,7 +729,7 @@ void unload()
 */
 HB_FUNC_STATIC( QCAMERA_UNLOAD )
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -726,12 +737,12 @@ HB_FUNC_STATIC( QCAMERA_UNLOAD )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->unload ();
+      obj->unload();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -742,13 +753,13 @@ HB_FUNC_STATIC( QCAMERA_UNLOAD )
 /*
 void unlock()
 */
-void QCamera_unlock1 ()
+void QCamera_unlock1()
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->unlock ();
+    obj->unlock();
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -757,20 +768,22 @@ void QCamera_unlock1 ()
 /*
 void unlock(QCamera::LockTypes locks)
 */
-void QCamera_unlock2 ()
+void QCamera_unlock2()
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->unlock ( (QCamera::LockTypes) hb_parni(1) );
+    obj->unlock( (QCamera::LockTypes) hb_parni(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void unlock()
-//[2]void unlock(QCamera::LockTypes locks)
+/*
+[1]void unlock()
+[2]void unlock(QCamera::LockTypes locks)
+*/
 
 HB_FUNC_STATIC( QCAMERA_UNLOCK )
 {
@@ -784,7 +797,7 @@ HB_FUNC_STATIC( QCAMERA_UNLOCK )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -793,7 +806,7 @@ QMultimedia::AvailabilityStatus availability() const override
 */
 HB_FUNC_STATIC( QCAMERA_AVAILABILITY )
 {
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -801,12 +814,12 @@ HB_FUNC_STATIC( QCAMERA_AVAILABILITY )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->availability () );
+      RENUM( obj->availability() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -818,7 +831,7 @@ QCameraViewfinderSettings viewfinderSettings() const
 HB_FUNC_STATIC( QCAMERA_VIEWFINDERSETTINGS )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,5,0))
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -826,13 +839,13 @@ HB_FUNC_STATIC( QCAMERA_VIEWFINDERSETTINGS )
     if( ISNUMPAR(0) )
     {
 #endif
-      QCameraViewfinderSettings * ptr = new QCameraViewfinderSettings( obj->viewfinderSettings () );
-      _qt5xhb_createReturnClass ( ptr, "QCAMERAVIEWFINDERSETTINGS", true );
+      auto ptr = new QCameraViewfinderSettings( obj->viewfinderSettings() );
+      Qt5xHb::createReturnClass( ptr, "QCAMERAVIEWFINDERSETTINGS", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -845,7 +858,7 @@ void setViewfinderSettings(const QCameraViewfinderSettings &settings)
 HB_FUNC_STATIC( QCAMERA_SETVIEWFINDERSETTINGS )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,5,0))
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -853,12 +866,12 @@ HB_FUNC_STATIC( QCAMERA_SETVIEWFINDERSETTINGS )
     if( ISNUMPAR(1) && ISQCAMERAVIEWFINDERSETTINGS(1) )
     {
 #endif
-      obj->setViewfinderSettings ( *PQCAMERAVIEWFINDERSETTINGS(1) );
+      obj->setViewfinderSettings( *PQCAMERAVIEWFINDERSETTINGS(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -873,7 +886,7 @@ QList<QCameraViewfinderSettings> supportedViewfinderSettings(const QCameraViewfi
 HB_FUNC_STATIC( QCAMERA_SUPPORTEDVIEWFINDERSETTINGS )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,5,0))
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -881,41 +894,40 @@ HB_FUNC_STATIC( QCAMERA_SUPPORTEDVIEWFINDERSETTINGS )
     if( ISBETWEEN(0,1) && (ISQCAMERAVIEWFINDERSETTINGS(1)||ISNIL(1)) )
     {
 #endif
-      QList<QCameraViewfinderSettings> list = obj->supportedViewfinderSettings ( ISNIL(1)? QCameraViewfinderSettings() : *(QCameraViewfinderSettings *) _qt5xhb_itemGetPtr(1) );
+      QList<QCameraViewfinderSettings> list = obj->supportedViewfinderSettings( ISNIL(1)? QCameraViewfinderSettings() : *(QCameraViewfinderSettings *) Qt5xHb::itemGetPtr(1) );
       PHB_DYNS pDynSym = hb_dynsymFindName( "QCAMERAVIEWFINDERSETTINGS" );
       PHB_ITEM pArray = hb_itemArrayNew(0);
-      int i;
-      for(i=0;i<list.count();i++)
+      if( pDynSym )
       {
-        if( pDynSym )
+        for( auto i = 0; i < list.count(); i++ )
         {
           hb_vmPushDynSym( pDynSym );
           hb_vmPushNil();
           hb_vmDo( 0 );
-          PHB_ITEM pObject = hb_itemNew( NULL );
+          PHB_ITEM pObject = hb_itemNew( nullptr );
           hb_itemCopy( pObject, hb_stackReturnItem() );
-          PHB_ITEM pItem = hb_itemNew( NULL );
-          hb_itemPutPtr( pItem, (QCameraViewfinderSettings *) new QCameraViewfinderSettings ( list[i] ) );
+          PHB_ITEM pItem = hb_itemNew( nullptr );
+          hb_itemPutPtr( pItem, (QCameraViewfinderSettings *) new QCameraViewfinderSettings( list[i] ) );
           hb_objSendMsg( pObject, "_POINTER", 1, pItem );
           hb_itemRelease( pItem );
-          PHB_ITEM pDestroy = hb_itemNew( NULL );
+          PHB_ITEM pDestroy = hb_itemNew( nullptr );
           hb_itemPutL( pDestroy, true );
           hb_objSendMsg( pObject, "_SELF_DESTRUCTION", 1, pDestroy );
           hb_itemRelease( pDestroy );
           hb_arrayAddForward( pArray, pObject );
           hb_itemRelease( pObject );
         }
-        else
-        {
-          hb_errRT_BASE( EG_NOFUNC, 1001, NULL, "QCAMERAVIEWFINDERSETTINGS", HB_ERR_ARGS_BASEPARAMS );
-        }
+      }
+      else
+      {
+        hb_errRT_BASE( EG_NOFUNC, 1001, nullptr, "QCAMERAVIEWFINDERSETTINGS", HB_ERR_ARGS_BASEPARAMS );
       }
       hb_itemReturnRelease(pArray);
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -928,7 +940,7 @@ QList<QSize> supportedViewfinderResolutions(const QCameraViewfinderSettings &set
 HB_FUNC_STATIC( QCAMERA_SUPPORTEDVIEWFINDERRESOLUTIONS )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,5,0))
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -936,41 +948,40 @@ HB_FUNC_STATIC( QCAMERA_SUPPORTEDVIEWFINDERRESOLUTIONS )
     if( ISBETWEEN(0,1) && (ISQCAMERAVIEWFINDERSETTINGS(1)||ISNIL(1)) )
     {
 #endif
-      QList<QSize> list = obj->supportedViewfinderResolutions ( ISNIL(1)? QCameraViewfinderSettings() : *(QCameraViewfinderSettings *) _qt5xhb_itemGetPtr(1) );
+      QList<QSize> list = obj->supportedViewfinderResolutions( ISNIL(1)? QCameraViewfinderSettings() : *(QCameraViewfinderSettings *) Qt5xHb::itemGetPtr(1) );
       PHB_DYNS pDynSym = hb_dynsymFindName( "QSIZE" );
       PHB_ITEM pArray = hb_itemArrayNew(0);
-      int i;
-      for(i=0;i<list.count();i++)
+      if( pDynSym )
       {
-        if( pDynSym )
+        for( auto i = 0; i < list.count(); i++ )
         {
           hb_vmPushDynSym( pDynSym );
           hb_vmPushNil();
           hb_vmDo( 0 );
-          PHB_ITEM pObject = hb_itemNew( NULL );
+          PHB_ITEM pObject = hb_itemNew( nullptr );
           hb_itemCopy( pObject, hb_stackReturnItem() );
-          PHB_ITEM pItem = hb_itemNew( NULL );
-          hb_itemPutPtr( pItem, (QSize *) new QSize ( list[i] ) );
+          PHB_ITEM pItem = hb_itemNew( nullptr );
+          hb_itemPutPtr( pItem, (QSize *) new QSize( list[i] ) );
           hb_objSendMsg( pObject, "_POINTER", 1, pItem );
           hb_itemRelease( pItem );
-          PHB_ITEM pDestroy = hb_itemNew( NULL );
+          PHB_ITEM pDestroy = hb_itemNew( nullptr );
           hb_itemPutL( pDestroy, true );
           hb_objSendMsg( pObject, "_SELF_DESTRUCTION", 1, pDestroy );
           hb_itemRelease( pDestroy );
           hb_arrayAddForward( pArray, pObject );
           hb_itemRelease( pObject );
         }
-        else
-        {
-          hb_errRT_BASE( EG_NOFUNC, 1001, NULL, "QSIZE", HB_ERR_ARGS_BASEPARAMS );
-        }
+      }
+      else
+      {
+        hb_errRT_BASE( EG_NOFUNC, 1001, nullptr, "QSIZE", HB_ERR_ARGS_BASEPARAMS );
       }
       hb_itemReturnRelease(pArray);
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -987,7 +998,7 @@ QList<QVideoFrame::PixelFormat> supportedViewfinderPixelFormats(const QCameraVie
 HB_FUNC_STATIC( QCAMERA_SUPPORTEDVIEWFINDERPIXELFORMATS )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,5,0))
-  QCamera * obj = (QCamera *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -995,12 +1006,11 @@ HB_FUNC_STATIC( QCAMERA_SUPPORTEDVIEWFINDERPIXELFORMATS )
     if( ISBETWEEN(0,1) && (ISQCAMERAVIEWFINDERSETTINGS(1)||ISNIL(1)) )
     {
 #endif
-      QList<QVideoFrame::PixelFormat> list = obj->supportedViewfinderPixelFormats ( ISNIL(1)? QCameraViewfinderSettings() : *(QCameraViewfinderSettings *) _qt5xhb_itemGetPtr(1) );
+      QList<QVideoFrame::PixelFormat> list = obj->supportedViewfinderPixelFormats( ISNIL(1)? QCameraViewfinderSettings() : *(QCameraViewfinderSettings *) Qt5xHb::itemGetPtr(1) );
       PHB_ITEM pArray = hb_itemArrayNew(0);
-      int i;
-      for(i=0;i<list.count();i++)
+      for( auto i = 0; i < list.count(); i++ )
       {
-        PHB_ITEM pItem = hb_itemPutNI( NULL, (int) list[i] );
+        PHB_ITEM pItem = hb_itemPutNI( nullptr, (int) list[i] );
         hb_arrayAddForward( pArray, pItem );
         hb_itemRelease(pItem);
       }
@@ -1009,7 +1019,7 @@ HB_FUNC_STATIC( QCAMERA_SUPPORTEDVIEWFINDERPIXELFORMATS )
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1022,44 +1032,43 @@ static QList<QByteArray> availableDevices()
 HB_FUNC_STATIC( QCAMERA_AVAILABLEDEVICES )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(0) )
+  if( ISNUMPAR(0) )
   {
 #endif
-      QList<QByteArray> list = QCamera::availableDevices ();
-      PHB_DYNS pDynSym = hb_dynsymFindName( "QBYTEARRAY" );
-      PHB_ITEM pArray = hb_itemArrayNew(0);
-      int i;
-      for(i=0;i<list.count();i++)
+    QList<QByteArray> list = QCamera::availableDevices();
+    PHB_DYNS pDynSym = hb_dynsymFindName( "QBYTEARRAY" );
+    PHB_ITEM pArray = hb_itemArrayNew(0);
+    if( pDynSym )
+    {
+      for( auto i = 0; i < list.count(); i++ )
       {
-        if( pDynSym )
-        {
-          hb_vmPushDynSym( pDynSym );
-          hb_vmPushNil();
-          hb_vmDo( 0 );
-          PHB_ITEM pObject = hb_itemNew( NULL );
-          hb_itemCopy( pObject, hb_stackReturnItem() );
-          PHB_ITEM pItem = hb_itemNew( NULL );
-          hb_itemPutPtr( pItem, (QByteArray *) new QByteArray ( list[i] ) );
-          hb_objSendMsg( pObject, "_POINTER", 1, pItem );
-          hb_itemRelease( pItem );
-          PHB_ITEM pDestroy = hb_itemNew( NULL );
-          hb_itemPutL( pDestroy, true );
-          hb_objSendMsg( pObject, "_SELF_DESTRUCTION", 1, pDestroy );
-          hb_itemRelease( pDestroy );
-          hb_arrayAddForward( pArray, pObject );
-          hb_itemRelease( pObject );
-        }
-        else
-        {
-          hb_errRT_BASE( EG_NOFUNC, 1001, NULL, "QBYTEARRAY", HB_ERR_ARGS_BASEPARAMS );
-        }
+        hb_vmPushDynSym( pDynSym );
+        hb_vmPushNil();
+        hb_vmDo( 0 );
+        PHB_ITEM pObject = hb_itemNew( nullptr );
+        hb_itemCopy( pObject, hb_stackReturnItem() );
+        PHB_ITEM pItem = hb_itemNew( nullptr );
+        hb_itemPutPtr( pItem, (QByteArray *) new QByteArray( list[i] ) );
+        hb_objSendMsg( pObject, "_POINTER", 1, pItem );
+        hb_itemRelease( pItem );
+        PHB_ITEM pDestroy = hb_itemNew( nullptr );
+        hb_itemPutL( pDestroy, true );
+        hb_objSendMsg( pObject, "_SELF_DESTRUCTION", 1, pDestroy );
+        hb_itemRelease( pDestroy );
+        hb_arrayAddForward( pArray, pObject );
+        hb_itemRelease( pObject );
       }
-      hb_itemReturnRelease(pArray);
+    }
+    else
+    {
+      hb_errRT_BASE( EG_NOFUNC, 1001, nullptr, "QBYTEARRAY", HB_ERR_ARGS_BASEPARAMS );
+    }
+    hb_itemReturnRelease(pArray);
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
@@ -1070,15 +1079,15 @@ static QString deviceDescription(const QByteArray & device)
 HB_FUNC_STATIC( QCAMERA_DEVICEDESCRIPTION )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISQBYTEARRAY(1) )
+  if( ISNUMPAR(1) && ISQBYTEARRAY(1) )
   {
 #endif
-      RQSTRING( QCamera::deviceDescription ( *PQBYTEARRAY(1) ) );
+    RQSTRING( QCamera::deviceDescription( *PQBYTEARRAY(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
@@ -1088,35 +1097,36 @@ void captureModeChanged( QCamera::CaptureModes mode )
 */
 HB_FUNC_STATIC( QCAMERA_ONCAPTUREMODECHANGED )
 {
-  QCamera * sender = (QCamera *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("captureModeChanged(QCamera::CaptureModes)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("captureModeChanged(QCamera::CaptureModes)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QCamera::captureModeChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QCamera::CaptureModes arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QCAMERA" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, (int) arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QCAMERA" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, (int) arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1127,9 +1137,9 @@ HB_FUNC_STATIC( QCAMERA_ONCAPTUREMODECHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1149,35 +1159,36 @@ void error( QCamera::Error value )
 */
 HB_FUNC_STATIC( QCAMERA_ONERROR )
 {
-  QCamera * sender = (QCamera *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("error(QCamera::Error)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("error(QCamera::Error)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               QOverload<QCamera::Error>::of(&QCamera::error), 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QCamera::Error arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QCAMERA" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, (int) arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QCAMERA" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, (int) arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1188,9 +1199,9 @@ HB_FUNC_STATIC( QCAMERA_ONERROR )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1210,33 +1221,34 @@ void lockFailed()
 */
 HB_FUNC_STATIC( QCAMERA_ONLOCKFAILED )
 {
-  QCamera * sender = (QCamera *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("lockFailed()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("lockFailed()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QCamera::lockFailed, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QCAMERA" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QCAMERA" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1247,9 +1259,9 @@ HB_FUNC_STATIC( QCAMERA_ONLOCKFAILED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1269,29 +1281,30 @@ void lockStatusChanged( QCamera::LockStatus status, QCamera::LockChangeReason re
 */
 HB_FUNC_STATIC( QCAMERA_ONLOCKSTATUSCHANGED1 )
 {
-  QCamera * sender = (QCamera *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("lockStatusChanged(QCamera::LockStatus,QCamera::LockChangeReason)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("lockStatusChanged(QCamera::LockStatus,QCamera::LockChangeReason)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               QOverload<QCamera::LockStatus,QCamera::LockChangeReason>::of(&QCamera::lockStatusChanged), 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QCamera::LockStatus arg1, QCamera::LockChangeReason arg2) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QCAMERA" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, (int) arg1 );
-            PHB_ITEM pArg2 = hb_itemPutNI( NULL, (int) arg2 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 3, pSender, pArg1, pArg2 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QCAMERA" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, (int) arg1 );
+            PHB_ITEM pArg2 = hb_itemPutNI( nullptr, (int) arg2 );
+            hb_vmEvalBlockV( cb, 3, pSender, pArg1, pArg2 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -1299,7 +1312,7 @@ HB_FUNC_STATIC( QCAMERA_ONLOCKSTATUSCHANGED1 )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1310,9 +1323,9 @@ HB_FUNC_STATIC( QCAMERA_ONLOCKSTATUSCHANGED1 )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1332,30 +1345,31 @@ void lockStatusChanged( QCamera::LockType lock, QCamera::LockStatus status, QCam
 */
 HB_FUNC_STATIC( QCAMERA_ONLOCKSTATUSCHANGED2 )
 {
-  QCamera * sender = (QCamera *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("lockStatusChanged(QCamera::LockType,QCamera::LockStatus,QCamera::LockChangeReason)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("lockStatusChanged(QCamera::LockType,QCamera::LockStatus,QCamera::LockChangeReason)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               QOverload<QCamera::LockType,QCamera::LockStatus,QCamera::LockChangeReason>::of(&QCamera::lockStatusChanged), 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QCamera::LockType arg1, QCamera::LockStatus arg2, QCamera::LockChangeReason arg3) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QCAMERA" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, (int) arg1 );
-            PHB_ITEM pArg2 = hb_itemPutNI( NULL, (int) arg2 );
-            PHB_ITEM pArg3 = hb_itemPutNI( NULL, (int) arg3 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 4, pSender, pArg1, pArg2, pArg3 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QCAMERA" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, (int) arg1 );
+            PHB_ITEM pArg2 = hb_itemPutNI( nullptr, (int) arg2 );
+            PHB_ITEM pArg3 = hb_itemPutNI( nullptr, (int) arg3 );
+            hb_vmEvalBlockV( cb, 4, pSender, pArg1, pArg2, pArg3 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -1364,7 +1378,7 @@ HB_FUNC_STATIC( QCAMERA_ONLOCKSTATUSCHANGED2 )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1375,9 +1389,9 @@ HB_FUNC_STATIC( QCAMERA_ONLOCKSTATUSCHANGED2 )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1397,33 +1411,34 @@ void locked()
 */
 HB_FUNC_STATIC( QCAMERA_ONLOCKED )
 {
-  QCamera * sender = (QCamera *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("locked()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("locked()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QCamera::locked, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QCAMERA" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QCAMERA" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1434,9 +1449,9 @@ HB_FUNC_STATIC( QCAMERA_ONLOCKED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1456,35 +1471,36 @@ void stateChanged( QCamera::State state )
 */
 HB_FUNC_STATIC( QCAMERA_ONSTATECHANGED )
 {
-  QCamera * sender = (QCamera *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("stateChanged(QCamera::State)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("stateChanged(QCamera::State)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QCamera::stateChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QCamera::State arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QCAMERA" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, (int) arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QCAMERA" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, (int) arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1495,9 +1511,9 @@ HB_FUNC_STATIC( QCAMERA_ONSTATECHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1517,35 +1533,36 @@ void statusChanged( QCamera::Status status )
 */
 HB_FUNC_STATIC( QCAMERA_ONSTATUSCHANGED )
 {
-  QCamera * sender = (QCamera *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QCamera *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("statusChanged(QCamera::Status)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("statusChanged(QCamera::Status)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QCamera::statusChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QCamera::Status arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QCAMERA" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, (int) arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QCAMERA" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, (int) arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1556,9 +1573,9 @@ HB_FUNC_STATIC( QCAMERA_ONSTATUSCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }

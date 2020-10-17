@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -48,7 +48,7 @@ CLASS QPersistentModelIndex
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QPersistentModelIndex
+PROCEDURE destroyObject() CLASS QPersistentModelIndex
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -65,7 +65,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtCore/QPersistentModelIndex>
@@ -74,33 +73,35 @@ RETURN
 /*
 QPersistentModelIndex()
 */
-void QPersistentModelIndex_new1 ()
+void QPersistentModelIndex_new1()
 {
-  QPersistentModelIndex * o = new QPersistentModelIndex ();
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QPersistentModelIndex();
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QPersistentModelIndex(const QModelIndex &index)
 */
-void QPersistentModelIndex_new2 ()
+void QPersistentModelIndex_new2()
 {
-  QPersistentModelIndex * o = new QPersistentModelIndex ( *PQMODELINDEX(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QPersistentModelIndex( *PQMODELINDEX(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QPersistentModelIndex(const QPersistentModelIndex &other)
 */
-void QPersistentModelIndex_new3 ()
+void QPersistentModelIndex_new3()
 {
-  QPersistentModelIndex * o = new QPersistentModelIndex ( *PQPERSISTENTMODELINDEX(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QPersistentModelIndex( *PQPERSISTENTMODELINDEX(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
-//[1]QPersistentModelIndex()
-//[2]QPersistentModelIndex(const QModelIndex &index)
-//[3]QPersistentModelIndex(const QPersistentModelIndex &other)
+/*
+[1]QPersistentModelIndex()
+[2]QPersistentModelIndex(const QModelIndex &index)
+[3]QPersistentModelIndex(const QPersistentModelIndex &other)
+*/
 
 HB_FUNC_STATIC( QPERSISTENTMODELINDEX_NEW )
 {
@@ -118,20 +119,20 @@ HB_FUNC_STATIC( QPERSISTENTMODELINDEX_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QPERSISTENTMODELINDEX_DELETE )
 {
-  QPersistentModelIndex * obj = (QPersistentModelIndex *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPersistentModelIndex *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -144,7 +145,7 @@ void swap(QPersistentModelIndex &other)
 */
 HB_FUNC_STATIC( QPERSISTENTMODELINDEX_SWAP )
 {
-  QPersistentModelIndex * obj = (QPersistentModelIndex *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPersistentModelIndex *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -152,12 +153,12 @@ HB_FUNC_STATIC( QPERSISTENTMODELINDEX_SWAP )
     if( ISNUMPAR(1) && ISQPERSISTENTMODELINDEX(1) )
     {
 #endif
-      obj->swap ( *PQPERSISTENTMODELINDEX(1) );
+      obj->swap( *PQPERSISTENTMODELINDEX(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -170,7 +171,7 @@ int row() const
 */
 HB_FUNC_STATIC( QPERSISTENTMODELINDEX_ROW )
 {
-  QPersistentModelIndex * obj = (QPersistentModelIndex *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPersistentModelIndex *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -178,12 +179,12 @@ HB_FUNC_STATIC( QPERSISTENTMODELINDEX_ROW )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->row () );
+      RINT( obj->row() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -194,7 +195,7 @@ int column() const
 */
 HB_FUNC_STATIC( QPERSISTENTMODELINDEX_COLUMN )
 {
-  QPersistentModelIndex * obj = (QPersistentModelIndex *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPersistentModelIndex *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -202,12 +203,12 @@ HB_FUNC_STATIC( QPERSISTENTMODELINDEX_COLUMN )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->column () );
+      RINT( obj->column() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -218,7 +219,7 @@ void *internalPointer() const
 */
 HB_FUNC_STATIC( QPERSISTENTMODELINDEX_INTERNALPOINTER )
 {
-  QPersistentModelIndex * obj = (QPersistentModelIndex *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPersistentModelIndex *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -226,12 +227,12 @@ HB_FUNC_STATIC( QPERSISTENTMODELINDEX_INTERNALPOINTER )
     if( ISNUMPAR(0) )
     {
 #endif
-      hb_retptr( (void *) obj->internalPointer () );
+      hb_retptr( (void *) obj->internalPointer() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -242,7 +243,7 @@ quintptr internalId() const
 */
 HB_FUNC_STATIC( QPERSISTENTMODELINDEX_INTERNALID )
 {
-  QPersistentModelIndex * obj = (QPersistentModelIndex *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPersistentModelIndex *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -250,12 +251,12 @@ HB_FUNC_STATIC( QPERSISTENTMODELINDEX_INTERNALID )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQUINTPTR( obj->internalId () );
+      RQUINTPTR( obj->internalId() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -266,7 +267,7 @@ QModelIndex parent() const
 */
 HB_FUNC_STATIC( QPERSISTENTMODELINDEX_PARENT )
 {
-  QPersistentModelIndex * obj = (QPersistentModelIndex *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPersistentModelIndex *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -274,13 +275,13 @@ HB_FUNC_STATIC( QPERSISTENTMODELINDEX_PARENT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QModelIndex * ptr = new QModelIndex( obj->parent () );
-      _qt5xhb_createReturnClass ( ptr, "QMODELINDEX", true );
+      auto ptr = new QModelIndex( obj->parent() );
+      Qt5xHb::createReturnClass( ptr, "QMODELINDEX", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -291,7 +292,7 @@ QModelIndex sibling(int row, int column) const
 */
 HB_FUNC_STATIC( QPERSISTENTMODELINDEX_SIBLING )
 {
-  QPersistentModelIndex * obj = (QPersistentModelIndex *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPersistentModelIndex *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -299,13 +300,13 @@ HB_FUNC_STATIC( QPERSISTENTMODELINDEX_SIBLING )
     if( ISNUMPAR(2) && ISNUM(1) && ISNUM(2) )
     {
 #endif
-      QModelIndex * ptr = new QModelIndex( obj->sibling ( PINT(1), PINT(2) ) );
-      _qt5xhb_createReturnClass ( ptr, "QMODELINDEX", true );
+      auto ptr = new QModelIndex( obj->sibling( PINT(1), PINT(2) ) );
+      Qt5xHb::createReturnClass( ptr, "QMODELINDEX", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -316,7 +317,7 @@ QModelIndex child(int row, int column) const
 */
 HB_FUNC_STATIC( QPERSISTENTMODELINDEX_CHILD )
 {
-  QPersistentModelIndex * obj = (QPersistentModelIndex *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPersistentModelIndex *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -324,13 +325,13 @@ HB_FUNC_STATIC( QPERSISTENTMODELINDEX_CHILD )
     if( ISNUMPAR(2) && ISNUM(1) && ISNUM(2) )
     {
 #endif
-      QModelIndex * ptr = new QModelIndex( obj->child ( PINT(1), PINT(2) ) );
-      _qt5xhb_createReturnClass ( ptr, "QMODELINDEX", true );
+      auto ptr = new QModelIndex( obj->child( PINT(1), PINT(2) ) );
+      Qt5xHb::createReturnClass( ptr, "QMODELINDEX", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -341,7 +342,7 @@ QVariant data(int role = Qt::DisplayRole) const
 */
 HB_FUNC_STATIC( QPERSISTENTMODELINDEX_DATA )
 {
-  QPersistentModelIndex * obj = (QPersistentModelIndex *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPersistentModelIndex *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -349,13 +350,13 @@ HB_FUNC_STATIC( QPERSISTENTMODELINDEX_DATA )
     if( ISBETWEEN(0,1) && ISOPTNUM(1) )
     {
 #endif
-      QVariant * ptr = new QVariant( obj->data ( OPINT(1,Qt::DisplayRole) ) );
-      _qt5xhb_createReturnClass ( ptr, "QVARIANT", true );
+      auto ptr = new QVariant( obj->data( OPINT(1,Qt::DisplayRole) ) );
+      Qt5xHb::createReturnClass( ptr, "QVARIANT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -366,7 +367,7 @@ Qt::ItemFlags flags() const
 */
 HB_FUNC_STATIC( QPERSISTENTMODELINDEX_FLAGS )
 {
-  QPersistentModelIndex * obj = (QPersistentModelIndex *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPersistentModelIndex *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -374,12 +375,12 @@ HB_FUNC_STATIC( QPERSISTENTMODELINDEX_FLAGS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->flags () );
+      RENUM( obj->flags() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -390,7 +391,7 @@ const QAbstractItemModel *model() const
 */
 HB_FUNC_STATIC( QPERSISTENTMODELINDEX_MODEL )
 {
-  QPersistentModelIndex * obj = (QPersistentModelIndex *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPersistentModelIndex *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -398,13 +399,13 @@ HB_FUNC_STATIC( QPERSISTENTMODELINDEX_MODEL )
     if( ISNUMPAR(0) )
     {
 #endif
-      const QAbstractItemModel * ptr = obj->model ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QABSTRACTITEMMODEL" );
+      const QAbstractItemModel * ptr = obj->model();
+      Qt5xHb::createReturnQObjectClass( ptr, "QABSTRACTITEMMODEL" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -415,7 +416,7 @@ bool isValid() const
 */
 HB_FUNC_STATIC( QPERSISTENTMODELINDEX_ISVALID )
 {
-  QPersistentModelIndex * obj = (QPersistentModelIndex *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPersistentModelIndex *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -423,12 +424,12 @@ HB_FUNC_STATIC( QPERSISTENTMODELINDEX_ISVALID )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isValid () );
+      RBOOL( obj->isValid() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -440,25 +441,25 @@ HB_FUNC_STATIC( QPERSISTENTMODELINDEX_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -485,13 +486,13 @@ HB_FUNC_STATIC( QPERSISTENTMODELINDEX_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

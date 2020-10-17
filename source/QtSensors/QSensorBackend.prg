@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -38,7 +38,7 @@ CLASS QSensorBackend INHERIT QObject
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QSensorBackend
+PROCEDURE destroyObject() CLASS QSensorBackend
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -57,7 +57,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
@@ -68,14 +69,16 @@ RETURN
 HB_FUNC_STATIC( QSENSORBACKEND_DELETE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QSensorBackend * obj = (QSensorBackend *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSensorBackend *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -90,7 +93,7 @@ virtual void start() = 0
 HB_FUNC_STATIC( QSENSORBACKEND_START )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QSensorBackend * obj = (QSensorBackend *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSensorBackend *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -98,12 +101,12 @@ HB_FUNC_STATIC( QSENSORBACKEND_START )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->start ();
+      obj->start();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -118,7 +121,7 @@ virtual void stop() = 0
 HB_FUNC_STATIC( QSENSORBACKEND_STOP )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QSensorBackend * obj = (QSensorBackend *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSensorBackend *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -126,12 +129,12 @@ HB_FUNC_STATIC( QSENSORBACKEND_STOP )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->stop ();
+      obj->stop();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -146,7 +149,7 @@ virtual bool isFeatureSupported(QSensor::Feature feature) const
 HB_FUNC_STATIC( QSENSORBACKEND_ISFEATURESUPPORTED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QSensorBackend * obj = (QSensorBackend *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSensorBackend *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -154,12 +157,12 @@ HB_FUNC_STATIC( QSENSORBACKEND_ISFEATURESUPPORTED )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      RBOOL( obj->isFeatureSupported ( (QSensor::Feature) hb_parni(1) ) );
+      RBOOL( obj->isFeatureSupported( (QSensor::Feature) hb_parni(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -172,7 +175,7 @@ void addDataRate(qreal min, qreal max)
 HB_FUNC_STATIC( QSENSORBACKEND_ADDDATARATE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QSensorBackend * obj = (QSensorBackend *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSensorBackend *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -180,12 +183,12 @@ HB_FUNC_STATIC( QSENSORBACKEND_ADDDATARATE )
     if( ISNUMPAR(2) && ISNUM(1) && ISNUM(2) )
     {
 #endif
-      obj->addDataRate ( PQREAL(1), PQREAL(2) );
+      obj->addDataRate( PQREAL(1), PQREAL(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -200,7 +203,7 @@ void setDataRates(const QSensor *otherSensor)
 HB_FUNC_STATIC( QSENSORBACKEND_SETDATARATES )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QSensorBackend * obj = (QSensorBackend *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSensorBackend *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -208,12 +211,12 @@ HB_FUNC_STATIC( QSENSORBACKEND_SETDATARATES )
     if( ISNUMPAR(1) && ISQSENSOR(1) )
     {
 #endif
-      obj->setDataRates ( PQSENSOR(1) );
+      obj->setDataRates( PQSENSOR(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -228,7 +231,7 @@ void addOutputRange(qreal min, qreal max, qreal accuracy)
 HB_FUNC_STATIC( QSENSORBACKEND_ADDOUTPUTRANGE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QSensorBackend * obj = (QSensorBackend *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSensorBackend *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -236,12 +239,12 @@ HB_FUNC_STATIC( QSENSORBACKEND_ADDOUTPUTRANGE )
     if( ISNUMPAR(3) && ISNUM(1) && ISNUM(2) && ISNUM(3) )
     {
 #endif
-      obj->addOutputRange ( PQREAL(1), PQREAL(2), PQREAL(3) );
+      obj->addOutputRange( PQREAL(1), PQREAL(2), PQREAL(3) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -256,7 +259,7 @@ void setDescription(const QString &description)
 HB_FUNC_STATIC( QSENSORBACKEND_SETDESCRIPTION )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QSensorBackend * obj = (QSensorBackend *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSensorBackend *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -264,12 +267,12 @@ HB_FUNC_STATIC( QSENSORBACKEND_SETDESCRIPTION )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->setDescription ( PQSTRING(1) );
+      obj->setDescription( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -284,7 +287,7 @@ QSensorReading *reading() const
 HB_FUNC_STATIC( QSENSORBACKEND_READING )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QSensorBackend * obj = (QSensorBackend *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSensorBackend *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -292,13 +295,13 @@ HB_FUNC_STATIC( QSENSORBACKEND_READING )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSensorReading * ptr = obj->reading ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QSENSORREADING" );
+      QSensorReading * ptr = obj->reading();
+      Qt5xHb::createReturnQObjectClass( ptr, "QSENSORREADING" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -311,7 +314,7 @@ QSensor *sensor() const
 HB_FUNC_STATIC( QSENSORBACKEND_SENSOR )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QSensorBackend * obj = (QSensorBackend *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSensorBackend *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -319,13 +322,13 @@ HB_FUNC_STATIC( QSENSORBACKEND_SENSOR )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSensor * ptr = obj->sensor ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QSENSOR" );
+      QSensor * ptr = obj->sensor();
+      Qt5xHb::createReturnQObjectClass( ptr, "QSENSOR" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -338,7 +341,7 @@ void newReadingAvailable()
 HB_FUNC_STATIC( QSENSORBACKEND_NEWREADINGAVAILABLE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QSensorBackend * obj = (QSensorBackend *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSensorBackend *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -346,12 +349,12 @@ HB_FUNC_STATIC( QSENSORBACKEND_NEWREADINGAVAILABLE )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->newReadingAvailable ();
+      obj->newReadingAvailable();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -366,7 +369,7 @@ void sensorStopped()
 HB_FUNC_STATIC( QSENSORBACKEND_SENSORSTOPPED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QSensorBackend * obj = (QSensorBackend *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSensorBackend *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -374,12 +377,12 @@ HB_FUNC_STATIC( QSENSORBACKEND_SENSORSTOPPED )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->sensorStopped ();
+      obj->sensorStopped();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -394,7 +397,7 @@ void sensorBusy()
 HB_FUNC_STATIC( QSENSORBACKEND_SENSORBUSY )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QSensorBackend * obj = (QSensorBackend *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSensorBackend *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -402,12 +405,12 @@ HB_FUNC_STATIC( QSENSORBACKEND_SENSORBUSY )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->sensorBusy ();
+      obj->sensorBusy();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -422,7 +425,7 @@ void sensorError(int error)
 HB_FUNC_STATIC( QSENSORBACKEND_SENSORERROR )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QSensorBackend * obj = (QSensorBackend *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSensorBackend *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -430,12 +433,12 @@ HB_FUNC_STATIC( QSENSORBACKEND_SENSORERROR )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->sensorError ( PINT(1) );
+      obj->sensorError( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

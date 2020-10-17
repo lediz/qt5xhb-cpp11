@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -24,7 +24,7 @@ CLASS QHoverEvent INHERIT QEvent
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QHoverEvent
+PROCEDURE destroyObject() CLASS QHoverEvent
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -41,7 +41,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtGui/QHoverEvent>
@@ -54,25 +53,25 @@ HB_FUNC_STATIC( QHOVEREVENT_NEW )
 {
   if( ISNUMPAR(3) && ISNUM(1) && ISQPOINT(2) && ISQPOINT(3) )
   {
-    QHoverEvent * o = new QHoverEvent ( (QEvent::Type) hb_parni(1), *PQPOINT(2), *PQPOINT(3) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QHoverEvent( (QEvent::Type) hb_parni(1), *PQPOINT(2), *PQPOINT(3) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QHOVEREVENT_DELETE )
 {
-  QHoverEvent * obj = (QHoverEvent *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHoverEvent *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }

@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -37,7 +37,7 @@ CLASS QSessionManager INHERIT QObject
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QSessionManager
+PROCEDURE destroyObject() CLASS QSessionManager
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -54,7 +54,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtGui/QSessionManager>
@@ -65,7 +66,7 @@ QString sessionId() const
 */
 HB_FUNC_STATIC( QSESSIONMANAGER_SESSIONID )
 {
-  QSessionManager * obj = (QSessionManager *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSessionManager *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -73,12 +74,12 @@ HB_FUNC_STATIC( QSESSIONMANAGER_SESSIONID )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->sessionId () );
+      RQSTRING( obj->sessionId() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -89,7 +90,7 @@ QString sessionKey() const
 */
 HB_FUNC_STATIC( QSESSIONMANAGER_SESSIONKEY )
 {
-  QSessionManager * obj = (QSessionManager *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSessionManager *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -97,12 +98,12 @@ HB_FUNC_STATIC( QSESSIONMANAGER_SESSIONKEY )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->sessionKey () );
+      RQSTRING( obj->sessionKey() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -113,7 +114,7 @@ bool allowsInteraction()
 */
 HB_FUNC_STATIC( QSESSIONMANAGER_ALLOWSINTERACTION )
 {
-  QSessionManager * obj = (QSessionManager *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSessionManager *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -121,12 +122,12 @@ HB_FUNC_STATIC( QSESSIONMANAGER_ALLOWSINTERACTION )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->allowsInteraction () );
+      RBOOL( obj->allowsInteraction() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -137,7 +138,7 @@ bool allowsErrorInteraction()
 */
 HB_FUNC_STATIC( QSESSIONMANAGER_ALLOWSERRORINTERACTION )
 {
-  QSessionManager * obj = (QSessionManager *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSessionManager *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -145,12 +146,12 @@ HB_FUNC_STATIC( QSESSIONMANAGER_ALLOWSERRORINTERACTION )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->allowsErrorInteraction () );
+      RBOOL( obj->allowsErrorInteraction() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -161,7 +162,7 @@ void release()
 */
 HB_FUNC_STATIC( QSESSIONMANAGER_RELEASE )
 {
-  QSessionManager * obj = (QSessionManager *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSessionManager *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -169,12 +170,12 @@ HB_FUNC_STATIC( QSESSIONMANAGER_RELEASE )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->release ();
+      obj->release();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -187,7 +188,7 @@ void cancel()
 */
 HB_FUNC_STATIC( QSESSIONMANAGER_CANCEL )
 {
-  QSessionManager * obj = (QSessionManager *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSessionManager *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -195,12 +196,12 @@ HB_FUNC_STATIC( QSESSIONMANAGER_CANCEL )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->cancel ();
+      obj->cancel();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -213,7 +214,7 @@ void setRestartHint(RestartHint)
 */
 HB_FUNC_STATIC( QSESSIONMANAGER_SETRESTARTHINT )
 {
-  QSessionManager * obj = (QSessionManager *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSessionManager *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -221,12 +222,12 @@ HB_FUNC_STATIC( QSESSIONMANAGER_SETRESTARTHINT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setRestartHint ( (QSessionManager::RestartHint) hb_parni(1) );
+      obj->setRestartHint( (QSessionManager::RestartHint) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -239,7 +240,7 @@ RestartHint restartHint() const
 */
 HB_FUNC_STATIC( QSESSIONMANAGER_RESTARTHINT )
 {
-  QSessionManager * obj = (QSessionManager *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSessionManager *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -247,12 +248,12 @@ HB_FUNC_STATIC( QSESSIONMANAGER_RESTARTHINT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->restartHint () );
+      RENUM( obj->restartHint() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -263,7 +264,7 @@ void setRestartCommand(const QStringList&)
 */
 HB_FUNC_STATIC( QSESSIONMANAGER_SETRESTARTCOMMAND )
 {
-  QSessionManager * obj = (QSessionManager *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSessionManager *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -271,12 +272,12 @@ HB_FUNC_STATIC( QSESSIONMANAGER_SETRESTARTCOMMAND )
     if( ISNUMPAR(1) && ISARRAY(1) )
     {
 #endif
-      obj->setRestartCommand ( PQSTRINGLIST(1) );
+      obj->setRestartCommand( PQSTRINGLIST(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -289,7 +290,7 @@ QStringList restartCommand() const
 */
 HB_FUNC_STATIC( QSESSIONMANAGER_RESTARTCOMMAND )
 {
-  QSessionManager * obj = (QSessionManager *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSessionManager *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -297,12 +298,12 @@ HB_FUNC_STATIC( QSESSIONMANAGER_RESTARTCOMMAND )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRINGLIST( obj->restartCommand () );
+      RQSTRINGLIST( obj->restartCommand() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -313,7 +314,7 @@ void setDiscardCommand(const QStringList&)
 */
 HB_FUNC_STATIC( QSESSIONMANAGER_SETDISCARDCOMMAND )
 {
-  QSessionManager * obj = (QSessionManager *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSessionManager *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -321,12 +322,12 @@ HB_FUNC_STATIC( QSESSIONMANAGER_SETDISCARDCOMMAND )
     if( ISNUMPAR(1) && ISARRAY(1) )
     {
 #endif
-      obj->setDiscardCommand ( PQSTRINGLIST(1) );
+      obj->setDiscardCommand( PQSTRINGLIST(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -339,7 +340,7 @@ QStringList discardCommand() const
 */
 HB_FUNC_STATIC( QSESSIONMANAGER_DISCARDCOMMAND )
 {
-  QSessionManager * obj = (QSessionManager *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSessionManager *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -347,12 +348,12 @@ HB_FUNC_STATIC( QSESSIONMANAGER_DISCARDCOMMAND )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRINGLIST( obj->discardCommand () );
+      RQSTRINGLIST( obj->discardCommand() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -361,13 +362,13 @@ HB_FUNC_STATIC( QSESSIONMANAGER_DISCARDCOMMAND )
 /*
 void setManagerProperty(const QString& name, const QString& value)
 */
-void QSessionManager_setManagerProperty1 ()
+void QSessionManager_setManagerProperty1()
 {
-  QSessionManager * obj = (QSessionManager *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSessionManager *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setManagerProperty ( PQSTRING(1), PQSTRING(2) );
+    obj->setManagerProperty( PQSTRING(1), PQSTRING(2) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -376,20 +377,22 @@ void QSessionManager_setManagerProperty1 ()
 /*
 void setManagerProperty(const QString& name, const QStringList& value)
 */
-void QSessionManager_setManagerProperty2 ()
+void QSessionManager_setManagerProperty2()
 {
-  QSessionManager * obj = (QSessionManager *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSessionManager *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setManagerProperty ( PQSTRING(1), PQSTRINGLIST(2) );
+    obj->setManagerProperty( PQSTRING(1), PQSTRINGLIST(2) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void setManagerProperty(const QString& name, const QString& value)
-//[2]void setManagerProperty(const QString& name, const QStringList& value)
+/*
+[1]void setManagerProperty(const QString& name, const QString& value)
+[2]void setManagerProperty(const QString& name, const QStringList& value)
+*/
 
 HB_FUNC_STATIC( QSESSIONMANAGER_SETMANAGERPROPERTY )
 {
@@ -403,7 +406,7 @@ HB_FUNC_STATIC( QSESSIONMANAGER_SETMANAGERPROPERTY )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -412,7 +415,7 @@ bool isPhase2() const
 */
 HB_FUNC_STATIC( QSESSIONMANAGER_ISPHASE2 )
 {
-  QSessionManager * obj = (QSessionManager *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSessionManager *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -420,12 +423,12 @@ HB_FUNC_STATIC( QSESSIONMANAGER_ISPHASE2 )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isPhase2 () );
+      RBOOL( obj->isPhase2() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -436,7 +439,7 @@ void requestPhase2()
 */
 HB_FUNC_STATIC( QSESSIONMANAGER_REQUESTPHASE2 )
 {
-  QSessionManager * obj = (QSessionManager *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSessionManager *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -444,12 +447,12 @@ HB_FUNC_STATIC( QSESSIONMANAGER_REQUESTPHASE2 )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->requestPhase2 ();
+      obj->requestPhase2();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

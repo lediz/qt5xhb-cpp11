@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -37,7 +37,7 @@ CLASS QWriteLocker
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QWriteLocker
+PROCEDURE destroyObject() CLASS QWriteLocker
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -54,7 +54,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtCore/QWriteLocker>
@@ -67,25 +66,25 @@ HB_FUNC_STATIC( QWRITELOCKER_NEW )
 {
   if( ISNUMPAR(1) && ISQREADWRITELOCK(1) )
   {
-    QWriteLocker * o = new QWriteLocker ( PQREADWRITELOCK(1) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QWriteLocker( PQREADWRITELOCK(1) );
+    Qt5xHb::returnNewObject( obj, true );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QWRITELOCKER_DELETE )
 {
-  QWriteLocker * obj = (QWriteLocker *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWriteLocker *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -98,7 +97,7 @@ QReadWriteLock * readWriteLock() const
 */
 HB_FUNC_STATIC( QWRITELOCKER_READWRITELOCK )
 {
-  QWriteLocker * obj = (QWriteLocker *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWriteLocker *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -106,13 +105,13 @@ HB_FUNC_STATIC( QWRITELOCKER_READWRITELOCK )
     if( ISNUMPAR(0) )
     {
 #endif
-      QReadWriteLock * ptr = obj->readWriteLock ();
-      _qt5xhb_createReturnClass ( ptr, "QREADWRITELOCK", false );
+      QReadWriteLock * ptr = obj->readWriteLock();
+      Qt5xHb::createReturnClass( ptr, "QREADWRITELOCK", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -123,7 +122,7 @@ void relock()
 */
 HB_FUNC_STATIC( QWRITELOCKER_RELOCK )
 {
-  QWriteLocker * obj = (QWriteLocker *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWriteLocker *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -131,12 +130,12 @@ HB_FUNC_STATIC( QWRITELOCKER_RELOCK )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->relock ();
+      obj->relock();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -149,7 +148,7 @@ void unlock()
 */
 HB_FUNC_STATIC( QWRITELOCKER_UNLOCK )
 {
-  QWriteLocker * obj = (QWriteLocker *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWriteLocker *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -157,12 +156,12 @@ HB_FUNC_STATIC( QWRITELOCKER_UNLOCK )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->unlock ();
+      obj->unlock();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -176,25 +175,25 @@ HB_FUNC_STATIC( QWRITELOCKER_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -221,13 +220,13 @@ HB_FUNC_STATIC( QWRITELOCKER_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -41,7 +41,7 @@ CLASS QDateTimeAxis INHERIT QAbstractAxis
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QDateTimeAxis
+PROCEDURE destroyObject() CLASS QDateTimeAxis
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -60,7 +60,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
@@ -68,31 +69,27 @@ RETURN
 #endif
 #endif
 
-#include <QtCore/QDateTime>
-
 using namespace QtCharts;
 
+#include <QtCore/QDateTime>
+
 /*
-explicit QDateTimeAxis(QObject *parent = nullptr)
+QDateTimeAxis( QObject * parent = nullptr )
 */
 HB_FUNC_STATIC( QDATETIMEAXIS_NEW )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
   if( ISBETWEEN(0,1) && (ISQOBJECT(1)||ISNIL(1)) )
   {
-    QDateTimeAxis * o = new QDateTimeAxis ( OPQOBJECT(1,nullptr) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QDateTimeAxis( OPQOBJECT(1,nullptr) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
-
-/*
-QDateTimeAxis(QDateTimeAxisPrivate &d, QObject *parent = nullptr) [protected]
-*/
 
 /*
 ~QDateTimeAxis()
@@ -100,14 +97,16 @@ QDateTimeAxis(QDateTimeAxisPrivate &d, QObject *parent = nullptr) [protected]
 HB_FUNC_STATIC( QDATETIMEAXIS_DELETE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QDateTimeAxis * obj = (QDateTimeAxis *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDateTimeAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -122,7 +121,7 @@ QDateTime min() const
 HB_FUNC_STATIC( QDATETIMEAXIS_MIN )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QDateTimeAxis * obj = (QDateTimeAxis *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDateTimeAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -130,13 +129,13 @@ HB_FUNC_STATIC( QDATETIMEAXIS_MIN )
     if( ISNUMPAR(0) )
     {
 #endif
-      QDateTime * ptr = new QDateTime( obj->min () );
-      _qt5xhb_createReturnClass ( ptr, "QDATETIME", true );
+      auto ptr = new QDateTime( obj->min() );
+      Qt5xHb::createReturnClass( ptr, "QDATETIME", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -144,12 +143,12 @@ HB_FUNC_STATIC( QDATETIMEAXIS_MIN )
 }
 
 /*
-void setMin(QDateTime min)
+void setMin( QDateTime min )
 */
 HB_FUNC_STATIC( QDATETIMEAXIS_SETMIN )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QDateTimeAxis * obj = (QDateTimeAxis *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDateTimeAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -157,12 +156,12 @@ HB_FUNC_STATIC( QDATETIMEAXIS_SETMIN )
     if( ISNUMPAR(1) && ISQDATETIME(1) )
     {
 #endif
-      obj->setMin ( *PQDATETIME(1) );
+      obj->setMin( *PQDATETIME(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -177,7 +176,7 @@ QDateTime max() const
 HB_FUNC_STATIC( QDATETIMEAXIS_MAX )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QDateTimeAxis * obj = (QDateTimeAxis *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDateTimeAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -185,13 +184,13 @@ HB_FUNC_STATIC( QDATETIMEAXIS_MAX )
     if( ISNUMPAR(0) )
     {
 #endif
-      QDateTime * ptr = new QDateTime( obj->max () );
-      _qt5xhb_createReturnClass ( ptr, "QDATETIME", true );
+      auto ptr = new QDateTime( obj->max() );
+      Qt5xHb::createReturnClass( ptr, "QDATETIME", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -199,12 +198,12 @@ HB_FUNC_STATIC( QDATETIMEAXIS_MAX )
 }
 
 /*
-void setMax(QDateTime max)
+void setMax( QDateTime max )
 */
 HB_FUNC_STATIC( QDATETIMEAXIS_SETMAX )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QDateTimeAxis * obj = (QDateTimeAxis *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDateTimeAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -212,12 +211,12 @@ HB_FUNC_STATIC( QDATETIMEAXIS_SETMAX )
     if( ISNUMPAR(1) && ISQDATETIME(1) )
     {
 #endif
-      obj->setMax ( *PQDATETIME(1) );
+      obj->setMax( *PQDATETIME(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -232,7 +231,7 @@ QString format() const
 HB_FUNC_STATIC( QDATETIMEAXIS_FORMAT )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QDateTimeAxis * obj = (QDateTimeAxis *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDateTimeAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -240,12 +239,12 @@ HB_FUNC_STATIC( QDATETIMEAXIS_FORMAT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->format () );
+      RQSTRING( obj->format() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -253,12 +252,12 @@ HB_FUNC_STATIC( QDATETIMEAXIS_FORMAT )
 }
 
 /*
-void setFormat(QString format)
+void setFormat( QString format )
 */
 HB_FUNC_STATIC( QDATETIMEAXIS_SETFORMAT )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QDateTimeAxis * obj = (QDateTimeAxis *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDateTimeAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -266,12 +265,12 @@ HB_FUNC_STATIC( QDATETIMEAXIS_SETFORMAT )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->setFormat ( PQSTRING(1) );
+      obj->setFormat( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -286,7 +285,7 @@ int tickCount() const
 HB_FUNC_STATIC( QDATETIMEAXIS_TICKCOUNT )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QDateTimeAxis * obj = (QDateTimeAxis *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDateTimeAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -294,12 +293,12 @@ HB_FUNC_STATIC( QDATETIMEAXIS_TICKCOUNT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->tickCount () );
+      RINT( obj->tickCount() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -307,12 +306,12 @@ HB_FUNC_STATIC( QDATETIMEAXIS_TICKCOUNT )
 }
 
 /*
-void setTickCount(int count)
+void setTickCount( int count )
 */
 HB_FUNC_STATIC( QDATETIMEAXIS_SETTICKCOUNT )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QDateTimeAxis * obj = (QDateTimeAxis *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDateTimeAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -320,12 +319,12 @@ HB_FUNC_STATIC( QDATETIMEAXIS_SETTICKCOUNT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setTickCount ( PINT(1) );
+      obj->setTickCount( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -335,12 +334,12 @@ HB_FUNC_STATIC( QDATETIMEAXIS_SETTICKCOUNT )
 }
 
 /*
-AxisType type() const
+QAbstractAxis::AxisType type() const
 */
 HB_FUNC_STATIC( QDATETIMEAXIS_TYPE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QDateTimeAxis * obj = (QDateTimeAxis *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDateTimeAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -348,12 +347,12 @@ HB_FUNC_STATIC( QDATETIMEAXIS_TYPE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->type () );
+      RENUM( obj->type() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -361,12 +360,12 @@ HB_FUNC_STATIC( QDATETIMEAXIS_TYPE )
 }
 
 /*
-void setRange(QDateTime min, QDateTime max)
+void setRange( QDateTime min, QDateTime max )
 */
 HB_FUNC_STATIC( QDATETIMEAXIS_SETRANGE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QDateTimeAxis * obj = (QDateTimeAxis *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDateTimeAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -374,12 +373,12 @@ HB_FUNC_STATIC( QDATETIMEAXIS_SETRANGE )
     if( ISNUMPAR(2) && ISQDATETIME(1) && ISQDATETIME(2) )
     {
 #endif
-      obj->setRange ( *PQDATETIME(1), *PQDATETIME(2) );
+      obj->setRange( *PQDATETIME(1), *PQDATETIME(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -394,35 +393,36 @@ void formatChanged( QString format )
 HB_FUNC_STATIC( QDATETIMEAXIS_ONFORMATCHANGED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QDateTimeAxis * sender = (QDateTimeAxis *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QDateTimeAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("formatChanged(QString)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("formatChanged(QString)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QDateTimeAxis::formatChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QString arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QDATETIMEAXIS" );
-            PHB_ITEM pArg1 = hb_itemPutC( NULL, QSTRINGTOSTRING(arg1) );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QDATETIMEAXIS" );
+            PHB_ITEM pArg1 = hb_itemPutC( nullptr, QSTRINGTOSTRING(arg1) );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -433,9 +433,9 @@ HB_FUNC_STATIC( QDATETIMEAXIS_ONFORMATCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -449,7 +449,7 @@ HB_FUNC_STATIC( QDATETIMEAXIS_ONFORMATCHANGED )
     hb_retl( false );
   }
 #else
-hb_retl( false );
+  hb_retl( false );
 #endif
 }
 
@@ -459,35 +459,36 @@ void maxChanged( QDateTime max )
 HB_FUNC_STATIC( QDATETIMEAXIS_ONMAXCHANGED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QDateTimeAxis * sender = (QDateTimeAxis *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QDateTimeAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("maxChanged(QDateTime)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("maxChanged(QDateTime)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QDateTimeAxis::maxChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QDateTime arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QDATETIMEAXIS" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) &arg1, "QDATETIME" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QDATETIMEAXIS" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) &arg1, "QDATETIME" );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -498,9 +499,9 @@ HB_FUNC_STATIC( QDATETIMEAXIS_ONMAXCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -514,7 +515,7 @@ HB_FUNC_STATIC( QDATETIMEAXIS_ONMAXCHANGED )
     hb_retl( false );
   }
 #else
-hb_retl( false );
+  hb_retl( false );
 #endif
 }
 
@@ -524,35 +525,36 @@ void minChanged( QDateTime min )
 HB_FUNC_STATIC( QDATETIMEAXIS_ONMINCHANGED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QDateTimeAxis * sender = (QDateTimeAxis *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QDateTimeAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("minChanged(QDateTime)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("minChanged(QDateTime)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QDateTimeAxis::minChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QDateTime arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QDATETIMEAXIS" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) &arg1, "QDATETIME" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QDATETIMEAXIS" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) &arg1, "QDATETIME" );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -563,9 +565,9 @@ HB_FUNC_STATIC( QDATETIMEAXIS_ONMINCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -579,7 +581,7 @@ HB_FUNC_STATIC( QDATETIMEAXIS_ONMINCHANGED )
     hb_retl( false );
   }
 #else
-hb_retl( false );
+  hb_retl( false );
 #endif
 }
 
@@ -589,29 +591,30 @@ void rangeChanged( QDateTime min, QDateTime max )
 HB_FUNC_STATIC( QDATETIMEAXIS_ONRANGECHANGED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QDateTimeAxis * sender = (QDateTimeAxis *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QDateTimeAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("rangeChanged(QDateTime,QDateTime)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("rangeChanged(QDateTime,QDateTime)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QDateTimeAxis::rangeChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QDateTime arg1, QDateTime arg2) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QDATETIMEAXIS" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) &arg1, "QDATETIME" );
-            PHB_ITEM pArg2 = Signals3_return_object( (void *) &arg2, "QDATETIME" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 3, pSender, pArg1, pArg2 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QDATETIMEAXIS" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) &arg1, "QDATETIME" );
+            PHB_ITEM pArg2 = Qt5xHb::Signals_return_object( (void *) &arg2, "QDATETIME" );
+            hb_vmEvalBlockV( cb, 3, pSender, pArg1, pArg2 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -619,7 +622,7 @@ HB_FUNC_STATIC( QDATETIMEAXIS_ONRANGECHANGED )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -630,9 +633,9 @@ HB_FUNC_STATIC( QDATETIMEAXIS_ONRANGECHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -646,7 +649,7 @@ HB_FUNC_STATIC( QDATETIMEAXIS_ONRANGECHANGED )
     hb_retl( false );
   }
 #else
-hb_retl( false );
+  hb_retl( false );
 #endif
 }
 
@@ -656,35 +659,36 @@ void tickCountChanged( int tick )
 HB_FUNC_STATIC( QDATETIMEAXIS_ONTICKCOUNTCHANGED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QDateTimeAxis * sender = (QDateTimeAxis *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QDateTimeAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("tickCountChanged(int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("tickCountChanged(int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QDateTimeAxis::tickCountChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QDATETIMEAXIS" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QDATETIMEAXIS" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -695,9 +699,9 @@ HB_FUNC_STATIC( QDATETIMEAXIS_ONTICKCOUNTCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -711,7 +715,7 @@ HB_FUNC_STATIC( QDATETIMEAXIS_ONTICKCOUNTCHANGED )
     hb_retl( false );
   }
 #else
-hb_retl( false );
+  hb_retl( false );
 #endif
 }
 

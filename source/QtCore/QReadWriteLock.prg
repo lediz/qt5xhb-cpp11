@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -38,7 +38,7 @@ CLASS QReadWriteLock
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QReadWriteLock
+PROCEDURE destroyObject() CLASS QReadWriteLock
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -55,7 +55,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtCore/QReadWriteLock>
@@ -68,25 +67,25 @@ HB_FUNC_STATIC( QREADWRITELOCK_NEW )
 {
   if( ISBETWEEN(0,1) && ISOPTNUM(1) )
   {
-    QReadWriteLock * o = new QReadWriteLock ( ISNIL(1)? (QReadWriteLock::RecursionMode) QReadWriteLock::NonRecursive : (QReadWriteLock::RecursionMode) hb_parni(1) );
-    _qt5xhb_returnNewObject( o, true );
+    auto obj = new QReadWriteLock( ISNIL(1)? (QReadWriteLock::RecursionMode) QReadWriteLock::NonRecursive : (QReadWriteLock::RecursionMode) hb_parni(1) );
+    Qt5xHb::returnNewObject( obj, true );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QREADWRITELOCK_DELETE )
 {
-  QReadWriteLock * obj = (QReadWriteLock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QReadWriteLock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -99,7 +98,7 @@ void lockForRead()
 */
 HB_FUNC_STATIC( QREADWRITELOCK_LOCKFORREAD )
 {
-  QReadWriteLock * obj = (QReadWriteLock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QReadWriteLock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -107,12 +106,12 @@ HB_FUNC_STATIC( QREADWRITELOCK_LOCKFORREAD )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->lockForRead ();
+      obj->lockForRead();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -123,31 +122,33 @@ HB_FUNC_STATIC( QREADWRITELOCK_LOCKFORREAD )
 /*
 bool tryLockForRead()
 */
-void QReadWriteLock_tryLockForRead1 ()
+void QReadWriteLock_tryLockForRead1()
 {
-  QReadWriteLock * obj = (QReadWriteLock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QReadWriteLock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RBOOL( obj->tryLockForRead () );
+    RBOOL( obj->tryLockForRead() );
   }
 }
 
 /*
 bool tryLockForRead(int timeout)
 */
-void QReadWriteLock_tryLockForRead2 ()
+void QReadWriteLock_tryLockForRead2()
 {
-  QReadWriteLock * obj = (QReadWriteLock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QReadWriteLock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RBOOL( obj->tryLockForRead ( PINT(1) ) );
+    RBOOL( obj->tryLockForRead( PINT(1) ) );
   }
 }
 
-//[1]bool tryLockForRead()
-//[2]bool tryLockForRead(int timeout)
+/*
+[1]bool tryLockForRead()
+[2]bool tryLockForRead(int timeout)
+*/
 
 HB_FUNC_STATIC( QREADWRITELOCK_TRYLOCKFORREAD )
 {
@@ -161,7 +162,7 @@ HB_FUNC_STATIC( QREADWRITELOCK_TRYLOCKFORREAD )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -170,7 +171,7 @@ void lockForWrite()
 */
 HB_FUNC_STATIC( QREADWRITELOCK_LOCKFORWRITE )
 {
-  QReadWriteLock * obj = (QReadWriteLock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QReadWriteLock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -178,12 +179,12 @@ HB_FUNC_STATIC( QREADWRITELOCK_LOCKFORWRITE )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->lockForWrite ();
+      obj->lockForWrite();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -194,31 +195,33 @@ HB_FUNC_STATIC( QREADWRITELOCK_LOCKFORWRITE )
 /*
 bool tryLockForWrite()
 */
-void QReadWriteLock_tryLockForWrite1 ()
+void QReadWriteLock_tryLockForWrite1()
 {
-  QReadWriteLock * obj = (QReadWriteLock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QReadWriteLock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RBOOL( obj->tryLockForWrite () );
+    RBOOL( obj->tryLockForWrite() );
   }
 }
 
 /*
 bool tryLockForWrite(int timeout)
 */
-void QReadWriteLock_tryLockForWrite2 ()
+void QReadWriteLock_tryLockForWrite2()
 {
-  QReadWriteLock * obj = (QReadWriteLock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QReadWriteLock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RBOOL( obj->tryLockForWrite ( PINT(1) ) );
+    RBOOL( obj->tryLockForWrite( PINT(1) ) );
   }
 }
 
-//[1]bool tryLockForWrite()
-//[2]bool tryLockForWrite(int timeout)
+/*
+[1]bool tryLockForWrite()
+[2]bool tryLockForWrite(int timeout)
+*/
 
 HB_FUNC_STATIC( QREADWRITELOCK_TRYLOCKFORWRITE )
 {
@@ -232,7 +235,7 @@ HB_FUNC_STATIC( QREADWRITELOCK_TRYLOCKFORWRITE )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -241,7 +244,7 @@ void unlock()
 */
 HB_FUNC_STATIC( QREADWRITELOCK_UNLOCK )
 {
-  QReadWriteLock * obj = (QReadWriteLock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QReadWriteLock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -249,12 +252,12 @@ HB_FUNC_STATIC( QREADWRITELOCK_UNLOCK )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->unlock ();
+      obj->unlock();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -268,25 +271,25 @@ HB_FUNC_STATIC( QREADWRITELOCK_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -313,13 +316,13 @@ HB_FUNC_STATIC( QREADWRITELOCK_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

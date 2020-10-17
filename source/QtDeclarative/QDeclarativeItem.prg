@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -45,7 +45,7 @@ CLASS QDeclarativeItem INHERIT QGraphicsObject,QDeclarativeParserStatus
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QDeclarativeItem
+PROCEDURE destroyObject() CLASS QDeclarativeItem
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -62,7 +62,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtDeclarative/QDeclarativeItem>
@@ -75,25 +76,27 @@ HB_FUNC_STATIC( QDECLARATIVEITEM_NEW )
 {
   if( ISBETWEEN(0,1) && (ISQDECLARATIVEITEM(1)||ISNIL(1)) )
   {
-    QDeclarativeItem * o = new QDeclarativeItem ( OPQDECLARATIVEITEM(1,nullptr) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QDeclarativeItem( OPQDECLARATIVEITEM(1,nullptr) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QDECLARATIVEITEM_DELETE )
 {
-  QDeclarativeItem * obj = (QDeclarativeItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDeclarativeItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -106,7 +109,7 @@ qreal baselineOffset () const
 */
 HB_FUNC_STATIC( QDECLARATIVEITEM_BASELINEOFFSET )
 {
-  QDeclarativeItem * obj = (QDeclarativeItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDeclarativeItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -114,12 +117,12 @@ HB_FUNC_STATIC( QDECLARATIVEITEM_BASELINEOFFSET )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQREAL( obj->baselineOffset () );
+      RQREAL( obj->baselineOffset() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -130,7 +133,7 @@ QDeclarativeItem * childAt ( qreal x, qreal y ) const
 */
 HB_FUNC_STATIC( QDECLARATIVEITEM_CHILDAT )
 {
-  QDeclarativeItem * obj = (QDeclarativeItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDeclarativeItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -138,13 +141,13 @@ HB_FUNC_STATIC( QDECLARATIVEITEM_CHILDAT )
     if( ISNUMPAR(2) && ISNUM(1) && ISNUM(2) )
     {
 #endif
-      QDeclarativeItem * ptr = obj->childAt ( PQREAL(1), PQREAL(2) );
-      _qt5xhb_createReturnQObjectClass ( ptr, "QDECLARATIVEITEM" );
+      QDeclarativeItem * ptr = obj->childAt( PQREAL(1), PQREAL(2) );
+      Qt5xHb::createReturnQObjectClass( ptr, "QDECLARATIVEITEM" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -155,7 +158,7 @@ QRectF childrenRect ()
 */
 HB_FUNC_STATIC( QDECLARATIVEITEM_CHILDRENRECT )
 {
-  QDeclarativeItem * obj = (QDeclarativeItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDeclarativeItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -163,13 +166,13 @@ HB_FUNC_STATIC( QDECLARATIVEITEM_CHILDRENRECT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QRectF * ptr = new QRectF( obj->childrenRect () );
-      _qt5xhb_createReturnClass ( ptr, "QRECTF", true );
+      auto ptr = new QRectF( obj->childrenRect() );
+      Qt5xHb::createReturnClass( ptr, "QRECTF", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -180,7 +183,7 @@ bool clip () const
 */
 HB_FUNC_STATIC( QDECLARATIVEITEM_CLIP )
 {
-  QDeclarativeItem * obj = (QDeclarativeItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDeclarativeItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -188,12 +191,12 @@ HB_FUNC_STATIC( QDECLARATIVEITEM_CLIP )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->clip () );
+      RBOOL( obj->clip() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -204,7 +207,7 @@ void forceActiveFocus ()
 */
 HB_FUNC_STATIC( QDECLARATIVEITEM_FORCEACTIVEFOCUS )
 {
-  QDeclarativeItem * obj = (QDeclarativeItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDeclarativeItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -212,12 +215,12 @@ HB_FUNC_STATIC( QDECLARATIVEITEM_FORCEACTIVEFOCUS )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->forceActiveFocus ();
+      obj->forceActiveFocus();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -230,7 +233,7 @@ qreal implicitHeight () const
 */
 HB_FUNC_STATIC( QDECLARATIVEITEM_IMPLICITHEIGHT )
 {
-  QDeclarativeItem * obj = (QDeclarativeItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDeclarativeItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -238,12 +241,12 @@ HB_FUNC_STATIC( QDECLARATIVEITEM_IMPLICITHEIGHT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQREAL( obj->implicitHeight () );
+      RQREAL( obj->implicitHeight() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -254,7 +257,7 @@ qreal implicitWidth () const
 */
 HB_FUNC_STATIC( QDECLARATIVEITEM_IMPLICITWIDTH )
 {
-  QDeclarativeItem * obj = (QDeclarativeItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDeclarativeItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -262,12 +265,12 @@ HB_FUNC_STATIC( QDECLARATIVEITEM_IMPLICITWIDTH )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQREAL( obj->implicitWidth () );
+      RQREAL( obj->implicitWidth() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -278,7 +281,7 @@ bool keepMouseGrab () const
 */
 HB_FUNC_STATIC( QDECLARATIVEITEM_KEEPMOUSEGRAB )
 {
-  QDeclarativeItem * obj = (QDeclarativeItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDeclarativeItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -286,12 +289,12 @@ HB_FUNC_STATIC( QDECLARATIVEITEM_KEEPMOUSEGRAB )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->keepMouseGrab () );
+      RBOOL( obj->keepMouseGrab() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -302,7 +305,7 @@ QScriptValue mapFromItem ( const QScriptValue & item, qreal x, qreal y ) const
 */
 HB_FUNC_STATIC( QDECLARATIVEITEM_MAPFROMITEM )
 {
-  QDeclarativeItem * obj = (QDeclarativeItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDeclarativeItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -310,13 +313,13 @@ HB_FUNC_STATIC( QDECLARATIVEITEM_MAPFROMITEM )
     if( ISNUMPAR(3) && ISQSCRIPTVALUE(1) && ISNUM(2) && ISNUM(3) )
     {
 #endif
-      QScriptValue * ptr = new QScriptValue( obj->mapFromItem ( *PQSCRIPTVALUE(1), PQREAL(2), PQREAL(3) ) );
-      _qt5xhb_createReturnClass ( ptr, "QSCRIPTVALUE", true );
+      auto ptr = new QScriptValue( obj->mapFromItem( *PQSCRIPTVALUE(1), PQREAL(2), PQREAL(3) ) );
+      Qt5xHb::createReturnClass( ptr, "QSCRIPTVALUE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -327,7 +330,7 @@ QScriptValue mapToItem ( const QScriptValue & item, qreal x, qreal y ) const
 */
 HB_FUNC_STATIC( QDECLARATIVEITEM_MAPTOITEM )
 {
-  QDeclarativeItem * obj = (QDeclarativeItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDeclarativeItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -335,13 +338,13 @@ HB_FUNC_STATIC( QDECLARATIVEITEM_MAPTOITEM )
     if( ISNUMPAR(3) && ISQSCRIPTVALUE(1) && ISNUM(2) && ISNUM(3) )
     {
 #endif
-      QScriptValue * ptr = new QScriptValue( obj->mapToItem ( *PQSCRIPTVALUE(1), PQREAL(2), PQREAL(3) ) );
-      _qt5xhb_createReturnClass ( ptr, "QSCRIPTVALUE", true );
+      auto ptr = new QScriptValue( obj->mapToItem( *PQSCRIPTVALUE(1), PQREAL(2), PQREAL(3) ) );
+      Qt5xHb::createReturnClass( ptr, "QSCRIPTVALUE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -352,7 +355,7 @@ QDeclarativeItem * parentItem () const
 */
 HB_FUNC_STATIC( QDECLARATIVEITEM_PARENTITEM )
 {
-  QDeclarativeItem * obj = (QDeclarativeItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDeclarativeItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -360,13 +363,13 @@ HB_FUNC_STATIC( QDECLARATIVEITEM_PARENTITEM )
     if( ISNUMPAR(0) )
     {
 #endif
-      QDeclarativeItem * ptr = obj->parentItem ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QDECLARATIVEITEM" );
+      QDeclarativeItem * ptr = obj->parentItem();
+      Qt5xHb::createReturnQObjectClass( ptr, "QDECLARATIVEITEM" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -377,7 +380,7 @@ void setBaselineOffset ( qreal )
 */
 HB_FUNC_STATIC( QDECLARATIVEITEM_SETBASELINEOFFSET )
 {
-  QDeclarativeItem * obj = (QDeclarativeItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDeclarativeItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -385,12 +388,12 @@ HB_FUNC_STATIC( QDECLARATIVEITEM_SETBASELINEOFFSET )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setBaselineOffset ( PQREAL(1) );
+      obj->setBaselineOffset( PQREAL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -403,7 +406,7 @@ void setClip ( bool )
 */
 HB_FUNC_STATIC( QDECLARATIVEITEM_SETCLIP )
 {
-  QDeclarativeItem * obj = (QDeclarativeItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDeclarativeItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -411,12 +414,12 @@ HB_FUNC_STATIC( QDECLARATIVEITEM_SETCLIP )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setClip ( PBOOL(1) );
+      obj->setClip( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -429,7 +432,7 @@ void setKeepMouseGrab ( bool keep )
 */
 HB_FUNC_STATIC( QDECLARATIVEITEM_SETKEEPMOUSEGRAB )
 {
-  QDeclarativeItem * obj = (QDeclarativeItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDeclarativeItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -437,12 +440,12 @@ HB_FUNC_STATIC( QDECLARATIVEITEM_SETKEEPMOUSEGRAB )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setKeepMouseGrab ( PBOOL(1) );
+      obj->setKeepMouseGrab( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -455,7 +458,7 @@ void setParentItem ( QDeclarativeItem * parent )
 */
 HB_FUNC_STATIC( QDECLARATIVEITEM_SETPARENTITEM )
 {
-  QDeclarativeItem * obj = (QDeclarativeItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDeclarativeItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -463,12 +466,12 @@ HB_FUNC_STATIC( QDECLARATIVEITEM_SETPARENTITEM )
     if( ISNUMPAR(1) && ISQDECLARATIVEITEM(1) )
     {
 #endif
-      obj->setParentItem ( PQDECLARATIVEITEM(1) );
+      obj->setParentItem( PQDECLARATIVEITEM(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -481,7 +484,7 @@ void setSmooth ( bool smooth )
 */
 HB_FUNC_STATIC( QDECLARATIVEITEM_SETSMOOTH )
 {
-  QDeclarativeItem * obj = (QDeclarativeItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDeclarativeItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -489,12 +492,12 @@ HB_FUNC_STATIC( QDECLARATIVEITEM_SETSMOOTH )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setSmooth ( PBOOL(1) );
+      obj->setSmooth( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -507,7 +510,7 @@ void setTransformOrigin ( TransformOrigin origin )
 */
 HB_FUNC_STATIC( QDECLARATIVEITEM_SETTRANSFORMORIGIN )
 {
-  QDeclarativeItem * obj = (QDeclarativeItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDeclarativeItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -515,12 +518,12 @@ HB_FUNC_STATIC( QDECLARATIVEITEM_SETTRANSFORMORIGIN )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setTransformOrigin ( (QDeclarativeItem::TransformOrigin) hb_parni(1) );
+      obj->setTransformOrigin( (QDeclarativeItem::TransformOrigin) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -533,7 +536,7 @@ bool smooth () const
 */
 HB_FUNC_STATIC( QDECLARATIVEITEM_SMOOTH )
 {
-  QDeclarativeItem * obj = (QDeclarativeItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDeclarativeItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -541,12 +544,12 @@ HB_FUNC_STATIC( QDECLARATIVEITEM_SMOOTH )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->smooth () );
+      RBOOL( obj->smooth() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -557,7 +560,7 @@ TransformOrigin transformOrigin () const
 */
 HB_FUNC_STATIC( QDECLARATIVEITEM_TRANSFORMORIGIN )
 {
-  QDeclarativeItem * obj = (QDeclarativeItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDeclarativeItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -565,12 +568,12 @@ HB_FUNC_STATIC( QDECLARATIVEITEM_TRANSFORMORIGIN )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->transformOrigin () );
+      RENUM( obj->transformOrigin() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

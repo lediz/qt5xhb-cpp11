@@ -1,11 +1,14 @@
 rem
-rem Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+rem Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 rem
 rem Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 rem
 rem Batch to compile all tests
 rem
 
+hbmk2 HEventFilter            %1 %2 %3 ..\..\qt5xhb.hbc
+hbmk2 HEventFilter2           %1 %2 %3 ..\..\qt5xhb.hbc
+hbmk2 HHeaderView             %1 %2 %3 ..\..\qt5xhb.hbc
 hbmk2 QBoxLayout1             %1 %2 %3 ..\..\qt5xhb.hbc
 hbmk2 QBoxLayout2             %1 %2 %3 ..\..\qt5xhb.hbc
 hbmk2 QBoxLayout3             %1 %2 %3 ..\..\qt5xhb.hbc
@@ -20,6 +23,7 @@ hbmk2 QColorDialog2           %1 %2 %3 ..\..\qt5xhb.hbc
 hbmk2 QCombobox               %1 %2 %3 ..\..\qt5xhb.hbc
 hbmk2 QCommandLinkButton1     %1 %2 %3 ..\..\qt5xhb.hbc
 hbmk2 QCommandLinkButton2     %1 %2 %3 ..\..\qt5xhb.hbc
+hbmk2 QCompleter              %1 %2 %3 ..\..\qt5xhb.hbc
 hbmk2 QDateEdit               %1 %2 %3 ..\..\qt5xhb.hbc
 hbmk2 QDateTimeEdit           %1 %2 %3 ..\..\qt5xhb.hbc
 hbmk2 QDesktopWidget          %1 %2 %3 ..\..\qt5xhb.hbc
@@ -38,6 +42,7 @@ hbmk2 QFormLayout1            %1 %2 %3 ..\..\qt5xhb.hbc
 hbmk2 QFormLayout2            %1 %2 %3 ..\..\qt5xhb.hbc
 hbmk2 QFormLayout3            %1 %2 %3 ..\..\qt5xhb.hbc
 hbmk2 QGraphicsEffect         %1 %2 %3 ..\..\qt5xhb.hbc
+hbmk2 QGraphicsView           %1 %2 %3 ..\..\qt5xhb.hbc
 hbmk2 QGridLayout             %1 %2 %3 ..\..\qt5xhb.hbc
 hbmk2 QGroupBox               %1 %2 %3 ..\..\qt5xhb.hbc
 hbmk2 QHBoxLayout             %1 %2 %3 ..\..\qt5xhb.hbc

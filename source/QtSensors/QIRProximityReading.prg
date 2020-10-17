@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -25,7 +25,7 @@ CLASS QIRProximityReading INHERIT QSensorReading
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QIRProximityReading
+PROCEDURE destroyObject() CLASS QIRProximityReading
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -44,7 +44,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
@@ -55,14 +56,16 @@ RETURN
 HB_FUNC_STATIC( QIRPROXIMITYREADING_DELETE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QIRProximityReading * obj = (QIRProximityReading *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QIRProximityReading *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -77,7 +80,7 @@ qreal reflectance() const
 HB_FUNC_STATIC( QIRPROXIMITYREADING_REFLECTANCE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QIRProximityReading * obj = (QIRProximityReading *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QIRProximityReading *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -85,12 +88,12 @@ HB_FUNC_STATIC( QIRPROXIMITYREADING_REFLECTANCE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQREAL( obj->reflectance () );
+      RQREAL( obj->reflectance() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -103,7 +106,7 @@ void setReflectance(qreal reflectance)
 HB_FUNC_STATIC( QIRPROXIMITYREADING_SETREFLECTANCE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QIRProximityReading * obj = (QIRProximityReading *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QIRProximityReading *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -111,12 +114,12 @@ HB_FUNC_STATIC( QIRPROXIMITYREADING_SETREFLECTANCE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setReflectance ( PQREAL(1) );
+      obj->setReflectance( PQREAL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

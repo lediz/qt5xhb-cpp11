@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -26,7 +26,7 @@ CLASS QVideoRendererControl INHERIT QMediaControl
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QVideoRendererControl
+PROCEDURE destroyObject() CLASS QVideoRendererControl
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -43,7 +43,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtMultimedia/QVideoRendererControl>
@@ -60,14 +61,16 @@ explicit QVideoRendererControl(QObject *parent = nullptr) [protected]
 */
 HB_FUNC_STATIC( QVIDEORENDERERCONTROL_DELETE )
 {
-  QVideoRendererControl * obj = (QVideoRendererControl *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QVideoRendererControl *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -80,7 +83,7 @@ virtual void setSurface(QAbstractVideoSurface * surface) = 0
 */
 HB_FUNC_STATIC( QVIDEORENDERERCONTROL_SETSURFACE )
 {
-  QVideoRendererControl * obj = (QVideoRendererControl *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QVideoRendererControl *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -88,12 +91,12 @@ HB_FUNC_STATIC( QVIDEORENDERERCONTROL_SETSURFACE )
     if( ISNUMPAR(1) && ISQABSTRACTVIDEOSURFACE(1) )
     {
 #endif
-      obj->setSurface ( PQABSTRACTVIDEOSURFACE(1) );
+      obj->setSurface( PQABSTRACTVIDEOSURFACE(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -106,7 +109,7 @@ virtual QAbstractVideoSurface * surface() const = 0
 */
 HB_FUNC_STATIC( QVIDEORENDERERCONTROL_SURFACE )
 {
-  QVideoRendererControl * obj = (QVideoRendererControl *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QVideoRendererControl *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -114,13 +117,13 @@ HB_FUNC_STATIC( QVIDEORENDERERCONTROL_SURFACE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QAbstractVideoSurface * ptr = obj->surface ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QABSTRACTVIDEOSURFACE" );
+      QAbstractVideoSurface * ptr = obj->surface();
+      Qt5xHb::createReturnQObjectClass( ptr, "QABSTRACTVIDEOSURFACE" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

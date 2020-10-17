@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -29,7 +29,7 @@ CLASS QSvgWidget INHERIT QWidget
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QSvgWidget
+PROCEDURE destroyObject() CLASS QSvgWidget
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -46,7 +46,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtSvg/QSvgWidget>
@@ -57,23 +58,25 @@ RETURN
 /*
 QSvgWidget ( QWidget * parent = nullptr )
 */
-void QSvgWidget_new1 ()
+void QSvgWidget_new1()
 {
-  QSvgWidget * o = new QSvgWidget ( OPQWIDGET(1,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QSvgWidget( OPQWIDGET(1,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
 /*
 QSvgWidget ( const QString & file, QWidget * parent = nullptr )
 */
-void QSvgWidget_new2 ()
+void QSvgWidget_new2()
 {
-  QSvgWidget * o = new QSvgWidget ( PQSTRING(1), OPQWIDGET(2,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QSvgWidget( PQSTRING(1), OPQWIDGET(2,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
-//[1]QSvgWidget ( QWidget * parent = nullptr )
-//[2]QSvgWidget ( const QString & file, QWidget * parent = nullptr )
+/*
+[1]QSvgWidget ( QWidget * parent = nullptr )
+[2]QSvgWidget ( const QString & file, QWidget * parent = nullptr )
+*/
 
 HB_FUNC_STATIC( QSVGWIDGET_NEW )
 {
@@ -87,20 +90,22 @@ HB_FUNC_STATIC( QSVGWIDGET_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QSVGWIDGET_DELETE )
 {
-  QSvgWidget * obj = (QSvgWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSvgWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -113,7 +118,7 @@ QSvgRenderer * renderer () const
 */
 HB_FUNC_STATIC( QSVGWIDGET_RENDERER )
 {
-  QSvgWidget * obj = (QSvgWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSvgWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -121,13 +126,13 @@ HB_FUNC_STATIC( QSVGWIDGET_RENDERER )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSvgRenderer * ptr = obj->renderer ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QSVGRENDERER" );
+      QSvgRenderer * ptr = obj->renderer();
+      Qt5xHb::createReturnQObjectClass( ptr, "QSVGRENDERER" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -138,7 +143,7 @@ virtual QSize sizeHint () const
 */
 HB_FUNC_STATIC( QSVGWIDGET_SIZEHINT )
 {
-  QSvgWidget * obj = (QSvgWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSvgWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -146,13 +151,13 @@ HB_FUNC_STATIC( QSVGWIDGET_SIZEHINT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSize * ptr = new QSize( obj->sizeHint () );
-      _qt5xhb_createReturnClass ( ptr, "QSIZE", true );
+      auto ptr = new QSize( obj->sizeHint() );
+      Qt5xHb::createReturnClass( ptr, "QSIZE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -161,13 +166,13 @@ HB_FUNC_STATIC( QSVGWIDGET_SIZEHINT )
 /*
 void load ( const QString & file )
 */
-void QSvgWidget_load1 ()
+void QSvgWidget_load1()
 {
-  QSvgWidget * obj = (QSvgWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSvgWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->load ( PQSTRING(1) );
+    obj->load( PQSTRING(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -176,20 +181,22 @@ void QSvgWidget_load1 ()
 /*
 void load ( const QByteArray & contents )
 */
-void QSvgWidget_load2 ()
+void QSvgWidget_load2()
 {
-  QSvgWidget * obj = (QSvgWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSvgWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->load ( *PQBYTEARRAY(1) );
+    obj->load( *PQBYTEARRAY(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void load ( const QString & file )
-//[2]void load ( const QByteArray & contents )
+/*
+[1]void load ( const QString & file )
+[2]void load ( const QByteArray & contents )
+*/
 
 HB_FUNC_STATIC( QSVGWIDGET_LOAD )
 {
@@ -203,7 +210,7 @@ HB_FUNC_STATIC( QSVGWIDGET_LOAD )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 

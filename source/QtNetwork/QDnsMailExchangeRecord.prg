@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -38,7 +38,7 @@ CLASS QDnsMailExchangeRecord
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QDnsMailExchangeRecord
+PROCEDURE destroyObject() CLASS QDnsMailExchangeRecord
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -55,7 +55,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtNetwork/QDnsMailExchangeRecord>
@@ -64,23 +63,25 @@ RETURN
 /*
 QDnsMailExchangeRecord()
 */
-void QDnsMailExchangeRecord_new1 ()
+void QDnsMailExchangeRecord_new1()
 {
-  QDnsMailExchangeRecord * o = new QDnsMailExchangeRecord ();
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QDnsMailExchangeRecord();
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QDnsMailExchangeRecord(const QDnsMailExchangeRecord & other)
 */
-void QDnsMailExchangeRecord_new2 ()
+void QDnsMailExchangeRecord_new2()
 {
-  QDnsMailExchangeRecord * o = new QDnsMailExchangeRecord ( *PQDNSMAILEXCHANGERECORD(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QDnsMailExchangeRecord( *PQDNSMAILEXCHANGERECORD(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
-//[1]QDnsMailExchangeRecord()
-//[2]QDnsMailExchangeRecord(const QDnsMailExchangeRecord & other)
+/*
+[1]QDnsMailExchangeRecord()
+[2]QDnsMailExchangeRecord(const QDnsMailExchangeRecord & other)
+*/
 
 HB_FUNC_STATIC( QDNSMAILEXCHANGERECORD_NEW )
 {
@@ -94,7 +95,7 @@ HB_FUNC_STATIC( QDNSMAILEXCHANGERECORD_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -103,14 +104,14 @@ HB_FUNC_STATIC( QDNSMAILEXCHANGERECORD_NEW )
 */
 HB_FUNC_STATIC( QDNSMAILEXCHANGERECORD_DELETE )
 {
-  QDnsMailExchangeRecord * obj = (QDnsMailExchangeRecord *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDnsMailExchangeRecord *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -123,7 +124,7 @@ QString exchange() const
 */
 HB_FUNC_STATIC( QDNSMAILEXCHANGERECORD_EXCHANGE )
 {
-  QDnsMailExchangeRecord * obj = (QDnsMailExchangeRecord *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDnsMailExchangeRecord *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -131,12 +132,12 @@ HB_FUNC_STATIC( QDNSMAILEXCHANGERECORD_EXCHANGE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->exchange () );
+      RQSTRING( obj->exchange() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -147,7 +148,7 @@ QString name() const
 */
 HB_FUNC_STATIC( QDNSMAILEXCHANGERECORD_NAME )
 {
-  QDnsMailExchangeRecord * obj = (QDnsMailExchangeRecord *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDnsMailExchangeRecord *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -155,12 +156,12 @@ HB_FUNC_STATIC( QDNSMAILEXCHANGERECORD_NAME )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->name () );
+      RQSTRING( obj->name() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -171,7 +172,7 @@ quint16 preference() const
 */
 HB_FUNC_STATIC( QDNSMAILEXCHANGERECORD_PREFERENCE )
 {
-  QDnsMailExchangeRecord * obj = (QDnsMailExchangeRecord *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDnsMailExchangeRecord *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -179,12 +180,12 @@ HB_FUNC_STATIC( QDNSMAILEXCHANGERECORD_PREFERENCE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQUINT16( obj->preference () );
+      RQUINT16( obj->preference() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -195,7 +196,7 @@ void swap(QDnsMailExchangeRecord &other) Q_DECL_NOTHROW
 */
 HB_FUNC_STATIC( QDNSMAILEXCHANGERECORD_SWAP )
 {
-  QDnsMailExchangeRecord * obj = (QDnsMailExchangeRecord *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDnsMailExchangeRecord *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -203,12 +204,12 @@ HB_FUNC_STATIC( QDNSMAILEXCHANGERECORD_SWAP )
     if( ISNUMPAR(1) && ISQDNSMAILEXCHANGERECORD(1) )
     {
 #endif
-      obj->swap ( *PQDNSMAILEXCHANGERECORD(1) );
+      obj->swap( *PQDNSMAILEXCHANGERECORD(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -221,7 +222,7 @@ quint32 timeToLive() const
 */
 HB_FUNC_STATIC( QDNSMAILEXCHANGERECORD_TIMETOLIVE )
 {
-  QDnsMailExchangeRecord * obj = (QDnsMailExchangeRecord *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDnsMailExchangeRecord *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -229,12 +230,12 @@ HB_FUNC_STATIC( QDNSMAILEXCHANGERECORD_TIMETOLIVE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQUINT32( obj->timeToLive () );
+      RQUINT32( obj->timeToLive() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -246,25 +247,25 @@ HB_FUNC_STATIC( QDNSMAILEXCHANGERECORD_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -291,13 +292,13 @@ HB_FUNC_STATIC( QDNSMAILEXCHANGERECORD_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -102,7 +102,7 @@ CLASS QPrinter INHERIT QPagedPaintDevice
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QPrinter
+PROCEDURE destroyObject() CLASS QPrinter
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -119,7 +119,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtPrintSupport/QPrinter>
@@ -128,23 +127,25 @@ RETURN
 /*
 QPrinter ( PrinterMode mode = ScreenResolution )
 */
-void QPrinter_new1 ()
+void QPrinter_new1()
 {
-  QPrinter * o = new QPrinter ( ISNIL(1)? (QPrinter::PrinterMode) QPrinter::ScreenResolution : (QPrinter::PrinterMode) hb_parni(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QPrinter( ISNIL(1)? (QPrinter::PrinterMode) QPrinter::ScreenResolution : (QPrinter::PrinterMode) hb_parni(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QPrinter ( const QPrinterInfo & printer, PrinterMode mode = ScreenResolution )
 */
-void QPrinter_new2 ()
+void QPrinter_new2()
 {
-  QPrinter * o = new QPrinter ( *PQPRINTERINFO(1), ISNIL(2)? (QPrinter::PrinterMode) QPrinter::ScreenResolution : (QPrinter::PrinterMode) hb_parni(2) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QPrinter( *PQPRINTERINFO(1), ISNIL(2)? (QPrinter::PrinterMode) QPrinter::ScreenResolution : (QPrinter::PrinterMode) hb_parni(2) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
-//[1]QPrinter ( PrinterMode mode = ScreenResolution )
-//[2]QPrinter ( const QPrinterInfo & printer, PrinterMode mode = ScreenResolution )
+/*
+[1]QPrinter ( PrinterMode mode = ScreenResolution )
+[2]QPrinter ( const QPrinterInfo & printer, PrinterMode mode = ScreenResolution )
+*/
 
 HB_FUNC_STATIC( QPRINTER_NEW )
 {
@@ -158,20 +159,20 @@ HB_FUNC_STATIC( QPRINTER_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QPRINTER_DELETE )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -184,7 +185,7 @@ bool abort ()
 */
 HB_FUNC_STATIC( QPRINTER_ABORT )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -192,12 +193,12 @@ HB_FUNC_STATIC( QPRINTER_ABORT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->abort () );
+      RBOOL( obj->abort() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -208,7 +209,7 @@ bool collateCopies () const
 */
 HB_FUNC_STATIC( QPRINTER_COLLATECOPIES )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -216,12 +217,12 @@ HB_FUNC_STATIC( QPRINTER_COLLATECOPIES )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->collateCopies () );
+      RBOOL( obj->collateCopies() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -232,7 +233,7 @@ void setCollateCopies ( bool collate )
 */
 HB_FUNC_STATIC( QPRINTER_SETCOLLATECOPIES )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -240,12 +241,12 @@ HB_FUNC_STATIC( QPRINTER_SETCOLLATECOPIES )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setCollateCopies ( PBOOL(1) );
+      obj->setCollateCopies( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -258,7 +259,7 @@ ColorMode colorMode () const
 */
 HB_FUNC_STATIC( QPRINTER_COLORMODE )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -266,12 +267,12 @@ HB_FUNC_STATIC( QPRINTER_COLORMODE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->colorMode () );
+      RENUM( obj->colorMode() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -282,7 +283,7 @@ void setColorMode ( ColorMode newColorMode )
 */
 HB_FUNC_STATIC( QPRINTER_SETCOLORMODE )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -290,12 +291,12 @@ HB_FUNC_STATIC( QPRINTER_SETCOLORMODE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setColorMode ( (QPrinter::ColorMode) hb_parni(1) );
+      obj->setColorMode( (QPrinter::ColorMode) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -308,7 +309,7 @@ int copyCount () const
 */
 HB_FUNC_STATIC( QPRINTER_COPYCOUNT )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -316,12 +317,12 @@ HB_FUNC_STATIC( QPRINTER_COPYCOUNT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->copyCount () );
+      RINT( obj->copyCount() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -332,7 +333,7 @@ void setCopyCount ( int count )
 */
 HB_FUNC_STATIC( QPRINTER_SETCOPYCOUNT )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -340,12 +341,12 @@ HB_FUNC_STATIC( QPRINTER_SETCOPYCOUNT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setCopyCount ( PINT(1) );
+      obj->setCopyCount( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -358,7 +359,7 @@ QString creator () const
 */
 HB_FUNC_STATIC( QPRINTER_CREATOR )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -366,12 +367,12 @@ HB_FUNC_STATIC( QPRINTER_CREATOR )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->creator () );
+      RQSTRING( obj->creator() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -382,7 +383,7 @@ void setCreator ( const QString & creator )
 */
 HB_FUNC_STATIC( QPRINTER_SETCREATOR )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -390,12 +391,12 @@ HB_FUNC_STATIC( QPRINTER_SETCREATOR )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->setCreator ( PQSTRING(1) );
+      obj->setCreator( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -408,7 +409,7 @@ QString docName () const
 */
 HB_FUNC_STATIC( QPRINTER_DOCNAME )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -416,12 +417,12 @@ HB_FUNC_STATIC( QPRINTER_DOCNAME )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->docName () );
+      RQSTRING( obj->docName() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -432,7 +433,7 @@ void setDocName ( const QString & name )
 */
 HB_FUNC_STATIC( QPRINTER_SETDOCNAME )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -440,12 +441,12 @@ HB_FUNC_STATIC( QPRINTER_SETDOCNAME )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->setDocName ( PQSTRING(1) );
+      obj->setDocName( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -458,7 +459,7 @@ bool doubleSidedPrinting () const
 */
 HB_FUNC_STATIC( QPRINTER_DOUBLESIDEDPRINTING )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -466,12 +467,12 @@ HB_FUNC_STATIC( QPRINTER_DOUBLESIDEDPRINTING )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->doubleSidedPrinting () );
+      RBOOL( obj->doubleSidedPrinting() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -482,7 +483,7 @@ void setDoubleSidedPrinting ( bool doubleSided )
 */
 HB_FUNC_STATIC( QPRINTER_SETDOUBLESIDEDPRINTING )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -490,12 +491,12 @@ HB_FUNC_STATIC( QPRINTER_SETDOUBLESIDEDPRINTING )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setDoubleSidedPrinting ( PBOOL(1) );
+      obj->setDoubleSidedPrinting( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -508,7 +509,7 @@ DuplexMode duplex () const
 */
 HB_FUNC_STATIC( QPRINTER_DUPLEX )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -516,12 +517,12 @@ HB_FUNC_STATIC( QPRINTER_DUPLEX )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->duplex () );
+      RENUM( obj->duplex() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -532,7 +533,7 @@ void setDuplex ( DuplexMode duplex )
 */
 HB_FUNC_STATIC( QPRINTER_SETDUPLEX )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -540,12 +541,12 @@ HB_FUNC_STATIC( QPRINTER_SETDUPLEX )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setDuplex ( (QPrinter::DuplexMode) hb_parni(1) );
+      obj->setDuplex( (QPrinter::DuplexMode) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -558,7 +559,7 @@ bool fontEmbeddingEnabled () const
 */
 HB_FUNC_STATIC( QPRINTER_FONTEMBEDDINGENABLED )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -566,12 +567,12 @@ HB_FUNC_STATIC( QPRINTER_FONTEMBEDDINGENABLED )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->fontEmbeddingEnabled () );
+      RBOOL( obj->fontEmbeddingEnabled() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -582,7 +583,7 @@ void setFontEmbeddingEnabled ( bool enable )
 */
 HB_FUNC_STATIC( QPRINTER_SETFONTEMBEDDINGENABLED )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -590,12 +591,12 @@ HB_FUNC_STATIC( QPRINTER_SETFONTEMBEDDINGENABLED )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setFontEmbeddingEnabled ( PBOOL(1) );
+      obj->setFontEmbeddingEnabled( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -608,7 +609,7 @@ int fromPage () const
 */
 HB_FUNC_STATIC( QPRINTER_FROMPAGE )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -616,12 +617,12 @@ HB_FUNC_STATIC( QPRINTER_FROMPAGE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->fromPage () );
+      RINT( obj->fromPage() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -632,7 +633,7 @@ bool fullPage () const
 */
 HB_FUNC_STATIC( QPRINTER_FULLPAGE )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -640,12 +641,12 @@ HB_FUNC_STATIC( QPRINTER_FULLPAGE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->fullPage () );
+      RBOOL( obj->fullPage() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -656,7 +657,7 @@ void setFullPage ( bool fp )
 */
 HB_FUNC_STATIC( QPRINTER_SETFULLPAGE )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -664,12 +665,12 @@ HB_FUNC_STATIC( QPRINTER_SETFULLPAGE )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setFullPage ( PBOOL(1) );
+      obj->setFullPage( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -682,7 +683,7 @@ void getPageMargins ( qreal * left, qreal * top, qreal * right, qreal * bottom, 
 */
 HB_FUNC_STATIC( QPRINTER_GETPAGEMARGINS )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -691,19 +692,19 @@ HB_FUNC_STATIC( QPRINTER_GETPAGEMARGINS )
     {
 #endif
       qreal par1;
-qreal par2;
-qreal par3;
-qreal par4;
-      obj->getPageMargins ( &par1, &par2, &par3, &par4, (QPrinter::Unit) hb_parni(5) );
+      qreal par2;
+      qreal par3;
+      qreal par4;
+      obj->getPageMargins( &par1, &par2, &par3, &par4, (QPrinter::Unit) hb_parni(5) );
       hb_stornd( par1, 1 );
-hb_stornd( par2, 2 );
-hb_stornd( par3, 3 );
-hb_stornd( par4, 4 );
+      hb_stornd( par2, 2 );
+      hb_stornd( par3, 3 );
+      hb_stornd( par4, 4 );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -714,13 +715,13 @@ hb_stornd( par4, 4 );
 /*
 void setPageMargins ( qreal left, qreal top, qreal right, qreal bottom, Unit unit )
 */
-void QPrinter_setPageMargins1 ()
+void QPrinter_setPageMargins1()
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setPageMargins ( PQREAL(1), PQREAL(2), PQREAL(3), PQREAL(4), (QPrinter::Unit) hb_parni(5) );
+    obj->setPageMargins( PQREAL(1), PQREAL(2), PQREAL(3), PQREAL(4), (QPrinter::Unit) hb_parni(5) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -729,20 +730,22 @@ void QPrinter_setPageMargins1 ()
 /*
 bool setPageMargins(const QMarginsF &margins, QPageLayout::Unit units)
 */
-void QPrinter_setPageMargins2 ()
+void QPrinter_setPageMargins2()
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RBOOL( obj->setPageMargins ( *PQMARGINSF(1), (QPageLayout::Unit) hb_parni(2) ) );
+    RBOOL( obj->setPageMargins( *PQMARGINSF(1), (QPageLayout::Unit) hb_parni(2) ) );
   }
 #endif
 }
 
-//[1]void setPageMargins ( qreal left, qreal top, qreal right, qreal bottom, Unit unit )
-//[2]bool setPageMargins(const QMarginsF &margins, QPageLayout::Unit units)
+/*
+[1]void setPageMargins ( qreal left, qreal top, qreal right, qreal bottom, Unit unit )
+[2]bool setPageMargins(const QMarginsF &margins, QPageLayout::Unit units)
+*/
 
 HB_FUNC_STATIC( QPRINTER_SETPAGEMARGINS )
 {
@@ -756,7 +759,7 @@ HB_FUNC_STATIC( QPRINTER_SETPAGEMARGINS )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -765,7 +768,7 @@ bool isValid () const
 */
 HB_FUNC_STATIC( QPRINTER_ISVALID )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -773,12 +776,12 @@ HB_FUNC_STATIC( QPRINTER_ISVALID )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isValid () );
+      RBOOL( obj->isValid() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -789,7 +792,7 @@ bool newPage ()
 */
 HB_FUNC_STATIC( QPRINTER_NEWPAGE )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -797,12 +800,12 @@ HB_FUNC_STATIC( QPRINTER_NEWPAGE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->newPage () );
+      RBOOL( obj->newPage() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -813,7 +816,7 @@ Orientation orientation () const
 */
 HB_FUNC_STATIC( QPRINTER_ORIENTATION )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -821,12 +824,12 @@ HB_FUNC_STATIC( QPRINTER_ORIENTATION )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->orientation () );
+      RENUM( obj->orientation() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -837,7 +840,7 @@ void setOrientation ( Orientation orientation )
 */
 HB_FUNC_STATIC( QPRINTER_SETORIENTATION )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -845,12 +848,12 @@ HB_FUNC_STATIC( QPRINTER_SETORIENTATION )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setOrientation ( (QPrinter::Orientation) hb_parni(1) );
+      obj->setOrientation( (QPrinter::Orientation) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -863,7 +866,7 @@ QString outputFileName () const
 */
 HB_FUNC_STATIC( QPRINTER_OUTPUTFILENAME )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -871,12 +874,12 @@ HB_FUNC_STATIC( QPRINTER_OUTPUTFILENAME )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->outputFileName () );
+      RQSTRING( obj->outputFileName() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -887,7 +890,7 @@ void setOutputFileName ( const QString & fileName )
 */
 HB_FUNC_STATIC( QPRINTER_SETOUTPUTFILENAME )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -895,12 +898,12 @@ HB_FUNC_STATIC( QPRINTER_SETOUTPUTFILENAME )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->setOutputFileName ( PQSTRING(1) );
+      obj->setOutputFileName( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -913,7 +916,7 @@ OutputFormat outputFormat () const
 */
 HB_FUNC_STATIC( QPRINTER_OUTPUTFORMAT )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -921,12 +924,12 @@ HB_FUNC_STATIC( QPRINTER_OUTPUTFORMAT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->outputFormat () );
+      RENUM( obj->outputFormat() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -937,7 +940,7 @@ void setOutputFormat ( OutputFormat format )
 */
 HB_FUNC_STATIC( QPRINTER_SETOUTPUTFORMAT )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -945,12 +948,12 @@ HB_FUNC_STATIC( QPRINTER_SETOUTPUTFORMAT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setOutputFormat ( (QPrinter::OutputFormat) hb_parni(1) );
+      obj->setOutputFormat( (QPrinter::OutputFormat) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -963,7 +966,7 @@ PageOrder pageOrder () const
 */
 HB_FUNC_STATIC( QPRINTER_PAGEORDER )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -971,12 +974,12 @@ HB_FUNC_STATIC( QPRINTER_PAGEORDER )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->pageOrder () );
+      RENUM( obj->pageOrder() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -987,7 +990,7 @@ void setPageOrder ( PageOrder pageOrder )
 */
 HB_FUNC_STATIC( QPRINTER_SETPAGEORDER )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -995,12 +998,12 @@ HB_FUNC_STATIC( QPRINTER_SETPAGEORDER )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setPageOrder ( (QPrinter::PageOrder) hb_parni(1) );
+      obj->setPageOrder( (QPrinter::PageOrder) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1011,33 +1014,35 @@ HB_FUNC_STATIC( QPRINTER_SETPAGEORDER )
 /*
 QRect pageRect () const
 */
-void QPrinter_pageRect1 ()
+void QPrinter_pageRect1()
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QRect * ptr = new QRect( obj->pageRect () );
-      _qt5xhb_createReturnClass ( ptr, "QRECT", true );
+    auto ptr = new QRect( obj->pageRect() );
+    Qt5xHb::createReturnClass( ptr, "QRECT", true );
   }
 }
 
 /*
 QRectF pageRect ( Unit unit ) const
 */
-void QPrinter_pageRect2 ()
+void QPrinter_pageRect2()
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QRectF * ptr = new QRectF( obj->pageRect ( (QPrinter::Unit) hb_parni(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QRECTF", true );
+    auto ptr = new QRectF( obj->pageRect( (QPrinter::Unit) hb_parni(1) ) );
+    Qt5xHb::createReturnClass( ptr, "QRECTF", true );
   }
 }
 
-//[1]QRect pageRect () const
-//[2]QRectF pageRect ( Unit unit ) const
+/*
+[1]QRect pageRect () const
+[2]QRectF pageRect ( Unit unit ) const
+*/
 
 HB_FUNC_STATIC( QPRINTER_PAGERECT )
 {
@@ -1051,40 +1056,42 @@ HB_FUNC_STATIC( QPRINTER_PAGERECT )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 /*
 QRect paperRect () const
 */
-void QPrinter_paperRect1 ()
+void QPrinter_paperRect1()
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QRect * ptr = new QRect( obj->paperRect () );
-      _qt5xhb_createReturnClass ( ptr, "QRECT", true );
+    auto ptr = new QRect( obj->paperRect() );
+    Qt5xHb::createReturnClass( ptr, "QRECT", true );
   }
 }
 
 /*
 QRectF paperRect ( Unit unit ) const
 */
-void QPrinter_paperRect2 ()
+void QPrinter_paperRect2()
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QRectF * ptr = new QRectF( obj->paperRect ( (QPrinter::Unit) hb_parni(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QRECTF", true );
+    auto ptr = new QRectF( obj->paperRect( (QPrinter::Unit) hb_parni(1) ) );
+    Qt5xHb::createReturnClass( ptr, "QRECTF", true );
   }
 }
 
-//[1]QRect paperRect () const
-//[2]QRectF paperRect ( Unit unit ) const
+/*
+[1]QRect paperRect () const
+[2]QRectF paperRect ( Unit unit ) const
+*/
 
 HB_FUNC_STATIC( QPRINTER_PAPERRECT )
 {
@@ -1098,39 +1105,41 @@ HB_FUNC_STATIC( QPRINTER_PAPERRECT )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 /*
 PaperSize paperSize () const
 */
-void QPrinter_paperSize1 ()
+void QPrinter_paperSize1()
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RENUM( obj->paperSize () );
+    RENUM( obj->paperSize() );
   }
 }
 
 /*
 QSizeF paperSize ( Unit unit ) const
 */
-void QPrinter_paperSize2 ()
+void QPrinter_paperSize2()
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QSizeF * ptr = new QSizeF( obj->paperSize ( (QPrinter::Unit) hb_parni(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QSIZEF", true );
+    auto ptr = new QSizeF( obj->paperSize( (QPrinter::Unit) hb_parni(1) ) );
+    Qt5xHb::createReturnClass( ptr, "QSIZEF", true );
   }
 }
 
-//[1]PaperSize paperSize () const
-//[2]QSizeF paperSize ( Unit unit ) const
+/*
+[1]PaperSize paperSize () const
+[2]QSizeF paperSize ( Unit unit ) const
+*/
 
 HB_FUNC_STATIC( QPRINTER_PAPERSIZE )
 {
@@ -1144,7 +1153,7 @@ HB_FUNC_STATIC( QPRINTER_PAPERSIZE )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -1153,7 +1162,7 @@ PaperSource paperSource () const
 */
 HB_FUNC_STATIC( QPRINTER_PAPERSOURCE )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1161,12 +1170,12 @@ HB_FUNC_STATIC( QPRINTER_PAPERSOURCE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->paperSource () );
+      RENUM( obj->paperSource() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1177,7 +1186,7 @@ void setPaperSource ( PaperSource source )
 */
 HB_FUNC_STATIC( QPRINTER_SETPAPERSOURCE )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1185,12 +1194,12 @@ HB_FUNC_STATIC( QPRINTER_SETPAPERSOURCE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setPaperSource ( (QPrinter::PaperSource) hb_parni(1) );
+      obj->setPaperSource( (QPrinter::PaperSource) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1203,7 +1212,7 @@ QPrintEngine * printEngine () const
 */
 HB_FUNC_STATIC( QPRINTER_PRINTENGINE )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1211,13 +1220,13 @@ HB_FUNC_STATIC( QPRINTER_PRINTENGINE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QPrintEngine * ptr = obj->printEngine ();
-      _qt5xhb_createReturnClass ( ptr, "QPRINTENGINE", false );
+      QPrintEngine * ptr = obj->printEngine();
+      Qt5xHb::createReturnClass( ptr, "QPRINTENGINE", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1228,7 +1237,7 @@ QString printProgram () const
 */
 HB_FUNC_STATIC( QPRINTER_PRINTPROGRAM )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1236,12 +1245,12 @@ HB_FUNC_STATIC( QPRINTER_PRINTPROGRAM )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->printProgram () );
+      RQSTRING( obj->printProgram() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1252,7 +1261,7 @@ void setPrintProgram ( const QString & printProg )
 */
 HB_FUNC_STATIC( QPRINTER_SETPRINTPROGRAM )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1260,12 +1269,12 @@ HB_FUNC_STATIC( QPRINTER_SETPRINTPROGRAM )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->setPrintProgram ( PQSTRING(1) );
+      obj->setPrintProgram( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1278,7 +1287,7 @@ PrintRange printRange () const
 */
 HB_FUNC_STATIC( QPRINTER_PRINTRANGE )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1286,12 +1295,12 @@ HB_FUNC_STATIC( QPRINTER_PRINTRANGE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->printRange () );
+      RENUM( obj->printRange() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1302,7 +1311,7 @@ void setPrintRange ( PrintRange range )
 */
 HB_FUNC_STATIC( QPRINTER_SETPRINTRANGE )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1310,12 +1319,12 @@ HB_FUNC_STATIC( QPRINTER_SETPRINTRANGE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setPrintRange ( (QPrinter::PrintRange) hb_parni(1) );
+      obj->setPrintRange( (QPrinter::PrintRange) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1328,7 +1337,7 @@ QString printerName () const
 */
 HB_FUNC_STATIC( QPRINTER_PRINTERNAME )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1336,12 +1345,12 @@ HB_FUNC_STATIC( QPRINTER_PRINTERNAME )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->printerName () );
+      RQSTRING( obj->printerName() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1352,7 +1361,7 @@ void setPrinterName ( const QString & name )
 */
 HB_FUNC_STATIC( QPRINTER_SETPRINTERNAME )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1360,12 +1369,12 @@ HB_FUNC_STATIC( QPRINTER_SETPRINTERNAME )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->setPrinterName ( PQSTRING(1) );
+      obj->setPrinterName( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1379,7 +1388,7 @@ QString printerSelectionOption () const
 HB_FUNC_STATIC( QPRINTER_PRINTERSELECTIONOPTION )
 {
 #if !defined(Q_OS_WIN) 
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1387,12 +1396,12 @@ HB_FUNC_STATIC( QPRINTER_PRINTERSELECTIONOPTION )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->printerSelectionOption () );
+      RQSTRING( obj->printerSelectionOption() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1404,7 +1413,7 @@ PrinterState printerState () const
 */
 HB_FUNC_STATIC( QPRINTER_PRINTERSTATE )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1412,12 +1421,12 @@ HB_FUNC_STATIC( QPRINTER_PRINTERSTATE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->printerState () );
+      RENUM( obj->printerState() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1428,7 +1437,7 @@ int resolution () const
 */
 HB_FUNC_STATIC( QPRINTER_RESOLUTION )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1436,12 +1445,12 @@ HB_FUNC_STATIC( QPRINTER_RESOLUTION )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->resolution () );
+      RINT( obj->resolution() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1452,7 +1461,7 @@ void setResolution ( int dpi )
 */
 HB_FUNC_STATIC( QPRINTER_SETRESOLUTION )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1460,12 +1469,12 @@ HB_FUNC_STATIC( QPRINTER_SETRESOLUTION )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setResolution ( PINT(1) );
+      obj->setResolution( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1478,7 +1487,7 @@ void setFromTo ( int from, int to )
 */
 HB_FUNC_STATIC( QPRINTER_SETFROMTO )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1486,12 +1495,12 @@ HB_FUNC_STATIC( QPRINTER_SETFROMTO )
     if( ISNUMPAR(2) && ISNUM(1) && ISNUM(2) )
     {
 #endif
-      obj->setFromTo ( PINT(1), PINT(2) );
+      obj->setFromTo( PINT(1), PINT(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1502,13 +1511,13 @@ HB_FUNC_STATIC( QPRINTER_SETFROMTO )
 /*
 void setPaperSize ( PaperSize newPaperSize )
 */
-void QPrinter_setPaperSize1 ()
+void QPrinter_setPaperSize1()
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setPaperSize ( (QPrinter::PaperSize) hb_parni(1) );
+    obj->setPaperSize( (QPrinter::PaperSize) hb_parni(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -1517,20 +1526,22 @@ void QPrinter_setPaperSize1 ()
 /*
 void setPaperSize ( const QSizeF & paperSize, Unit unit )
 */
-void QPrinter_setPaperSize2 ()
+void QPrinter_setPaperSize2()
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setPaperSize ( *PQSIZEF(1), (QPrinter::Unit) hb_parni(2) );
+    obj->setPaperSize( *PQSIZEF(1), (QPrinter::Unit) hb_parni(2) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void setPaperSize ( PaperSize newPaperSize )
-//[2]void setPaperSize ( const QSizeF & paperSize, Unit unit )
+/*
+[1]void setPaperSize ( PaperSize newPaperSize )
+[2]void setPaperSize ( const QSizeF & paperSize, Unit unit )
+*/
 
 HB_FUNC_STATIC( QPRINTER_SETPAPERSIZE )
 {
@@ -1544,7 +1555,7 @@ HB_FUNC_STATIC( QPRINTER_SETPAPERSIZE )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -1554,7 +1565,7 @@ void setPrinterSelectionOption ( const QString & option )
 HB_FUNC_STATIC( QPRINTER_SETPRINTERSELECTIONOPTION )
 {
 #if !defined(Q_OS_WIN) 
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1562,12 +1573,12 @@ HB_FUNC_STATIC( QPRINTER_SETPRINTERSELECTIONOPTION )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->setPrinterSelectionOption ( PQSTRING(1) );
+      obj->setPrinterSelectionOption( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1582,7 +1593,7 @@ void setWinPageSize ( int pageSize )
 HB_FUNC_STATIC( QPRINTER_SETWINPAGESIZE )
 {
 #ifdef Q_OS_WIN
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1590,12 +1601,12 @@ HB_FUNC_STATIC( QPRINTER_SETWINPAGESIZE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setWinPageSize ( PINT(1) );
+      obj->setWinPageSize( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1610,7 +1621,7 @@ QList<PaperSource> supportedPaperSources () const
 HB_FUNC_STATIC( QPRINTER_SUPPORTEDPAPERSOURCES )
 {
 #ifdef Q_OS_WIN
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1618,12 +1629,11 @@ HB_FUNC_STATIC( QPRINTER_SUPPORTEDPAPERSOURCES )
     if( ISNUMPAR(0) )
     {
 #endif
-      QList<QPrinter::PaperSource> list = obj->supportedPaperSources ();
+      QList<QPrinter::PaperSource> list = obj->supportedPaperSources();
       PHB_ITEM pArray = hb_itemArrayNew(0);
-      int i;
-      for(i=0;i<list.count();i++)
+      for( auto i = 0; i < list.count(); i++ )
       {
-        PHB_ITEM pItem = hb_itemPutNI( NULL, (int) list[i] );
+        PHB_ITEM pItem = hb_itemPutNI( nullptr, (int) list[i] );
         hb_arrayAddForward( pArray, pItem );
         hb_itemRelease(pItem);
       }
@@ -1632,7 +1642,7 @@ HB_FUNC_STATIC( QPRINTER_SUPPORTEDPAPERSOURCES )
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1644,7 +1654,7 @@ QList<int> supportedResolutions () const
 */
 HB_FUNC_STATIC( QPRINTER_SUPPORTEDRESOLUTIONS )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1652,13 +1662,13 @@ HB_FUNC_STATIC( QPRINTER_SUPPORTEDRESOLUTIONS )
     if( ISNUMPAR(0) )
     {
 #endif
-      QList<int> list = obj->supportedResolutions ();
-      _qt5xhb_convert_qlist_int_to_array ( list );
+      QList<int> list = obj->supportedResolutions();
+      Qt5xHb::convert_qlist_int_to_array ( list );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1669,7 +1679,7 @@ bool supportsMultipleCopies () const
 */
 HB_FUNC_STATIC( QPRINTER_SUPPORTSMULTIPLECOPIES )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1677,12 +1687,12 @@ HB_FUNC_STATIC( QPRINTER_SUPPORTSMULTIPLECOPIES )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->supportsMultipleCopies () );
+      RBOOL( obj->supportsMultipleCopies() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1693,7 +1703,7 @@ int toPage () const
 */
 HB_FUNC_STATIC( QPRINTER_TOPAGE )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1701,12 +1711,12 @@ HB_FUNC_STATIC( QPRINTER_TOPAGE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->toPage () );
+      RINT( obj->toPage() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1718,7 +1728,7 @@ int winPageSize () const
 HB_FUNC_STATIC( QPRINTER_WINPAGESIZE )
 {
 #ifdef Q_OS_WIN
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1726,12 +1736,12 @@ HB_FUNC_STATIC( QPRINTER_WINPAGESIZE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->winPageSize () );
+      RINT( obj->winPageSize() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1743,7 +1753,7 @@ QPaintEngine * paintEngine () const
 */
 HB_FUNC_STATIC( QPRINTER_PAINTENGINE )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1751,13 +1761,13 @@ HB_FUNC_STATIC( QPRINTER_PAINTENGINE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QPaintEngine * ptr = obj->paintEngine ();
-      _qt5xhb_createReturnClass ( ptr, "QPAINTENGINE", false );
+      QPaintEngine * ptr = obj->paintEngine();
+      Qt5xHb::createReturnClass( ptr, "QPAINTENGINE", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1768,7 +1778,7 @@ int devType() const
 */
 HB_FUNC_STATIC( QPRINTER_DEVTYPE )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1776,12 +1786,12 @@ HB_FUNC_STATIC( QPRINTER_DEVTYPE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->devType () );
+      RINT( obj->devType() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1792,7 +1802,7 @@ PageSize pageSize() const
 */
 HB_FUNC_STATIC( QPRINTER_PAGESIZE )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1800,12 +1810,12 @@ HB_FUNC_STATIC( QPRINTER_PAGESIZE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->pageSize () );
+      RENUM( obj->pageSize() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1814,13 +1824,13 @@ HB_FUNC_STATIC( QPRINTER_PAGESIZE )
 /*
 void setPageSize(PageSize)
 */
-void QPrinter_setPageSize1 ()
+void QPrinter_setPageSize1()
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setPageSize ( (QPrinter::PageSize) hb_parni(1) );
+    obj->setPageSize( (QPrinter::PageSize) hb_parni(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -1829,20 +1839,22 @@ void QPrinter_setPageSize1 ()
 /*
 bool setPageSize(const QPageSize &pageSize)
 */
-void QPrinter_setPageSize2 ()
+void QPrinter_setPageSize2()
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RBOOL( obj->setPageSize ( *PQPAGESIZE(1) ) );
+    RBOOL( obj->setPageSize( *PQPAGESIZE(1) ) );
   }
 #endif
 }
 
-//[1]void setPageSize(PageSize)
-//[2]bool setPageSize(const QPageSize &pageSize)
+/*
+[1]void setPageSize(PageSize)
+[2]bool setPageSize(const QPageSize &pageSize)
+*/
 
 HB_FUNC_STATIC( QPRINTER_SETPAGESIZE )
 {
@@ -1856,7 +1868,7 @@ HB_FUNC_STATIC( QPRINTER_SETPAGESIZE )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -1865,7 +1877,7 @@ void setPageSizeMM(const QSizeF &size)
 */
 HB_FUNC_STATIC( QPRINTER_SETPAGESIZEMM )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1873,12 +1885,12 @@ HB_FUNC_STATIC( QPRINTER_SETPAGESIZEMM )
     if( ISNUMPAR(1) && ISQSIZEF(1) )
     {
 #endif
-      obj->setPageSizeMM ( *PQSIZEF(1) );
+      obj->setPageSizeMM( *PQSIZEF(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1891,7 +1903,7 @@ QString paperName() const
 */
 HB_FUNC_STATIC( QPRINTER_PAPERNAME )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1899,12 +1911,12 @@ HB_FUNC_STATIC( QPRINTER_PAPERNAME )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->paperName () );
+      RQSTRING( obj->paperName() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1915,7 +1927,7 @@ void setPaperName(const QString &paperName)
 */
 HB_FUNC_STATIC( QPRINTER_SETPAPERNAME )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1923,12 +1935,12 @@ HB_FUNC_STATIC( QPRINTER_SETPAPERNAME )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->setPaperName ( PQSTRING(1) );
+      obj->setPaperName( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1941,7 +1953,7 @@ int numCopies() const
 */
 HB_FUNC_STATIC( QPRINTER_NUMCOPIES )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1949,12 +1961,12 @@ HB_FUNC_STATIC( QPRINTER_NUMCOPIES )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->numCopies () );
+      RINT( obj->numCopies() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1965,7 +1977,7 @@ void setNumCopies(int)
 */
 HB_FUNC_STATIC( QPRINTER_SETNUMCOPIES )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1973,12 +1985,12 @@ HB_FUNC_STATIC( QPRINTER_SETNUMCOPIES )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setNumCopies ( PINT(1) );
+      obj->setNumCopies( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1991,7 +2003,7 @@ int actualNumCopies() const
 */
 HB_FUNC_STATIC( QPRINTER_ACTUALNUMCOPIES )
 {
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1999,12 +2011,12 @@ HB_FUNC_STATIC( QPRINTER_ACTUALNUMCOPIES )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->actualNumCopies () );
+      RINT( obj->actualNumCopies() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2016,7 +2028,7 @@ QPageLayout pageLayout() const
 HB_FUNC_STATIC( QPRINTER_PAGELAYOUT )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2024,13 +2036,13 @@ HB_FUNC_STATIC( QPRINTER_PAGELAYOUT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QPageLayout * ptr = new QPageLayout( obj->pageLayout () );
-      _qt5xhb_createReturnClass ( ptr, "QPAGELAYOUT", true );
+      auto ptr = new QPageLayout( obj->pageLayout() );
+      Qt5xHb::createReturnClass( ptr, "QPAGELAYOUT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2043,7 +2055,7 @@ PdfVersion pdfVersion() const
 HB_FUNC_STATIC( QPRINTER_PDFVERSION )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,10,0))
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2051,12 +2063,12 @@ HB_FUNC_STATIC( QPRINTER_PDFVERSION )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->pdfVersion () );
+      RENUM( obj->pdfVersion() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2069,7 +2081,7 @@ bool setPageLayout(const QPageLayout &newLayout)
 HB_FUNC_STATIC( QPRINTER_SETPAGELAYOUT )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2077,12 +2089,12 @@ HB_FUNC_STATIC( QPRINTER_SETPAGELAYOUT )
     if( ISNUMPAR(1) && ISQPAGELAYOUT(1) )
     {
 #endif
-      RBOOL( obj->setPageLayout ( *PQPAGELAYOUT(1) ) );
+      RBOOL( obj->setPageLayout( *PQPAGELAYOUT(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2095,7 +2107,7 @@ bool setPageOrientation(QPageLayout::Orientation orientation)
 HB_FUNC_STATIC( QPRINTER_SETPAGEORIENTATION )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2103,12 +2115,12 @@ HB_FUNC_STATIC( QPRINTER_SETPAGEORIENTATION )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      RBOOL( obj->setPageOrientation ( (QPageLayout::Orientation) hb_parni(1) ) );
+      RBOOL( obj->setPageOrientation( (QPageLayout::Orientation) hb_parni(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2121,7 +2133,7 @@ void setPdfVersion(PdfVersion version)
 HB_FUNC_STATIC( QPRINTER_SETPDFVERSION )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,10,0))
-  QPrinter * obj = (QPrinter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrinter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2129,12 +2141,12 @@ HB_FUNC_STATIC( QPRINTER_SETPDFVERSION )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setPdfVersion ( (QPagedPaintDevice::PdfVersion) hb_parni(1) );
+      obj->setPdfVersion( (QPagedPaintDevice::PdfVersion) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

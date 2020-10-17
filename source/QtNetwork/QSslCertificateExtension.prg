@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -40,7 +40,7 @@ CLASS QSslCertificateExtension
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QSslCertificateExtension
+PROCEDURE destroyObject() CLASS QSslCertificateExtension
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -57,7 +57,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtNetwork/QSslCertificateExtension>
@@ -66,23 +65,25 @@ RETURN
 /*
 QSslCertificateExtension()
 */
-void QSslCertificateExtension_new1 ()
+void QSslCertificateExtension_new1()
 {
-  QSslCertificateExtension * o = new QSslCertificateExtension ();
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QSslCertificateExtension();
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QSslCertificateExtension(const QSslCertificateExtension &other)
 */
-void QSslCertificateExtension_new2 ()
+void QSslCertificateExtension_new2()
 {
-  QSslCertificateExtension * o = new QSslCertificateExtension ( *PQSSLCERTIFICATEEXTENSION(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QSslCertificateExtension( *PQSSLCERTIFICATEEXTENSION(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
-//[1]QSslCertificateExtension()
-//[2]QSslCertificateExtension(const QSslCertificateExtension &other)
+/*
+[1]QSslCertificateExtension()
+[2]QSslCertificateExtension(const QSslCertificateExtension &other)
+*/
 
 HB_FUNC_STATIC( QSSLCERTIFICATEEXTENSION_NEW )
 {
@@ -96,7 +97,7 @@ HB_FUNC_STATIC( QSSLCERTIFICATEEXTENSION_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -105,14 +106,14 @@ HB_FUNC_STATIC( QSSLCERTIFICATEEXTENSION_NEW )
 */
 HB_FUNC_STATIC( QSSLCERTIFICATEEXTENSION_DELETE )
 {
-  QSslCertificateExtension * obj = (QSslCertificateExtension *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSslCertificateExtension *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -125,7 +126,7 @@ void swap(QSslCertificateExtension &other) Q_DECL_NOTHROW
 */
 HB_FUNC_STATIC( QSSLCERTIFICATEEXTENSION_SWAP )
 {
-  QSslCertificateExtension * obj = (QSslCertificateExtension *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSslCertificateExtension *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -133,12 +134,12 @@ HB_FUNC_STATIC( QSSLCERTIFICATEEXTENSION_SWAP )
     if( ISNUMPAR(1) && ISQSSLCERTIFICATEEXTENSION(1) )
     {
 #endif
-      obj->swap ( *PQSSLCERTIFICATEEXTENSION(1) );
+      obj->swap( *PQSSLCERTIFICATEEXTENSION(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -151,7 +152,7 @@ QString oid() const
 */
 HB_FUNC_STATIC( QSSLCERTIFICATEEXTENSION_OID )
 {
-  QSslCertificateExtension * obj = (QSslCertificateExtension *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSslCertificateExtension *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -159,12 +160,12 @@ HB_FUNC_STATIC( QSSLCERTIFICATEEXTENSION_OID )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->oid () );
+      RQSTRING( obj->oid() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -175,7 +176,7 @@ QString name() const
 */
 HB_FUNC_STATIC( QSSLCERTIFICATEEXTENSION_NAME )
 {
-  QSslCertificateExtension * obj = (QSslCertificateExtension *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSslCertificateExtension *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -183,12 +184,12 @@ HB_FUNC_STATIC( QSSLCERTIFICATEEXTENSION_NAME )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->name () );
+      RQSTRING( obj->name() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -199,7 +200,7 @@ QVariant value() const
 */
 HB_FUNC_STATIC( QSSLCERTIFICATEEXTENSION_VALUE )
 {
-  QSslCertificateExtension * obj = (QSslCertificateExtension *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSslCertificateExtension *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -207,13 +208,13 @@ HB_FUNC_STATIC( QSSLCERTIFICATEEXTENSION_VALUE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QVariant * ptr = new QVariant( obj->value () );
-      _qt5xhb_createReturnClass ( ptr, "QVARIANT", true );
+      auto ptr = new QVariant( obj->value() );
+      Qt5xHb::createReturnClass( ptr, "QVARIANT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -224,7 +225,7 @@ bool isCritical() const
 */
 HB_FUNC_STATIC( QSSLCERTIFICATEEXTENSION_ISCRITICAL )
 {
-  QSslCertificateExtension * obj = (QSslCertificateExtension *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSslCertificateExtension *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -232,12 +233,12 @@ HB_FUNC_STATIC( QSSLCERTIFICATEEXTENSION_ISCRITICAL )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isCritical () );
+      RBOOL( obj->isCritical() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -248,7 +249,7 @@ bool isSupported() const
 */
 HB_FUNC_STATIC( QSSLCERTIFICATEEXTENSION_ISSUPPORTED )
 {
-  QSslCertificateExtension * obj = (QSslCertificateExtension *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSslCertificateExtension *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -256,12 +257,12 @@ HB_FUNC_STATIC( QSSLCERTIFICATEEXTENSION_ISSUPPORTED )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isSupported () );
+      RBOOL( obj->isSupported() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -273,25 +274,25 @@ HB_FUNC_STATIC( QSSLCERTIFICATEEXTENSION_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -318,13 +319,13 @@ HB_FUNC_STATIC( QSSLCERTIFICATEEXTENSION_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -36,7 +36,7 @@ CLASS QStyleOptionGroupBox INHERIT QStyleOptionComplex
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QStyleOptionGroupBox
+PROCEDURE destroyObject() CLASS QStyleOptionGroupBox
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -53,7 +53,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtWidgets/QStyleOptionGroupBox>
@@ -62,28 +61,30 @@ RETURN
 /*
 QStyleOptionGroupBox()
 */
-void QStyleOptionGroupBox_new1 ()
+void QStyleOptionGroupBox_new1()
 {
-  QStyleOptionGroupBox * o = new QStyleOptionGroupBox ();
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QStyleOptionGroupBox();
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QStyleOptionGroupBox(const QStyleOptionGroupBox &other)
 */
-void QStyleOptionGroupBox_new2 ()
+void QStyleOptionGroupBox_new2()
 {
-  QStyleOptionGroupBox * o = new QStyleOptionGroupBox ( *PQSTYLEOPTIONGROUPBOX(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QStyleOptionGroupBox( *PQSTYLEOPTIONGROUPBOX(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QStyleOptionGroupBox(int version) [protected]
 */
 
-//[1]QStyleOptionGroupBox()
-//[2]QStyleOptionGroupBox(const QStyleOptionGroupBox &other)
-//[3]QStyleOptionGroupBox(int version) [protected]
+/*
+[1]QStyleOptionGroupBox()
+[2]QStyleOptionGroupBox(const QStyleOptionGroupBox &other)
+[3]QStyleOptionGroupBox(int version) [protected]
+*/
 
 HB_FUNC_STATIC( QSTYLEOPTIONGROUPBOX_NEW )
 {
@@ -97,7 +98,7 @@ HB_FUNC_STATIC( QSTYLEOPTIONGROUPBOX_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -106,33 +107,33 @@ QStyleOptionFrame::FrameFeatures features
 */
 HB_FUNC_STATIC( QSTYLEOPTIONGROUPBOX_FEATURES )
 {
-  QStyleOptionGroupBox * obj = (QStyleOptionGroupBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(0) )
     {
-      RENUM( obj->features  );
+      RENUM( obj->features );
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 }
 HB_FUNC_STATIC( QSTYLEOPTIONGROUPBOX_SETFEATURES )
 {
-  QStyleOptionGroupBox * obj = (QStyleOptionGroupBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(1) && ISNUM(1) )
     {
-      obj->features = (QStyleOptionFrame::FrameFeatures) hb_parni(1);
+      obj->features= (QStyleOptionFrame::FrameFeatures) hb_parni(1);
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 
@@ -144,33 +145,33 @@ QString text
 */
 HB_FUNC_STATIC( QSTYLEOPTIONGROUPBOX_TEXT )
 {
-  QStyleOptionGroupBox * obj = (QStyleOptionGroupBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(0) )
     {
-      RQSTRING( obj->text  );
+      RQSTRING( obj->text );
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 }
 HB_FUNC_STATIC( QSTYLEOPTIONGROUPBOX_SETTEXT )
 {
-  QStyleOptionGroupBox * obj = (QStyleOptionGroupBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
-      obj->text = PQSTRING(1);
+      obj->text= PQSTRING(1);
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 
@@ -182,33 +183,33 @@ Qt::Alignment textAlignment
 */
 HB_FUNC_STATIC( QSTYLEOPTIONGROUPBOX_TEXTALIGNMENT )
 {
-  QStyleOptionGroupBox * obj = (QStyleOptionGroupBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(0) )
     {
-      RENUM( obj->textAlignment  );
+      RENUM( obj->textAlignment );
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 }
 HB_FUNC_STATIC( QSTYLEOPTIONGROUPBOX_SETTEXTALIGNMENT )
 {
-  QStyleOptionGroupBox * obj = (QStyleOptionGroupBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(1) && ISNUM(1) )
     {
-      obj->textAlignment = (Qt::Alignment) hb_parni(1);
+      obj->textAlignment= (Qt::Alignment) hb_parni(1);
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 
@@ -220,34 +221,34 @@ QColor textColor
 */
 HB_FUNC_STATIC( QSTYLEOPTIONGROUPBOX_TEXTCOLOR )
 {
-  QStyleOptionGroupBox * obj = (QStyleOptionGroupBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(0) )
     {
-      QColor * ptr = new QColor( obj->textColor  );
-      _qt5xhb_createReturnClass ( ptr, "QCOLOR", true );
+      auto ptr = new QColor( obj->textColor );
+      Qt5xHb::createReturnClass( ptr, "QCOLOR", true );
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 }
 HB_FUNC_STATIC( QSTYLEOPTIONGROUPBOX_SETTEXTCOLOR )
 {
-  QStyleOptionGroupBox * obj = (QStyleOptionGroupBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(1) && ISQCOLOR(1) )
     {
-      obj->textColor = *PQCOLOR(1);
+      obj->textColor= *PQCOLOR(1);
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 
@@ -259,33 +260,33 @@ int lineWidth
 */
 HB_FUNC_STATIC( QSTYLEOPTIONGROUPBOX_LINEWIDTH )
 {
-  QStyleOptionGroupBox * obj = (QStyleOptionGroupBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(0) )
     {
-      RINT( obj->lineWidth  );
+      RINT( obj->lineWidth );
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 }
 HB_FUNC_STATIC( QSTYLEOPTIONGROUPBOX_SETLINEWIDTH )
 {
-  QStyleOptionGroupBox * obj = (QStyleOptionGroupBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(1) && ISNUM(1) )
     {
-      obj->lineWidth = PINT(1);
+      obj->lineWidth= PINT(1);
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 
@@ -297,33 +298,33 @@ int midLineWidth
 */
 HB_FUNC_STATIC( QSTYLEOPTIONGROUPBOX_MIDLINEWIDTH )
 {
-  QStyleOptionGroupBox * obj = (QStyleOptionGroupBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(0) )
     {
-      RINT( obj->midLineWidth  );
+      RINT( obj->midLineWidth );
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 }
 HB_FUNC_STATIC( QSTYLEOPTIONGROUPBOX_SETMIDLINEWIDTH )
 {
-  QStyleOptionGroupBox * obj = (QStyleOptionGroupBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionGroupBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(1) && ISNUM(1) )
     {
-      obj->midLineWidth = PINT(1);
+      obj->midLineWidth= PINT(1);
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 

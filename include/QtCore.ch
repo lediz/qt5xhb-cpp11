@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -17,12 +17,14 @@
 #include "QAbstractAnimation.ch"
 #include "QAbstractItemModel.ch"
 #include "QByteArray.ch"
+#include "QCalendar.ch"
 #include "QChar.ch"
 #include "QCommandLineParser.ch"
 #include "QCoreApplication.ch"
 #include "QCryptographicHash.ch"
 #include "QDataStream.ch"
 #include "QDate.ch"
+#include "QDebug.ch"
 #include "QDir.ch"
 #include "QDirIterator.ch"
 #include "QEasingCurve.ch"
@@ -45,6 +47,7 @@
 #include "QMetaMethod.ch"
 #include "QMetaType.ch"
 #include "QMimeDatabase.ch"
+#include "QOperatingSystemVersion.ch"
 #include "QProcess.ch"
 #include "QReadWriteLock.ch"
 #include "QRegExp.ch"

@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -27,7 +27,7 @@ CLASS QSwipeGesture INHERIT QGesture
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QSwipeGesture
+PROCEDURE destroyObject() CLASS QSwipeGesture
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -44,7 +44,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtWidgets/QSwipeGesture>
@@ -52,14 +53,16 @@ RETURN
 
 HB_FUNC_STATIC( QSWIPEGESTURE_DELETE )
 {
-  QSwipeGesture * obj = (QSwipeGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSwipeGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -72,7 +75,7 @@ SwipeDirection horizontalDirection() const
 */
 HB_FUNC_STATIC( QSWIPEGESTURE_HORIZONTALDIRECTION )
 {
-  QSwipeGesture * obj = (QSwipeGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSwipeGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -80,12 +83,12 @@ HB_FUNC_STATIC( QSWIPEGESTURE_HORIZONTALDIRECTION )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->horizontalDirection () );
+      RENUM( obj->horizontalDirection() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -96,7 +99,7 @@ void setSwipeAngle(qreal value)
 */
 HB_FUNC_STATIC( QSWIPEGESTURE_SETSWIPEANGLE )
 {
-  QSwipeGesture * obj = (QSwipeGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSwipeGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -104,12 +107,12 @@ HB_FUNC_STATIC( QSWIPEGESTURE_SETSWIPEANGLE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setSwipeAngle ( PQREAL(1) );
+      obj->setSwipeAngle( PQREAL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -122,7 +125,7 @@ qreal swipeAngle() const
 */
 HB_FUNC_STATIC( QSWIPEGESTURE_SWIPEANGLE )
 {
-  QSwipeGesture * obj = (QSwipeGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSwipeGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -130,12 +133,12 @@ HB_FUNC_STATIC( QSWIPEGESTURE_SWIPEANGLE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQREAL( obj->swipeAngle () );
+      RQREAL( obj->swipeAngle() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -146,7 +149,7 @@ SwipeDirection verticalDirection() const
 */
 HB_FUNC_STATIC( QSWIPEGESTURE_VERTICALDIRECTION )
 {
-  QSwipeGesture * obj = (QSwipeGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSwipeGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -154,12 +157,12 @@ HB_FUNC_STATIC( QSWIPEGESTURE_VERTICALDIRECTION )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->verticalDirection () );
+      RENUM( obj->verticalDirection() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

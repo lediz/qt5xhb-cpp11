@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -40,7 +40,7 @@ CLASS QOpenGLPaintDevice INHERIT QPaintDevice
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QOpenGLPaintDevice
+PROCEDURE destroyObject() CLASS QOpenGLPaintDevice
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -57,7 +57,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtGui/QOpenGLPaintDevice>
@@ -66,33 +65,35 @@ RETURN
 /*
 QOpenGLPaintDevice()
 */
-void QOpenGLPaintDevice_new1 ()
+void QOpenGLPaintDevice_new1()
 {
-  QOpenGLPaintDevice * o = new QOpenGLPaintDevice ();
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QOpenGLPaintDevice();
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QOpenGLPaintDevice(const QSize &size)
 */
-void QOpenGLPaintDevice_new2 ()
+void QOpenGLPaintDevice_new2()
 {
-  QOpenGLPaintDevice * o = new QOpenGLPaintDevice ( *PQSIZE(1) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QOpenGLPaintDevice( *PQSIZE(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QOpenGLPaintDevice(int width, int height)
 */
-void QOpenGLPaintDevice_new3 ()
+void QOpenGLPaintDevice_new3()
 {
-  QOpenGLPaintDevice * o = new QOpenGLPaintDevice ( PINT(1), PINT(2) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QOpenGLPaintDevice( PINT(1), PINT(2) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
-//[1]QOpenGLPaintDevice()
-//[2]QOpenGLPaintDevice(const QSize &size)
-//[3]QOpenGLPaintDevice(int width, int height)
+/*
+[1]QOpenGLPaintDevice()
+[2]QOpenGLPaintDevice(const QSize &size)
+[3]QOpenGLPaintDevice(int width, int height)
+*/
 
 HB_FUNC_STATIC( QOPENGLPAINTDEVICE_NEW )
 {
@@ -110,20 +111,20 @@ HB_FUNC_STATIC( QOPENGLPAINTDEVICE_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QOPENGLPAINTDEVICE_DELETE )
 {
-  QOpenGLPaintDevice * obj = (QOpenGLPaintDevice *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLPaintDevice *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -136,7 +137,7 @@ int devType() const
 */
 HB_FUNC_STATIC( QOPENGLPAINTDEVICE_DEVTYPE )
 {
-  QOpenGLPaintDevice * obj = (QOpenGLPaintDevice *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLPaintDevice *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -144,12 +145,12 @@ HB_FUNC_STATIC( QOPENGLPAINTDEVICE_DEVTYPE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->devType () );
+      RINT( obj->devType() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -160,7 +161,7 @@ QPaintEngine *paintEngine() const
 */
 HB_FUNC_STATIC( QOPENGLPAINTDEVICE_PAINTENGINE )
 {
-  QOpenGLPaintDevice * obj = (QOpenGLPaintDevice *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLPaintDevice *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -168,13 +169,13 @@ HB_FUNC_STATIC( QOPENGLPAINTDEVICE_PAINTENGINE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QPaintEngine * ptr = obj->paintEngine ();
-      _qt5xhb_createReturnClass ( ptr, "QPAINTENGINE", false );
+      QPaintEngine * ptr = obj->paintEngine();
+      Qt5xHb::createReturnClass( ptr, "QPAINTENGINE", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -185,7 +186,7 @@ QOpenGLContext *context() const
 */
 HB_FUNC_STATIC( QOPENGLPAINTDEVICE_CONTEXT )
 {
-  QOpenGLPaintDevice * obj = (QOpenGLPaintDevice *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLPaintDevice *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -193,13 +194,13 @@ HB_FUNC_STATIC( QOPENGLPAINTDEVICE_CONTEXT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QOpenGLContext * ptr = obj->context ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QOPENGLCONTEXT" );
+      QOpenGLContext * ptr = obj->context();
+      Qt5xHb::createReturnQObjectClass( ptr, "QOPENGLCONTEXT" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -210,7 +211,7 @@ QSize size() const
 */
 HB_FUNC_STATIC( QOPENGLPAINTDEVICE_SIZE )
 {
-  QOpenGLPaintDevice * obj = (QOpenGLPaintDevice *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLPaintDevice *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -218,13 +219,13 @@ HB_FUNC_STATIC( QOPENGLPAINTDEVICE_SIZE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSize * ptr = new QSize( obj->size () );
-      _qt5xhb_createReturnClass ( ptr, "QSIZE", true );
+      auto ptr = new QSize( obj->size() );
+      Qt5xHb::createReturnClass( ptr, "QSIZE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -235,7 +236,7 @@ void setSize(const QSize &size)
 */
 HB_FUNC_STATIC( QOPENGLPAINTDEVICE_SETSIZE )
 {
-  QOpenGLPaintDevice * obj = (QOpenGLPaintDevice *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLPaintDevice *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -243,12 +244,12 @@ HB_FUNC_STATIC( QOPENGLPAINTDEVICE_SETSIZE )
     if( ISNUMPAR(1) && ISQSIZE(1) )
     {
 #endif
-      obj->setSize ( *PQSIZE(1) );
+      obj->setSize( *PQSIZE(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -261,7 +262,7 @@ void setDevicePixelRatio(qreal devicePixelRatio)
 */
 HB_FUNC_STATIC( QOPENGLPAINTDEVICE_SETDEVICEPIXELRATIO )
 {
-  QOpenGLPaintDevice * obj = (QOpenGLPaintDevice *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLPaintDevice *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -269,12 +270,12 @@ HB_FUNC_STATIC( QOPENGLPAINTDEVICE_SETDEVICEPIXELRATIO )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setDevicePixelRatio ( PQREAL(1) );
+      obj->setDevicePixelRatio( PQREAL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -287,7 +288,7 @@ qreal dotsPerMeterX() const
 */
 HB_FUNC_STATIC( QOPENGLPAINTDEVICE_DOTSPERMETERX )
 {
-  QOpenGLPaintDevice * obj = (QOpenGLPaintDevice *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLPaintDevice *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -295,12 +296,12 @@ HB_FUNC_STATIC( QOPENGLPAINTDEVICE_DOTSPERMETERX )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQREAL( obj->dotsPerMeterX () );
+      RQREAL( obj->dotsPerMeterX() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -311,7 +312,7 @@ qreal dotsPerMeterY() const
 */
 HB_FUNC_STATIC( QOPENGLPAINTDEVICE_DOTSPERMETERY )
 {
-  QOpenGLPaintDevice * obj = (QOpenGLPaintDevice *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLPaintDevice *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -319,12 +320,12 @@ HB_FUNC_STATIC( QOPENGLPAINTDEVICE_DOTSPERMETERY )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQREAL( obj->dotsPerMeterY () );
+      RQREAL( obj->dotsPerMeterY() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -335,7 +336,7 @@ void setDotsPerMeterX(qreal)
 */
 HB_FUNC_STATIC( QOPENGLPAINTDEVICE_SETDOTSPERMETERX )
 {
-  QOpenGLPaintDevice * obj = (QOpenGLPaintDevice *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLPaintDevice *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -343,12 +344,12 @@ HB_FUNC_STATIC( QOPENGLPAINTDEVICE_SETDOTSPERMETERX )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setDotsPerMeterX ( PQREAL(1) );
+      obj->setDotsPerMeterX( PQREAL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -361,7 +362,7 @@ void setDotsPerMeterY(qreal)
 */
 HB_FUNC_STATIC( QOPENGLPAINTDEVICE_SETDOTSPERMETERY )
 {
-  QOpenGLPaintDevice * obj = (QOpenGLPaintDevice *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLPaintDevice *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -369,12 +370,12 @@ HB_FUNC_STATIC( QOPENGLPAINTDEVICE_SETDOTSPERMETERY )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setDotsPerMeterY ( PQREAL(1) );
+      obj->setDotsPerMeterY( PQREAL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -387,7 +388,7 @@ void setPaintFlipped(bool flipped)
 */
 HB_FUNC_STATIC( QOPENGLPAINTDEVICE_SETPAINTFLIPPED )
 {
-  QOpenGLPaintDevice * obj = (QOpenGLPaintDevice *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLPaintDevice *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -395,12 +396,12 @@ HB_FUNC_STATIC( QOPENGLPAINTDEVICE_SETPAINTFLIPPED )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setPaintFlipped ( PBOOL(1) );
+      obj->setPaintFlipped( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -413,7 +414,7 @@ bool paintFlipped() const
 */
 HB_FUNC_STATIC( QOPENGLPAINTDEVICE_PAINTFLIPPED )
 {
-  QOpenGLPaintDevice * obj = (QOpenGLPaintDevice *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLPaintDevice *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -421,12 +422,12 @@ HB_FUNC_STATIC( QOPENGLPAINTDEVICE_PAINTFLIPPED )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->paintFlipped () );
+      RBOOL( obj->paintFlipped() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -437,7 +438,7 @@ virtual void ensureActiveTarget()
 */
 HB_FUNC_STATIC( QOPENGLPAINTDEVICE_ENSUREACTIVETARGET )
 {
-  QOpenGLPaintDevice * obj = (QOpenGLPaintDevice *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLPaintDevice *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -445,12 +446,12 @@ HB_FUNC_STATIC( QOPENGLPAINTDEVICE_ENSUREACTIVETARGET )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->ensureActiveTarget ();
+      obj->ensureActiveTarget();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

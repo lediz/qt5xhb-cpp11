@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -36,7 +36,7 @@ CLASS QIntValidator INHERIT QValidator
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QIntValidator
+PROCEDURE destroyObject() CLASS QIntValidator
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -53,7 +53,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtGui/QIntValidator>
@@ -62,23 +63,25 @@ RETURN
 /*
 QIntValidator(QObject * parent = nullptr)
 */
-void QIntValidator_new1 ()
+void QIntValidator_new1()
 {
-  QIntValidator * o = new QIntValidator ( OPQOBJECT(1,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QIntValidator( OPQOBJECT(1,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
 /*
 QIntValidator(int minimum, int maximum, QObject * parent = nullptr)
 */
-void QIntValidator_new2 ()
+void QIntValidator_new2()
 {
-  QIntValidator * o = new QIntValidator ( PINT(1), PINT(2), OPQOBJECT(3,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QIntValidator( PINT(1), PINT(2), OPQOBJECT(3,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
-//[1]QIntValidator(QObject * parent = nullptr)
-//[2]QIntValidator(int minimum, int maximum, QObject * parent = nullptr)
+/*
+[1]QIntValidator(QObject * parent = nullptr)
+[2]QIntValidator(int minimum, int maximum, QObject * parent = nullptr)
+*/
 
 HB_FUNC_STATIC( QINTVALIDATOR_NEW )
 {
@@ -92,20 +95,22 @@ HB_FUNC_STATIC( QINTVALIDATOR_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QINTVALIDATOR_DELETE )
 {
-  QIntValidator * obj = (QIntValidator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QIntValidator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -118,7 +123,7 @@ int bottom() const
 */
 HB_FUNC_STATIC( QINTVALIDATOR_BOTTOM )
 {
-  QIntValidator * obj = (QIntValidator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QIntValidator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -126,12 +131,12 @@ HB_FUNC_STATIC( QINTVALIDATOR_BOTTOM )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->bottom () );
+      RINT( obj->bottom() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -142,7 +147,7 @@ virtual void fixup(QString & input) const
 */
 HB_FUNC_STATIC( QINTVALIDATOR_FIXUP )
 {
-  QIntValidator * obj = (QIntValidator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QIntValidator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -151,13 +156,13 @@ HB_FUNC_STATIC( QINTVALIDATOR_FIXUP )
     {
 #endif
       QString par1 = hb_parc(1);
-      obj->fixup ( par1 );
+      obj->fixup( par1 );
       hb_storc( QSTRINGTOSTRING(par1), 1);
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -170,7 +175,7 @@ QLocale locale() const
 */
 HB_FUNC_STATIC( QINTVALIDATOR_LOCALE )
 {
-  QIntValidator * obj = (QIntValidator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QIntValidator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -178,13 +183,13 @@ HB_FUNC_STATIC( QINTVALIDATOR_LOCALE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QLocale * ptr = new QLocale( obj->locale () );
-      _qt5xhb_createReturnClass ( ptr, "QLOCALE", true );
+      auto ptr = new QLocale( obj->locale() );
+      Qt5xHb::createReturnClass( ptr, "QLOCALE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -195,7 +200,7 @@ void setBottom(int)
 */
 HB_FUNC_STATIC( QINTVALIDATOR_SETBOTTOM )
 {
-  QIntValidator * obj = (QIntValidator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QIntValidator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -203,12 +208,12 @@ HB_FUNC_STATIC( QINTVALIDATOR_SETBOTTOM )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setBottom ( PINT(1) );
+      obj->setBottom( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -221,7 +226,7 @@ void setLocale(const QLocale & locale)
 */
 HB_FUNC_STATIC( QINTVALIDATOR_SETLOCALE )
 {
-  QIntValidator * obj = (QIntValidator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QIntValidator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -229,12 +234,12 @@ HB_FUNC_STATIC( QINTVALIDATOR_SETLOCALE )
     if( ISNUMPAR(1) && ISQLOCALE(1) )
     {
 #endif
-      obj->setLocale ( *PQLOCALE(1) );
+      obj->setLocale( *PQLOCALE(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -247,7 +252,7 @@ virtual void setRange(int bottom, int top)
 */
 HB_FUNC_STATIC( QINTVALIDATOR_SETRANGE )
 {
-  QIntValidator * obj = (QIntValidator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QIntValidator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -255,12 +260,12 @@ HB_FUNC_STATIC( QINTVALIDATOR_SETRANGE )
     if( ISNUMPAR(2) && ISNUM(1) && ISNUM(2) )
     {
 #endif
-      obj->setRange ( PINT(1), PINT(2) );
+      obj->setRange( PINT(1), PINT(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -273,7 +278,7 @@ void setTop(int)
 */
 HB_FUNC_STATIC( QINTVALIDATOR_SETTOP )
 {
-  QIntValidator * obj = (QIntValidator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QIntValidator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -281,12 +286,12 @@ HB_FUNC_STATIC( QINTVALIDATOR_SETTOP )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setTop ( PINT(1) );
+      obj->setTop( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -299,7 +304,7 @@ int top() const
 */
 HB_FUNC_STATIC( QINTVALIDATOR_TOP )
 {
-  QIntValidator * obj = (QIntValidator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QIntValidator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -307,12 +312,12 @@ HB_FUNC_STATIC( QINTVALIDATOR_TOP )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->top () );
+      RINT( obj->top() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -323,7 +328,7 @@ virtual State validate(QString & input, int & pos) const = 0
 */
 HB_FUNC_STATIC( QINTVALIDATOR_VALIDATE )
 {
-  QIntValidator * obj = (QIntValidator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QIntValidator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -332,15 +337,15 @@ HB_FUNC_STATIC( QINTVALIDATOR_VALIDATE )
     {
 #endif
       QString par1 = hb_parc(1);
-int par2;
-      RENUM( obj->validate ( par1, par2 ) );
+      int par2;
+      RENUM( obj->validate( par1, par2 ) );
       hb_storc( QSTRINGTOSTRING(par1), 1);
-hb_storni( par2, 2 );
+      hb_storni( par2, 2 );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -351,33 +356,34 @@ void changed()
 */
 HB_FUNC_STATIC( QINTVALIDATOR_ONCHANGED )
 {
-  QIntValidator * sender = (QIntValidator *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QIntValidator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("changed()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("changed()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QIntValidator::changed, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QINTVALIDATOR" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QINTVALIDATOR" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -388,9 +394,9 @@ HB_FUNC_STATIC( QINTVALIDATOR_ONCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }

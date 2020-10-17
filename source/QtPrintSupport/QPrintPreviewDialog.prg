@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -31,7 +31,7 @@ CLASS QPrintPreviewDialog INHERIT QDialog
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QPrintPreviewDialog
+PROCEDURE destroyObject() CLASS QPrintPreviewDialog
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -48,7 +48,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtPrintSupport/QPrintPreviewDialog>
@@ -59,23 +60,25 @@ RETURN
 /*
 explicit QPrintPreviewDialog ( QPrinter * printer, QWidget * parent = nullptr, Qt::WindowFlags flags = 0 )
 */
-void QPrintPreviewDialog_new1 ()
+void QPrintPreviewDialog_new1()
 {
-  QPrintPreviewDialog * o = new QPrintPreviewDialog ( PQPRINTER(1), OPQWIDGET(2,nullptr), ISNIL(3)? (Qt::WindowFlags) 0 : (Qt::WindowFlags) hb_parni(3) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QPrintPreviewDialog( PQPRINTER(1), OPQWIDGET(2,nullptr), ISNIL(3)? (Qt::WindowFlags) 0 : (Qt::WindowFlags) hb_parni(3) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
 /*
 explicit QPrintPreviewDialog ( QWidget * parent = nullptr, Qt::WindowFlags flags = 0 )
 */
-void QPrintPreviewDialog_new2 ()
+void QPrintPreviewDialog_new2()
 {
-  QPrintPreviewDialog * o = new QPrintPreviewDialog ( OPQWIDGET(1,nullptr), ISNIL(2)? (Qt::WindowFlags) 0 : (Qt::WindowFlags) hb_parni(2) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QPrintPreviewDialog( OPQWIDGET(1,nullptr), ISNIL(2)? (Qt::WindowFlags) 0 : (Qt::WindowFlags) hb_parni(2) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
-//[1]explicit QPrintPreviewDialog ( QPrinter * printer, QWidget * parent = nullptr, Qt::WindowFlags flags = 0 )
-//[2]explicit QPrintPreviewDialog ( QWidget * parent = nullptr, Qt::WindowFlags flags = 0 )
+/*
+[1]explicit QPrintPreviewDialog ( QPrinter * printer, QWidget * parent = nullptr, Qt::WindowFlags flags = 0 )
+[2]explicit QPrintPreviewDialog ( QWidget * parent = nullptr, Qt::WindowFlags flags = 0 )
+*/
 
 HB_FUNC_STATIC( QPRINTPREVIEWDIALOG_NEW )
 {
@@ -89,20 +92,22 @@ HB_FUNC_STATIC( QPRINTPREVIEWDIALOG_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QPRINTPREVIEWDIALOG_DELETE )
 {
-  QPrintPreviewDialog * obj = (QPrintPreviewDialog *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrintPreviewDialog *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -115,7 +120,7 @@ void open ( QObject * receiver, const char * member )
 */
 HB_FUNC_STATIC( QPRINTPREVIEWDIALOG_OPEN )
 {
-  QPrintPreviewDialog * obj = (QPrintPreviewDialog *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrintPreviewDialog *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -123,12 +128,12 @@ HB_FUNC_STATIC( QPRINTPREVIEWDIALOG_OPEN )
     if( ISNUMPAR(2) && ISQOBJECT(1) && ISCHAR(2) )
     {
 #endif
-      obj->open ( PQOBJECT(1), PCONSTCHAR(2) );
+      obj->open( PQOBJECT(1), PCONSTCHAR(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -141,7 +146,7 @@ QPrinter * printer ()
 */
 HB_FUNC_STATIC( QPRINTPREVIEWDIALOG_PRINTER )
 {
-  QPrintPreviewDialog * obj = (QPrintPreviewDialog *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrintPreviewDialog *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -149,13 +154,13 @@ HB_FUNC_STATIC( QPRINTPREVIEWDIALOG_PRINTER )
     if( ISNUMPAR(0) )
     {
 #endif
-      QPrinter * ptr = obj->printer ();
-      _qt5xhb_createReturnClass ( ptr, "QPRINTER", false );
+      QPrinter * ptr = obj->printer();
+      Qt5xHb::createReturnClass( ptr, "QPRINTER", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -166,7 +171,7 @@ virtual void done ( int result )
 */
 HB_FUNC_STATIC( QPRINTPREVIEWDIALOG_DONE )
 {
-  QPrintPreviewDialog * obj = (QPrintPreviewDialog *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrintPreviewDialog *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -174,12 +179,12 @@ HB_FUNC_STATIC( QPRINTPREVIEWDIALOG_DONE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->done ( PINT(1) );
+      obj->done( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -192,7 +197,7 @@ virtual void setVisible ( bool visible )
 */
 HB_FUNC_STATIC( QPRINTPREVIEWDIALOG_SETVISIBLE )
 {
-  QPrintPreviewDialog * obj = (QPrintPreviewDialog *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPrintPreviewDialog *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -200,12 +205,12 @@ HB_FUNC_STATIC( QPRINTPREVIEWDIALOG_SETVISIBLE )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setVisible ( PBOOL(1) );
+      obj->setVisible( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -218,35 +223,36 @@ void paintRequested( QPrinter * printer )
 */
 HB_FUNC_STATIC( QPRINTPREVIEWDIALOG_ONPAINTREQUESTED )
 {
-  QPrintPreviewDialog * sender = (QPrintPreviewDialog *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QPrintPreviewDialog *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("paintRequested(QPrinter*)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("paintRequested(QPrinter*)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QPrintPreviewDialog::paintRequested, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QPrinter * arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QPRINTPREVIEWDIALOG" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) arg1, "QPRINTER" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QPRINTPREVIEWDIALOG" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) arg1, "QPRINTER" );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -257,9 +263,9 @@ HB_FUNC_STATIC( QPRINTPREVIEWDIALOG_ONPAINTREQUESTED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }

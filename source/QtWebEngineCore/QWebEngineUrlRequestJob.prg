@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -30,7 +30,7 @@ CLASS QWebEngineUrlRequestJob INHERIT QObject
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QWebEngineUrlRequestJob
+PROCEDURE destroyObject() CLASS QWebEngineUrlRequestJob
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -47,7 +47,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtWebEngineCore/QWebEngineUrlRequestJob>
@@ -62,14 +63,16 @@ QWebEngineUrlRequestJob(QtWebEngineCore::URLRequestCustomJobDelegate *) [private
 */
 HB_FUNC_STATIC( QWEBENGINEURLREQUESTJOB_DELETE )
 {
-  QWebEngineUrlRequestJob * obj = (QWebEngineUrlRequestJob *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebEngineUrlRequestJob *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -82,7 +85,7 @@ QUrl requestUrl() const
 */
 HB_FUNC_STATIC( QWEBENGINEURLREQUESTJOB_REQUESTURL )
 {
-  QWebEngineUrlRequestJob * obj = (QWebEngineUrlRequestJob *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebEngineUrlRequestJob *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -90,13 +93,13 @@ HB_FUNC_STATIC( QWEBENGINEURLREQUESTJOB_REQUESTURL )
     if( ISNUMPAR(0) )
     {
 #endif
-      QUrl * ptr = new QUrl( obj->requestUrl () );
-      _qt5xhb_createReturnClass ( ptr, "QURL", true );
+      auto ptr = new QUrl( obj->requestUrl() );
+      Qt5xHb::createReturnClass( ptr, "QURL", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -107,7 +110,7 @@ QByteArray requestMethod() const
 */
 HB_FUNC_STATIC( QWEBENGINEURLREQUESTJOB_REQUESTMETHOD )
 {
-  QWebEngineUrlRequestJob * obj = (QWebEngineUrlRequestJob *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebEngineUrlRequestJob *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -115,13 +118,13 @@ HB_FUNC_STATIC( QWEBENGINEURLREQUESTJOB_REQUESTMETHOD )
     if( ISNUMPAR(0) )
     {
 #endif
-      QByteArray * ptr = new QByteArray( obj->requestMethod () );
-      _qt5xhb_createReturnClass ( ptr, "QBYTEARRAY", true );
+      auto ptr = new QByteArray( obj->requestMethod() );
+      Qt5xHb::createReturnClass( ptr, "QBYTEARRAY", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -132,7 +135,7 @@ void reply(const QByteArray &contentType, QIODevice *device)
 */
 HB_FUNC_STATIC( QWEBENGINEURLREQUESTJOB_REPLY )
 {
-  QWebEngineUrlRequestJob * obj = (QWebEngineUrlRequestJob *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebEngineUrlRequestJob *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -140,12 +143,12 @@ HB_FUNC_STATIC( QWEBENGINEURLREQUESTJOB_REPLY )
     if( ISNUMPAR(2) && ISQBYTEARRAY(1) && ISQIODEVICE(2) )
     {
 #endif
-      obj->reply ( *PQBYTEARRAY(1), PQIODEVICE(2) );
+      obj->reply( *PQBYTEARRAY(1), PQIODEVICE(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -158,7 +161,7 @@ void fail(Error error)
 */
 HB_FUNC_STATIC( QWEBENGINEURLREQUESTJOB_FAIL )
 {
-  QWebEngineUrlRequestJob * obj = (QWebEngineUrlRequestJob *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebEngineUrlRequestJob *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -166,12 +169,12 @@ HB_FUNC_STATIC( QWEBENGINEURLREQUESTJOB_FAIL )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->fail ( (QWebEngineUrlRequestJob::Error) hb_parni(1) );
+      obj->fail( (QWebEngineUrlRequestJob::Error) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -184,7 +187,7 @@ void redirect(const QUrl &url)
 */
 HB_FUNC_STATIC( QWEBENGINEURLREQUESTJOB_REDIRECT )
 {
-  QWebEngineUrlRequestJob * obj = (QWebEngineUrlRequestJob *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebEngineUrlRequestJob *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -192,12 +195,12 @@ HB_FUNC_STATIC( QWEBENGINEURLREQUESTJOB_REDIRECT )
     if( ISNUMPAR(1) && ISQURL(1) )
     {
 #endif
-      obj->redirect ( *PQURL(1) );
+      obj->redirect( *PQURL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

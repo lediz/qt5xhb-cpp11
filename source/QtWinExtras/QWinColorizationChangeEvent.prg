@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -26,7 +26,7 @@ CLASS QWinColorizationChangeEvent INHERIT QWinEvent
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QWinColorizationChangeEvent
+PROCEDURE destroyObject() CLASS QWinColorizationChangeEvent
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -45,7 +45,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
@@ -61,12 +60,12 @@ HB_FUNC_STATIC( QWINCOLORIZATIONCHANGEEVENT_NEW )
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
   if( ISNUMPAR(2) && ISNUM(1) && ISLOG(2) )
   {
-    QWinColorizationChangeEvent * o = new QWinColorizationChangeEvent ( PQRGB(1), PBOOL(2) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QWinColorizationChangeEvent( PQRGB(1), PBOOL(2) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
@@ -74,14 +73,14 @@ HB_FUNC_STATIC( QWINCOLORIZATIONCHANGEEVENT_NEW )
 HB_FUNC_STATIC( QWINCOLORIZATIONCHANGEEVENT_DELETE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
-  QWinColorizationChangeEvent * obj = (QWinColorizationChangeEvent *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWinColorizationChangeEvent *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -96,7 +95,7 @@ QRgb color() const
 HB_FUNC_STATIC( QWINCOLORIZATIONCHANGEEVENT_COLOR )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
-  QWinColorizationChangeEvent * obj = (QWinColorizationChangeEvent *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWinColorizationChangeEvent *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -104,12 +103,12 @@ HB_FUNC_STATIC( QWINCOLORIZATIONCHANGEEVENT_COLOR )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQRGB( obj->color () );
+      RQRGB( obj->color() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -122,7 +121,7 @@ bool opaqueBlend() const
 HB_FUNC_STATIC( QWINCOLORIZATIONCHANGEEVENT_OPAQUEBLEND )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
-  QWinColorizationChangeEvent * obj = (QWinColorizationChangeEvent *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWinColorizationChangeEvent *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -130,12 +129,12 @@ HB_FUNC_STATIC( QWINCOLORIZATIONCHANGEEVENT_OPAQUEBLEND )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->opaqueBlend () );
+      RBOOL( obj->opaqueBlend() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -27,7 +27,7 @@ CLASS QFocusEvent INHERIT QEvent
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QFocusEvent
+PROCEDURE destroyObject() CLASS QFocusEvent
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -44,7 +44,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtGui/QFocusEvent>
@@ -57,25 +56,25 @@ HB_FUNC_STATIC( QFOCUSEVENT_NEW )
 {
   if( ISBETWEEN(1,2) && ISNUM(1) && ISOPTNUM(2) )
   {
-    QFocusEvent * o = new QFocusEvent ( (QEvent::Type) hb_parni(1), ISNIL(2)? (Qt::FocusReason) Qt::OtherFocusReason : (Qt::FocusReason) hb_parni(2) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QFocusEvent( (QEvent::Type) hb_parni(1), ISNIL(2)? (Qt::FocusReason) Qt::OtherFocusReason : (Qt::FocusReason) hb_parni(2) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QFOCUSEVENT_DELETE )
 {
-  QFocusEvent * obj = (QFocusEvent *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFocusEvent *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -88,7 +87,7 @@ bool gotFocus () const
 */
 HB_FUNC_STATIC( QFOCUSEVENT_GOTFOCUS )
 {
-  QFocusEvent * obj = (QFocusEvent *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFocusEvent *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -96,12 +95,12 @@ HB_FUNC_STATIC( QFOCUSEVENT_GOTFOCUS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->gotFocus () );
+      RBOOL( obj->gotFocus() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -112,7 +111,7 @@ bool lostFocus () const
 */
 HB_FUNC_STATIC( QFOCUSEVENT_LOSTFOCUS )
 {
-  QFocusEvent * obj = (QFocusEvent *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFocusEvent *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -120,12 +119,12 @@ HB_FUNC_STATIC( QFOCUSEVENT_LOSTFOCUS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->lostFocus () );
+      RBOOL( obj->lostFocus() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -136,7 +135,7 @@ Qt::FocusReason reason () const
 */
 HB_FUNC_STATIC( QFOCUSEVENT_REASON )
 {
-  QFocusEvent * obj = (QFocusEvent *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFocusEvent *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -144,12 +143,12 @@ HB_FUNC_STATIC( QFOCUSEVENT_REASON )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->reason () );
+      RENUM( obj->reason() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

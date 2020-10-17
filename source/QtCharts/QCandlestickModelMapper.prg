@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -32,7 +32,7 @@ CLASS QCandlestickModelMapper INHERIT QObject
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QCandlestickModelMapper
+PROCEDURE destroyObject() CLASS QCandlestickModelMapper
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -51,7 +51,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #if (QT_VERSION >= QT_VERSION_CHECK(5,8,0))
@@ -59,26 +60,26 @@ RETURN
 #endif
 #endif
 
-#include <QAbstractItemModel>
-#if (QT_VERSION >= QT_VERSION_CHECK(5,8,0))
-#include <QtCharts/QCandlestickSeries>
-#endif
-
 #if (QT_VERSION >= QT_VERSION_CHECK(5,8,0))
 using namespace QtCharts;
 #endif
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5,8,0))
+#include <QtCharts/QCandlestickSeries>
+#endif
+#include <QtCore/QAbstractItemModel>
+
 /*
-explicit QCandlestickModelMapper(QObject *parent = nullptr) (abstract)
+QCandlestickModelMapper(QObject *parent = nullptr) [ABSTRACT]
 */
 
 /*
-QAbstractItemModel *model() const
+QAbstractItemModel * model() const
 */
 HB_FUNC_STATIC( QCANDLESTICKMODELMAPPER_MODEL )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,8,0))
-  QCandlestickModelMapper * obj = (QCandlestickModelMapper *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCandlestickModelMapper *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -86,13 +87,13 @@ HB_FUNC_STATIC( QCANDLESTICKMODELMAPPER_MODEL )
     if( ISNUMPAR(0) )
     {
 #endif
-      QAbstractItemModel * ptr = obj->model ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QABSTRACTITEMMODEL" );
+      QAbstractItemModel * ptr = obj->model();
+      Qt5xHb::createReturnQObjectClass( ptr, "QABSTRACTITEMMODEL" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -100,12 +101,12 @@ HB_FUNC_STATIC( QCANDLESTICKMODELMAPPER_MODEL )
 }
 
 /*
-void setModel(QAbstractItemModel *model)
+void setModel( QAbstractItemModel * model )
 */
 HB_FUNC_STATIC( QCANDLESTICKMODELMAPPER_SETMODEL )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,8,0))
-  QCandlestickModelMapper * obj = (QCandlestickModelMapper *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCandlestickModelMapper *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -113,12 +114,12 @@ HB_FUNC_STATIC( QCANDLESTICKMODELMAPPER_SETMODEL )
     if( ISNUMPAR(1) && ISQABSTRACTITEMMODEL(1) )
     {
 #endif
-      obj->setModel ( PQABSTRACTITEMMODEL(1) );
+      obj->setModel( PQABSTRACTITEMMODEL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -128,12 +129,12 @@ HB_FUNC_STATIC( QCANDLESTICKMODELMAPPER_SETMODEL )
 }
 
 /*
-QCandlestickSeries *series() const
+QCandlestickSeries * series() const
 */
 HB_FUNC_STATIC( QCANDLESTICKMODELMAPPER_SERIES )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,8,0))
-  QCandlestickModelMapper * obj = (QCandlestickModelMapper *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCandlestickModelMapper *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -141,13 +142,13 @@ HB_FUNC_STATIC( QCANDLESTICKMODELMAPPER_SERIES )
     if( ISNUMPAR(0) )
     {
 #endif
-      QCandlestickSeries * ptr = obj->series ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QCANDLESTICKSERIES" );
+      QCandlestickSeries * ptr = obj->series();
+      Qt5xHb::createReturnQObjectClass( ptr, "QCANDLESTICKSERIES" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -155,12 +156,12 @@ HB_FUNC_STATIC( QCANDLESTICKMODELMAPPER_SERIES )
 }
 
 /*
-void setSeries(QCandlestickSeries *series)
+void setSeries( QCandlestickSeries * series )
 */
 HB_FUNC_STATIC( QCANDLESTICKMODELMAPPER_SETSERIES )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,8,0))
-  QCandlestickModelMapper * obj = (QCandlestickModelMapper *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCandlestickModelMapper *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -168,12 +169,12 @@ HB_FUNC_STATIC( QCANDLESTICKMODELMAPPER_SETSERIES )
     if( ISNUMPAR(1) && ISQCANDLESTICKSERIES(1) )
     {
 #endif
-      obj->setSeries ( PQCANDLESTICKSERIES(1) );
+      obj->setSeries( PQCANDLESTICKSERIES(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -188,7 +189,7 @@ virtual Qt::Orientation orientation() const = 0
 HB_FUNC_STATIC( QCANDLESTICKMODELMAPPER_ORIENTATION )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,8,0))
-  QCandlestickModelMapper * obj = (QCandlestickModelMapper *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCandlestickModelMapper *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -196,12 +197,12 @@ HB_FUNC_STATIC( QCANDLESTICKMODELMAPPER_ORIENTATION )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->orientation () );
+      RENUM( obj->orientation() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -209,94 +210,39 @@ HB_FUNC_STATIC( QCANDLESTICKMODELMAPPER_ORIENTATION )
 }
 
 /*
-void setTimestamp(int timestamp) [protected]
-*/
-
-/*
-int timestamp() const [protected]
-*/
-
-/*
-void setOpen(int open) [protected]
-*/
-
-/*
-int open() const [protected]
-*/
-
-/*
-void setHigh(int high) [protected]
-*/
-
-/*
-int high() const [protected]
-*/
-
-/*
-void setLow(int low) [protected]
-*/
-
-/*
-int low() const [protected]
-*/
-
-/*
-void setClose(int close) [protected]
-*/
-
-/*
-int close() const [protected]
-*/
-
-/*
-void setFirstSetSection(int firstSetSection) [protected]
-*/
-
-/*
-int firstSetSection() const [protected]
-*/
-
-/*
-void setLastSetSection(int lastSetSection) [protected]
-*/
-
-/*
-int lastSetSection() const [protected]
-*/
-
-/*
 void modelReplaced()
 */
 HB_FUNC_STATIC( QCANDLESTICKMODELMAPPER_ONMODELREPLACED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,8,0))
-  QCandlestickModelMapper * sender = (QCandlestickModelMapper *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QCandlestickModelMapper *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("modelReplaced()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("modelReplaced()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QCandlestickModelMapper::modelReplaced, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QCANDLESTICKMODELMAPPER" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QCANDLESTICKMODELMAPPER" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -307,9 +253,9 @@ HB_FUNC_STATIC( QCANDLESTICKMODELMAPPER_ONMODELREPLACED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -323,7 +269,7 @@ HB_FUNC_STATIC( QCANDLESTICKMODELMAPPER_ONMODELREPLACED )
     hb_retl( false );
   }
 #else
-hb_retl( false );
+  hb_retl( false );
 #endif
 }
 
@@ -333,33 +279,34 @@ void seriesReplaced()
 HB_FUNC_STATIC( QCANDLESTICKMODELMAPPER_ONSERIESREPLACED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,8,0))
-  QCandlestickModelMapper * sender = (QCandlestickModelMapper *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QCandlestickModelMapper *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("seriesReplaced()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("seriesReplaced()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QCandlestickModelMapper::seriesReplaced, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QCANDLESTICKMODELMAPPER" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QCANDLESTICKMODELMAPPER" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -370,9 +317,9 @@ HB_FUNC_STATIC( QCANDLESTICKMODELMAPPER_ONSERIESREPLACED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -386,7 +333,7 @@ HB_FUNC_STATIC( QCANDLESTICKMODELMAPPER_ONSERIESREPLACED )
     hb_retl( false );
   }
 #else
-hb_retl( false );
+  hb_retl( false );
 #endif
 }
 

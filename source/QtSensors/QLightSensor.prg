@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -30,7 +30,7 @@ CLASS QLightSensor INHERIT QSensor
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QLightSensor
+PROCEDURE destroyObject() CLASS QLightSensor
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -49,7 +49,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
@@ -65,12 +66,12 @@ HB_FUNC_STATIC( QLIGHTSENSOR_NEW )
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
   if( ISBETWEEN(0,1) && (ISQOBJECT(1)||ISNIL(1)) )
   {
-    QLightSensor * o = new QLightSensor ( OPQOBJECT(1,nullptr) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QLightSensor( OPQOBJECT(1,nullptr) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
@@ -78,14 +79,16 @@ HB_FUNC_STATIC( QLIGHTSENSOR_NEW )
 HB_FUNC_STATIC( QLIGHTSENSOR_DELETE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QLightSensor * obj = (QLightSensor *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLightSensor *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -100,7 +103,7 @@ QLightReading *reading() const
 HB_FUNC_STATIC( QLIGHTSENSOR_READING )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QLightSensor * obj = (QLightSensor *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLightSensor *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -108,13 +111,13 @@ HB_FUNC_STATIC( QLIGHTSENSOR_READING )
     if( ISNUMPAR(0) )
     {
 #endif
-      QLightReading * ptr = obj->reading ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QLIGHTREADING" );
+      QLightReading * ptr = obj->reading();
+      Qt5xHb::createReturnQObjectClass( ptr, "QLIGHTREADING" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -127,7 +130,7 @@ qreal fieldOfView() const
 HB_FUNC_STATIC( QLIGHTSENSOR_FIELDOFVIEW )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QLightSensor * obj = (QLightSensor *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLightSensor *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -135,12 +138,12 @@ HB_FUNC_STATIC( QLIGHTSENSOR_FIELDOFVIEW )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQREAL( obj->fieldOfView () );
+      RQREAL( obj->fieldOfView() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -153,7 +156,7 @@ void setFieldOfView(qreal fieldOfView)
 HB_FUNC_STATIC( QLIGHTSENSOR_SETFIELDOFVIEW )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QLightSensor * obj = (QLightSensor *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QLightSensor *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -161,12 +164,12 @@ HB_FUNC_STATIC( QLIGHTSENSOR_SETFIELDOFVIEW )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setFieldOfView ( PQREAL(1) );
+      obj->setFieldOfView( PQREAL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -181,35 +184,36 @@ void fieldOfViewChanged( qreal fieldOfView )
 HB_FUNC_STATIC( QLIGHTSENSOR_ONFIELDOFVIEWCHANGED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QLightSensor * sender = (QLightSensor *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QLightSensor *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("fieldOfViewChanged(qreal)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("fieldOfViewChanged(qreal)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QLightSensor::fieldOfViewChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (qreal arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QLIGHTSENSOR" );
-            PHB_ITEM pArg1 = hb_itemPutND( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QLIGHTSENSOR" );
+            PHB_ITEM pArg1 = hb_itemPutND( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -220,9 +224,9 @@ HB_FUNC_STATIC( QLIGHTSENSOR_ONFIELDOFVIEWCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -236,7 +240,7 @@ HB_FUNC_STATIC( QLIGHTSENSOR_ONFIELDOFVIEWCHANGED )
     hb_retl( false );
   }
 #else
-hb_retl( false );
+  hb_retl( false );
 #endif
 }
 

@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -33,12 +33,14 @@ REQUEST QBuffer
 REQUEST QByteArray
 REQUEST QByteArrayMatcher
 REQUEST QCache
+REQUEST QCalendar                                // Qt 5.14
 REQUEST QChar
 REQUEST QChildEvent
 REQUEST QCollator
 REQUEST QCollatorSortKey
 REQUEST QCommandLineOption
 REQUEST QCommandLineParser
+REQUEST QConcatenateTablesProxyModel             // Qt 5.13
 REQUEST QCoreApplication
 REQUEST QCryptographicHash
 REQUEST QDataStream
@@ -95,6 +97,7 @@ REQUEST QMimeType
 REQUEST QModelIndex
 REQUEST QObject
 REQUEST QObjectCleanupHandler
+REQUEST QOperatingSystemVersion                  // Qt 5.9.0
 REQUEST QParallelAnimationGroup
 REQUEST QPauseAnimation
 REQUEST QPersistentModelIndex
@@ -113,12 +116,13 @@ REQUEST QRegularExpression
 REQUEST QRegularExpressionMatch
 REQUEST QRegularExpressionMatchIterator
 REQUEST QResource
+REQUEST QRunnable
 REQUEST QSaveFile
 REQUEST QSemaphore
 REQUEST QSequentialAnimationGroup
 REQUEST QSettings
 REQUEST QSharedMemory
-REQUEST QSignalBlocker                 // Qt 5.3.0
+REQUEST QSignalBlocker                           // Qt 5.3.0
 REQUEST QSignalMapper
 REQUEST QSignalTransition
 REQUEST QSize
@@ -128,7 +132,7 @@ REQUEST QSortFilterProxyModel
 REQUEST QStandardPaths
 REQUEST QState
 REQUEST QStateMachine
-REQUEST QStorageInfo                   // Qt 5.4.0
+REQUEST QStorageInfo                             // Qt 5.4.0
 REQUEST QStringListModel
 REQUEST QStringMatcher
 REQUEST QSysInfo
@@ -153,6 +157,7 @@ REQUEST QUrlQuery
 REQUEST QUuid
 REQUEST QVariant
 REQUEST QVariantAnimation
+REQUEST QVersionNumber                           // Qt 5.6.0
 REQUEST QWinEventNotifier
 REQUEST QWriteLocker
 REQUEST QXmlStreamAttribute

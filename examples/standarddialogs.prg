@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb Project - Example Program
+  Qt5xHb/C++11 Project - Example Program
 
   Copyright (C) 2020 Marcos Antonio Gambeta
 
@@ -8,11 +8,7 @@
   marcosgambeta AT outlook DOT com
 
   Website:
-  https://github.com/marcosgambeta/Qt5xHb
-
-  Users Groups:
-  https://groups.google.com/forum/?hl=pt-BR#!forum/qtxhb    [ENGLISH]
-  https://groups.google.com/forum/?hl=pt-BR#!forum/qtxhb-br [PORTUGUESE]
+  https://github.com/marcosgambeta/qt5xhb-cpp11
 
 */
 
@@ -488,23 +484,6 @@ METHOD errorMessage () CLASS Dialog
 RETURN NIL
 
 METHOD delete () CLASS Dialog
-
-   // desconecta sinais
-   ::oIntegerButton:onClicked()
-   ::oDoubleButton:onClicked()
-   ::oItemButton:onClicked()
-   ::oTextButton:onClicked()
-   ::oColorButton:onClicked()
-   ::oFontButton:onClicked()
-   ::oDirectoryButton:onClicked()
-   ::oOpenFileNameButton:onClicked()
-   ::oOpenFileNamesButton:onClicked()
-   ::oSaveFileNameButton:onClicked()
-   ::oCriticalButton:onClicked()
-   ::oInformationButton:onClicked()
-   ::oQuestionButton:onClicked()
-   ::oWarningButton:onClicked()
-   ::oErrorButton:onClicked()
 
    // destrói objeto
    ::super:delete()

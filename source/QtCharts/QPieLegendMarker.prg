@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -29,7 +29,7 @@ CLASS QPieLegendMarker INHERIT QLegendMarker
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QPieLegendMarker
+PROCEDURE destroyObject() CLASS QPieLegendMarker
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -48,7 +48,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
@@ -59,26 +60,22 @@ RETURN
 using namespace QtCharts;
 
 /*
-explicit QPieLegendMarker(QPieSeries *series, QPieSlice *slice, QLegend *legend, QObject *parent = nullptr)
+QPieLegendMarker( QPieSeries * series, QPieSlice * slice, QLegend * legend, QObject * parent = nullptr )
 */
 HB_FUNC_STATIC( QPIELEGENDMARKER_NEW )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
   if( ISBETWEEN(3,4) && ISQPIESERIES(1) && ISQPIESLICE(2) && ISQLEGEND(3) && (ISQOBJECT(4)||ISNIL(4)) )
   {
-    QPieLegendMarker * o = new QPieLegendMarker ( PQPIESERIES(1), PQPIESLICE(2), PQLEGEND(3), OPQOBJECT(4,nullptr) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QPieLegendMarker( PQPIESERIES(1), PQPIESLICE(2), PQLEGEND(3), OPQOBJECT(4,nullptr) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
-
-/*
-QPieLegendMarker(QPieLegendMarkerPrivate &d, QObject *parent = nullptr) [protected]
-*/
 
 /*
 virtual ~QPieLegendMarker()
@@ -86,14 +83,16 @@ virtual ~QPieLegendMarker()
 HB_FUNC_STATIC( QPIELEGENDMARKER_DELETE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QPieLegendMarker * obj = (QPieLegendMarker *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPieLegendMarker *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -103,12 +102,12 @@ HB_FUNC_STATIC( QPIELEGENDMARKER_DELETE )
 }
 
 /*
-virtual LegendMarkerType type()
+virtual QLegendMarker::LegendMarkerType type()
 */
 HB_FUNC_STATIC( QPIELEGENDMARKER_TYPE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QPieLegendMarker * obj = (QPieLegendMarker *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPieLegendMarker *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -116,12 +115,12 @@ HB_FUNC_STATIC( QPIELEGENDMARKER_TYPE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->type () );
+      RENUM( obj->type() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -129,12 +128,12 @@ HB_FUNC_STATIC( QPIELEGENDMARKER_TYPE )
 }
 
 /*
-virtual QPieSeries* series()
+virtual QPieSeries * series()
 */
 HB_FUNC_STATIC( QPIELEGENDMARKER_SERIES )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QPieLegendMarker * obj = (QPieLegendMarker *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPieLegendMarker *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -142,13 +141,13 @@ HB_FUNC_STATIC( QPIELEGENDMARKER_SERIES )
     if( ISNUMPAR(0) )
     {
 #endif
-      QPieSeries * ptr = obj->series ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QPIESERIES" );
+      QPieSeries * ptr = obj->series();
+      Qt5xHb::createReturnQObjectClass( ptr, "QPIESERIES" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -156,12 +155,12 @@ HB_FUNC_STATIC( QPIELEGENDMARKER_SERIES )
 }
 
 /*
-QPieSlice* slice()
+QPieSlice * slice()
 */
 HB_FUNC_STATIC( QPIELEGENDMARKER_SLICE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QPieLegendMarker * obj = (QPieLegendMarker *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPieLegendMarker *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -169,13 +168,13 @@ HB_FUNC_STATIC( QPIELEGENDMARKER_SLICE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QPieSlice * ptr = obj->slice ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QPIESLICE" );
+      QPieSlice * ptr = obj->slice();
+      Qt5xHb::createReturnQObjectClass( ptr, "QPIESLICE" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

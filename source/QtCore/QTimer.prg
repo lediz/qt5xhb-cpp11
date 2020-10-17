@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -35,7 +35,7 @@ CLASS QTimer INHERIT QObject
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QTimer
+PROCEDURE destroyObject() CLASS QTimer
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -52,7 +52,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtCore/QTimer>
@@ -65,25 +66,27 @@ HB_FUNC_STATIC( QTIMER_NEW )
 {
   if( ISBETWEEN(0,1) && (ISQOBJECT(1)||ISNIL(1)) )
   {
-    QTimer * o = new QTimer ( OPQOBJECT(1,nullptr) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QTimer( OPQOBJECT(1,nullptr) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QTIMER_DELETE )
 {
-  QTimer * obj = (QTimer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTimer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -96,7 +99,7 @@ int interval () const
 */
 HB_FUNC_STATIC( QTIMER_INTERVAL )
 {
-  QTimer * obj = (QTimer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTimer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -104,12 +107,12 @@ HB_FUNC_STATIC( QTIMER_INTERVAL )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->interval () );
+      RINT( obj->interval() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -120,7 +123,7 @@ bool isActive () const
 */
 HB_FUNC_STATIC( QTIMER_ISACTIVE )
 {
-  QTimer * obj = (QTimer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTimer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -128,12 +131,12 @@ HB_FUNC_STATIC( QTIMER_ISACTIVE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isActive () );
+      RBOOL( obj->isActive() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -144,7 +147,7 @@ bool isSingleShot () const
 */
 HB_FUNC_STATIC( QTIMER_ISSINGLESHOT )
 {
-  QTimer * obj = (QTimer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTimer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -152,12 +155,12 @@ HB_FUNC_STATIC( QTIMER_ISSINGLESHOT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isSingleShot () );
+      RBOOL( obj->isSingleShot() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -168,7 +171,7 @@ void setInterval ( int msec )
 */
 HB_FUNC_STATIC( QTIMER_SETINTERVAL )
 {
-  QTimer * obj = (QTimer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTimer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -176,12 +179,12 @@ HB_FUNC_STATIC( QTIMER_SETINTERVAL )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setInterval ( PINT(1) );
+      obj->setInterval( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -194,7 +197,7 @@ void setSingleShot ( bool singleShot )
 */
 HB_FUNC_STATIC( QTIMER_SETSINGLESHOT )
 {
-  QTimer * obj = (QTimer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTimer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -202,12 +205,12 @@ HB_FUNC_STATIC( QTIMER_SETSINGLESHOT )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setSingleShot ( PBOOL(1) );
+      obj->setSingleShot( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -220,7 +223,7 @@ int timerId () const
 */
 HB_FUNC_STATIC( QTIMER_TIMERID )
 {
-  QTimer * obj = (QTimer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTimer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -228,12 +231,12 @@ HB_FUNC_STATIC( QTIMER_TIMERID )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->timerId () );
+      RINT( obj->timerId() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -242,13 +245,13 @@ HB_FUNC_STATIC( QTIMER_TIMERID )
 /*
 void start ( int msec )
 */
-void QTimer_start1 ()
+void QTimer_start1()
 {
-  QTimer * obj = (QTimer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTimer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->start ( PINT(1) );
+    obj->start( PINT(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -257,20 +260,22 @@ void QTimer_start1 ()
 /*
 void start ()
 */
-void QTimer_start2 ()
+void QTimer_start2()
 {
-  QTimer * obj = (QTimer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTimer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->start ();
+    obj->start();
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void start ( int msec )
-//[2]void start ()
+/*
+[1]void start ( int msec )
+[2]void start ()
+*/
 
 HB_FUNC_STATIC( QTIMER_START )
 {
@@ -284,7 +289,7 @@ HB_FUNC_STATIC( QTIMER_START )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -293,7 +298,7 @@ void stop ()
 */
 HB_FUNC_STATIC( QTIMER_STOP )
 {
-  QTimer * obj = (QTimer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTimer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -301,12 +306,12 @@ HB_FUNC_STATIC( QTIMER_STOP )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->stop ();
+      obj->stop();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -320,15 +325,15 @@ static void singleShot ( int msec, QObject * receiver, const char * member )
 HB_FUNC_STATIC( QTIMER_SINGLESHOT )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(3) && ISNUM(1) && ISQOBJECT(2) && ISCHAR(3) )
+  if( ISNUMPAR(3) && ISNUM(1) && ISQOBJECT(2) && ISCHAR(3) )
   {
 #endif
-      QTimer::singleShot ( PINT(1), PQOBJECT(2), PCONSTCHAR(3) );
+    QTimer::singleShot( PINT(1), PQOBJECT(2), PCONSTCHAR(3) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 
@@ -340,33 +345,34 @@ void timeout()
 */
 HB_FUNC_STATIC( QTIMER_ONTIMEOUT )
 {
-  QTimer * sender = (QTimer *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QTimer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("timeout()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("timeout()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QTimer::timeout, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QTIMER" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QTIMER" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -377,9 +383,9 @@ HB_FUNC_STATIC( QTIMER_ONTIMEOUT )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }

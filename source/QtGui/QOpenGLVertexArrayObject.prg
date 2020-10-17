@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -30,7 +30,7 @@ CLASS QOpenGLVertexArrayObject INHERIT QObject
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QOpenGLVertexArrayObject
+PROCEDURE destroyObject() CLASS QOpenGLVertexArrayObject
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -47,7 +47,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtGui/QOpenGLVertexArrayObject>
@@ -60,25 +61,27 @@ HB_FUNC_STATIC( QOPENGLVERTEXARRAYOBJECT_NEW )
 {
   if( ISBETWEEN(0,1) && (ISQOBJECT(1)||ISNIL(1)) )
   {
-    QOpenGLVertexArrayObject * o = new QOpenGLVertexArrayObject ( OPQOBJECT(1,nullptr) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QOpenGLVertexArrayObject( OPQOBJECT(1,nullptr) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QOPENGLVERTEXARRAYOBJECT_DELETE )
 {
-  QOpenGLVertexArrayObject * obj = (QOpenGLVertexArrayObject *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLVertexArrayObject *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -91,7 +94,7 @@ bool create()
 */
 HB_FUNC_STATIC( QOPENGLVERTEXARRAYOBJECT_CREATE )
 {
-  QOpenGLVertexArrayObject * obj = (QOpenGLVertexArrayObject *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLVertexArrayObject *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -99,12 +102,12 @@ HB_FUNC_STATIC( QOPENGLVERTEXARRAYOBJECT_CREATE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->create () );
+      RBOOL( obj->create() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -115,7 +118,7 @@ void destroy()
 */
 HB_FUNC_STATIC( QOPENGLVERTEXARRAYOBJECT_DESTROY )
 {
-  QOpenGLVertexArrayObject * obj = (QOpenGLVertexArrayObject *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLVertexArrayObject *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -123,12 +126,12 @@ HB_FUNC_STATIC( QOPENGLVERTEXARRAYOBJECT_DESTROY )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->destroy ();
+      obj->destroy();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -141,7 +144,7 @@ bool isCreated() const
 */
 HB_FUNC_STATIC( QOPENGLVERTEXARRAYOBJECT_ISCREATED )
 {
-  QOpenGLVertexArrayObject * obj = (QOpenGLVertexArrayObject *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLVertexArrayObject *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -149,12 +152,12 @@ HB_FUNC_STATIC( QOPENGLVERTEXARRAYOBJECT_ISCREATED )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isCreated () );
+      RBOOL( obj->isCreated() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -165,7 +168,7 @@ GLuint objectId() const
 */
 HB_FUNC_STATIC( QOPENGLVERTEXARRAYOBJECT_OBJECTID )
 {
-  QOpenGLVertexArrayObject * obj = (QOpenGLVertexArrayObject *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLVertexArrayObject *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -173,12 +176,12 @@ HB_FUNC_STATIC( QOPENGLVERTEXARRAYOBJECT_OBJECTID )
     if( ISNUMPAR(0) )
     {
 #endif
-      RGLUINT( obj->objectId () );
+      RGLUINT( obj->objectId() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -189,7 +192,7 @@ void bind()
 */
 HB_FUNC_STATIC( QOPENGLVERTEXARRAYOBJECT_BIND )
 {
-  QOpenGLVertexArrayObject * obj = (QOpenGLVertexArrayObject *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLVertexArrayObject *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -197,12 +200,12 @@ HB_FUNC_STATIC( QOPENGLVERTEXARRAYOBJECT_BIND )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->bind ();
+      obj->bind();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -215,7 +218,7 @@ void release()
 */
 HB_FUNC_STATIC( QOPENGLVERTEXARRAYOBJECT_RELEASE )
 {
-  QOpenGLVertexArrayObject * obj = (QOpenGLVertexArrayObject *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLVertexArrayObject *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -223,12 +226,12 @@ HB_FUNC_STATIC( QOPENGLVERTEXARRAYOBJECT_RELEASE )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->release ();
+      obj->release();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

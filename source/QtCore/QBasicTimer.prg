@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -37,7 +37,7 @@ CLASS QBasicTimer
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QBasicTimer
+PROCEDURE destroyObject() CLASS QBasicTimer
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -54,38 +54,37 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtCore/QBasicTimer>
 #endif
 
 /*
-QBasicTimer ()
+QBasicTimer()
 */
 HB_FUNC_STATIC( QBASICTIMER_NEW )
 {
   if( ISNUMPAR(0) )
   {
-    QBasicTimer * o = new QBasicTimer ();
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QBasicTimer();
+    Qt5xHb::returnNewObject( obj, true );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QBASICTIMER_DELETE )
 {
-  QBasicTimer * obj = (QBasicTimer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QBasicTimer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -94,11 +93,11 @@ HB_FUNC_STATIC( QBASICTIMER_DELETE )
 }
 
 /*
-bool isActive () const
+bool isActive() const
 */
 HB_FUNC_STATIC( QBASICTIMER_ISACTIVE )
 {
-  QBasicTimer * obj = (QBasicTimer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QBasicTimer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -106,23 +105,23 @@ HB_FUNC_STATIC( QBASICTIMER_ISACTIVE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isActive () );
+      RBOOL( obj->isActive() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-void start ( int msec, QObject * object )
+void start( int msec, QObject * object )
 */
 HB_FUNC_STATIC( QBASICTIMER_START )
 {
-  QBasicTimer * obj = (QBasicTimer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QBasicTimer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -130,12 +129,12 @@ HB_FUNC_STATIC( QBASICTIMER_START )
     if( ISNUMPAR(2) && ISNUM(1) && ISQOBJECT(2) )
     {
 #endif
-      obj->start ( PINT(1), PQOBJECT(2) );
+      obj->start( PINT(1), PQOBJECT(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -144,11 +143,11 @@ HB_FUNC_STATIC( QBASICTIMER_START )
 }
 
 /*
-void stop ()
+void stop()
 */
 HB_FUNC_STATIC( QBASICTIMER_STOP )
 {
-  QBasicTimer * obj = (QBasicTimer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QBasicTimer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -156,12 +155,12 @@ HB_FUNC_STATIC( QBASICTIMER_STOP )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->stop ();
+      obj->stop();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -170,11 +169,11 @@ HB_FUNC_STATIC( QBASICTIMER_STOP )
 }
 
 /*
-int timerId () const
+int timerId() const
 */
 HB_FUNC_STATIC( QBASICTIMER_TIMERID )
 {
-  QBasicTimer * obj = (QBasicTimer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QBasicTimer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -182,12 +181,12 @@ HB_FUNC_STATIC( QBASICTIMER_TIMERID )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->timerId () );
+      RINT( obj->timerId() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -199,25 +198,25 @@ HB_FUNC_STATIC( QBASICTIMER_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -244,13 +243,13 @@ HB_FUNC_STATIC( QBASICTIMER_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

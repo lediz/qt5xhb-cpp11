@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -26,7 +26,7 @@ CLASS QErrorMessage INHERIT QDialog
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QErrorMessage
+PROCEDURE destroyObject() CLASS QErrorMessage
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -43,7 +43,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtWidgets/QErrorMessage>
@@ -56,25 +57,27 @@ HB_FUNC_STATIC( QERRORMESSAGE_NEW )
 {
   if( ISBETWEEN(0,1) && (ISQWIDGET(1)||ISNIL(1)) )
   {
-    QErrorMessage * o = new QErrorMessage ( OPQWIDGET(1,nullptr) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QErrorMessage( OPQWIDGET(1,nullptr) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QERRORMESSAGE_DELETE )
 {
-  QErrorMessage * obj = (QErrorMessage *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QErrorMessage *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -85,13 +88,13 @@ HB_FUNC_STATIC( QERRORMESSAGE_DELETE )
 /*
 void showMessage ( const QString & message )
 */
-void QErrorMessage_showMessage1 ()
+void QErrorMessage_showMessage1()
 {
-  QErrorMessage * obj = (QErrorMessage *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QErrorMessage *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->showMessage ( PQSTRING(1) );
+    obj->showMessage( PQSTRING(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -100,20 +103,22 @@ void QErrorMessage_showMessage1 ()
 /*
 void showMessage ( const QString & message, const QString & type )
 */
-void QErrorMessage_showMessage2 ()
+void QErrorMessage_showMessage2()
 {
-  QErrorMessage * obj = (QErrorMessage *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QErrorMessage *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->showMessage ( PQSTRING(1), PQSTRING(2) );
+    obj->showMessage( PQSTRING(1), PQSTRING(2) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void showMessage ( const QString & message )
-//[2]void showMessage ( const QString & message, const QString & type )
+/*
+[1]void showMessage ( const QString & message )
+[2]void showMessage ( const QString & message, const QString & type )
+*/
 
 HB_FUNC_STATIC( QERRORMESSAGE_SHOWMESSAGE )
 {
@@ -127,7 +132,7 @@ HB_FUNC_STATIC( QERRORMESSAGE_SHOWMESSAGE )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -137,16 +142,16 @@ static QErrorMessage * qtHandler ()
 HB_FUNC_STATIC( QERRORMESSAGE_QTHANDLER )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(0) )
+  if( ISNUMPAR(0) )
   {
 #endif
-      QErrorMessage * ptr = QErrorMessage::qtHandler ();
-      _qt5xhb_createReturnQWidgetClass ( ptr, "QERRORMESSAGE" );
+    QErrorMessage * ptr = QErrorMessage::qtHandler();
+    Qt5xHb::createReturnQWidgetClass( ptr, "QERRORMESSAGE" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }

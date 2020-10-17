@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -37,7 +37,7 @@ CLASS QWebSocketCorsAuthenticator
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QWebSocketCorsAuthenticator
+PROCEDURE destroyObject() CLASS QWebSocketCorsAuthenticator
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -56,7 +56,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
@@ -64,33 +63,35 @@ RETURN
 #endif
 #endif
 
-#include <QtCore/QString>
 #include <QtCore/QLatin1String>
+#include <QtCore/QString>
 
 /*
 explicit QWebSocketCorsAuthenticator(const QString &origin)
 */
-void QWebSocketCorsAuthenticator_new1 ()
+void QWebSocketCorsAuthenticator_new1()
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QWebSocketCorsAuthenticator * o = new QWebSocketCorsAuthenticator ( PQSTRING(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QWebSocketCorsAuthenticator( PQSTRING(1) );
+  Qt5xHb::returnNewObject( obj, true );
 #endif
 }
 
 /*
 explicit QWebSocketCorsAuthenticator(const QWebSocketCorsAuthenticator &other)
 */
-void QWebSocketCorsAuthenticator_new2 ()
+void QWebSocketCorsAuthenticator_new2()
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QWebSocketCorsAuthenticator * o = new QWebSocketCorsAuthenticator ( *PQWEBSOCKETCORSAUTHENTICATOR(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QWebSocketCorsAuthenticator( *PQWEBSOCKETCORSAUTHENTICATOR(1) );
+  Qt5xHb::returnNewObject( obj, true );
 #endif
 }
 
-//[1]explicit QWebSocketCorsAuthenticator(const QString &origin)
-//[2]explicit QWebSocketCorsAuthenticator(const QWebSocketCorsAuthenticator &other)
+/*
+[1]explicit QWebSocketCorsAuthenticator(const QString &origin)
+[2]explicit QWebSocketCorsAuthenticator(const QWebSocketCorsAuthenticator &other)
+*/
 
 HB_FUNC_STATIC( QWEBSOCKETCORSAUTHENTICATOR_NEW )
 {
@@ -104,21 +105,21 @@ HB_FUNC_STATIC( QWEBSOCKETCORSAUTHENTICATOR_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QWEBSOCKETCORSAUTHENTICATOR_DELETE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QWebSocketCorsAuthenticator * obj = (QWebSocketCorsAuthenticator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebSocketCorsAuthenticator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -133,7 +134,7 @@ void swap(QWebSocketCorsAuthenticator &other)
 HB_FUNC_STATIC( QWEBSOCKETCORSAUTHENTICATOR_SWAP )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QWebSocketCorsAuthenticator * obj = (QWebSocketCorsAuthenticator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebSocketCorsAuthenticator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -141,12 +142,12 @@ HB_FUNC_STATIC( QWEBSOCKETCORSAUTHENTICATOR_SWAP )
     if( ISNUMPAR(1) && ISQWEBSOCKETCORSAUTHENTICATOR(1) )
     {
 #endif
-      obj->swap ( *PQWEBSOCKETCORSAUTHENTICATOR(1) );
+      obj->swap( *PQWEBSOCKETCORSAUTHENTICATOR(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -161,7 +162,7 @@ QString origin() const
 HB_FUNC_STATIC( QWEBSOCKETCORSAUTHENTICATOR_ORIGIN )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QWebSocketCorsAuthenticator * obj = (QWebSocketCorsAuthenticator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebSocketCorsAuthenticator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -169,12 +170,12 @@ HB_FUNC_STATIC( QWEBSOCKETCORSAUTHENTICATOR_ORIGIN )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->origin () );
+      RQSTRING( obj->origin() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -187,7 +188,7 @@ bool allowed() const
 HB_FUNC_STATIC( QWEBSOCKETCORSAUTHENTICATOR_ALLOWED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QWebSocketCorsAuthenticator * obj = (QWebSocketCorsAuthenticator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebSocketCorsAuthenticator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -195,12 +196,12 @@ HB_FUNC_STATIC( QWEBSOCKETCORSAUTHENTICATOR_ALLOWED )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->allowed () );
+      RBOOL( obj->allowed() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -213,7 +214,7 @@ void setAllowed(bool allowed)
 HB_FUNC_STATIC( QWEBSOCKETCORSAUTHENTICATOR_SETALLOWED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QWebSocketCorsAuthenticator * obj = (QWebSocketCorsAuthenticator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebSocketCorsAuthenticator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -221,12 +222,12 @@ HB_FUNC_STATIC( QWEBSOCKETCORSAUTHENTICATOR_SETALLOWED )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setAllowed ( PBOOL(1) );
+      obj->setAllowed( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -241,25 +242,25 @@ HB_FUNC_STATIC( QWEBSOCKETCORSAUTHENTICATOR_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -286,13 +287,13 @@ HB_FUNC_STATIC( QWEBSOCKETCORSAUTHENTICATOR_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

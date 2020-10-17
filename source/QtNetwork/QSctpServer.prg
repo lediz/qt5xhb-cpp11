@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -28,7 +28,7 @@ CLASS QSctpServer INHERIT QTcpServer
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QSctpServer
+PROCEDURE destroyObject() CLASS QSctpServer
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -47,7 +47,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #if (QT_VERSION >= QT_VERSION_CHECK(5,8,0))
@@ -70,12 +71,12 @@ HB_FUNC_STATIC( QSCTPSERVER_NEW )
 #if !defined(QT_NO_SCTP)
   if( ISBETWEEN(0,1) && (ISQOBJECT(1)||ISNIL(1)) )
   {
-    QSctpServer * o = new QSctpServer ( OPQOBJECT(1,nullptr) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QSctpServer( OPQOBJECT(1,nullptr) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 #endif
@@ -88,14 +89,16 @@ HB_FUNC_STATIC( QSCTPSERVER_DELETE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,8,0))
 #if !defined(QT_NO_SCTP)
-  QSctpServer * obj = (QSctpServer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSctpServer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -112,7 +115,7 @@ HB_FUNC_STATIC( QSCTPSERVER_SETMAXIMUMCHANNELCOUNT )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,8,0))
 #if !defined(QT_NO_SCTP)
-  QSctpServer * obj = (QSctpServer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSctpServer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -120,12 +123,12 @@ HB_FUNC_STATIC( QSCTPSERVER_SETMAXIMUMCHANNELCOUNT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setMaximumChannelCount ( PINT(1) );
+      obj->setMaximumChannelCount( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -142,7 +145,7 @@ HB_FUNC_STATIC( QSCTPSERVER_MAXIMUMCHANNELCOUNT )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,8,0))
 #if !defined(QT_NO_SCTP)
-  QSctpServer * obj = (QSctpServer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSctpServer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -150,12 +153,12 @@ HB_FUNC_STATIC( QSCTPSERVER_MAXIMUMCHANNELCOUNT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->maximumChannelCount () );
+      RINT( obj->maximumChannelCount() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -170,7 +173,7 @@ HB_FUNC_STATIC( QSCTPSERVER_NEXTPENDINGDATAGRAMCONNECTION )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,8,0))
 #if !defined(QT_NO_SCTP)
-  QSctpServer * obj = (QSctpServer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSctpServer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -178,13 +181,13 @@ HB_FUNC_STATIC( QSCTPSERVER_NEXTPENDINGDATAGRAMCONNECTION )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSctpSocket * ptr = obj->nextPendingDatagramConnection ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QSCTPSOCKET" );
+      QSctpSocket * ptr = obj->nextPendingDatagramConnection();
+      Qt5xHb::createReturnQObjectClass( ptr, "QSCTPSOCKET" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

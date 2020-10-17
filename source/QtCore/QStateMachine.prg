@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -47,7 +47,7 @@ CLASS QStateMachine INHERIT QState
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QStateMachine
+PROCEDURE destroyObject() CLASS QStateMachine
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -64,7 +64,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtCore/QStateMachine>
@@ -73,23 +74,25 @@ RETURN
 /*
 QStateMachine(QObject *parent = nullptr)
 */
-void QStateMachine_new1 ()
+void QStateMachine_new1()
 {
-  QStateMachine * o = new QStateMachine ( OPQOBJECT(1,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QStateMachine( OPQOBJECT(1,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
 /*
 QStateMachine(QState::ChildMode childMode, QObject *parent = nullptr)
 */
-void QStateMachine_new2 ()
+void QStateMachine_new2()
 {
-  QStateMachine * o = new QStateMachine ( (QState::ChildMode) hb_parni(1), OPQOBJECT(2,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QStateMachine( (QState::ChildMode) hb_parni(1), OPQOBJECT(2,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
-//[1]QStateMachine(QObject *parent = nullptr)
-//[2]QStateMachine(QState::ChildMode childMode, QObject *parent = nullptr)
+/*
+[1]QStateMachine(QObject *parent = nullptr)
+[2]QStateMachine(QState::ChildMode childMode, QObject *parent = nullptr)
+*/
 
 HB_FUNC_STATIC( QSTATEMACHINE_NEW )
 {
@@ -103,20 +106,22 @@ HB_FUNC_STATIC( QSTATEMACHINE_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QSTATEMACHINE_DELETE )
 {
-  QStateMachine * obj = (QStateMachine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStateMachine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -129,7 +134,7 @@ void addState(QAbstractState *state)
 */
 HB_FUNC_STATIC( QSTATEMACHINE_ADDSTATE )
 {
-  QStateMachine * obj = (QStateMachine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStateMachine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -137,12 +142,12 @@ HB_FUNC_STATIC( QSTATEMACHINE_ADDSTATE )
     if( ISNUMPAR(1) && ISQABSTRACTSTATE(1) )
     {
 #endif
-      obj->addState ( PQABSTRACTSTATE(1) );
+      obj->addState( PQABSTRACTSTATE(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -155,7 +160,7 @@ void removeState(QAbstractState *state)
 */
 HB_FUNC_STATIC( QSTATEMACHINE_REMOVESTATE )
 {
-  QStateMachine * obj = (QStateMachine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStateMachine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -163,12 +168,12 @@ HB_FUNC_STATIC( QSTATEMACHINE_REMOVESTATE )
     if( ISNUMPAR(1) && ISQABSTRACTSTATE(1) )
     {
 #endif
-      obj->removeState ( PQABSTRACTSTATE(1) );
+      obj->removeState( PQABSTRACTSTATE(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -181,7 +186,7 @@ Error error() const
 */
 HB_FUNC_STATIC( QSTATEMACHINE_ERROR )
 {
-  QStateMachine * obj = (QStateMachine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStateMachine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -189,12 +194,12 @@ HB_FUNC_STATIC( QSTATEMACHINE_ERROR )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->error () );
+      RENUM( obj->error() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -205,7 +210,7 @@ QString errorString() const
 */
 HB_FUNC_STATIC( QSTATEMACHINE_ERRORSTRING )
 {
-  QStateMachine * obj = (QStateMachine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStateMachine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -213,12 +218,12 @@ HB_FUNC_STATIC( QSTATEMACHINE_ERRORSTRING )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->errorString () );
+      RQSTRING( obj->errorString() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -229,7 +234,7 @@ void clearError()
 */
 HB_FUNC_STATIC( QSTATEMACHINE_CLEARERROR )
 {
-  QStateMachine * obj = (QStateMachine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStateMachine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -237,12 +242,12 @@ HB_FUNC_STATIC( QSTATEMACHINE_CLEARERROR )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->clearError ();
+      obj->clearError();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -255,7 +260,7 @@ bool isRunning() const
 */
 HB_FUNC_STATIC( QSTATEMACHINE_ISRUNNING )
 {
-  QStateMachine * obj = (QStateMachine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStateMachine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -263,12 +268,12 @@ HB_FUNC_STATIC( QSTATEMACHINE_ISRUNNING )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isRunning () );
+      RBOOL( obj->isRunning() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -279,7 +284,7 @@ bool isAnimated() const
 */
 HB_FUNC_STATIC( QSTATEMACHINE_ISANIMATED )
 {
-  QStateMachine * obj = (QStateMachine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStateMachine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -287,12 +292,12 @@ HB_FUNC_STATIC( QSTATEMACHINE_ISANIMATED )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isAnimated () );
+      RBOOL( obj->isAnimated() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -303,7 +308,7 @@ void setAnimated(bool enabled)
 */
 HB_FUNC_STATIC( QSTATEMACHINE_SETANIMATED )
 {
-  QStateMachine * obj = (QStateMachine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStateMachine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -311,12 +316,12 @@ HB_FUNC_STATIC( QSTATEMACHINE_SETANIMATED )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setAnimated ( PBOOL(1) );
+      obj->setAnimated( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -329,7 +334,7 @@ void addDefaultAnimation(QAbstractAnimation *animation)
 */
 HB_FUNC_STATIC( QSTATEMACHINE_ADDDEFAULTANIMATION )
 {
-  QStateMachine * obj = (QStateMachine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStateMachine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -337,12 +342,12 @@ HB_FUNC_STATIC( QSTATEMACHINE_ADDDEFAULTANIMATION )
     if( ISNUMPAR(1) && ISQABSTRACTANIMATION(1) )
     {
 #endif
-      obj->addDefaultAnimation ( PQABSTRACTANIMATION(1) );
+      obj->addDefaultAnimation( PQABSTRACTANIMATION(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -355,7 +360,7 @@ QList<QAbstractAnimation *> defaultAnimations() const
 */
 HB_FUNC_STATIC( QSTATEMACHINE_DEFAULTANIMATIONS )
 {
-  QStateMachine * obj = (QStateMachine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStateMachine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -363,37 +368,36 @@ HB_FUNC_STATIC( QSTATEMACHINE_DEFAULTANIMATIONS )
     if( ISNUMPAR(0) )
     {
 #endif
-      QList<QAbstractAnimation *> list = obj->defaultAnimations ();
+      QList<QAbstractAnimation *> list = obj->defaultAnimations();
       PHB_DYNS pDynSym = hb_dynsymFindName( "QABSTRACTANIMATION" );
       PHB_ITEM pArray = hb_itemArrayNew(0);
-      int i;
-      for(i=0;i<list.count();i++)
+      if( pDynSym )
       {
-        if( pDynSym )
+        for( auto i = 0; i < list.count(); i++ )
         {
           hb_vmPushDynSym( pDynSym );
           hb_vmPushNil();
           hb_vmDo( 0 );
-          PHB_ITEM pObject = hb_itemNew( NULL );
+          PHB_ITEM pObject = hb_itemNew( nullptr );
           hb_itemCopy( pObject, hb_stackReturnItem() );
-          PHB_ITEM pItem = hb_itemNew( NULL );
+          PHB_ITEM pItem = hb_itemNew( nullptr );
           hb_itemPutPtr( pItem, (QAbstractAnimation *) list[i] );
           hb_objSendMsg( pObject, "_POINTER", 1, pItem );
           hb_itemRelease( pItem );
           hb_arrayAddForward( pArray, pObject );
           hb_itemRelease( pObject );
         }
-        else
-        {
-          hb_errRT_BASE( EG_NOFUNC, 1001, NULL, "QABSTRACTANIMATION", HB_ERR_ARGS_BASEPARAMS );
-        }
+      }
+      else
+      {
+        hb_errRT_BASE( EG_NOFUNC, 1001, nullptr, "QABSTRACTANIMATION", HB_ERR_ARGS_BASEPARAMS );
       }
       hb_itemReturnRelease(pArray);
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -404,7 +408,7 @@ void removeDefaultAnimation(QAbstractAnimation *animation)
 */
 HB_FUNC_STATIC( QSTATEMACHINE_REMOVEDEFAULTANIMATION )
 {
-  QStateMachine * obj = (QStateMachine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStateMachine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -412,12 +416,12 @@ HB_FUNC_STATIC( QSTATEMACHINE_REMOVEDEFAULTANIMATION )
     if( ISNUMPAR(1) && ISQABSTRACTANIMATION(1) )
     {
 #endif
-      obj->removeDefaultAnimation ( PQABSTRACTANIMATION(1) );
+      obj->removeDefaultAnimation( PQABSTRACTANIMATION(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -430,7 +434,7 @@ QState::RestorePolicy globalRestorePolicy() const
 */
 HB_FUNC_STATIC( QSTATEMACHINE_GLOBALRESTOREPOLICY )
 {
-  QStateMachine * obj = (QStateMachine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStateMachine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -438,12 +442,12 @@ HB_FUNC_STATIC( QSTATEMACHINE_GLOBALRESTOREPOLICY )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->globalRestorePolicy () );
+      RENUM( obj->globalRestorePolicy() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -454,7 +458,7 @@ void setGlobalRestorePolicy(QState::RestorePolicy restorePolicy)
 */
 HB_FUNC_STATIC( QSTATEMACHINE_SETGLOBALRESTOREPOLICY )
 {
-  QStateMachine * obj = (QStateMachine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStateMachine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -462,12 +466,12 @@ HB_FUNC_STATIC( QSTATEMACHINE_SETGLOBALRESTOREPOLICY )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setGlobalRestorePolicy ( (QState::RestorePolicy) hb_parni(1) );
+      obj->setGlobalRestorePolicy( (QState::RestorePolicy) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -480,7 +484,7 @@ void postEvent(QEvent *event, EventPriority priority = NormalPriority)
 */
 HB_FUNC_STATIC( QSTATEMACHINE_POSTEVENT )
 {
-  QStateMachine * obj = (QStateMachine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStateMachine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -488,12 +492,12 @@ HB_FUNC_STATIC( QSTATEMACHINE_POSTEVENT )
     if( ISBETWEEN(1,2) && ISQEVENT(1) && ISOPTNUM(2) )
     {
 #endif
-      obj->postEvent ( PQEVENT(1), ISNIL(2)? (QStateMachine::EventPriority) QStateMachine::NormalPriority : (QStateMachine::EventPriority) hb_parni(2) );
+      obj->postEvent( PQEVENT(1), ISNIL(2)? (QStateMachine::EventPriority) QStateMachine::NormalPriority : (QStateMachine::EventPriority) hb_parni(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -506,7 +510,7 @@ int postDelayedEvent(QEvent *event, int delay)
 */
 HB_FUNC_STATIC( QSTATEMACHINE_POSTDELAYEDEVENT )
 {
-  QStateMachine * obj = (QStateMachine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStateMachine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -514,12 +518,12 @@ HB_FUNC_STATIC( QSTATEMACHINE_POSTDELAYEDEVENT )
     if( ISNUMPAR(2) && ISQEVENT(1) && ISNUM(2) )
     {
 #endif
-      RINT( obj->postDelayedEvent ( PQEVENT(1), PINT(2) ) );
+      RINT( obj->postDelayedEvent( PQEVENT(1), PINT(2) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -530,7 +534,7 @@ bool cancelDelayedEvent(int id)
 */
 HB_FUNC_STATIC( QSTATEMACHINE_CANCELDELAYEDEVENT )
 {
-  QStateMachine * obj = (QStateMachine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStateMachine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -538,12 +542,12 @@ HB_FUNC_STATIC( QSTATEMACHINE_CANCELDELAYEDEVENT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      RBOOL( obj->cancelDelayedEvent ( PINT(1) ) );
+      RBOOL( obj->cancelDelayedEvent( PINT(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -554,7 +558,7 @@ bool eventFilter(QObject *watched, QEvent *event)
 */
 HB_FUNC_STATIC( QSTATEMACHINE_EVENTFILTER )
 {
-  QStateMachine * obj = (QStateMachine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStateMachine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -562,12 +566,12 @@ HB_FUNC_STATIC( QSTATEMACHINE_EVENTFILTER )
     if( ISNUMPAR(2) && ISQOBJECT(1) && ISQEVENT(2) )
     {
 #endif
-      RBOOL( obj->eventFilter ( PQOBJECT(1), PQEVENT(2) ) );
+      RBOOL( obj->eventFilter( PQOBJECT(1), PQEVENT(2) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -578,7 +582,7 @@ void start()
 */
 HB_FUNC_STATIC( QSTATEMACHINE_START )
 {
-  QStateMachine * obj = (QStateMachine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStateMachine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -586,12 +590,12 @@ HB_FUNC_STATIC( QSTATEMACHINE_START )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->start ();
+      obj->start();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -604,7 +608,7 @@ void stop()
 */
 HB_FUNC_STATIC( QSTATEMACHINE_STOP )
 {
-  QStateMachine * obj = (QStateMachine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStateMachine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -612,12 +616,12 @@ HB_FUNC_STATIC( QSTATEMACHINE_STOP )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->stop ();
+      obj->stop();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -630,33 +634,34 @@ void started()
 */
 HB_FUNC_STATIC( QSTATEMACHINE_ONSTARTED )
 {
-  QStateMachine * sender = (QStateMachine *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QStateMachine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("started()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("started()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QStateMachine::started, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QSTATEMACHINE" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QSTATEMACHINE" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -667,9 +672,9 @@ HB_FUNC_STATIC( QSTATEMACHINE_ONSTARTED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -689,33 +694,34 @@ void stopped()
 */
 HB_FUNC_STATIC( QSTATEMACHINE_ONSTOPPED )
 {
-  QStateMachine * sender = (QStateMachine *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QStateMachine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("stopped()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("stopped()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QStateMachine::stopped, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QSTATEMACHINE" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QSTATEMACHINE" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -726,9 +732,9 @@ HB_FUNC_STATIC( QSTATEMACHINE_ONSTOPPED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }

@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -26,7 +26,7 @@ CLASS QDomText INHERIT QDomCharacterData
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QDomText
+PROCEDURE destroyObject() CLASS QDomText
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -43,7 +43,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtXml/QDomText>
@@ -52,23 +51,25 @@ RETURN
 /*
 QDomText ()
 */
-void QDomText_new1 ()
+void QDomText_new1()
 {
-  QDomText * o = new QDomText ();
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QDomText();
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QDomText ( const QDomText & x )
 */
-void QDomText_new2 ()
+void QDomText_new2()
 {
-  QDomText * o = new QDomText ( *PQDOMTEXT(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QDomText( *PQDOMTEXT(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
-//[1]QDomText ()
-//[2]QDomText ( const QDomText & x )
+/*
+[1]QDomText ()
+[2]QDomText ( const QDomText & x )
+*/
 
 HB_FUNC_STATIC( QDOMTEXT_NEW )
 {
@@ -82,20 +83,20 @@ HB_FUNC_STATIC( QDOMTEXT_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QDOMTEXT_DELETE )
 {
-  QDomText * obj = (QDomText *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDomText *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -108,7 +109,7 @@ QDomNode::NodeType nodeType () const
 */
 HB_FUNC_STATIC( QDOMTEXT_NODETYPE )
 {
-  QDomText * obj = (QDomText *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDomText *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -116,12 +117,12 @@ HB_FUNC_STATIC( QDOMTEXT_NODETYPE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->nodeType () );
+      RENUM( obj->nodeType() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -132,7 +133,7 @@ QDomText splitText ( int offset )
 */
 HB_FUNC_STATIC( QDOMTEXT_SPLITTEXT )
 {
-  QDomText * obj = (QDomText *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDomText *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -140,13 +141,13 @@ HB_FUNC_STATIC( QDOMTEXT_SPLITTEXT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      QDomText * ptr = new QDomText( obj->splitText ( PINT(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QDOMTEXT", true );
+      auto ptr = new QDomText( obj->splitText( PINT(1) ) );
+      Qt5xHb::createReturnClass( ptr, "QDOMTEXT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

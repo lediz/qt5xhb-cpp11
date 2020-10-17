@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -38,7 +38,7 @@ CLASS QDBusObjectPath
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QDBusObjectPath
+PROCEDURE destroyObject() CLASS QDBusObjectPath
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -55,7 +55,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtDBus/QDBusObjectPath>
@@ -66,43 +65,36 @@ QDBusObjectPath()
 */
 HB_FUNC_STATIC( QDBUSOBJECTPATH_NEW1 )
 {
-  QDBusObjectPath * o = new QDBusObjectPath ();
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QDBusObjectPath();
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
-explicit QDBusObjectPath(const char *path)
+QDBusObjectPath( const char * path )
 */
 HB_FUNC_STATIC( QDBUSOBJECTPATH_NEW2 )
 {
-  QDBusObjectPath * o = new QDBusObjectPath ( PCONSTCHAR(1) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QDBusObjectPath( PCONSTCHAR(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
-explicit QDBusObjectPath(QLatin1String path)
+QDBusObjectPath( QLatin1String path )
 */
 HB_FUNC_STATIC( QDBUSOBJECTPATH_NEW3 )
 {
-  QDBusObjectPath * o = new QDBusObjectPath ( *PQLATIN1STRING(1) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QDBusObjectPath( *PQLATIN1STRING(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
-explicit QDBusObjectPath(const QString &path)
+QDBusObjectPath( const QString & path )
 */
 HB_FUNC_STATIC( QDBUSOBJECTPATH_NEW4 )
 {
-  QDBusObjectPath * o = new QDBusObjectPath ( PQSTRING(1) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QDBusObjectPath( PQSTRING(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
-
-//[1]QDBusObjectPath()
-//[2]explicit QDBusObjectPath(const char *path)
-//[3]explicit QDBusObjectPath(QLatin1String path)
-//[4]explicit QDBusObjectPath(const QString &path)
-
-// TODO: resolver conflitos entre [2], [3] e [4]
 
 HB_FUNC( QDBUSOBJECTPATH_NEW )
 {
@@ -124,20 +116,20 @@ HB_FUNC( QDBUSOBJECTPATH_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QDBUSOBJECTPATH_DELETE )
 {
-  QDBusObjectPath * obj = (QDBusObjectPath *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDBusObjectPath *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -150,7 +142,7 @@ QString path() const
 */
 HB_FUNC_STATIC( QDBUSOBJECTPATH_PATH )
 {
-  QDBusObjectPath * obj = (QDBusObjectPath *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDBusObjectPath *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -158,23 +150,23 @@ HB_FUNC_STATIC( QDBUSOBJECTPATH_PATH )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->path () );
+      RQSTRING( obj->path() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-void setPath(const QString &path)
+void setPath( const QString & path )
 */
 HB_FUNC_STATIC( QDBUSOBJECTPATH_SETPATH )
 {
-  QDBusObjectPath * obj = (QDBusObjectPath *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDBusObjectPath *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -182,12 +174,12 @@ HB_FUNC_STATIC( QDBUSOBJECTPATH_SETPATH )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->setPath ( PQSTRING(1) );
+      obj->setPath( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -201,25 +193,25 @@ HB_FUNC_STATIC( QDBUSOBJECTPATH_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -246,13 +238,13 @@ HB_FUNC_STATIC( QDBUSOBJECTPATH_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -24,7 +24,7 @@ CLASS QVBoxLayout INHERIT QBoxLayout
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QVBoxLayout
+PROCEDURE destroyObject() CLASS QVBoxLayout
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -41,7 +41,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtWidgets/QVBoxLayout>
@@ -50,23 +51,25 @@ RETURN
 /*
 QVBoxLayout ()
 */
-void QVBoxLayout_new1 ()
+void QVBoxLayout_new1()
 {
-  QVBoxLayout * o = new QVBoxLayout ();
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QVBoxLayout();
+  Qt5xHb::returnNewObject( obj, false );
 }
 
 /*
 QVBoxLayout ( QWidget * parent )
 */
-void QVBoxLayout_new2 ()
+void QVBoxLayout_new2()
 {
-  QVBoxLayout * o = new QVBoxLayout ( PQWIDGET(1) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QVBoxLayout( PQWIDGET(1) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
-//[1]QVBoxLayout ()
-//[2]QVBoxLayout ( QWidget * parent )
+/*
+[1]QVBoxLayout ()
+[2]QVBoxLayout ( QWidget * parent )
+*/
 
 HB_FUNC_STATIC( QVBOXLAYOUT_NEW )
 {
@@ -80,20 +83,22 @@ HB_FUNC_STATIC( QVBOXLAYOUT_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QVBOXLAYOUT_DELETE )
 {
-  QVBoxLayout * obj = (QVBoxLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QVBoxLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }

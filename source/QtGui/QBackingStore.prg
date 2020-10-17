@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -48,7 +48,7 @@ CLASS QBackingStore
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QBackingStore
+PROCEDURE destroyObject() CLASS QBackingStore
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -65,7 +65,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtGui/QBackingStore>
@@ -78,25 +77,25 @@ HB_FUNC_STATIC( QBACKINGSTORE_NEW )
 {
   if( ISNUMPAR(1) && ISQWINDOW(1) )
   {
-    QBackingStore * o = new QBackingStore ( PQWINDOW(1) );
-    _qt5xhb_returnNewObject( o, true );
+    auto obj = new QBackingStore( PQWINDOW(1) );
+    Qt5xHb::returnNewObject( obj, true );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QBACKINGSTORE_DELETE )
 {
-  QBackingStore * obj = (QBackingStore *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QBackingStore *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -109,7 +108,7 @@ void beginPaint(const QRegion & region)
 */
 HB_FUNC_STATIC( QBACKINGSTORE_BEGINPAINT )
 {
-  QBackingStore * obj = (QBackingStore *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QBackingStore *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -117,12 +116,12 @@ HB_FUNC_STATIC( QBACKINGSTORE_BEGINPAINT )
     if( ISNUMPAR(1) && ISQREGION(1) )
     {
 #endif
-      obj->beginPaint ( *PQREGION(1) );
+      obj->beginPaint( *PQREGION(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -135,7 +134,7 @@ void endPaint()
 */
 HB_FUNC_STATIC( QBACKINGSTORE_ENDPAINT )
 {
-  QBackingStore * obj = (QBackingStore *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QBackingStore *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -143,12 +142,12 @@ HB_FUNC_STATIC( QBACKINGSTORE_ENDPAINT )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->endPaint ();
+      obj->endPaint();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -161,7 +160,7 @@ void flush(const QRegion & region, QWindow * win = nullptr, const QPoint & offse
 */
 HB_FUNC_STATIC( QBACKINGSTORE_FLUSH )
 {
-  QBackingStore * obj = (QBackingStore *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QBackingStore *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -169,12 +168,12 @@ HB_FUNC_STATIC( QBACKINGSTORE_FLUSH )
     if( ISBETWEEN(1,3) && ISQREGION(1) && (ISQWINDOW(2)||ISNIL(2)) && (ISQPOINT(3)||ISNIL(3)) )
     {
 #endif
-      obj->flush ( *PQREGION(1), OPQWINDOW(2,nullptr), ISNIL(3)? QPoint() : *(QPoint *) _qt5xhb_itemGetPtr(3) );
+      obj->flush( *PQREGION(1), OPQWINDOW(2,nullptr), ISNIL(3)? QPoint() : *(QPoint *) Qt5xHb::itemGetPtr(3) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -191,7 +190,7 @@ bool hasStaticContents() const
 */
 HB_FUNC_STATIC( QBACKINGSTORE_HASSTATICCONTENTS )
 {
-  QBackingStore * obj = (QBackingStore *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QBackingStore *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -199,12 +198,12 @@ HB_FUNC_STATIC( QBACKINGSTORE_HASSTATICCONTENTS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->hasStaticContents () );
+      RBOOL( obj->hasStaticContents() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -215,7 +214,7 @@ QPaintDevice * paintDevice()
 */
 HB_FUNC_STATIC( QBACKINGSTORE_PAINTDEVICE )
 {
-  QBackingStore * obj = (QBackingStore *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QBackingStore *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -223,13 +222,13 @@ HB_FUNC_STATIC( QBACKINGSTORE_PAINTDEVICE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QPaintDevice * ptr = obj->paintDevice ();
-      _qt5xhb_createReturnClass ( ptr, "QPAINTDEVICE", false );
+      QPaintDevice * ptr = obj->paintDevice();
+      Qt5xHb::createReturnClass( ptr, "QPAINTDEVICE", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -240,7 +239,7 @@ void resize(const QSize & size)
 */
 HB_FUNC_STATIC( QBACKINGSTORE_RESIZE )
 {
-  QBackingStore * obj = (QBackingStore *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QBackingStore *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -248,12 +247,12 @@ HB_FUNC_STATIC( QBACKINGSTORE_RESIZE )
     if( ISNUMPAR(1) && ISQSIZE(1) )
     {
 #endif
-      obj->resize ( *PQSIZE(1) );
+      obj->resize( *PQSIZE(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -266,7 +265,7 @@ bool scroll(const QRegion & area, int dx, int dy)
 */
 HB_FUNC_STATIC( QBACKINGSTORE_SCROLL )
 {
-  QBackingStore * obj = (QBackingStore *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QBackingStore *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -274,12 +273,12 @@ HB_FUNC_STATIC( QBACKINGSTORE_SCROLL )
     if( ISNUMPAR(3) && ISQREGION(1) && ISNUM(2) && ISNUM(3) )
     {
 #endif
-      RBOOL( obj->scroll ( *PQREGION(1), PINT(2), PINT(3) ) );
+      RBOOL( obj->scroll( *PQREGION(1), PINT(2), PINT(3) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -290,7 +289,7 @@ void setStaticContents(const QRegion & region)
 */
 HB_FUNC_STATIC( QBACKINGSTORE_SETSTATICCONTENTS )
 {
-  QBackingStore * obj = (QBackingStore *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QBackingStore *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -298,12 +297,12 @@ HB_FUNC_STATIC( QBACKINGSTORE_SETSTATICCONTENTS )
     if( ISNUMPAR(1) && ISQREGION(1) )
     {
 #endif
-      obj->setStaticContents ( *PQREGION(1) );
+      obj->setStaticContents( *PQREGION(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -316,7 +315,7 @@ QSize size() const
 */
 HB_FUNC_STATIC( QBACKINGSTORE_SIZE )
 {
-  QBackingStore * obj = (QBackingStore *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QBackingStore *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -324,13 +323,13 @@ HB_FUNC_STATIC( QBACKINGSTORE_SIZE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSize * ptr = new QSize( obj->size () );
-      _qt5xhb_createReturnClass ( ptr, "QSIZE", true );
+      auto ptr = new QSize( obj->size() );
+      Qt5xHb::createReturnClass( ptr, "QSIZE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -341,7 +340,7 @@ QRegion staticContents() const
 */
 HB_FUNC_STATIC( QBACKINGSTORE_STATICCONTENTS )
 {
-  QBackingStore * obj = (QBackingStore *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QBackingStore *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -349,13 +348,13 @@ HB_FUNC_STATIC( QBACKINGSTORE_STATICCONTENTS )
     if( ISNUMPAR(0) )
     {
 #endif
-      QRegion * ptr = new QRegion( obj->staticContents () );
-      _qt5xhb_createReturnClass ( ptr, "QREGION", true );
+      auto ptr = new QRegion( obj->staticContents() );
+      Qt5xHb::createReturnClass( ptr, "QREGION", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -366,7 +365,7 @@ QWindow * window() const
 */
 HB_FUNC_STATIC( QBACKINGSTORE_WINDOW )
 {
-  QBackingStore * obj = (QBackingStore *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QBackingStore *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -374,13 +373,13 @@ HB_FUNC_STATIC( QBACKINGSTORE_WINDOW )
     if( ISNUMPAR(0) )
     {
 #endif
-      QWindow * ptr = obj->window ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QWINDOW" );
+      QWindow * ptr = obj->window();
+      Qt5xHb::createReturnQObjectClass( ptr, "QWINDOW" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -392,25 +391,25 @@ HB_FUNC_STATIC( QBACKINGSTORE_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -437,13 +436,13 @@ HB_FUNC_STATIC( QBACKINGSTORE_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

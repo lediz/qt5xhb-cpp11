@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -27,7 +27,7 @@ CLASS QStyleOptionRubberBand INHERIT QStyleOption
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QStyleOptionRubberBand
+PROCEDURE destroyObject() CLASS QStyleOptionRubberBand
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -44,7 +44,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtWidgets/QStyleOptionRubberBand>
@@ -53,28 +52,30 @@ RETURN
 /*
 QStyleOptionRubberBand()
 */
-void QStyleOptionRubberBand_new1 ()
+void QStyleOptionRubberBand_new1()
 {
-  QStyleOptionRubberBand * o = new QStyleOptionRubberBand ();
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QStyleOptionRubberBand();
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QStyleOptionRubberBand(const QStyleOptionRubberBand &other)
 */
-void QStyleOptionRubberBand_new2 ()
+void QStyleOptionRubberBand_new2()
 {
-  QStyleOptionRubberBand * o = new QStyleOptionRubberBand ( *PQSTYLEOPTIONRUBBERBAND(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QStyleOptionRubberBand( *PQSTYLEOPTIONRUBBERBAND(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QStyleOptionRubberBand(int version) [protected]
 */
 
-//[1]QStyleOptionRubberBand()
-//[2]QStyleOptionRubberBand(const QStyleOptionRubberBand &other)
-//[3]QStyleOptionRubberBand(int version) [protected]
+/*
+[1]QStyleOptionRubberBand()
+[2]QStyleOptionRubberBand(const QStyleOptionRubberBand &other)
+[3]QStyleOptionRubberBand(int version) [protected]
+*/
 
 HB_FUNC_STATIC( QSTYLEOPTIONRUBBERBAND_NEW )
 {
@@ -88,7 +89,7 @@ HB_FUNC_STATIC( QSTYLEOPTIONRUBBERBAND_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -97,33 +98,33 @@ QRubberBand::Shape shape
 */
 HB_FUNC_STATIC( QSTYLEOPTIONRUBBERBAND_SHAPE )
 {
-  QStyleOptionRubberBand * obj = (QStyleOptionRubberBand *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionRubberBand *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(0) )
     {
-      RENUM( obj->shape  );
+      RENUM( obj->shape );
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 }
 HB_FUNC_STATIC( QSTYLEOPTIONRUBBERBAND_SETSHAPE )
 {
-  QStyleOptionRubberBand * obj = (QStyleOptionRubberBand *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionRubberBand *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(1) && ISNUM(1) )
     {
-      obj->shape = (QRubberBand::Shape) hb_parni(1);
+      obj->shape= (QRubberBand::Shape) hb_parni(1);
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 
@@ -135,33 +136,33 @@ bool opaque
 */
 HB_FUNC_STATIC( QSTYLEOPTIONRUBBERBAND_OPAQUE )
 {
-  QStyleOptionRubberBand * obj = (QStyleOptionRubberBand *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionRubberBand *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(0) )
     {
-      RBOOL( obj->opaque  );
+      RBOOL( obj->opaque );
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 }
 HB_FUNC_STATIC( QSTYLEOPTIONRUBBERBAND_SETOPAQUE )
 {
-  QStyleOptionRubberBand * obj = (QStyleOptionRubberBand *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionRubberBand *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(1) && ISLOG(1) )
     {
-      obj->opaque = PBOOL(1);
+      obj->opaque= PBOOL(1);
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 

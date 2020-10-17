@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -44,7 +44,7 @@ CLASS QAuthenticator
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QAuthenticator
+PROCEDURE destroyObject() CLASS QAuthenticator
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -61,7 +61,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtNetwork/QAuthenticator>
@@ -70,23 +69,25 @@ RETURN
 /*
 QAuthenticator ()
 */
-void QAuthenticator_new1 ()
+void QAuthenticator_new1()
 {
-  QAuthenticator * o = new QAuthenticator ();
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QAuthenticator();
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QAuthenticator ( const QAuthenticator & other )
 */
-void QAuthenticator_new2 ()
+void QAuthenticator_new2()
 {
-  QAuthenticator * o = new QAuthenticator ( *PQAUTHENTICATOR(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QAuthenticator( *PQAUTHENTICATOR(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
-//[1]QAuthenticator ()
-//[2]QAuthenticator ( const QAuthenticator & other )
+/*
+[1]QAuthenticator ()
+[2]QAuthenticator ( const QAuthenticator & other )
+*/
 
 HB_FUNC_STATIC( QAUTHENTICATOR_NEW )
 {
@@ -100,7 +101,7 @@ HB_FUNC_STATIC( QAUTHENTICATOR_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -109,14 +110,14 @@ HB_FUNC_STATIC( QAUTHENTICATOR_NEW )
 */
 HB_FUNC_STATIC( QAUTHENTICATOR_DELETE )
 {
-  QAuthenticator * obj = (QAuthenticator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAuthenticator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -129,7 +130,7 @@ QString user() const
 */
 HB_FUNC_STATIC( QAUTHENTICATOR_USER )
 {
-  QAuthenticator * obj = (QAuthenticator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAuthenticator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -137,12 +138,12 @@ HB_FUNC_STATIC( QAUTHENTICATOR_USER )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->user () );
+      RQSTRING( obj->user() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -153,7 +154,7 @@ void setUser(const QString &user)
 */
 HB_FUNC_STATIC( QAUTHENTICATOR_SETUSER )
 {
-  QAuthenticator * obj = (QAuthenticator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAuthenticator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -161,12 +162,12 @@ HB_FUNC_STATIC( QAUTHENTICATOR_SETUSER )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->setUser ( PQSTRING(1) );
+      obj->setUser( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -179,7 +180,7 @@ QString password() const
 */
 HB_FUNC_STATIC( QAUTHENTICATOR_PASSWORD )
 {
-  QAuthenticator * obj = (QAuthenticator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAuthenticator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -187,12 +188,12 @@ HB_FUNC_STATIC( QAUTHENTICATOR_PASSWORD )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->password () );
+      RQSTRING( obj->password() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -203,7 +204,7 @@ void setPassword(const QString &password)
 */
 HB_FUNC_STATIC( QAUTHENTICATOR_SETPASSWORD )
 {
-  QAuthenticator * obj = (QAuthenticator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAuthenticator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -211,12 +212,12 @@ HB_FUNC_STATIC( QAUTHENTICATOR_SETPASSWORD )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->setPassword ( PQSTRING(1) );
+      obj->setPassword( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -229,7 +230,7 @@ QString realm() const
 */
 HB_FUNC_STATIC( QAUTHENTICATOR_REALM )
 {
-  QAuthenticator * obj = (QAuthenticator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAuthenticator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -237,12 +238,12 @@ HB_FUNC_STATIC( QAUTHENTICATOR_REALM )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->realm () );
+      RQSTRING( obj->realm() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -254,7 +255,7 @@ void setRealm(const QString &realm)
 HB_FUNC_STATIC( QAUTHENTICATOR_SETREALM )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QAuthenticator * obj = (QAuthenticator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAuthenticator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -262,12 +263,12 @@ HB_FUNC_STATIC( QAUTHENTICATOR_SETREALM )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->setRealm ( PQSTRING(1) );
+      obj->setRealm( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -281,7 +282,7 @@ QVariant option(const QString &opt) const
 */
 HB_FUNC_STATIC( QAUTHENTICATOR_OPTION )
 {
-  QAuthenticator * obj = (QAuthenticator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAuthenticator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -289,13 +290,13 @@ HB_FUNC_STATIC( QAUTHENTICATOR_OPTION )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      QVariant * ptr = new QVariant( obj->option ( PQSTRING(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QVARIANT", true );
+      auto ptr = new QVariant( obj->option( PQSTRING(1) ) );
+      Qt5xHb::createReturnClass( ptr, "QVARIANT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -310,7 +311,7 @@ void setOption(const QString &opt, const QVariant &value)
 */
 HB_FUNC_STATIC( QAUTHENTICATOR_SETOPTION )
 {
-  QAuthenticator * obj = (QAuthenticator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAuthenticator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -318,12 +319,12 @@ HB_FUNC_STATIC( QAUTHENTICATOR_SETOPTION )
     if( ISNUMPAR(2) && ISCHAR(1) && ISQVARIANT(2) )
     {
 #endif
-      obj->setOption ( PQSTRING(1), *PQVARIANT(2) );
+      obj->setOption( PQSTRING(1), *PQVARIANT(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -336,7 +337,7 @@ bool isNull() const
 */
 HB_FUNC_STATIC( QAUTHENTICATOR_ISNULL )
 {
-  QAuthenticator * obj = (QAuthenticator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAuthenticator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -344,12 +345,12 @@ HB_FUNC_STATIC( QAUTHENTICATOR_ISNULL )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isNull () );
+      RBOOL( obj->isNull() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -360,7 +361,7 @@ void detach()
 */
 HB_FUNC_STATIC( QAUTHENTICATOR_DETACH )
 {
-  QAuthenticator * obj = (QAuthenticator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAuthenticator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -368,12 +369,12 @@ HB_FUNC_STATIC( QAUTHENTICATOR_DETACH )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->detach ();
+      obj->detach();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -387,25 +388,25 @@ HB_FUNC_STATIC( QAUTHENTICATOR_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -432,13 +433,13 @@ HB_FUNC_STATIC( QAUTHENTICATOR_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

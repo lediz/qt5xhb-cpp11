@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -61,7 +61,7 @@ CLASS QListView INHERIT QAbstractItemView
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QListView
+PROCEDURE destroyObject() CLASS QListView
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -78,7 +78,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtWidgets/QListView>
@@ -91,25 +92,27 @@ HB_FUNC_STATIC( QLISTVIEW_NEW )
 {
   if( ISBETWEEN(0,1) && (ISQWIDGET(1)||ISNIL(1)) )
   {
-    QListView * o = new QListView ( OPQWIDGET(1,nullptr) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QListView( OPQWIDGET(1,nullptr) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QLISTVIEW_DELETE )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -122,7 +125,7 @@ int batchSize () const
 */
 HB_FUNC_STATIC( QLISTVIEW_BATCHSIZE )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -130,12 +133,12 @@ HB_FUNC_STATIC( QLISTVIEW_BATCHSIZE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->batchSize () );
+      RINT( obj->batchSize() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -146,7 +149,7 @@ void clearPropertyFlags ()
 */
 HB_FUNC_STATIC( QLISTVIEW_CLEARPROPERTYFLAGS )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -154,12 +157,12 @@ HB_FUNC_STATIC( QLISTVIEW_CLEARPROPERTYFLAGS )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->clearPropertyFlags ();
+      obj->clearPropertyFlags();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -172,7 +175,7 @@ Flow flow () const
 */
 HB_FUNC_STATIC( QLISTVIEW_FLOW )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -180,12 +183,12 @@ HB_FUNC_STATIC( QLISTVIEW_FLOW )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->flow () );
+      RENUM( obj->flow() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -196,7 +199,7 @@ QSize gridSize () const
 */
 HB_FUNC_STATIC( QLISTVIEW_GRIDSIZE )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -204,13 +207,13 @@ HB_FUNC_STATIC( QLISTVIEW_GRIDSIZE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSize * ptr = new QSize( obj->gridSize () );
-      _qt5xhb_createReturnClass ( ptr, "QSIZE", true );
+      auto ptr = new QSize( obj->gridSize() );
+      Qt5xHb::createReturnClass( ptr, "QSIZE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -221,7 +224,7 @@ bool isRowHidden ( int row ) const
 */
 HB_FUNC_STATIC( QLISTVIEW_ISROWHIDDEN )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -229,12 +232,12 @@ HB_FUNC_STATIC( QLISTVIEW_ISROWHIDDEN )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      RBOOL( obj->isRowHidden ( PINT(1) ) );
+      RBOOL( obj->isRowHidden( PINT(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -245,7 +248,7 @@ bool isSelectionRectVisible () const
 */
 HB_FUNC_STATIC( QLISTVIEW_ISSELECTIONRECTVISIBLE )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -253,12 +256,12 @@ HB_FUNC_STATIC( QLISTVIEW_ISSELECTIONRECTVISIBLE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isSelectionRectVisible () );
+      RBOOL( obj->isSelectionRectVisible() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -269,7 +272,7 @@ bool isWrapping () const
 */
 HB_FUNC_STATIC( QLISTVIEW_ISWRAPPING )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -277,12 +280,12 @@ HB_FUNC_STATIC( QLISTVIEW_ISWRAPPING )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isWrapping () );
+      RBOOL( obj->isWrapping() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -293,7 +296,7 @@ LayoutMode layoutMode () const
 */
 HB_FUNC_STATIC( QLISTVIEW_LAYOUTMODE )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -301,12 +304,12 @@ HB_FUNC_STATIC( QLISTVIEW_LAYOUTMODE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->layoutMode () );
+      RENUM( obj->layoutMode() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -317,7 +320,7 @@ int modelColumn () const
 */
 HB_FUNC_STATIC( QLISTVIEW_MODELCOLUMN )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -325,12 +328,12 @@ HB_FUNC_STATIC( QLISTVIEW_MODELCOLUMN )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->modelColumn () );
+      RINT( obj->modelColumn() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -341,7 +344,7 @@ Movement movement () const
 */
 HB_FUNC_STATIC( QLISTVIEW_MOVEMENT )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -349,12 +352,12 @@ HB_FUNC_STATIC( QLISTVIEW_MOVEMENT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->movement () );
+      RENUM( obj->movement() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -365,7 +368,7 @@ ResizeMode resizeMode () const
 */
 HB_FUNC_STATIC( QLISTVIEW_RESIZEMODE )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -373,12 +376,12 @@ HB_FUNC_STATIC( QLISTVIEW_RESIZEMODE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->resizeMode () );
+      RENUM( obj->resizeMode() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -389,7 +392,7 @@ void setBatchSize ( int batchSize )
 */
 HB_FUNC_STATIC( QLISTVIEW_SETBATCHSIZE )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -397,12 +400,12 @@ HB_FUNC_STATIC( QLISTVIEW_SETBATCHSIZE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setBatchSize ( PINT(1) );
+      obj->setBatchSize( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -415,7 +418,7 @@ void setFlow ( Flow flow )
 */
 HB_FUNC_STATIC( QLISTVIEW_SETFLOW )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -423,12 +426,12 @@ HB_FUNC_STATIC( QLISTVIEW_SETFLOW )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setFlow ( (QListView::Flow) hb_parni(1) );
+      obj->setFlow( (QListView::Flow) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -441,7 +444,7 @@ void setGridSize ( const QSize & size )
 */
 HB_FUNC_STATIC( QLISTVIEW_SETGRIDSIZE )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -449,12 +452,12 @@ HB_FUNC_STATIC( QLISTVIEW_SETGRIDSIZE )
     if( ISNUMPAR(1) && ISQSIZE(1) )
     {
 #endif
-      obj->setGridSize ( *PQSIZE(1) );
+      obj->setGridSize( *PQSIZE(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -467,7 +470,7 @@ void setLayoutMode ( LayoutMode mode )
 */
 HB_FUNC_STATIC( QLISTVIEW_SETLAYOUTMODE )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -475,12 +478,12 @@ HB_FUNC_STATIC( QLISTVIEW_SETLAYOUTMODE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setLayoutMode ( (QListView::LayoutMode) hb_parni(1) );
+      obj->setLayoutMode( (QListView::LayoutMode) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -493,7 +496,7 @@ void setModelColumn ( int column )
 */
 HB_FUNC_STATIC( QLISTVIEW_SETMODELCOLUMN )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -501,12 +504,12 @@ HB_FUNC_STATIC( QLISTVIEW_SETMODELCOLUMN )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setModelColumn ( PINT(1) );
+      obj->setModelColumn( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -519,7 +522,7 @@ void setMovement ( Movement movement )
 */
 HB_FUNC_STATIC( QLISTVIEW_SETMOVEMENT )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -527,12 +530,12 @@ HB_FUNC_STATIC( QLISTVIEW_SETMOVEMENT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setMovement ( (QListView::Movement) hb_parni(1) );
+      obj->setMovement( (QListView::Movement) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -545,7 +548,7 @@ void setResizeMode ( ResizeMode mode )
 */
 HB_FUNC_STATIC( QLISTVIEW_SETRESIZEMODE )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -553,12 +556,12 @@ HB_FUNC_STATIC( QLISTVIEW_SETRESIZEMODE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setResizeMode ( (QListView::ResizeMode) hb_parni(1) );
+      obj->setResizeMode( (QListView::ResizeMode) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -571,7 +574,7 @@ void setRowHidden ( int row, bool hide )
 */
 HB_FUNC_STATIC( QLISTVIEW_SETROWHIDDEN )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -579,12 +582,12 @@ HB_FUNC_STATIC( QLISTVIEW_SETROWHIDDEN )
     if( ISNUMPAR(2) && ISNUM(1) && ISLOG(2) )
     {
 #endif
-      obj->setRowHidden ( PINT(1), PBOOL(2) );
+      obj->setRowHidden( PINT(1), PBOOL(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -597,7 +600,7 @@ void setSelectionRectVisible ( bool show )
 */
 HB_FUNC_STATIC( QLISTVIEW_SETSELECTIONRECTVISIBLE )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -605,12 +608,12 @@ HB_FUNC_STATIC( QLISTVIEW_SETSELECTIONRECTVISIBLE )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setSelectionRectVisible ( PBOOL(1) );
+      obj->setSelectionRectVisible( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -623,7 +626,7 @@ void setSpacing ( int space )
 */
 HB_FUNC_STATIC( QLISTVIEW_SETSPACING )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -631,12 +634,12 @@ HB_FUNC_STATIC( QLISTVIEW_SETSPACING )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setSpacing ( PINT(1) );
+      obj->setSpacing( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -649,7 +652,7 @@ void setUniformItemSizes ( bool enable )
 */
 HB_FUNC_STATIC( QLISTVIEW_SETUNIFORMITEMSIZES )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -657,12 +660,12 @@ HB_FUNC_STATIC( QLISTVIEW_SETUNIFORMITEMSIZES )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setUniformItemSizes ( PBOOL(1) );
+      obj->setUniformItemSizes( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -675,7 +678,7 @@ void setViewMode ( ViewMode mode )
 */
 HB_FUNC_STATIC( QLISTVIEW_SETVIEWMODE )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -683,12 +686,12 @@ HB_FUNC_STATIC( QLISTVIEW_SETVIEWMODE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setViewMode ( (QListView::ViewMode) hb_parni(1) );
+      obj->setViewMode( (QListView::ViewMode) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -701,7 +704,7 @@ void setWordWrap ( bool on )
 */
 HB_FUNC_STATIC( QLISTVIEW_SETWORDWRAP )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -709,12 +712,12 @@ HB_FUNC_STATIC( QLISTVIEW_SETWORDWRAP )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setWordWrap ( PBOOL(1) );
+      obj->setWordWrap( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -727,7 +730,7 @@ void setWrapping ( bool enable )
 */
 HB_FUNC_STATIC( QLISTVIEW_SETWRAPPING )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -735,12 +738,12 @@ HB_FUNC_STATIC( QLISTVIEW_SETWRAPPING )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setWrapping ( PBOOL(1) );
+      obj->setWrapping( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -753,7 +756,7 @@ int spacing () const
 */
 HB_FUNC_STATIC( QLISTVIEW_SPACING )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -761,12 +764,12 @@ HB_FUNC_STATIC( QLISTVIEW_SPACING )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->spacing () );
+      RINT( obj->spacing() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -777,7 +780,7 @@ bool uniformItemSizes () const
 */
 HB_FUNC_STATIC( QLISTVIEW_UNIFORMITEMSIZES )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -785,12 +788,12 @@ HB_FUNC_STATIC( QLISTVIEW_UNIFORMITEMSIZES )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->uniformItemSizes () );
+      RBOOL( obj->uniformItemSizes() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -801,7 +804,7 @@ ViewMode viewMode () const
 */
 HB_FUNC_STATIC( QLISTVIEW_VIEWMODE )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -809,12 +812,12 @@ HB_FUNC_STATIC( QLISTVIEW_VIEWMODE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->viewMode () );
+      RENUM( obj->viewMode() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -825,7 +828,7 @@ bool wordWrap () const
 */
 HB_FUNC_STATIC( QLISTVIEW_WORDWRAP )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -833,12 +836,12 @@ HB_FUNC_STATIC( QLISTVIEW_WORDWRAP )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->wordWrap () );
+      RBOOL( obj->wordWrap() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -849,7 +852,7 @@ virtual QModelIndex indexAt ( const QPoint & p ) const
 */
 HB_FUNC_STATIC( QLISTVIEW_INDEXAT )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -857,13 +860,13 @@ HB_FUNC_STATIC( QLISTVIEW_INDEXAT )
     if( ISNUMPAR(1) && ISQPOINT(1) )
     {
 #endif
-      QModelIndex * ptr = new QModelIndex( obj->indexAt ( *PQPOINT(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QMODELINDEX", true );
+      auto ptr = new QModelIndex( obj->indexAt( *PQPOINT(1) ) );
+      Qt5xHb::createReturnClass( ptr, "QMODELINDEX", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -874,7 +877,7 @@ virtual void scrollTo ( const QModelIndex & index, ScrollHint hint = EnsureVisib
 */
 HB_FUNC_STATIC( QLISTVIEW_SCROLLTO )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -882,12 +885,12 @@ HB_FUNC_STATIC( QLISTVIEW_SCROLLTO )
     if( ISBETWEEN(1,2) && ISQMODELINDEX(1) && ISOPTNUM(2) )
     {
 #endif
-      obj->scrollTo ( *PQMODELINDEX(1), ISNIL(2)? (QListView::ScrollHint) QListView::EnsureVisible : (QListView::ScrollHint) hb_parni(2) );
+      obj->scrollTo( *PQMODELINDEX(1), ISNIL(2)? (QListView::ScrollHint) QListView::EnsureVisible : (QListView::ScrollHint) hb_parni(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -900,7 +903,7 @@ virtual QRect visualRect ( const QModelIndex & index ) const
 */
 HB_FUNC_STATIC( QLISTVIEW_VISUALRECT )
 {
-  QListView * obj = (QListView *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -908,13 +911,13 @@ HB_FUNC_STATIC( QLISTVIEW_VISUALRECT )
     if( ISNUMPAR(1) && ISQMODELINDEX(1) )
     {
 #endif
-      QRect * ptr = new QRect( obj->visualRect ( *PQMODELINDEX(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QRECT", true );
+      auto ptr = new QRect( obj->visualRect( *PQMODELINDEX(1) ) );
+      Qt5xHb::createReturnClass( ptr, "QRECT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -925,58 +928,58 @@ void indexesMoved( const QModelIndexList & indexes )
 */
 HB_FUNC_STATIC( QLISTVIEW_ONINDEXESMOVED )
 {
-  QListView * sender = (QListView *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QListView *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("indexesMoved(QModelIndexList)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("indexesMoved(QModelIndexList)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QListView::indexesMoved, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (const QModelIndexList & arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QLISTVIEW" );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QLISTVIEW" );
             PHB_DYNS pDynSym = hb_dynsymFindName( "QMODELINDEX" );
             PHB_ITEM pArg1 = hb_itemArrayNew(0);
-            int i;
-            for(i=0;i<arg1.count();i++)
+            if( pDynSym )
             {
-              if( pDynSym )
+              for( auto i = 0; i < arg1.count(); i++ )
               {
                 hb_vmPushDynSym( pDynSym );
                 hb_vmPushNil();
                 hb_vmDo( 0 );
-                PHB_ITEM pTempObject = hb_itemNew( NULL );
+                PHB_ITEM pTempObject = hb_itemNew( nullptr );
                 hb_itemCopy( pTempObject, hb_stackReturnItem() );
-                PHB_ITEM pTempItem = hb_itemNew( NULL );
+                PHB_ITEM pTempItem = hb_itemNew( nullptr );
                 hb_itemPutPtr( pTempItem, (QModelIndex *) new QModelIndex ( arg1 [i] ) );
                 hb_objSendMsg( pTempObject, "NEWFROMPOINTER", 1, pTempItem );
                 hb_arrayAddForward( pArg1, pTempObject );
                 hb_itemRelease( pTempObject );
                 hb_itemRelease( pTempItem );
               }
-              else
-              {
-                hb_errRT_BASE( EG_NOFUNC, 1001, NULL, "QMODELINDEX", HB_ERR_ARGS_BASEPARAMS );
-              }
             }
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            else
+            {
+              hb_errRT_BASE( EG_NOFUNC, 1001, nullptr, "QMODELINDEX", HB_ERR_ARGS_BASEPARAMS );
+            }
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -987,9 +990,9 @@ HB_FUNC_STATIC( QLISTVIEW_ONINDEXESMOVED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }

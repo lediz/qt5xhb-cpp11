@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -23,7 +23,7 @@ CLASS QSGDynamicTexture INHERIT QSGTexture
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QSGDynamicTexture
+PROCEDURE destroyObject() CLASS QSGDynamicTexture
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -40,7 +40,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtQuick/QSGDynamicTexture>
@@ -51,7 +52,7 @@ virtual bool updateTexture() = 0
 */
 HB_FUNC_STATIC( QSGDYNAMICTEXTURE_UPDATETEXTURE )
 {
-  QSGDynamicTexture * obj = (QSGDynamicTexture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSGDynamicTexture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -59,12 +60,12 @@ HB_FUNC_STATIC( QSGDYNAMICTEXTURE_UPDATETEXTURE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->updateTexture () );
+      RBOOL( obj->updateTexture() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

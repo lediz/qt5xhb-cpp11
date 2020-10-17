@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -39,7 +39,7 @@ CLASS QQmlScriptString
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QQmlScriptString
+PROCEDURE destroyObject() CLASS QQmlScriptString
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -56,7 +56,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtQml/QQmlScriptString>
@@ -65,23 +64,25 @@ RETURN
 /*
 QQmlScriptString()
 */
-void QQmlScriptString_new1 ()
+void QQmlScriptString_new1()
 {
-  QQmlScriptString * o = new QQmlScriptString ();
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QQmlScriptString();
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QQmlScriptString(const QQmlScriptString & other)
 */
-void QQmlScriptString_new2 ()
+void QQmlScriptString_new2()
 {
-  QQmlScriptString * o = new QQmlScriptString ( *PQQMLSCRIPTSTRING(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QQmlScriptString( *PQQMLSCRIPTSTRING(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
-//[1]QQmlScriptString()
-//[2]QQmlScriptString(const QQmlScriptString & other)
+/*
+[1]QQmlScriptString()
+[2]QQmlScriptString(const QQmlScriptString & other)
+*/
 
 HB_FUNC_STATIC( QQMLSCRIPTSTRING_NEW )
 {
@@ -95,20 +96,20 @@ HB_FUNC_STATIC( QQMLSCRIPTSTRING_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QQMLSCRIPTSTRING_DELETE )
 {
-  QQmlScriptString * obj = (QQmlScriptString *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQmlScriptString *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -121,7 +122,7 @@ bool booleanLiteral(bool * ok) const
 */
 HB_FUNC_STATIC( QQMLSCRIPTSTRING_BOOLEANLITERAL )
 {
-  QQmlScriptString * obj = (QQmlScriptString *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQmlScriptString *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -130,13 +131,13 @@ HB_FUNC_STATIC( QQMLSCRIPTSTRING_BOOLEANLITERAL )
     {
 #endif
       bool par1;
-      RBOOL( obj->booleanLiteral ( &par1 ) );
+      RBOOL( obj->booleanLiteral( &par1 ) );
       hb_storl( par1, 1 );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -147,7 +148,7 @@ bool isEmpty() const
 */
 HB_FUNC_STATIC( QQMLSCRIPTSTRING_ISEMPTY )
 {
-  QQmlScriptString * obj = (QQmlScriptString *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQmlScriptString *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -155,12 +156,12 @@ HB_FUNC_STATIC( QQMLSCRIPTSTRING_ISEMPTY )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isEmpty () );
+      RBOOL( obj->isEmpty() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -171,7 +172,7 @@ bool isNullLiteral() const
 */
 HB_FUNC_STATIC( QQMLSCRIPTSTRING_ISNULLLITERAL )
 {
-  QQmlScriptString * obj = (QQmlScriptString *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQmlScriptString *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -179,12 +180,12 @@ HB_FUNC_STATIC( QQMLSCRIPTSTRING_ISNULLLITERAL )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isNullLiteral () );
+      RBOOL( obj->isNullLiteral() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -195,7 +196,7 @@ bool isUndefinedLiteral() const
 */
 HB_FUNC_STATIC( QQMLSCRIPTSTRING_ISUNDEFINEDLITERAL )
 {
-  QQmlScriptString * obj = (QQmlScriptString *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQmlScriptString *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -203,12 +204,12 @@ HB_FUNC_STATIC( QQMLSCRIPTSTRING_ISUNDEFINEDLITERAL )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isUndefinedLiteral () );
+      RBOOL( obj->isUndefinedLiteral() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -219,7 +220,7 @@ qreal numberLiteral(bool * ok) const
 */
 HB_FUNC_STATIC( QQMLSCRIPTSTRING_NUMBERLITERAL )
 {
-  QQmlScriptString * obj = (QQmlScriptString *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQmlScriptString *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -228,13 +229,13 @@ HB_FUNC_STATIC( QQMLSCRIPTSTRING_NUMBERLITERAL )
     {
 #endif
       bool par1;
-      RQREAL( obj->numberLiteral ( &par1 ) );
+      RQREAL( obj->numberLiteral( &par1 ) );
       hb_storl( par1, 1 );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -245,7 +246,7 @@ QString stringLiteral() const
 */
 HB_FUNC_STATIC( QQMLSCRIPTSTRING_STRINGLITERAL )
 {
-  QQmlScriptString * obj = (QQmlScriptString *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QQmlScriptString *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -253,12 +254,12 @@ HB_FUNC_STATIC( QQMLSCRIPTSTRING_STRINGLITERAL )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->stringLiteral () );
+      RQSTRING( obj->stringLiteral() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -270,25 +271,25 @@ HB_FUNC_STATIC( QQMLSCRIPTSTRING_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -315,13 +316,13 @@ HB_FUNC_STATIC( QQMLSCRIPTSTRING_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

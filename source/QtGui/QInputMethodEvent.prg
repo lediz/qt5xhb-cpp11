@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -29,7 +29,7 @@ CLASS QInputMethodEvent INHERIT QEvent
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QInputMethodEvent
+PROCEDURE destroyObject() CLASS QInputMethodEvent
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -46,7 +46,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtGui/QInputMethodEvent>
@@ -55,10 +54,10 @@ RETURN
 /*
 QInputMethodEvent ()
 */
-void QInputMethodEvent_new1 ()
+void QInputMethodEvent_new1()
 {
-  QInputMethodEvent * o = new QInputMethodEvent ();
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QInputMethodEvent();
+  Qt5xHb::returnNewObject( obj, false );
 }
 
 /*
@@ -68,15 +67,17 @@ QInputMethodEvent ( const QString & preeditText, const QList<Attribute> & attrib
 /*
 QInputMethodEvent ( const QInputMethodEvent & other )
 */
-void QInputMethodEvent_new3 ()
+void QInputMethodEvent_new3()
 {
-  QInputMethodEvent * o = new QInputMethodEvent ( *PQINPUTMETHODEVENT(1) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QInputMethodEvent( *PQINPUTMETHODEVENT(1) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
-//[1]QInputMethodEvent ()
-//[2]QInputMethodEvent ( const QString & preeditText, const QList<Attribute> & attributes )
-//[3]QInputMethodEvent ( const QInputMethodEvent & other )
+/*
+[1]QInputMethodEvent ()
+[2]QInputMethodEvent ( const QString & preeditText, const QList<Attribute> & attributes )
+[3]QInputMethodEvent ( const QInputMethodEvent & other )
+*/
 
 HB_FUNC_STATIC( QINPUTMETHODEVENT_NEW )
 {
@@ -90,20 +91,20 @@ HB_FUNC_STATIC( QINPUTMETHODEVENT_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QINPUTMETHODEVENT_DELETE )
 {
-  QInputMethodEvent * obj = (QInputMethodEvent *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QInputMethodEvent *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -116,7 +117,7 @@ const QString & commitString () const
 */
 HB_FUNC_STATIC( QINPUTMETHODEVENT_COMMITSTRING )
 {
-  QInputMethodEvent * obj = (QInputMethodEvent *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QInputMethodEvent *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -124,12 +125,12 @@ HB_FUNC_STATIC( QINPUTMETHODEVENT_COMMITSTRING )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->commitString () );
+      RQSTRING( obj->commitString() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -140,7 +141,7 @@ const QString & preeditString () const
 */
 HB_FUNC_STATIC( QINPUTMETHODEVENT_PREEDITSTRING )
 {
-  QInputMethodEvent * obj = (QInputMethodEvent *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QInputMethodEvent *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -148,12 +149,12 @@ HB_FUNC_STATIC( QINPUTMETHODEVENT_PREEDITSTRING )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->preeditString () );
+      RQSTRING( obj->preeditString() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -164,7 +165,7 @@ int replacementLength () const
 */
 HB_FUNC_STATIC( QINPUTMETHODEVENT_REPLACEMENTLENGTH )
 {
-  QInputMethodEvent * obj = (QInputMethodEvent *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QInputMethodEvent *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -172,12 +173,12 @@ HB_FUNC_STATIC( QINPUTMETHODEVENT_REPLACEMENTLENGTH )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->replacementLength () );
+      RINT( obj->replacementLength() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -188,7 +189,7 @@ int replacementStart () const
 */
 HB_FUNC_STATIC( QINPUTMETHODEVENT_REPLACEMENTSTART )
 {
-  QInputMethodEvent * obj = (QInputMethodEvent *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QInputMethodEvent *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -196,12 +197,12 @@ HB_FUNC_STATIC( QINPUTMETHODEVENT_REPLACEMENTSTART )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->replacementStart () );
+      RINT( obj->replacementStart() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -212,7 +213,7 @@ void setCommitString ( const QString & commitString, int replaceFrom = 0, int re
 */
 HB_FUNC_STATIC( QINPUTMETHODEVENT_SETCOMMITSTRING )
 {
-  QInputMethodEvent * obj = (QInputMethodEvent *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QInputMethodEvent *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -220,12 +221,12 @@ HB_FUNC_STATIC( QINPUTMETHODEVENT_SETCOMMITSTRING )
     if( ISBETWEEN(1,3) && ISCHAR(1) && ISOPTNUM(2) && ISOPTNUM(3) )
     {
 #endif
-      obj->setCommitString ( PQSTRING(1), OPINT(2,0), OPINT(3,0) );
+      obj->setCommitString( PQSTRING(1), OPINT(2,0), OPINT(3,0) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

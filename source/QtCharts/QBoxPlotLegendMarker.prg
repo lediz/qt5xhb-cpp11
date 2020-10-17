@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -27,7 +27,7 @@ CLASS QBoxPlotLegendMarker INHERIT QLegendMarker
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QBoxPlotLegendMarker
+PROCEDURE destroyObject() CLASS QBoxPlotLegendMarker
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -46,7 +46,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
@@ -57,26 +58,22 @@ RETURN
 using namespace QtCharts;
 
 /*
-explicit QBoxPlotLegendMarker(QBoxPlotSeries *series, QLegend *legend, QObject *parent = nullptr)
+QBoxPlotLegendMarker( QBoxPlotSeries * series, QLegend * legend, QObject * parent = nullptr )
 */
 HB_FUNC_STATIC( QBOXPLOTLEGENDMARKER_NEW )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
   if( ISBETWEEN(2,3) && ISQBOXPLOTSERIES(1) && ISQLEGEND(2) && (ISQOBJECT(3)||ISNIL(3)) )
   {
-    QBoxPlotLegendMarker * o = new QBoxPlotLegendMarker ( PQBOXPLOTSERIES(1), PQLEGEND(2), OPQOBJECT(3,nullptr) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QBoxPlotLegendMarker( PQBOXPLOTSERIES(1), PQLEGEND(2), OPQOBJECT(3,nullptr) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
-
-/*
-QBoxPlotLegendMarker(QBoxPlotLegendMarkerPrivate &d, QObject *parent = nullptr) [protected]
-*/
 
 /*
 virtual ~QBoxPlotLegendMarker()
@@ -84,14 +81,16 @@ virtual ~QBoxPlotLegendMarker()
 HB_FUNC_STATIC( QBOXPLOTLEGENDMARKER_DELETE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QBoxPlotLegendMarker * obj = (QBoxPlotLegendMarker *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QBoxPlotLegendMarker *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -101,12 +100,12 @@ HB_FUNC_STATIC( QBOXPLOTLEGENDMARKER_DELETE )
 }
 
 /*
-virtual LegendMarkerType type()
+virtual QLegendMarker::LegendMarkerType type()
 */
 HB_FUNC_STATIC( QBOXPLOTLEGENDMARKER_TYPE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QBoxPlotLegendMarker * obj = (QBoxPlotLegendMarker *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QBoxPlotLegendMarker *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -114,12 +113,12 @@ HB_FUNC_STATIC( QBOXPLOTLEGENDMARKER_TYPE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->type () );
+      RENUM( obj->type() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -127,12 +126,12 @@ HB_FUNC_STATIC( QBOXPLOTLEGENDMARKER_TYPE )
 }
 
 /*
-virtual QBoxPlotSeries* series()
+virtual QBoxPlotSeries * series()
 */
 HB_FUNC_STATIC( QBOXPLOTLEGENDMARKER_SERIES )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QBoxPlotLegendMarker * obj = (QBoxPlotLegendMarker *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QBoxPlotLegendMarker *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -140,13 +139,13 @@ HB_FUNC_STATIC( QBOXPLOTLEGENDMARKER_SERIES )
     if( ISNUMPAR(0) )
     {
 #endif
-      QBoxPlotSeries * ptr = obj->series ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QBOXPLOTSERIES" );
+      QBoxPlotSeries * ptr = obj->series();
+      Qt5xHb::createReturnQObjectClass( ptr, "QBOXPLOTSERIES" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -28,7 +28,7 @@ CLASS QTextObject INHERIT QObject
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QTextObject
+PROCEDURE destroyObject() CLASS QTextObject
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -45,7 +45,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtGui/QTextObject>
@@ -58,7 +59,7 @@ QTextFormat format() const
 */
 HB_FUNC_STATIC( QTEXTOBJECT_FORMAT )
 {
-  QTextObject * obj = (QTextObject *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextObject *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -66,13 +67,13 @@ HB_FUNC_STATIC( QTEXTOBJECT_FORMAT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QTextFormat * ptr = new QTextFormat( obj->format () );
-      _qt5xhb_createReturnClass ( ptr, "QTEXTFORMAT", true );
+      auto ptr = new QTextFormat( obj->format() );
+      Qt5xHb::createReturnClass( ptr, "QTEXTFORMAT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -83,7 +84,7 @@ int formatIndex() const
 */
 HB_FUNC_STATIC( QTEXTOBJECT_FORMATINDEX )
 {
-  QTextObject * obj = (QTextObject *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextObject *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -91,12 +92,12 @@ HB_FUNC_STATIC( QTEXTOBJECT_FORMATINDEX )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->formatIndex () );
+      RINT( obj->formatIndex() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -107,7 +108,7 @@ QTextDocument *document() const
 */
 HB_FUNC_STATIC( QTEXTOBJECT_DOCUMENT )
 {
-  QTextObject * obj = (QTextObject *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextObject *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -115,13 +116,13 @@ HB_FUNC_STATIC( QTEXTOBJECT_DOCUMENT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QTextDocument * ptr = obj->document ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QTEXTDOCUMENT" );
+      QTextDocument * ptr = obj->document();
+      Qt5xHb::createReturnQObjectClass( ptr, "QTEXTDOCUMENT" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -132,7 +133,7 @@ int objectIndex() const
 */
 HB_FUNC_STATIC( QTEXTOBJECT_OBJECTINDEX )
 {
-  QTextObject * obj = (QTextObject *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextObject *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -140,12 +141,12 @@ HB_FUNC_STATIC( QTEXTOBJECT_OBJECTINDEX )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->objectIndex () );
+      RINT( obj->objectIndex() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

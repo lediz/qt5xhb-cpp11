@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -28,7 +28,7 @@ CLASS QSensorReading INHERIT QObject
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QSensorReading
+PROCEDURE destroyObject() CLASS QSensorReading
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -47,7 +47,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
@@ -58,14 +59,16 @@ RETURN
 HB_FUNC_STATIC( QSENSORREADING_DELETE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QSensorReading * obj = (QSensorReading *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSensorReading *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -80,7 +83,7 @@ quint64 timestamp() const
 HB_FUNC_STATIC( QSENSORREADING_TIMESTAMP )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QSensorReading * obj = (QSensorReading *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSensorReading *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -88,12 +91,12 @@ HB_FUNC_STATIC( QSENSORREADING_TIMESTAMP )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQUINT64( obj->timestamp () );
+      RQUINT64( obj->timestamp() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -106,7 +109,7 @@ void setTimestamp(quint64 timestamp)
 HB_FUNC_STATIC( QSENSORREADING_SETTIMESTAMP )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QSensorReading * obj = (QSensorReading *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSensorReading *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -114,12 +117,12 @@ HB_FUNC_STATIC( QSENSORREADING_SETTIMESTAMP )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setTimestamp ( PQUINT64(1) );
+      obj->setTimestamp( PQUINT64(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -134,7 +137,7 @@ int valueCount() const
 HB_FUNC_STATIC( QSENSORREADING_VALUECOUNT )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QSensorReading * obj = (QSensorReading *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSensorReading *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -142,12 +145,12 @@ HB_FUNC_STATIC( QSENSORREADING_VALUECOUNT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->valueCount () );
+      RINT( obj->valueCount() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -160,7 +163,7 @@ QVariant value(int index) const
 HB_FUNC_STATIC( QSENSORREADING_VALUE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QSensorReading * obj = (QSensorReading *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSensorReading *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -168,13 +171,13 @@ HB_FUNC_STATIC( QSENSORREADING_VALUE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      QVariant * ptr = new QVariant( obj->value ( PINT(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QVARIANT", true );
+      auto ptr = new QVariant( obj->value( PINT(1) ) );
+      Qt5xHb::createReturnClass( ptr, "QVARIANT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

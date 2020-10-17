@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -38,7 +38,7 @@ CLASS QStyleOptionComboBox INHERIT QStyleOptionComplex
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QStyleOptionComboBox
+PROCEDURE destroyObject() CLASS QStyleOptionComboBox
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -55,7 +55,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtWidgets/QStyleOptionComboBox>
@@ -64,28 +63,30 @@ RETURN
 /*
 QStyleOptionComboBox()
 */
-void QStyleOptionComboBox_new1 ()
+void QStyleOptionComboBox_new1()
 {
-  QStyleOptionComboBox * o = new QStyleOptionComboBox ();
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QStyleOptionComboBox();
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QStyleOptionComboBox(const QStyleOptionComboBox &other)
 */
-void QStyleOptionComboBox_new2 ()
+void QStyleOptionComboBox_new2()
 {
-  QStyleOptionComboBox * o = new QStyleOptionComboBox ( *PQSTYLEOPTIONCOMBOBOX(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QStyleOptionComboBox( *PQSTYLEOPTIONCOMBOBOX(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QStyleOptionComboBox(int version) [protected]
 */
 
-//[1]QStyleOptionComboBox()
-//[2]QStyleOptionComboBox(const QStyleOptionComboBox &other)
-//[3]QStyleOptionComboBox(int version) [protected]
+/*
+[1]QStyleOptionComboBox()
+[2]QStyleOptionComboBox(const QStyleOptionComboBox &other)
+[3]QStyleOptionComboBox(int version) [protected]
+*/
 
 HB_FUNC_STATIC( QSTYLEOPTIONCOMBOBOX_NEW )
 {
@@ -99,7 +100,7 @@ HB_FUNC_STATIC( QSTYLEOPTIONCOMBOBOX_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -108,33 +109,33 @@ bool editable
 */
 HB_FUNC_STATIC( QSTYLEOPTIONCOMBOBOX_EDITABLE )
 {
-  QStyleOptionComboBox * obj = (QStyleOptionComboBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionComboBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(0) )
     {
-      RBOOL( obj->editable  );
+      RBOOL( obj->editable );
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 }
 HB_FUNC_STATIC( QSTYLEOPTIONCOMBOBOX_SETEDITABLE )
 {
-  QStyleOptionComboBox * obj = (QStyleOptionComboBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionComboBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(1) && ISLOG(1) )
     {
-      obj->editable = PBOOL(1);
+      obj->editable= PBOOL(1);
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 
@@ -146,34 +147,34 @@ QRect popupRect
 */
 HB_FUNC_STATIC( QSTYLEOPTIONCOMBOBOX_POPUPRECT )
 {
-  QStyleOptionComboBox * obj = (QStyleOptionComboBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionComboBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(0) )
     {
-      QRect * ptr = new QRect( obj->popupRect  );
-      _qt5xhb_createReturnClass ( ptr, "QRECT", true );
+      auto ptr = new QRect( obj->popupRect );
+      Qt5xHb::createReturnClass( ptr, "QRECT", true );
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 }
 HB_FUNC_STATIC( QSTYLEOPTIONCOMBOBOX_SETPOPUPRECT )
 {
-  QStyleOptionComboBox * obj = (QStyleOptionComboBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionComboBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(1) && ISQRECT(1) )
     {
-      obj->popupRect = *PQRECT(1);
+      obj->popupRect= *PQRECT(1);
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 
@@ -185,33 +186,33 @@ bool frame
 */
 HB_FUNC_STATIC( QSTYLEOPTIONCOMBOBOX_FRAME )
 {
-  QStyleOptionComboBox * obj = (QStyleOptionComboBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionComboBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(0) )
     {
-      RBOOL( obj->frame  );
+      RBOOL( obj->frame );
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 }
 HB_FUNC_STATIC( QSTYLEOPTIONCOMBOBOX_SETFRAME )
 {
-  QStyleOptionComboBox * obj = (QStyleOptionComboBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionComboBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(1) && ISLOG(1) )
     {
-      obj->frame = PBOOL(1);
+      obj->frame= PBOOL(1);
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 
@@ -223,33 +224,33 @@ QString currentText
 */
 HB_FUNC_STATIC( QSTYLEOPTIONCOMBOBOX_CURRENTTEXT )
 {
-  QStyleOptionComboBox * obj = (QStyleOptionComboBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionComboBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(0) )
     {
-      RQSTRING( obj->currentText  );
+      RQSTRING( obj->currentText );
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 }
 HB_FUNC_STATIC( QSTYLEOPTIONCOMBOBOX_SETCURRENTTEXT )
 {
-  QStyleOptionComboBox * obj = (QStyleOptionComboBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionComboBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
-      obj->currentText = PQSTRING(1);
+      obj->currentText= PQSTRING(1);
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 
@@ -261,34 +262,34 @@ QIcon currentIcon
 */
 HB_FUNC_STATIC( QSTYLEOPTIONCOMBOBOX_CURRENTICON )
 {
-  QStyleOptionComboBox * obj = (QStyleOptionComboBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionComboBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(0) )
     {
-      QIcon * ptr = new QIcon( obj->currentIcon  );
-      _qt5xhb_createReturnClass ( ptr, "QICON", true );
+      auto ptr = new QIcon( obj->currentIcon );
+      Qt5xHb::createReturnClass( ptr, "QICON", true );
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 }
 HB_FUNC_STATIC( QSTYLEOPTIONCOMBOBOX_SETCURRENTICON )
 {
-  QStyleOptionComboBox * obj = (QStyleOptionComboBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionComboBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(1) && ISQICON(1) )
     {
-      obj->currentIcon = *PQICON(1);
+      obj->currentIcon= *PQICON(1);
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 
@@ -300,34 +301,34 @@ QSize iconSize
 */
 HB_FUNC_STATIC( QSTYLEOPTIONCOMBOBOX_ICONSIZE )
 {
-  QStyleOptionComboBox * obj = (QStyleOptionComboBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionComboBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(0) )
     {
-      QSize * ptr = new QSize( obj->iconSize  );
-      _qt5xhb_createReturnClass ( ptr, "QSIZE", true );
+      auto ptr = new QSize( obj->iconSize );
+      Qt5xHb::createReturnClass( ptr, "QSIZE", true );
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 }
 HB_FUNC_STATIC( QSTYLEOPTIONCOMBOBOX_SETICONSIZE )
 {
-  QStyleOptionComboBox * obj = (QStyleOptionComboBox *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionComboBox *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(1) && ISQSIZE(1) )
     {
-      obj->iconSize = *PQSIZE(1);
+      obj->iconSize= *PQSIZE(1);
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 

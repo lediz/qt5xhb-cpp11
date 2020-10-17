@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -66,7 +66,7 @@ CLASS QtWin
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QtWin
+PROCEDURE destroyObject() CLASS QtWin
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -85,7 +85,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
@@ -100,15 +99,15 @@ HB_FUNC_STATIC( QTWIN_CREATEMASK )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISQBITMAP(1) )
+  if( ISNUMPAR(1) && ISQBITMAP(1) )
   {
 #endif
-      hb_retptr( (HBITMAP) QtWin::createMask ( *PQBITMAP(1) ) );
+    hb_retptr( (HBITMAP) QtWin::createMask( *PQBITMAP(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 #endif
@@ -121,15 +120,15 @@ HB_FUNC_STATIC( QTWIN_TOHBITMAP )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISBETWEEN(1,2) && ISQPIXMAP(1) && ISOPTNUM(2) )
+  if( ISBETWEEN(1,2) && ISQPIXMAP(1) && ISOPTNUM(2) )
   {
 #endif
-      hb_retptr( (HBITMAP) QtWin::toHBITMAP ( *PQPIXMAP(1), ISNIL(2)? (QtWin::HBitmapFormat) QtWin::HBitmapNoAlpha : (QtWin::HBitmapFormat) hb_parni(2) ) );
+    hb_retptr( (HBITMAP) QtWin::toHBITMAP( *PQPIXMAP(1), ISNIL(2)? (QtWin::HBitmapFormat) QtWin::HBitmapNoAlpha : (QtWin::HBitmapFormat) hb_parni(2) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 #endif
@@ -142,16 +141,16 @@ HB_FUNC_STATIC( QTWIN_FROMHBITMAP )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISBETWEEN(1,2) && ISPOINTER(1) && ISOPTNUM(2) )
+  if( ISBETWEEN(1,2) && ISPOINTER(1) && ISOPTNUM(2) )
   {
 #endif
-      QPixmap * ptr = new QPixmap( QtWin::fromHBITMAP ( (HBITMAP) hb_parptr(1), ISNIL(2)? (QtWin::HBitmapFormat) QtWin::HBitmapNoAlpha : (QtWin::HBitmapFormat) hb_parni(2) ) );
-      _qt5xhb_createReturnClass ( ptr, "QPIXMAP", true );
+    auto ptr = new QPixmap( QtWin::fromHBITMAP( (HBITMAP) hb_parptr(1), ISNIL(2)? (QtWin::HBitmapFormat) QtWin::HBitmapNoAlpha : (QtWin::HBitmapFormat) hb_parni(2) ) );
+    Qt5xHb::createReturnClass( ptr, "QPIXMAP", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 #endif
@@ -164,15 +163,15 @@ HB_FUNC_STATIC( QTWIN_TOHICON )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISQPIXMAP(1) )
+  if( ISNUMPAR(1) && ISQPIXMAP(1) )
   {
 #endif
-      hb_retptr( (HICON) QtWin::toHICON ( *PQPIXMAP(1) ) );
+    hb_retptr( (HICON) QtWin::toHICON( *PQPIXMAP(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 #endif
@@ -185,16 +184,16 @@ HB_FUNC_STATIC( QTWIN_IMAGEFROMHBITMAP )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(4) && ISPOINTER(1) && ISPOINTER(2) && ISNUM(3) && ISNUM(4) )
+  if( ISNUMPAR(4) && ISPOINTER(1) && ISPOINTER(2) && ISNUM(3) && ISNUM(4) )
   {
 #endif
-      QImage * ptr = new QImage( QtWin::imageFromHBITMAP ( (HDC) hb_parptr(1), (HBITMAP) hb_parptr(2), PINT(3), PINT(4) ) );
-      _qt5xhb_createReturnClass ( ptr, "QIMAGE", true );
+    auto ptr = new QImage( QtWin::imageFromHBITMAP( (HDC) hb_parptr(1), (HBITMAP) hb_parptr(2), PINT(3), PINT(4) ) );
+    Qt5xHb::createReturnClass( ptr, "QIMAGE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 #endif
@@ -207,16 +206,16 @@ HB_FUNC_STATIC( QTWIN_FROMHICON )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISPOINTER(1) )
+  if( ISNUMPAR(1) && ISPOINTER(1) )
   {
 #endif
-      QPixmap * ptr = new QPixmap( QtWin::fromHICON ( (HICON) hb_parptr(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QPIXMAP", true );
+    auto ptr = new QPixmap( QtWin::fromHICON( (HICON) hb_parptr(1) ) );
+    Qt5xHb::createReturnClass( ptr, "QPIXMAP", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 #endif
@@ -229,15 +228,15 @@ HB_FUNC_STATIC( QTWIN_TOHRGN )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISQREGION(1) )
+  if( ISNUMPAR(1) && ISQREGION(1) )
   {
 #endif
-      hb_retptr( (HRGN) QtWin::toHRGN ( *PQREGION(1) ) );
+    hb_retptr( (HRGN) QtWin::toHRGN( *PQREGION(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 #endif
@@ -250,16 +249,16 @@ HB_FUNC_STATIC( QTWIN_FROMHRGN )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISPOINTER(1) )
+  if( ISNUMPAR(1) && ISPOINTER(1) )
   {
 #endif
-      QRegion * ptr = new QRegion( QtWin::fromHRGN ( (HRGN) hb_parptr(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QREGION", true );
+    auto ptr = new QRegion( QtWin::fromHRGN( (HRGN) hb_parptr(1) ) );
+    Qt5xHb::createReturnClass( ptr, "QREGION", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 #endif
@@ -273,15 +272,15 @@ HB_FUNC_STATIC( QTWIN_STRINGFROMHRESULT )
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef Q_OS_WIN64
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISPOINTER(1) )
+  if( ISNUMPAR(1) && ISPOINTER(1) )
   {
 #endif
-      RQSTRING( QtWin::stringFromHresult ( (HRESULT) hb_parptr(1) ) );
+    RQSTRING( QtWin::stringFromHresult( (HRESULT) hb_parptr(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 #endif
@@ -296,15 +295,15 @@ HB_FUNC_STATIC( QTWIN_ERRORSTRINGFROMHRESULT )
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef Q_OS_WIN64
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISPOINTER(1) )
+  if( ISNUMPAR(1) && ISPOINTER(1) )
   {
 #endif
-      RQSTRING( QtWin::errorStringFromHresult ( (HRESULT) hb_parptr(1) ) );
+    RQSTRING( QtWin::errorStringFromHresult( (HRESULT) hb_parptr(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 #endif
@@ -318,18 +317,18 @@ HB_FUNC_STATIC( QTWIN_COLORIZATIONCOLOR )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISBETWEEN(0,1) && ISOPTLOG(1) )
+  if( ISBETWEEN(0,1) && ISOPTLOG(1) )
   {
 #endif
-     bool par1;
-      QColor * ptr = new QColor( QtWin::colorizationColor ( &par1 ) );
-      _qt5xhb_createReturnClass ( ptr, "QCOLOR", true );
-     hb_storl( par1, 1 );
+    bool par1;
+    auto ptr = new QColor( QtWin::colorizationColor( &par1 ) );
+    Qt5xHb::createReturnClass( ptr, "QCOLOR", true );
+    hb_storl( par1, 1 );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 #endif
@@ -342,16 +341,16 @@ HB_FUNC_STATIC( QTWIN_REALCOLORIZATIONCOLOR )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(0) )
+  if( ISNUMPAR(0) )
   {
 #endif
-      QColor * ptr = new QColor( QtWin::realColorizationColor () );
-      _qt5xhb_createReturnClass ( ptr, "QCOLOR", true );
+    auto ptr = new QColor( QtWin::realColorizationColor() );
+    Qt5xHb::createReturnClass( ptr, "QCOLOR", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 #endif
@@ -364,15 +363,15 @@ HB_FUNC_STATIC( QTWIN_SETWINDOWEXCLUDEDFROMPEEK )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(2) && ISQWINDOW(1) && ISLOG(2) )
+  if( ISNUMPAR(2) && ISQWINDOW(1) && ISLOG(2) )
   {
 #endif
-      QtWin::setWindowExcludedFromPeek ( PQWINDOW(1), PBOOL(2) );
+    QtWin::setWindowExcludedFromPeek( PQWINDOW(1), PBOOL(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 
@@ -387,15 +386,15 @@ HB_FUNC_STATIC( QTWIN_ISWINDOWEXCLUDEDFROMPEEK )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISQWINDOW(1) )
+  if( ISNUMPAR(1) && ISQWINDOW(1) )
   {
 #endif
-      RBOOL( QtWin::isWindowExcludedFromPeek ( PQWINDOW(1) ) );
+    RBOOL( QtWin::isWindowExcludedFromPeek( PQWINDOW(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 #endif
@@ -408,15 +407,15 @@ HB_FUNC_STATIC( QTWIN_SETWINDOWDISALLOWPEEK )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(2) && ISQWINDOW(1) && ISLOG(2) )
+  if( ISNUMPAR(2) && ISQWINDOW(1) && ISLOG(2) )
   {
 #endif
-      QtWin::setWindowDisallowPeek ( PQWINDOW(1), PBOOL(2) );
+    QtWin::setWindowDisallowPeek( PQWINDOW(1), PBOOL(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 
@@ -431,15 +430,15 @@ HB_FUNC_STATIC( QTWIN_ISWINDOWPEEKDISALLOWED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISQWINDOW(1) )
+  if( ISNUMPAR(1) && ISQWINDOW(1) )
   {
 #endif
-      RBOOL( QtWin::isWindowPeekDisallowed ( PQWINDOW(1) ) );
+    RBOOL( QtWin::isWindowPeekDisallowed( PQWINDOW(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 #endif
@@ -452,15 +451,15 @@ HB_FUNC_STATIC( QTWIN_SETWINDOWFLIP3DPOLICY )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(2) && ISQWINDOW(1) && ISNUM(2) )
+  if( ISNUMPAR(2) && ISQWINDOW(1) && ISNUM(2) )
   {
 #endif
-      QtWin::setWindowFlip3DPolicy ( PQWINDOW(1), (QtWin::WindowFlip3DPolicy) hb_parni(2) );
+    QtWin::setWindowFlip3DPolicy( PQWINDOW(1), (QtWin::WindowFlip3DPolicy) hb_parni(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 
@@ -475,15 +474,15 @@ HB_FUNC_STATIC( QTWIN_WINDOWFLIP3DPOLICY )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISQWINDOW(1) )
+  if( ISNUMPAR(1) && ISQWINDOW(1) )
   {
 #endif
-      RENUM( QtWin::windowFlip3DPolicy ( PQWINDOW(1) ) );
+    RENUM( QtWin::windowFlip3DPolicy( PQWINDOW(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 #endif
@@ -492,11 +491,10 @@ HB_FUNC_STATIC( QTWIN_WINDOWFLIP3DPOLICY )
 /*
 static void extendFrameIntoClientArea(QWindow *window, int left, int top, int right, int bottom)
 */
-void QtWin_extendFrameIntoClientArea1 ()
+void QtWin_extendFrameIntoClientArea1()
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
-
-      QtWin::extendFrameIntoClientArea ( PQWINDOW(1), PINT(2), PINT(3), PINT(4), PINT(5) );
+  QtWin::extendFrameIntoClientArea( PQWINDOW(1), PINT(2), PINT(3), PINT(4), PINT(5) );
 
   hb_itemReturn( hb_stackSelfItem() );
 #endif
@@ -505,18 +503,19 @@ void QtWin_extendFrameIntoClientArea1 ()
 /*
 static void extendFrameIntoClientArea(QWindow *window, const QMargins &margins)
 */
-void QtWin_extendFrameIntoClientArea2 ()
+void QtWin_extendFrameIntoClientArea2()
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
-
-      QtWin::extendFrameIntoClientArea ( PQWINDOW(1), *PQMARGINS(2) );
+  QtWin::extendFrameIntoClientArea( PQWINDOW(1), *PQMARGINS(2) );
 
   hb_itemReturn( hb_stackSelfItem() );
 #endif
 }
 
-//[1]void extendFrameIntoClientArea(QWindow *window, int left, int top, int right, int bottom)
-//[2]void extendFrameIntoClientArea(QWindow *window, const QMargins &margins)
+/*
+[1]void extendFrameIntoClientArea(QWindow *window, int left, int top, int right, int bottom)
+[2]void extendFrameIntoClientArea(QWindow *window, const QMargins &margins)
+*/
 
 HB_FUNC_STATIC( QTWIN_EXTENDFRAMEINTOCLIENTAREA )
 {
@@ -530,7 +529,7 @@ HB_FUNC_STATIC( QTWIN_EXTENDFRAMEINTOCLIENTAREA )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -541,15 +540,15 @@ HB_FUNC_STATIC( QTWIN_RESETEXTENDEDFRAME )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISQWINDOW(1) )
+  if( ISNUMPAR(1) && ISQWINDOW(1) )
   {
 #endif
-      QtWin::resetExtendedFrame ( PQWINDOW(1) );
+    QtWin::resetExtendedFrame( PQWINDOW(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 
@@ -560,11 +559,10 @@ HB_FUNC_STATIC( QTWIN_RESETEXTENDEDFRAME )
 /*
 static void enableBlurBehindWindow(QWindow *window, const QRegion &region)
 */
-void QtWin_enableBlurBehindWindow1 ()
+void QtWin_enableBlurBehindWindow1()
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
-
-      QtWin::enableBlurBehindWindow ( PQWINDOW(1), *PQREGION(2) );
+  QtWin::enableBlurBehindWindow( PQWINDOW(1), *PQREGION(2) );
 
   hb_itemReturn( hb_stackSelfItem() );
 #endif
@@ -573,18 +571,19 @@ void QtWin_enableBlurBehindWindow1 ()
 /*
 static void enableBlurBehindWindow(QWindow *window)
 */
-void QtWin_enableBlurBehindWindow2 ()
+void QtWin_enableBlurBehindWindow2()
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
-
-      QtWin::enableBlurBehindWindow ( PQWINDOW(1) );
+  QtWin::enableBlurBehindWindow( PQWINDOW(1) );
 
   hb_itemReturn( hb_stackSelfItem() );
 #endif
 }
 
-//[1]void enableBlurBehindWindow(QWindow *window, const QRegion &region)
-//[2]void enableBlurBehindWindow(QWindow *window)
+/*
+[1]void enableBlurBehindWindow(QWindow *window, const QRegion &region)
+[2]void enableBlurBehindWindow(QWindow *window)
+*/
 
 HB_FUNC_STATIC( QTWIN_ENABLEBLURBEHINDWINDOW )
 {
@@ -598,7 +597,7 @@ HB_FUNC_STATIC( QTWIN_ENABLEBLURBEHINDWINDOW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -609,15 +608,15 @@ HB_FUNC_STATIC( QTWIN_DISABLEBLURBEHINDWINDOW )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISQWINDOW(1) )
+  if( ISNUMPAR(1) && ISQWINDOW(1) )
   {
 #endif
-      QtWin::disableBlurBehindWindow ( PQWINDOW(1) );
+    QtWin::disableBlurBehindWindow( PQWINDOW(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 
@@ -632,15 +631,15 @@ HB_FUNC_STATIC( QTWIN_ISCOMPOSITIONENABLED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(0) )
+  if( ISNUMPAR(0) )
   {
 #endif
-      RBOOL( QtWin::isCompositionEnabled () );
+    RBOOL( QtWin::isCompositionEnabled() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 #endif
@@ -653,15 +652,15 @@ HB_FUNC_STATIC( QTWIN_SETCOMPOSITIONENABLED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISLOG(1) )
+  if( ISNUMPAR(1) && ISLOG(1) )
   {
 #endif
-      QtWin::setCompositionEnabled ( PBOOL(1) );
+    QtWin::setCompositionEnabled( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 
@@ -676,15 +675,15 @@ HB_FUNC_STATIC( QTWIN_ISCOMPOSITIONOPAQUE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(0) )
+  if( ISNUMPAR(0) )
   {
 #endif
-      RBOOL( QtWin::isCompositionOpaque () );
+    RBOOL( QtWin::isCompositionOpaque() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 #endif
@@ -697,15 +696,15 @@ HB_FUNC_STATIC( QTWIN_SETCURRENTPROCESSEXPLICITAPPUSERMODELID )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISCHAR(1) )
+  if( ISNUMPAR(1) && ISCHAR(1) )
   {
 #endif
-      QtWin::setCurrentProcessExplicitAppUserModelID ( PQSTRING(1) );
+    QtWin::setCurrentProcessExplicitAppUserModelID( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 
@@ -720,15 +719,15 @@ HB_FUNC_STATIC( QTWIN_MARKFULLSCREENWINDOW )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISBETWEEN(1,2) && ISQWINDOW(1) && ISOPTLOG(2) )
+  if( ISBETWEEN(1,2) && ISQWINDOW(1) && ISOPTLOG(2) )
   {
 #endif
-      QtWin::markFullscreenWindow ( PQWINDOW(1), OPBOOL(2,true) );
+    QtWin::markFullscreenWindow( PQWINDOW(1), OPBOOL(2,true) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 
@@ -743,15 +742,15 @@ HB_FUNC_STATIC( QTWIN_TASKBARACTIVATETAB )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISQWINDOW(1) )
+  if( ISNUMPAR(1) && ISQWINDOW(1) )
   {
 #endif
-      QtWin::taskbarActivateTab ( PQWINDOW(1) );
+    QtWin::taskbarActivateTab( PQWINDOW(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 
@@ -766,15 +765,15 @@ HB_FUNC_STATIC( QTWIN_TASKBARACTIVATETABALT )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISQWINDOW(1) )
+  if( ISNUMPAR(1) && ISQWINDOW(1) )
   {
 #endif
-      QtWin::taskbarActivateTabAlt ( PQWINDOW(1) );
+    QtWin::taskbarActivateTabAlt( PQWINDOW(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 
@@ -789,15 +788,15 @@ HB_FUNC_STATIC( QTWIN_TASKBARADDTAB )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISQWINDOW(1) )
+  if( ISNUMPAR(1) && ISQWINDOW(1) )
   {
 #endif
-      QtWin::taskbarAddTab ( PQWINDOW(1) );
+    QtWin::taskbarAddTab( PQWINDOW(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 
@@ -812,15 +811,15 @@ HB_FUNC_STATIC( QTWIN_TASKBARDELETETAB )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISQWINDOW(1) )
+  if( ISNUMPAR(1) && ISQWINDOW(1) )
   {
 #endif
-      QtWin::taskbarDeleteTab ( PQWINDOW(1) );
+    QtWin::taskbarDeleteTab( PQWINDOW(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 
@@ -834,25 +833,25 @@ HB_FUNC_STATIC( QTWIN_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -879,13 +878,13 @@ HB_FUNC_STATIC( QTWIN_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

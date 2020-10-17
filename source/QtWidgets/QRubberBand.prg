@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -28,7 +28,7 @@ CLASS QRubberBand INHERIT QWidget
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QRubberBand
+PROCEDURE destroyObject() CLASS QRubberBand
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -45,7 +45,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtWidgets/QRubberBand>
@@ -58,25 +59,27 @@ HB_FUNC_STATIC( QRUBBERBAND_NEW )
 {
   if( ISBETWEEN(1,2) && ISNUM(1) && (ISQWIDGET(2)||ISNIL(2)) )
   {
-    QRubberBand * o = new QRubberBand ( (QRubberBand::Shape) hb_parni(1), OPQWIDGET(2,nullptr) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QRubberBand( (QRubberBand::Shape) hb_parni(1), OPQWIDGET(2,nullptr) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QRUBBERBAND_DELETE )
 {
-  QRubberBand * obj = (QRubberBand *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRubberBand *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -87,13 +90,13 @@ HB_FUNC_STATIC( QRUBBERBAND_DELETE )
 /*
 void move ( int x, int y )
 */
-void QRubberBand_move1 ()
+void QRubberBand_move1()
 {
-  QRubberBand * obj = (QRubberBand *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRubberBand *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->move ( PINT(1), PINT(2) );
+    obj->move( PINT(1), PINT(2) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -102,20 +105,22 @@ void QRubberBand_move1 ()
 /*
 void move ( const QPoint & p )
 */
-void QRubberBand_move2 ()
+void QRubberBand_move2()
 {
-  QRubberBand * obj = (QRubberBand *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRubberBand *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->move ( *PQPOINT(1) );
+    obj->move( *PQPOINT(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void move ( int x, int y )
-//[2]void move ( const QPoint & p )
+/*
+[1]void move ( int x, int y )
+[2]void move ( const QPoint & p )
+*/
 
 HB_FUNC_STATIC( QRUBBERBAND_MOVE )
 {
@@ -129,20 +134,20 @@ HB_FUNC_STATIC( QRUBBERBAND_MOVE )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 /*
 void resize ( int width, int height )
 */
-void QRubberBand_resize1 ()
+void QRubberBand_resize1()
 {
-  QRubberBand * obj = (QRubberBand *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRubberBand *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->resize ( PINT(1), PINT(2) );
+    obj->resize( PINT(1), PINT(2) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -151,20 +156,22 @@ void QRubberBand_resize1 ()
 /*
 void resize ( const QSize & size )
 */
-void QRubberBand_resize2 ()
+void QRubberBand_resize2()
 {
-  QRubberBand * obj = (QRubberBand *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRubberBand *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->resize ( *PQSIZE(1) );
+    obj->resize( *PQSIZE(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void resize ( int width, int height )
-//[2]void resize ( const QSize & size )
+/*
+[1]void resize ( int width, int height )
+[2]void resize ( const QSize & size )
+*/
 
 HB_FUNC_STATIC( QRUBBERBAND_RESIZE )
 {
@@ -178,20 +185,20 @@ HB_FUNC_STATIC( QRUBBERBAND_RESIZE )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 /*
 void setGeometry ( const QRect & rect )
 */
-void QRubberBand_setGeometry1 ()
+void QRubberBand_setGeometry1()
 {
-  QRubberBand * obj = (QRubberBand *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRubberBand *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setGeometry ( *PQRECT(1) );
+    obj->setGeometry( *PQRECT(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -200,20 +207,22 @@ void QRubberBand_setGeometry1 ()
 /*
 void setGeometry ( int x, int y, int width, int height )
 */
-void QRubberBand_setGeometry2 ()
+void QRubberBand_setGeometry2()
 {
-  QRubberBand * obj = (QRubberBand *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRubberBand *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setGeometry ( PINT(1), PINT(2), PINT(3), PINT(4) );
+    obj->setGeometry( PINT(1), PINT(2), PINT(3), PINT(4) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void setGeometry ( const QRect & rect )
-//[2]void setGeometry ( int x, int y, int width, int height )
+/*
+[1]void setGeometry ( const QRect & rect )
+[2]void setGeometry ( int x, int y, int width, int height )
+*/
 
 HB_FUNC_STATIC( QRUBBERBAND_SETGEOMETRY )
 {
@@ -227,7 +236,7 @@ HB_FUNC_STATIC( QRUBBERBAND_SETGEOMETRY )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -236,7 +245,7 @@ Shape shape () const
 */
 HB_FUNC_STATIC( QRUBBERBAND_SHAPE )
 {
-  QRubberBand * obj = (QRubberBand *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRubberBand *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -244,12 +253,12 @@ HB_FUNC_STATIC( QRUBBERBAND_SHAPE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->shape () );
+      RENUM( obj->shape() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

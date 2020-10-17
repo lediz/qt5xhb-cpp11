@@ -1,5 +1,5 @@
 #
-# Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+# Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 #
 # Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 #
@@ -30,9 +30,9 @@ HB_INC_DIR = /usr/local/include/harbour
 endif
 
 QT5XHB_INC_DIR = include
-#QT5XHB_OBJ_DIR = obj/$(QTVERSION)/$(QTANGLEOROPENGL)/$(QTCOMP)/$(QT32OR64)/$(QTPLATFORM)/$(HBCOMP)/$(HBVER)
+#QT5XHB_OBJ_DIR = obj/$(QTPLATFORM)/$(QTCOMP)
 QT5XHB_OBJ_DIR = obj
-#QT5XHB_LIB_DIR = lib/$(QTVERSION)/$(QTANGLEOROPENGL)/$(QTCOMP)/$(QT32OR64)/$(QTPLATFORM)/$(HBCOMP)/$(HBVER)
+#QT5XHB_LIB_DIR = lib/$(QTPLATFORM)/$(QTCOMP)
 QT5XHB_LIB_DIR = lib
 QT5XHB_SRC_DIR = source
 
@@ -95,11 +95,9 @@ include mak/modules7.mak
 
 OBJECTS_QTCORE += $(QT5XHB_OBJ_DIR)/events$(OBJEXT)
 OBJECTS_QTCORE += $(QT5XHB_OBJ_DIR)/signals$(OBJEXT)
-OBJECTS_QTCORE += $(QT5XHB_OBJ_DIR)/signals2$(OBJEXT)
-OBJECTS_QTCORE += $(QT5XHB_OBJ_DIR)/signals3$(OBJEXT)
 OBJECTS_QTCORE += $(QT5XHB_OBJ_DIR)/dummy$(OBJEXT)
 OBJECTS_QTCORE += $(QT5XHB_OBJ_DIR)/version$(OBJEXT)
-OBJECTS_QTCORE += $(QT5XHB_OBJ_DIR)/qt5xhb_utils$(OBJEXT)
+OBJECTS_QTCORE += $(QT5XHB_OBJ_DIR)/utils$(OBJEXT)
 OBJECTS_QTCORE += $(QT5XHB_OBJ_DIR)/qtdefs$(OBJEXT)
 
 # ALLLIBS

@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -31,7 +31,7 @@ CLASS QJSEngine INHERIT QObject
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QJSEngine
+PROCEDURE destroyObject() CLASS QJSEngine
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -48,7 +48,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtQml/QJSEngine>
@@ -57,23 +58,25 @@ RETURN
 /*
 QJSEngine()
 */
-void QJSEngine_new1 ()
+void QJSEngine_new1()
 {
-  QJSEngine * o = new QJSEngine ();
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QJSEngine();
+  Qt5xHb::returnNewObject( obj, false );
 }
 
 /*
 QJSEngine(QObject * parent)
 */
-void QJSEngine_new2 ()
+void QJSEngine_new2()
 {
-  QJSEngine * o = new QJSEngine ( PQOBJECT(1) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QJSEngine( PQOBJECT(1) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
-//[1]QJSEngine()
-//[2]QJSEngine(QObject * parent)
+/*
+[1]QJSEngine()
+[2]QJSEngine(QObject * parent)
+*/
 
 HB_FUNC_STATIC( QJSENGINE_NEW )
 {
@@ -87,20 +90,22 @@ HB_FUNC_STATIC( QJSENGINE_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QJSENGINE_DELETE )
 {
-  QJSEngine * obj = (QJSEngine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QJSEngine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -113,7 +118,7 @@ void collectGarbage()
 */
 HB_FUNC_STATIC( QJSENGINE_COLLECTGARBAGE )
 {
-  QJSEngine * obj = (QJSEngine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QJSEngine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -121,12 +126,12 @@ HB_FUNC_STATIC( QJSENGINE_COLLECTGARBAGE )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->collectGarbage ();
+      obj->collectGarbage();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -139,7 +144,7 @@ QJSValue evaluate(const QString & program, const QString & fileName = QString(),
 */
 HB_FUNC_STATIC( QJSENGINE_EVALUATE )
 {
-  QJSEngine * obj = (QJSEngine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QJSEngine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -147,13 +152,13 @@ HB_FUNC_STATIC( QJSENGINE_EVALUATE )
     if( ISBETWEEN(1,3) && ISCHAR(1) && ISOPTCHAR(2) && ISOPTNUM(3) )
     {
 #endif
-      QJSValue * ptr = new QJSValue( obj->evaluate ( PQSTRING(1), OPQSTRING(2,QString()), OPINT(3,1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QJSVALUE", true );
+      auto ptr = new QJSValue( obj->evaluate( PQSTRING(1), OPQSTRING(2,QString()), OPINT(3,1) ) );
+      Qt5xHb::createReturnClass( ptr, "QJSVALUE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -164,7 +169,7 @@ QJSValue globalObject() const
 */
 HB_FUNC_STATIC( QJSENGINE_GLOBALOBJECT )
 {
-  QJSEngine * obj = (QJSEngine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QJSEngine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -172,13 +177,13 @@ HB_FUNC_STATIC( QJSENGINE_GLOBALOBJECT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QJSValue * ptr = new QJSValue( obj->globalObject () );
-      _qt5xhb_createReturnClass ( ptr, "QJSVALUE", true );
+      auto ptr = new QJSValue( obj->globalObject() );
+      Qt5xHb::createReturnClass( ptr, "QJSVALUE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -189,7 +194,7 @@ QJSValue newArray(uint length = 0)
 */
 HB_FUNC_STATIC( QJSENGINE_NEWARRAY )
 {
-  QJSEngine * obj = (QJSEngine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QJSEngine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -197,13 +202,13 @@ HB_FUNC_STATIC( QJSENGINE_NEWARRAY )
     if( ISBETWEEN(0,1) && ISOPTNUM(1) )
     {
 #endif
-      QJSValue * ptr = new QJSValue( obj->newArray ( OPUINT(1,0) ) );
-      _qt5xhb_createReturnClass ( ptr, "QJSVALUE", true );
+      auto ptr = new QJSValue( obj->newArray( OPUINT(1,0) ) );
+      Qt5xHb::createReturnClass( ptr, "QJSVALUE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -214,7 +219,7 @@ QJSValue newObject()
 */
 HB_FUNC_STATIC( QJSENGINE_NEWOBJECT )
 {
-  QJSEngine * obj = (QJSEngine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QJSEngine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -222,13 +227,13 @@ HB_FUNC_STATIC( QJSENGINE_NEWOBJECT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QJSValue * ptr = new QJSValue( obj->newObject () );
-      _qt5xhb_createReturnClass ( ptr, "QJSVALUE", true );
+      auto ptr = new QJSValue( obj->newObject() );
+      Qt5xHb::createReturnClass( ptr, "QJSVALUE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -239,7 +244,7 @@ QJSValue newQObject(QObject * object)
 */
 HB_FUNC_STATIC( QJSENGINE_NEWQOBJECT )
 {
-  QJSEngine * obj = (QJSEngine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QJSEngine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -247,13 +252,13 @@ HB_FUNC_STATIC( QJSENGINE_NEWQOBJECT )
     if( ISNUMPAR(1) && ISQOBJECT(1) )
     {
 #endif
-      QJSValue * ptr = new QJSValue( obj->newQObject ( PQOBJECT(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QJSVALUE", true );
+      auto ptr = new QJSValue( obj->newQObject( PQOBJECT(1) ) );
+      Qt5xHb::createReturnClass( ptr, "QJSVALUE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

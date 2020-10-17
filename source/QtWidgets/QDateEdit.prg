@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -24,7 +24,7 @@ CLASS QDateEdit INHERIT QDateTimeEdit
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QDateEdit
+PROCEDURE destroyObject() CLASS QDateEdit
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -41,7 +41,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtWidgets/QDateEdit>
@@ -50,23 +51,25 @@ RETURN
 /*
 QDateEdit ( QWidget * parent = nullptr )
 */
-void QDateEdit_new1 ()
+void QDateEdit_new1()
 {
-  QDateEdit * o = new QDateEdit ( OPQWIDGET(1,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QDateEdit( OPQWIDGET(1,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
 /*
 QDateEdit ( const QDate & date, QWidget * parent = nullptr )
 */
-void QDateEdit_new2 ()
+void QDateEdit_new2()
 {
-  QDateEdit * o = new QDateEdit ( *PQDATE(1), OPQWIDGET(2,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QDateEdit( *PQDATE(1), OPQWIDGET(2,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
-//[1]QDateEdit ( QWidget * parent = nullptr )
-//[2]QDateEdit ( const QDate & date, QWidget * parent = nullptr )
+/*
+[1]QDateEdit ( QWidget * parent = nullptr )
+[2]QDateEdit ( const QDate & date, QWidget * parent = nullptr )
+*/
 
 HB_FUNC_STATIC( QDATEEDIT_NEW )
 {
@@ -80,20 +83,22 @@ HB_FUNC_STATIC( QDATEEDIT_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QDATEEDIT_DELETE )
 {
-  QDateEdit * obj = (QDateEdit *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDateEdit *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }

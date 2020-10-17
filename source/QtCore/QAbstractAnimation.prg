@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -46,7 +46,7 @@ CLASS QAbstractAnimation INHERIT QObject
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QAbstractAnimation
+PROCEDURE destroyObject() CLASS QAbstractAnimation
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -63,7 +63,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtCore/QAbstractAnimation>
@@ -73,14 +74,16 @@ RETURN
 
 HB_FUNC_STATIC( QABSTRACTANIMATION_DELETE )
 {
-  QAbstractAnimation * obj = (QAbstractAnimation *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractAnimation *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -89,11 +92,11 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_DELETE )
 }
 
 /*
-int currentLoop () const
+int currentLoop() const
 */
 HB_FUNC_STATIC( QABSTRACTANIMATION_CURRENTLOOP )
 {
-  QAbstractAnimation * obj = (QAbstractAnimation *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractAnimation *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -101,23 +104,23 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_CURRENTLOOP )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->currentLoop () );
+      RINT( obj->currentLoop() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-int currentLoopTime () const
+int currentLoopTime() const
 */
 HB_FUNC_STATIC( QABSTRACTANIMATION_CURRENTLOOPTIME )
 {
-  QAbstractAnimation * obj = (QAbstractAnimation *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractAnimation *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -125,23 +128,23 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_CURRENTLOOPTIME )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->currentLoopTime () );
+      RINT( obj->currentLoopTime() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-int currentTime () const
+int currentTime() const
 */
 HB_FUNC_STATIC( QABSTRACTANIMATION_CURRENTTIME )
 {
-  QAbstractAnimation * obj = (QAbstractAnimation *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractAnimation *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -149,23 +152,23 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_CURRENTTIME )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->currentTime () );
+      RINT( obj->currentTime() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-void setCurrentTime ( int msecs )
+void setCurrentTime( int msecs )
 */
 HB_FUNC_STATIC( QABSTRACTANIMATION_SETCURRENTTIME )
 {
-  QAbstractAnimation * obj = (QAbstractAnimation *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractAnimation *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -173,12 +176,12 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_SETCURRENTTIME )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setCurrentTime ( PINT(1) );
+      obj->setCurrentTime( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -187,11 +190,11 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_SETCURRENTTIME )
 }
 
 /*
-Direction direction () const
+QAbstractAnimation::Direction direction() const
 */
 HB_FUNC_STATIC( QABSTRACTANIMATION_DIRECTION )
 {
-  QAbstractAnimation * obj = (QAbstractAnimation *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractAnimation *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -199,23 +202,23 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_DIRECTION )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->direction () );
+      RENUM( obj->direction() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-void  setDirection ( Direction direction )
+void setDirection( QAbstractAnimation::Direction direction )
 */
 HB_FUNC_STATIC( QABSTRACTANIMATION_SETDIRECTION )
 {
-  QAbstractAnimation * obj = (QAbstractAnimation *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractAnimation *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -223,12 +226,12 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_SETDIRECTION )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setDirection ( (QAbstractAnimation::Direction) hb_parni(1) );
+      obj->setDirection( (QAbstractAnimation::Direction) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -237,11 +240,11 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_SETDIRECTION )
 }
 
 /*
-virtual int duration () const = 0
+virtual int duration() const = 0
 */
 HB_FUNC_STATIC( QABSTRACTANIMATION_DURATION )
 {
-  QAbstractAnimation * obj = (QAbstractAnimation *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractAnimation *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -249,23 +252,23 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_DURATION )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->duration () );
+      RINT( obj->duration() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-QAnimationGroup * group () const
+QAnimationGroup * group() const
 */
 HB_FUNC_STATIC( QABSTRACTANIMATION_GROUP )
 {
-  QAbstractAnimation * obj = (QAbstractAnimation *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractAnimation *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -273,24 +276,24 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_GROUP )
     if( ISNUMPAR(0) )
     {
 #endif
-      QAnimationGroup * ptr = obj->group ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QANIMATIONGROUP" );
+      QAnimationGroup * ptr = obj->group();
+      Qt5xHb::createReturnQObjectClass( ptr, "QANIMATIONGROUP" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-int loopCount () const
+int loopCount() const
 */
 HB_FUNC_STATIC( QABSTRACTANIMATION_LOOPCOUNT )
 {
-  QAbstractAnimation * obj = (QAbstractAnimation *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractAnimation *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -298,23 +301,23 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_LOOPCOUNT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->loopCount () );
+      RINT( obj->loopCount() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-void setLoopCount ( int loopCount )
+void setLoopCount( int loopCount )
 */
 HB_FUNC_STATIC( QABSTRACTANIMATION_SETLOOPCOUNT )
 {
-  QAbstractAnimation * obj = (QAbstractAnimation *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractAnimation *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -322,12 +325,12 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_SETLOOPCOUNT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setLoopCount ( PINT(1) );
+      obj->setLoopCount( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -336,11 +339,11 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_SETLOOPCOUNT )
 }
 
 /*
-State state () const
+QAbstractAnimation::State state() const
 */
 HB_FUNC_STATIC( QABSTRACTANIMATION_STATE )
 {
-  QAbstractAnimation * obj = (QAbstractAnimation *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractAnimation *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -348,23 +351,23 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_STATE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->state () );
+      RENUM( obj->state() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-int totalDuration () const
+int totalDuration() const
 */
 HB_FUNC_STATIC( QABSTRACTANIMATION_TOTALDURATION )
 {
-  QAbstractAnimation * obj = (QAbstractAnimation *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractAnimation *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -372,23 +375,23 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_TOTALDURATION )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->totalDuration () );
+      RINT( obj->totalDuration() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-void pause ()
+void pause()
 */
 HB_FUNC_STATIC( QABSTRACTANIMATION_PAUSE )
 {
-  QAbstractAnimation * obj = (QAbstractAnimation *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractAnimation *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -396,12 +399,12 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_PAUSE )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->pause ();
+      obj->pause();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -410,11 +413,11 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_PAUSE )
 }
 
 /*
-void resume ()
+void resume()
 */
 HB_FUNC_STATIC( QABSTRACTANIMATION_RESUME )
 {
-  QAbstractAnimation * obj = (QAbstractAnimation *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractAnimation *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -422,12 +425,12 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_RESUME )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->resume ();
+      obj->resume();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -436,11 +439,11 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_RESUME )
 }
 
 /*
-void setPaused ( bool paused )
+void setPaused( bool paused )
 */
 HB_FUNC_STATIC( QABSTRACTANIMATION_SETPAUSED )
 {
-  QAbstractAnimation * obj = (QAbstractAnimation *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractAnimation *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -448,12 +451,12 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_SETPAUSED )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setPaused ( PBOOL(1) );
+      obj->setPaused( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -462,11 +465,11 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_SETPAUSED )
 }
 
 /*
-void start ( QAbstractAnimation::DeletionPolicy policy = KeepWhenStopped )
+void start( QAbstractAnimation::DeletionPolicy policy = QAbstractAnimation::KeepWhenStopped )
 */
 HB_FUNC_STATIC( QABSTRACTANIMATION_START )
 {
-  QAbstractAnimation * obj = (QAbstractAnimation *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractAnimation *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -474,12 +477,12 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_START )
     if( ISBETWEEN(0,1) && ISOPTNUM(1) )
     {
 #endif
-      obj->start ( ISNIL(1)? (QAbstractAnimation::DeletionPolicy) QAbstractAnimation::KeepWhenStopped : (QAbstractAnimation::DeletionPolicy) hb_parni(1) );
+      obj->start( ISNIL(1)? (QAbstractAnimation::DeletionPolicy) QAbstractAnimation::KeepWhenStopped : (QAbstractAnimation::DeletionPolicy) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -488,11 +491,11 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_START )
 }
 
 /*
-void stop ()
+void stop()
 */
 HB_FUNC_STATIC( QABSTRACTANIMATION_STOP )
 {
-  QAbstractAnimation * obj = (QAbstractAnimation *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractAnimation *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -500,12 +503,12 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_STOP )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->stop ();
+      obj->stop();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -518,35 +521,36 @@ void currentLoopChanged( int currentLoop )
 */
 HB_FUNC_STATIC( QABSTRACTANIMATION_ONCURRENTLOOPCHANGED )
 {
-  QAbstractAnimation * sender = (QAbstractAnimation *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAbstractAnimation *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("currentLoopChanged(int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("currentLoopChanged(int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAbstractAnimation::currentLoopChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QABSTRACTANIMATION" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QABSTRACTANIMATION" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -557,9 +561,9 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_ONCURRENTLOOPCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -579,35 +583,36 @@ void directionChanged( QAbstractAnimation::Direction newDirection )
 */
 HB_FUNC_STATIC( QABSTRACTANIMATION_ONDIRECTIONCHANGED )
 {
-  QAbstractAnimation * sender = (QAbstractAnimation *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAbstractAnimation *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("directionChanged(QAbstractAnimation::Direction)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("directionChanged(QAbstractAnimation::Direction)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAbstractAnimation::directionChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QAbstractAnimation::Direction arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QABSTRACTANIMATION" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, (int) arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QABSTRACTANIMATION" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, (int) arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -618,9 +623,9 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_ONDIRECTIONCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -640,33 +645,34 @@ void finished()
 */
 HB_FUNC_STATIC( QABSTRACTANIMATION_ONFINISHED )
 {
-  QAbstractAnimation * sender = (QAbstractAnimation *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAbstractAnimation *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("finished()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("finished()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAbstractAnimation::finished, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QABSTRACTANIMATION" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QABSTRACTANIMATION" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -677,9 +683,9 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_ONFINISHED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -699,29 +705,30 @@ void stateChanged( QAbstractAnimation::State newState, QAbstractAnimation::State
 */
 HB_FUNC_STATIC( QABSTRACTANIMATION_ONSTATECHANGED )
 {
-  QAbstractAnimation * sender = (QAbstractAnimation *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAbstractAnimation *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("stateChanged(QAbstractAnimation::State,QAbstractAnimation::State)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("stateChanged(QAbstractAnimation::State,QAbstractAnimation::State)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAbstractAnimation::stateChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QAbstractAnimation::State arg1, QAbstractAnimation::State arg2) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QABSTRACTANIMATION" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, (int) arg1 );
-            PHB_ITEM pArg2 = hb_itemPutNI( NULL, (int) arg2 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 3, pSender, pArg1, pArg2 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QABSTRACTANIMATION" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, (int) arg1 );
+            PHB_ITEM pArg2 = hb_itemPutNI( nullptr, (int) arg2 );
+            hb_vmEvalBlockV( cb, 3, pSender, pArg1, pArg2 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -729,7 +736,7 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_ONSTATECHANGED )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -740,9 +747,9 @@ HB_FUNC_STATIC( QABSTRACTANIMATION_ONSTATECHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }

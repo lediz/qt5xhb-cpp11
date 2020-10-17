@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -29,7 +29,7 @@ CLASS QConicalGradient INHERIT QGradient
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QConicalGradient
+PROCEDURE destroyObject() CLASS QConicalGradient
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -46,7 +46,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtGui/QConicalGradient>
@@ -55,33 +54,35 @@ RETURN
 /*
 QConicalGradient ()
 */
-void QConicalGradient_new1 ()
+void QConicalGradient_new1()
 {
-  QConicalGradient * o = new QConicalGradient ();
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QConicalGradient();
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QConicalGradient ( const QPointF & center, qreal angle )
 */
-void QConicalGradient_new2 ()
+void QConicalGradient_new2()
 {
-  QConicalGradient * o = new QConicalGradient ( *PQPOINTF(1), PQREAL(2) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QConicalGradient( *PQPOINTF(1), PQREAL(2) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QConicalGradient ( qreal cx, qreal cy, qreal angle )
 */
-void QConicalGradient_new3 ()
+void QConicalGradient_new3()
 {
-  QConicalGradient * o = new QConicalGradient ( PQREAL(1), PQREAL(2), PQREAL(3) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QConicalGradient( PQREAL(1), PQREAL(2), PQREAL(3) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
-//[1]QConicalGradient ()
-//[2]QConicalGradient ( const QPointF & center, qreal angle )
-//[3]QConicalGradient ( qreal cx, qreal cy, qreal angle )
+/*
+[1]QConicalGradient ()
+[2]QConicalGradient ( const QPointF & center, qreal angle )
+[3]QConicalGradient ( qreal cx, qreal cy, qreal angle )
+*/
 
 HB_FUNC_STATIC( QCONICALGRADIENT_NEW )
 {
@@ -99,20 +100,20 @@ HB_FUNC_STATIC( QCONICALGRADIENT_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QCONICALGRADIENT_DELETE )
 {
-  QConicalGradient * obj = (QConicalGradient *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QConicalGradient *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -125,7 +126,7 @@ qreal angle () const
 */
 HB_FUNC_STATIC( QCONICALGRADIENT_ANGLE )
 {
-  QConicalGradient * obj = (QConicalGradient *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QConicalGradient *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -133,12 +134,12 @@ HB_FUNC_STATIC( QCONICALGRADIENT_ANGLE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQREAL( obj->angle () );
+      RQREAL( obj->angle() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -149,7 +150,7 @@ QPointF center () const
 */
 HB_FUNC_STATIC( QCONICALGRADIENT_CENTER )
 {
-  QConicalGradient * obj = (QConicalGradient *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QConicalGradient *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -157,13 +158,13 @@ HB_FUNC_STATIC( QCONICALGRADIENT_CENTER )
     if( ISNUMPAR(0) )
     {
 #endif
-      QPointF * ptr = new QPointF( obj->center () );
-      _qt5xhb_createReturnClass ( ptr, "QPOINTF", true );
+      auto ptr = new QPointF( obj->center() );
+      Qt5xHb::createReturnClass( ptr, "QPOINTF", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -174,7 +175,7 @@ void setAngle ( qreal angle )
 */
 HB_FUNC_STATIC( QCONICALGRADIENT_SETANGLE )
 {
-  QConicalGradient * obj = (QConicalGradient *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QConicalGradient *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -182,12 +183,12 @@ HB_FUNC_STATIC( QCONICALGRADIENT_SETANGLE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setAngle ( PQREAL(1) );
+      obj->setAngle( PQREAL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -198,13 +199,13 @@ HB_FUNC_STATIC( QCONICALGRADIENT_SETANGLE )
 /*
 void setCenter ( const QPointF & center )
 */
-void QConicalGradient_setCenter1 ()
+void QConicalGradient_setCenter1()
 {
-  QConicalGradient * obj = (QConicalGradient *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QConicalGradient *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setCenter ( *PQPOINTF(1) );
+    obj->setCenter( *PQPOINTF(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -213,20 +214,22 @@ void QConicalGradient_setCenter1 ()
 /*
 void setCenter ( qreal x, qreal y )
 */
-void QConicalGradient_setCenter2 ()
+void QConicalGradient_setCenter2()
 {
-  QConicalGradient * obj = (QConicalGradient *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QConicalGradient *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setCenter ( PQREAL(1), PQREAL(2) );
+    obj->setCenter( PQREAL(1), PQREAL(2) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void setCenter ( const QPointF & center )
-//[2]void setCenter ( qreal x, qreal y )
+/*
+[1]void setCenter ( const QPointF & center )
+[2]void setCenter ( qreal x, qreal y )
+*/
 
 HB_FUNC_STATIC( QCONICALGRADIENT_SETCENTER )
 {
@@ -240,7 +243,7 @@ HB_FUNC_STATIC( QCONICALGRADIENT_SETCENTER )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 

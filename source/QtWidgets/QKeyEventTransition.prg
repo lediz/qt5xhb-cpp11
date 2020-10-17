@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -28,7 +28,7 @@ CLASS QKeyEventTransition INHERIT QEventTransition
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QKeyEventTransition
+PROCEDURE destroyObject() CLASS QKeyEventTransition
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -45,7 +45,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtWidgets/QKeyEventTransition>
@@ -54,23 +55,25 @@ RETURN
 /*
 QKeyEventTransition ( QState * sourceState = nullptr )
 */
-void QKeyEventTransition_new1 ()
+void QKeyEventTransition_new1()
 {
-  QKeyEventTransition * o = new QKeyEventTransition ( OPQSTATE(1,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QKeyEventTransition( OPQSTATE(1,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
 /*
 QKeyEventTransition ( QObject * object, QEvent::Type type, int key, QState * sourceState = nullptr )
 */
-void QKeyEventTransition_new2 ()
+void QKeyEventTransition_new2()
 {
-  QKeyEventTransition * o = new QKeyEventTransition ( PQOBJECT(1), (QEvent::Type) hb_parni(2), PINT(3), OPQSTATE(4,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QKeyEventTransition( PQOBJECT(1), (QEvent::Type) hb_parni(2), PINT(3), OPQSTATE(4,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
-//[1]QKeyEventTransition ( QState * sourceState = nullptr )
-//[2]QKeyEventTransition ( QObject * object, QEvent::Type type, int key, QState * sourceState = nullptr )
+/*
+[1]QKeyEventTransition ( QState * sourceState = nullptr )
+[2]QKeyEventTransition ( QObject * object, QEvent::Type type, int key, QState * sourceState = nullptr )
+*/
 
 HB_FUNC_STATIC( QKEYEVENTTRANSITION_NEW )
 {
@@ -84,20 +87,22 @@ HB_FUNC_STATIC( QKEYEVENTTRANSITION_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QKEYEVENTTRANSITION_DELETE )
 {
-  QKeyEventTransition * obj = (QKeyEventTransition *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QKeyEventTransition *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -110,7 +115,7 @@ int key () const
 */
 HB_FUNC_STATIC( QKEYEVENTTRANSITION_KEY )
 {
-  QKeyEventTransition * obj = (QKeyEventTransition *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QKeyEventTransition *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -118,12 +123,12 @@ HB_FUNC_STATIC( QKEYEVENTTRANSITION_KEY )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->key () );
+      RINT( obj->key() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -134,7 +139,7 @@ Qt::KeyboardModifiers modifierMask () const
 */
 HB_FUNC_STATIC( QKEYEVENTTRANSITION_MODIFIERMASK )
 {
-  QKeyEventTransition * obj = (QKeyEventTransition *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QKeyEventTransition *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -142,12 +147,12 @@ HB_FUNC_STATIC( QKEYEVENTTRANSITION_MODIFIERMASK )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->modifierMask () );
+      RENUM( obj->modifierMask() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -158,7 +163,7 @@ void setKey ( int key )
 */
 HB_FUNC_STATIC( QKEYEVENTTRANSITION_SETKEY )
 {
-  QKeyEventTransition * obj = (QKeyEventTransition *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QKeyEventTransition *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -166,12 +171,12 @@ HB_FUNC_STATIC( QKEYEVENTTRANSITION_SETKEY )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setKey ( PINT(1) );
+      obj->setKey( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -184,7 +189,7 @@ void setModifierMask ( Qt::KeyboardModifiers modifierMask )
 */
 HB_FUNC_STATIC( QKEYEVENTTRANSITION_SETMODIFIERMASK )
 {
-  QKeyEventTransition * obj = (QKeyEventTransition *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QKeyEventTransition *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -192,12 +197,12 @@ HB_FUNC_STATIC( QKEYEVENTTRANSITION_SETMODIFIERMASK )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setModifierMask ( (Qt::KeyboardModifiers) hb_parni(1) );
+      obj->setModifierMask( (Qt::KeyboardModifiers) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -31,7 +31,7 @@ CLASS QWebEngineCookieStore INHERIT QObject
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QWebEngineCookieStore
+PROCEDURE destroyObject() CLASS QWebEngineCookieStore
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -48,7 +48,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtWebEngineCore/QWebEngineCookieStore>
@@ -63,14 +64,16 @@ virtual ~QWebEngineCookieStore()
 */
 HB_FUNC_STATIC( QWEBENGINECOOKIESTORE_DELETE )
 {
-  QWebEngineCookieStore * obj = (QWebEngineCookieStore *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebEngineCookieStore *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -83,7 +86,7 @@ void setCookie(const QNetworkCookie &cookie, const QUrl &origin = QUrl())
 */
 HB_FUNC_STATIC( QWEBENGINECOOKIESTORE_SETCOOKIE )
 {
-  QWebEngineCookieStore * obj = (QWebEngineCookieStore *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebEngineCookieStore *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -91,12 +94,12 @@ HB_FUNC_STATIC( QWEBENGINECOOKIESTORE_SETCOOKIE )
     if( ISBETWEEN(1,2) && ISQNETWORKCOOKIE(1) && (ISQURL(2)||ISNIL(2)) )
     {
 #endif
-      obj->setCookie ( *PQNETWORKCOOKIE(1), ISNIL(2)? QUrl() : *(QUrl *) _qt5xhb_itemGetPtr(2) );
+      obj->setCookie( *PQNETWORKCOOKIE(1), ISNIL(2)? QUrl() : *(QUrl *) Qt5xHb::itemGetPtr(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -109,7 +112,7 @@ void deleteCookie(const QNetworkCookie &cookie, const QUrl &origin = QUrl())
 */
 HB_FUNC_STATIC( QWEBENGINECOOKIESTORE_DELETECOOKIE )
 {
-  QWebEngineCookieStore * obj = (QWebEngineCookieStore *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebEngineCookieStore *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -117,12 +120,12 @@ HB_FUNC_STATIC( QWEBENGINECOOKIESTORE_DELETECOOKIE )
     if( ISBETWEEN(1,2) && ISQNETWORKCOOKIE(1) && (ISQURL(2)||ISNIL(2)) )
     {
 #endif
-      obj->deleteCookie ( *PQNETWORKCOOKIE(1), ISNIL(2)? QUrl() : *(QUrl *) _qt5xhb_itemGetPtr(2) );
+      obj->deleteCookie( *PQNETWORKCOOKIE(1), ISNIL(2)? QUrl() : *(QUrl *) Qt5xHb::itemGetPtr(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -135,7 +138,7 @@ void deleteSessionCookies()
 */
 HB_FUNC_STATIC( QWEBENGINECOOKIESTORE_DELETESESSIONCOOKIES )
 {
-  QWebEngineCookieStore * obj = (QWebEngineCookieStore *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebEngineCookieStore *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -143,12 +146,12 @@ HB_FUNC_STATIC( QWEBENGINECOOKIESTORE_DELETESESSIONCOOKIES )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->deleteSessionCookies ();
+      obj->deleteSessionCookies();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -161,7 +164,7 @@ void deleteAllCookies()
 */
 HB_FUNC_STATIC( QWEBENGINECOOKIESTORE_DELETEALLCOOKIES )
 {
-  QWebEngineCookieStore * obj = (QWebEngineCookieStore *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebEngineCookieStore *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -169,12 +172,12 @@ HB_FUNC_STATIC( QWEBENGINECOOKIESTORE_DELETEALLCOOKIES )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->deleteAllCookies ();
+      obj->deleteAllCookies();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -187,7 +190,7 @@ void loadAllCookies()
 */
 HB_FUNC_STATIC( QWEBENGINECOOKIESTORE_LOADALLCOOKIES )
 {
-  QWebEngineCookieStore * obj = (QWebEngineCookieStore *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebEngineCookieStore *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -195,12 +198,12 @@ HB_FUNC_STATIC( QWEBENGINECOOKIESTORE_LOADALLCOOKIES )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->loadAllCookies ();
+      obj->loadAllCookies();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -213,35 +216,36 @@ void cookieAdded(const QNetworkCookie &cookie)
 */
 HB_FUNC_STATIC( QWEBENGINECOOKIESTORE_ONCOOKIEADDED )
 {
-  QWebEngineCookieStore * sender = (QWebEngineCookieStore *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QWebEngineCookieStore *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("cookieAdded(QNetworkCookie)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("cookieAdded(QNetworkCookie)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QWebEngineCookieStore::cookieAdded, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (const QNetworkCookie & arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QWEBENGINECOOKIESTORE" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) &arg1, "QNETWORKCOOKIE" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QWEBENGINECOOKIESTORE" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) &arg1, "QNETWORKCOOKIE" );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -252,9 +256,9 @@ HB_FUNC_STATIC( QWEBENGINECOOKIESTORE_ONCOOKIEADDED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -274,35 +278,36 @@ void cookieRemoved(const QNetworkCookie &cookie)
 */
 HB_FUNC_STATIC( QWEBENGINECOOKIESTORE_ONCOOKIEREMOVED )
 {
-  QWebEngineCookieStore * sender = (QWebEngineCookieStore *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QWebEngineCookieStore *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("cookieRemoved(QNetworkCookie)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("cookieRemoved(QNetworkCookie)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QWebEngineCookieStore::cookieRemoved, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (const QNetworkCookie & arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QWEBENGINECOOKIESTORE" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) &arg1, "QNETWORKCOOKIE" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QWEBENGINECOOKIESTORE" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) &arg1, "QNETWORKCOOKIE" );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -313,9 +318,9 @@ HB_FUNC_STATIC( QWEBENGINECOOKIESTORE_ONCOOKIEREMOVED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }

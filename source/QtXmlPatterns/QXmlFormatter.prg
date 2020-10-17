@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -37,7 +37,7 @@ CLASS QXmlFormatter INHERIT QXmlSerializer
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QXmlFormatter
+PROCEDURE destroyObject() CLASS QXmlFormatter
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -54,7 +54,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtXmlPatterns/QXmlFormatter>
@@ -67,25 +66,25 @@ HB_FUNC_STATIC( QXMLFORMATTER_NEW )
 {
   if( ISNUMPAR(2) && ISQXMLQUERY(1) && ISQIODEVICE(2) )
   {
-    QXmlFormatter * o = new QXmlFormatter ( *PQXMLQUERY(1), PQIODEVICE(2) );
-    _qt5xhb_returnNewObject( o, true );
+    auto obj = new QXmlFormatter( *PQXMLQUERY(1), PQIODEVICE(2) );
+    Qt5xHb::returnNewObject( obj, true );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QXMLFORMATTER_DELETE )
 {
-  QXmlFormatter * obj = (QXmlFormatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlFormatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -98,7 +97,7 @@ int indentationDepth () const
 */
 HB_FUNC_STATIC( QXMLFORMATTER_INDENTATIONDEPTH )
 {
-  QXmlFormatter * obj = (QXmlFormatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlFormatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -106,12 +105,12 @@ HB_FUNC_STATIC( QXMLFORMATTER_INDENTATIONDEPTH )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->indentationDepth () );
+      RINT( obj->indentationDepth() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -122,7 +121,7 @@ void setIndentationDepth ( int depth )
 */
 HB_FUNC_STATIC( QXMLFORMATTER_SETINDENTATIONDEPTH )
 {
-  QXmlFormatter * obj = (QXmlFormatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlFormatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -130,12 +129,12 @@ HB_FUNC_STATIC( QXMLFORMATTER_SETINDENTATIONDEPTH )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setIndentationDepth ( PINT(1) );
+      obj->setIndentationDepth( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -148,7 +147,7 @@ virtual void atomicValue ( const QVariant & value )
 */
 HB_FUNC_STATIC( QXMLFORMATTER_ATOMICVALUE )
 {
-  QXmlFormatter * obj = (QXmlFormatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlFormatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -156,12 +155,12 @@ HB_FUNC_STATIC( QXMLFORMATTER_ATOMICVALUE )
     if( ISNUMPAR(1) && ISQVARIANT(1) )
     {
 #endif
-      obj->atomicValue ( *PQVARIANT(1) );
+      obj->atomicValue( *PQVARIANT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -174,7 +173,7 @@ virtual void attribute ( const QXmlName & name, const QStringRef & value )
 */
 HB_FUNC_STATIC( QXMLFORMATTER_ATTRIBUTE )
 {
-  QXmlFormatter * obj = (QXmlFormatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlFormatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -182,12 +181,12 @@ HB_FUNC_STATIC( QXMLFORMATTER_ATTRIBUTE )
     if( ISNUMPAR(2) && ISQXMLNAME(1) && ISQSTRINGREF(2) )
     {
 #endif
-      obj->attribute ( *PQXMLNAME(1), *PQSTRINGREF(2) );
+      obj->attribute( *PQXMLNAME(1), *PQSTRINGREF(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -200,7 +199,7 @@ virtual void characters ( const QStringRef & value )
 */
 HB_FUNC_STATIC( QXMLFORMATTER_CHARACTERS )
 {
-  QXmlFormatter * obj = (QXmlFormatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlFormatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -208,12 +207,12 @@ HB_FUNC_STATIC( QXMLFORMATTER_CHARACTERS )
     if( ISNUMPAR(1) && ISQSTRINGREF(1) )
     {
 #endif
-      obj->characters ( *PQSTRINGREF(1) );
+      obj->characters( *PQSTRINGREF(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -226,7 +225,7 @@ virtual void comment ( const QString & value )
 */
 HB_FUNC_STATIC( QXMLFORMATTER_COMMENT )
 {
-  QXmlFormatter * obj = (QXmlFormatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlFormatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -234,12 +233,12 @@ HB_FUNC_STATIC( QXMLFORMATTER_COMMENT )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->comment ( PQSTRING(1) );
+      obj->comment( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -252,7 +251,7 @@ virtual void endDocument ()
 */
 HB_FUNC_STATIC( QXMLFORMATTER_ENDDOCUMENT )
 {
-  QXmlFormatter * obj = (QXmlFormatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlFormatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -260,12 +259,12 @@ HB_FUNC_STATIC( QXMLFORMATTER_ENDDOCUMENT )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->endDocument ();
+      obj->endDocument();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -278,7 +277,7 @@ virtual void endElement ()
 */
 HB_FUNC_STATIC( QXMLFORMATTER_ENDELEMENT )
 {
-  QXmlFormatter * obj = (QXmlFormatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlFormatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -286,12 +285,12 @@ HB_FUNC_STATIC( QXMLFORMATTER_ENDELEMENT )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->endElement ();
+      obj->endElement();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -304,7 +303,7 @@ virtual void endOfSequence ()
 */
 HB_FUNC_STATIC( QXMLFORMATTER_ENDOFSEQUENCE )
 {
-  QXmlFormatter * obj = (QXmlFormatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlFormatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -312,12 +311,12 @@ HB_FUNC_STATIC( QXMLFORMATTER_ENDOFSEQUENCE )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->endOfSequence ();
+      obj->endOfSequence();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -330,7 +329,7 @@ virtual void processingInstruction ( const QXmlName & name, const QString & valu
 */
 HB_FUNC_STATIC( QXMLFORMATTER_PROCESSINGINSTRUCTION )
 {
-  QXmlFormatter * obj = (QXmlFormatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlFormatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -338,12 +337,12 @@ HB_FUNC_STATIC( QXMLFORMATTER_PROCESSINGINSTRUCTION )
     if( ISNUMPAR(2) && ISQXMLNAME(1) && ISCHAR(2) )
     {
 #endif
-      obj->processingInstruction ( *PQXMLNAME(1), PQSTRING(2) );
+      obj->processingInstruction( *PQXMLNAME(1), PQSTRING(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -356,7 +355,7 @@ virtual void startDocument ()
 */
 HB_FUNC_STATIC( QXMLFORMATTER_STARTDOCUMENT )
 {
-  QXmlFormatter * obj = (QXmlFormatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlFormatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -364,12 +363,12 @@ HB_FUNC_STATIC( QXMLFORMATTER_STARTDOCUMENT )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->startDocument ();
+      obj->startDocument();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -382,7 +381,7 @@ virtual void startElement ( const QXmlName & name )
 */
 HB_FUNC_STATIC( QXMLFORMATTER_STARTELEMENT )
 {
-  QXmlFormatter * obj = (QXmlFormatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlFormatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -390,12 +389,12 @@ HB_FUNC_STATIC( QXMLFORMATTER_STARTELEMENT )
     if( ISNUMPAR(1) && ISQXMLNAME(1) )
     {
 #endif
-      obj->startElement ( *PQXMLNAME(1) );
+      obj->startElement( *PQXMLNAME(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -408,7 +407,7 @@ virtual void startOfSequence ()
 */
 HB_FUNC_STATIC( QXMLFORMATTER_STARTOFSEQUENCE )
 {
-  QXmlFormatter * obj = (QXmlFormatter *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXmlFormatter *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -416,12 +415,12 @@ HB_FUNC_STATIC( QXMLFORMATTER_STARTOFSEQUENCE )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->startOfSequence ();
+      obj->startOfSequence();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

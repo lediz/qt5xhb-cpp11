@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -29,7 +29,7 @@ CLASS QFileSelector INHERIT QObject
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QFileSelector
+PROCEDURE destroyObject() CLASS QFileSelector
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -46,7 +46,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtCore/QFileSelector>
@@ -61,25 +62,27 @@ HB_FUNC_STATIC( QFILESELECTOR_NEW )
 {
   if( ISBETWEEN(0,1) && (ISQOBJECT(1)||ISNIL(1)) )
   {
-    QFileSelector * o = new QFileSelector ( OPQOBJECT(1,nullptr) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QFileSelector( OPQOBJECT(1,nullptr) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QFILESELECTOR_DELETE )
 {
-  QFileSelector * obj = (QFileSelector *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFileSelector *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -90,32 +93,34 @@ HB_FUNC_STATIC( QFILESELECTOR_DELETE )
 /*
 QString select(const QString &filePath) const
 */
-void QFileSelector_select1 ()
+void QFileSelector_select1()
 {
-  QFileSelector * obj = (QFileSelector *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFileSelector *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RQSTRING( obj->select ( PQSTRING(1) ) );
+    RQSTRING( obj->select( PQSTRING(1) ) );
   }
 }
 
 /*
 QUrl select(const QUrl &filePath) const
 */
-void QFileSelector_select2 ()
+void QFileSelector_select2()
 {
-  QFileSelector * obj = (QFileSelector *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFileSelector *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QUrl * ptr = new QUrl( obj->select ( *PQURL(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QURL", true );
+    auto ptr = new QUrl( obj->select( *PQURL(1) ) );
+    Qt5xHb::createReturnClass( ptr, "QURL", true );
   }
 }
 
-//[1]QString select(const QString &filePath) const
-//[2]QUrl select(const QUrl &filePath) const
+/*
+[1]QString select(const QString &filePath) const
+[2]QUrl select(const QUrl &filePath) const
+*/
 
 HB_FUNC_STATIC( QFILESELECTOR_SELECT )
 {
@@ -129,7 +134,7 @@ HB_FUNC_STATIC( QFILESELECTOR_SELECT )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -138,7 +143,7 @@ QStringList extraSelectors() const
 */
 HB_FUNC_STATIC( QFILESELECTOR_EXTRASELECTORS )
 {
-  QFileSelector * obj = (QFileSelector *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFileSelector *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -146,12 +151,12 @@ HB_FUNC_STATIC( QFILESELECTOR_EXTRASELECTORS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRINGLIST( obj->extraSelectors () );
+      RQSTRINGLIST( obj->extraSelectors() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -162,7 +167,7 @@ void setExtraSelectors(const QStringList &list)
 */
 HB_FUNC_STATIC( QFILESELECTOR_SETEXTRASELECTORS )
 {
-  QFileSelector * obj = (QFileSelector *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFileSelector *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -170,12 +175,12 @@ HB_FUNC_STATIC( QFILESELECTOR_SETEXTRASELECTORS )
     if( ISNUMPAR(1) && ISARRAY(1) )
     {
 #endif
-      obj->setExtraSelectors ( PQSTRINGLIST(1) );
+      obj->setExtraSelectors( PQSTRINGLIST(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -188,7 +193,7 @@ QStringList allSelectors() const
 */
 HB_FUNC_STATIC( QFILESELECTOR_ALLSELECTORS )
 {
-  QFileSelector * obj = (QFileSelector *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFileSelector *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -196,12 +201,12 @@ HB_FUNC_STATIC( QFILESELECTOR_ALLSELECTORS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRINGLIST( obj->allSelectors () );
+      RQSTRINGLIST( obj->allSelectors() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

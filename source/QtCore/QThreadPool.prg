@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -31,12 +31,15 @@ CLASS QThreadPool INHERIT QObject
    METHOD waitForDone
    METHOD clear
    METHOD globalInstance
+   METHOD tryTake
+   METHOD stackSize
+   METHOD setStackSize
 
    DESTRUCTOR destroyObject
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QThreadPool
+PROCEDURE destroyObject() CLASS QThreadPool
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -53,7 +56,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtCore/QThreadPool>
@@ -66,25 +70,27 @@ HB_FUNC_STATIC( QTHREADPOOL_NEW )
 {
   if( ISBETWEEN(0,1) && (ISQOBJECT(1)||ISNIL(1)) )
   {
-    QThreadPool * o = new QThreadPool ( OPQOBJECT(1,nullptr) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QThreadPool( OPQOBJECT(1,nullptr) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QTHREADPOOL_DELETE )
 {
-  QThreadPool * obj = (QThreadPool *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QThreadPool *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -97,7 +103,7 @@ void start(QRunnable *runnable, int priority = 0)
 */
 HB_FUNC_STATIC( QTHREADPOOL_START )
 {
-  QThreadPool * obj = (QThreadPool *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QThreadPool *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -105,12 +111,12 @@ HB_FUNC_STATIC( QTHREADPOOL_START )
     if( ISBETWEEN(1,2) && ISQRUNNABLE(1) && ISOPTNUM(2) )
     {
 #endif
-      obj->start ( PQRUNNABLE(1), OPINT(2,0) );
+      obj->start( PQRUNNABLE(1), OPINT(2,0) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -119,11 +125,15 @@ HB_FUNC_STATIC( QTHREADPOOL_START )
 }
 
 /*
+void QThreadPool::start(std::function<void ()> functionToRun, int priority = 0)
+*/
+
+/*
 bool tryStart(QRunnable *runnable)
 */
 HB_FUNC_STATIC( QTHREADPOOL_TRYSTART )
 {
-  QThreadPool * obj = (QThreadPool *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QThreadPool *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -131,23 +141,27 @@ HB_FUNC_STATIC( QTHREADPOOL_TRYSTART )
     if( ISNUMPAR(1) && ISQRUNNABLE(1) )
     {
 #endif
-      RBOOL( obj->tryStart ( PQRUNNABLE(1) ) );
+      RBOOL( obj->tryStart( PQRUNNABLE(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
+bool QThreadPool::tryStart(std::function<void ()> functionToRun)
+*/
+
+/*
 int expiryTimeout() const
 */
 HB_FUNC_STATIC( QTHREADPOOL_EXPIRYTIMEOUT )
 {
-  QThreadPool * obj = (QThreadPool *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QThreadPool *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -155,12 +169,12 @@ HB_FUNC_STATIC( QTHREADPOOL_EXPIRYTIMEOUT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->expiryTimeout () );
+      RINT( obj->expiryTimeout() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -171,7 +185,7 @@ void setExpiryTimeout(int expiryTimeout)
 */
 HB_FUNC_STATIC( QTHREADPOOL_SETEXPIRYTIMEOUT )
 {
-  QThreadPool * obj = (QThreadPool *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QThreadPool *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -179,12 +193,12 @@ HB_FUNC_STATIC( QTHREADPOOL_SETEXPIRYTIMEOUT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setExpiryTimeout ( PINT(1) );
+      obj->setExpiryTimeout( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -197,7 +211,7 @@ int maxThreadCount() const
 */
 HB_FUNC_STATIC( QTHREADPOOL_MAXTHREADCOUNT )
 {
-  QThreadPool * obj = (QThreadPool *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QThreadPool *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -205,12 +219,12 @@ HB_FUNC_STATIC( QTHREADPOOL_MAXTHREADCOUNT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->maxThreadCount () );
+      RINT( obj->maxThreadCount() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -221,7 +235,7 @@ void setMaxThreadCount(int maxThreadCount)
 */
 HB_FUNC_STATIC( QTHREADPOOL_SETMAXTHREADCOUNT )
 {
-  QThreadPool * obj = (QThreadPool *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QThreadPool *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -229,12 +243,12 @@ HB_FUNC_STATIC( QTHREADPOOL_SETMAXTHREADCOUNT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setMaxThreadCount ( PINT(1) );
+      obj->setMaxThreadCount( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -247,7 +261,7 @@ int activeThreadCount() const
 */
 HB_FUNC_STATIC( QTHREADPOOL_ACTIVETHREADCOUNT )
 {
-  QThreadPool * obj = (QThreadPool *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QThreadPool *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -255,12 +269,12 @@ HB_FUNC_STATIC( QTHREADPOOL_ACTIVETHREADCOUNT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->activeThreadCount () );
+      RINT( obj->activeThreadCount() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -271,7 +285,7 @@ void reserveThread()
 */
 HB_FUNC_STATIC( QTHREADPOOL_RESERVETHREAD )
 {
-  QThreadPool * obj = (QThreadPool *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QThreadPool *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -279,12 +293,12 @@ HB_FUNC_STATIC( QTHREADPOOL_RESERVETHREAD )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->reserveThread ();
+      obj->reserveThread();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -297,7 +311,7 @@ void releaseThread()
 */
 HB_FUNC_STATIC( QTHREADPOOL_RELEASETHREAD )
 {
-  QThreadPool * obj = (QThreadPool *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QThreadPool *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -305,12 +319,12 @@ HB_FUNC_STATIC( QTHREADPOOL_RELEASETHREAD )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->releaseThread ();
+      obj->releaseThread();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -323,7 +337,7 @@ bool waitForDone(int msecs = -1)
 */
 HB_FUNC_STATIC( QTHREADPOOL_WAITFORDONE )
 {
-  QThreadPool * obj = (QThreadPool *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QThreadPool *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -331,12 +345,12 @@ HB_FUNC_STATIC( QTHREADPOOL_WAITFORDONE )
     if( ISBETWEEN(0,1) && ISOPTNUM(1) )
     {
 #endif
-      RBOOL( obj->waitForDone ( OPINT(1,-1) ) );
+      RBOOL( obj->waitForDone( OPINT(1,-1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -347,7 +361,8 @@ void clear()
 */
 HB_FUNC_STATIC( QTHREADPOOL_CLEAR )
 {
-  QThreadPool * obj = (QThreadPool *) _qt5xhb_itemGetPtrStackSelfItem();
+#if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
+  auto obj = (QThreadPool *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -355,17 +370,18 @@ HB_FUNC_STATIC( QTHREADPOOL_CLEAR )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->clear ();
+      obj->clear();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 
   hb_itemReturn( hb_stackSelfItem() );
+#endif
 }
 
 /*
@@ -374,17 +390,97 @@ static QThreadPool *globalInstance()
 HB_FUNC_STATIC( QTHREADPOOL_GLOBALINSTANCE )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(0) )
+  if( ISNUMPAR(0) )
   {
 #endif
-      QThreadPool * ptr = QThreadPool::globalInstance ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QTHREADPOOL" );
+    QThreadPool * ptr = QThreadPool::globalInstance();
+    Qt5xHb::createReturnQObjectClass( ptr, "QTHREADPOOL" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
+#endif
+}
+
+/*
+bool tryTake(QRunnable *runnable)
+*/
+HB_FUNC_STATIC( QTHREADPOOL_TRYTAKE )
+{
+#if (QT_VERSION >= QT_VERSION_CHECK(5,9,0))
+  auto obj = (QThreadPool *) Qt5xHb::itemGetPtrStackSelfItem();
+
+  if( obj != nullptr )
+  {
+#ifndef QT5XHB_DONT_CHECK_PARAMETERS
+    if( ISNUMPAR(1) && ISQRUNNABLE(1) )
+    {
+#endif
+      RBOOL( obj->tryTake( PQRUNNABLE(1) ) );
+#ifndef QT5XHB_DONT_CHECK_PARAMETERS
+    }
+    else
+    {
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    }
+#endif
+  }
+#endif
+}
+
+/*
+uint stackSize() const
+*/
+HB_FUNC_STATIC( QTHREADPOOL_STACKSIZE )
+{
+#if (QT_VERSION >= QT_VERSION_CHECK(5,10,0))
+  auto obj = (QThreadPool *) Qt5xHb::itemGetPtrStackSelfItem();
+
+  if( obj != nullptr )
+  {
+#ifndef QT5XHB_DONT_CHECK_PARAMETERS
+    if( ISNUMPAR(0) )
+    {
+#endif
+      RUINT( obj->stackSize() );
+#ifndef QT5XHB_DONT_CHECK_PARAMETERS
+    }
+    else
+    {
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    }
+#endif
+  }
+#endif
+}
+
+/*
+void setStackSize(uint stackSize)
+*/
+HB_FUNC_STATIC( QTHREADPOOL_SETSTACKSIZE )
+{
+#if (QT_VERSION >= QT_VERSION_CHECK(5,10,0))
+  auto obj = (QThreadPool *) Qt5xHb::itemGetPtrStackSelfItem();
+
+  if( obj != nullptr )
+  {
+#ifndef QT5XHB_DONT_CHECK_PARAMETERS
+    if( ISNUMPAR(1) && ISNUM(1) )
+    {
+#endif
+      obj->setStackSize( PUINT(1) );
+#ifndef QT5XHB_DONT_CHECK_PARAMETERS
+    }
+    else
+    {
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    }
+#endif
+  }
+
+  hb_itemReturn( hb_stackSelfItem() );
 #endif
 }
 

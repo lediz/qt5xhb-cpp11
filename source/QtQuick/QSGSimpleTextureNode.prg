@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -32,7 +32,7 @@ CLASS QSGSimpleTextureNode INHERIT QSGGeometryNode
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QSGSimpleTextureNode
+PROCEDURE destroyObject() CLASS QSGSimpleTextureNode
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -49,7 +49,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtQuick/QSGSimpleTextureNode>
@@ -62,25 +61,25 @@ HB_FUNC_STATIC( QSGSIMPLETEXTURENODE_NEW )
 {
   if( ISNUMPAR(0) )
   {
-    QSGSimpleTextureNode * o = new QSGSimpleTextureNode ();
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QSGSimpleTextureNode();
+    Qt5xHb::returnNewObject( obj, true );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QSGSIMPLETEXTURENODE_DELETE )
 {
-  QSGSimpleTextureNode * obj = (QSGSimpleTextureNode *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSGSimpleTextureNode *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -93,7 +92,7 @@ QSGTexture::Filtering filtering() const
 */
 HB_FUNC_STATIC( QSGSIMPLETEXTURENODE_FILTERING )
 {
-  QSGSimpleTextureNode * obj = (QSGSimpleTextureNode *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSGSimpleTextureNode *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -101,12 +100,12 @@ HB_FUNC_STATIC( QSGSIMPLETEXTURENODE_FILTERING )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->filtering () );
+      RENUM( obj->filtering() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -117,7 +116,7 @@ QRectF rect() const
 */
 HB_FUNC_STATIC( QSGSIMPLETEXTURENODE_RECT )
 {
-  QSGSimpleTextureNode * obj = (QSGSimpleTextureNode *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSGSimpleTextureNode *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -125,13 +124,13 @@ HB_FUNC_STATIC( QSGSIMPLETEXTURENODE_RECT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QRectF * ptr = new QRectF( obj->rect () );
-      _qt5xhb_createReturnClass ( ptr, "QRECTF", true );
+      auto ptr = new QRectF( obj->rect() );
+      Qt5xHb::createReturnClass( ptr, "QRECTF", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -142,7 +141,7 @@ void setFiltering(QSGTexture::Filtering filtering)
 */
 HB_FUNC_STATIC( QSGSIMPLETEXTURENODE_SETFILTERING )
 {
-  QSGSimpleTextureNode * obj = (QSGSimpleTextureNode *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSGSimpleTextureNode *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -150,12 +149,12 @@ HB_FUNC_STATIC( QSGSIMPLETEXTURENODE_SETFILTERING )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setFiltering ( (QSGTexture::Filtering) hb_parni(1) );
+      obj->setFiltering( (QSGTexture::Filtering) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -166,13 +165,13 @@ HB_FUNC_STATIC( QSGSIMPLETEXTURENODE_SETFILTERING )
 /*
 void setRect(const QRectF & r)
 */
-void QSGSimpleTextureNode_setRect1 ()
+void QSGSimpleTextureNode_setRect1()
 {
-  QSGSimpleTextureNode * obj = (QSGSimpleTextureNode *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSGSimpleTextureNode *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setRect ( *PQRECTF(1) );
+    obj->setRect( *PQRECTF(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -181,20 +180,22 @@ void QSGSimpleTextureNode_setRect1 ()
 /*
 void setRect(qreal x, qreal y, qreal w, qreal h)
 */
-void QSGSimpleTextureNode_setRect2 ()
+void QSGSimpleTextureNode_setRect2()
 {
-  QSGSimpleTextureNode * obj = (QSGSimpleTextureNode *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSGSimpleTextureNode *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setRect ( PQREAL(1), PQREAL(2), PQREAL(3), PQREAL(4) );
+    obj->setRect( PQREAL(1), PQREAL(2), PQREAL(3), PQREAL(4) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void setRect(const QRectF & r)
-//[2]void setRect(qreal x, qreal y, qreal w, qreal h)
+/*
+[1]void setRect(const QRectF & r)
+[2]void setRect(qreal x, qreal y, qreal w, qreal h)
+*/
 
 HB_FUNC_STATIC( QSGSIMPLETEXTURENODE_SETRECT )
 {
@@ -208,7 +209,7 @@ HB_FUNC_STATIC( QSGSIMPLETEXTURENODE_SETRECT )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -217,7 +218,7 @@ void setTexture(QSGTexture * texture)
 */
 HB_FUNC_STATIC( QSGSIMPLETEXTURENODE_SETTEXTURE )
 {
-  QSGSimpleTextureNode * obj = (QSGSimpleTextureNode *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSGSimpleTextureNode *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -225,12 +226,12 @@ HB_FUNC_STATIC( QSGSIMPLETEXTURENODE_SETTEXTURE )
     if( ISNUMPAR(1) && ISQSGTEXTURE(1) )
     {
 #endif
-      obj->setTexture ( PQSGTEXTURE(1) );
+      obj->setTexture( PQSGTEXTURE(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -243,7 +244,7 @@ QSGTexture * texture() const
 */
 HB_FUNC_STATIC( QSGSIMPLETEXTURENODE_TEXTURE )
 {
-  QSGSimpleTextureNode * obj = (QSGSimpleTextureNode *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSGSimpleTextureNode *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -251,13 +252,13 @@ HB_FUNC_STATIC( QSGSIMPLETEXTURENODE_TEXTURE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSGTexture * ptr = obj->texture ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QSGTEXTURE" );
+      QSGTexture * ptr = obj->texture();
+      Qt5xHb::createReturnQObjectClass( ptr, "QSGTEXTURE" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

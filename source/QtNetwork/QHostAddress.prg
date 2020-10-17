@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -51,7 +51,7 @@ CLASS QHostAddress
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QHostAddress
+PROCEDURE destroyObject() CLASS QHostAddress
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -68,7 +68,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtNetwork/QHostAddress>
@@ -79,8 +78,8 @@ QHostAddress()
 */
 HB_FUNC_STATIC( QHOSTADDRESS_NEW1 )
 {
-  QHostAddress * o = new QHostAddress ();
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QHostAddress();
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
@@ -88,8 +87,8 @@ explicit QHostAddress(quint32 ip4Addr)
 */
 HB_FUNC_STATIC( QHOSTADDRESS_NEW2 )
 {
-  QHostAddress * o = new QHostAddress ( PQUINT32(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QHostAddress( PQUINT32(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
@@ -113,8 +112,8 @@ explicit QHostAddress(const QString &address)
 */
 HB_FUNC_STATIC( QHOSTADDRESS_NEW7 )
 {
-  QHostAddress * o = new QHostAddress ( PQSTRING(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QHostAddress( PQSTRING(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
@@ -122,8 +121,8 @@ QHostAddress(const QHostAddress &copy)
 */
 HB_FUNC_STATIC( QHOSTADDRESS_NEW8 )
 {
-  QHostAddress * o = new QHostAddress ( *PQHOSTADDRESS(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QHostAddress( *PQHOSTADDRESS(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
@@ -131,19 +130,21 @@ QHostAddress(SpecialAddress address)
 */
 HB_FUNC_STATIC( QHOSTADDRESS_NEW9 )
 {
-  QHostAddress * o = new QHostAddress ( (QHostAddress::SpecialAddress) hb_parni(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QHostAddress( (QHostAddress::SpecialAddress) hb_parni(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
-//[1]QHostAddress()
-//[2]explicit QHostAddress(quint32 ip4Addr)
-//[3]explicit QHostAddress(quint8 *ip6Addr)
-//[4]explicit QHostAddress(const quint8 *ip6Addr)
-//[5]explicit QHostAddress(const Q_IPV6ADDR &ip6Addr)
-//[6]explicit QHostAddress(const sockaddr *address)
-//[7]explicit QHostAddress(const QString &address)
-//[8]QHostAddress(const QHostAddress &copy)
-//[9]QHostAddress(SpecialAddress address)
+/*
+[1]QHostAddress()
+[2]explicit QHostAddress(quint32 ip4Addr)
+[3]explicit QHostAddress(quint8 *ip6Addr)
+[4]explicit QHostAddress(const quint8 *ip6Addr)
+[5]explicit QHostAddress(const Q_IPV6ADDR &ip6Addr)
+[6]explicit QHostAddress(const sockaddr *address)
+[7]explicit QHostAddress(const QString &address)
+[8]QHostAddress(const QHostAddress &copy)
+[9]QHostAddress(SpecialAddress address)
+*/
 
 HB_FUNC_STATIC( QHOSTADDRESS_NEW )
 {
@@ -165,7 +166,7 @@ HB_FUNC_STATIC( QHOSTADDRESS_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -174,14 +175,14 @@ HB_FUNC_STATIC( QHOSTADDRESS_NEW )
 */
 HB_FUNC_STATIC( QHOSTADDRESS_DELETE )
 {
-  QHostAddress * obj = (QHostAddress *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostAddress *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -195,7 +196,7 @@ void swap(QHostAddress &other) Q_DECL_NOTHROW
 HB_FUNC_STATIC( QHOSTADDRESS_SWAP )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,6,0))
-  QHostAddress * obj = (QHostAddress *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostAddress *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -203,12 +204,12 @@ HB_FUNC_STATIC( QHOSTADDRESS_SWAP )
     if( ISNUMPAR(1) && ISQHOSTADDRESS(1) )
     {
 #endif
-      obj->swap ( *PQHOSTADDRESS(1) );
+      obj->swap( *PQHOSTADDRESS(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -220,13 +221,13 @@ HB_FUNC_STATIC( QHOSTADDRESS_SWAP )
 /*
 void setAddress(quint32 ip4Addr)
 */
-void QHostAddress_setAddress1 ()
+void QHostAddress_setAddress1()
 {
-  QHostAddress * obj = (QHostAddress *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostAddress *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setAddress ( PQUINT32(1) );
+    obj->setAddress( PQUINT32(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -251,40 +252,42 @@ void setAddress(const sockaddr *address)
 /*
 bool setAddress(const QString &address)
 */
-void QHostAddress_setAddress6 ()
+void QHostAddress_setAddress6()
 {
-  QHostAddress * obj = (QHostAddress *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostAddress *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RBOOL( obj->setAddress ( PQSTRING(1) ) );
+    RBOOL( obj->setAddress( PQSTRING(1) ) );
   }
 }
 
 /*
 void setAddress(SpecialAddress address)
 */
-void QHostAddress_setAddress7 ()
+void QHostAddress_setAddress7()
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,8,0))
-  QHostAddress * obj = (QHostAddress *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostAddress *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setAddress ( (QHostAddress::SpecialAddress) hb_parni(1) );
+    obj->setAddress( (QHostAddress::SpecialAddress) hb_parni(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 #endif
 }
 
-//[1]void setAddress(quint32 ip4Addr)
-//[2]void setAddress(quint8 *ip6Addr)
-//[3]void setAddress(const quint8 *ip6Addr)
-//[4]void setAddress(const Q_IPV6ADDR &ip6Addr)
-//[5]void setAddress(const sockaddr *address)
-//[6]bool setAddress(const QString &address)
-//[7]void setAddress(SpecialAddress address)
+/*
+[1]void setAddress(quint32 ip4Addr)
+[2]void setAddress(quint8 *ip6Addr)
+[3]void setAddress(const quint8 *ip6Addr)
+[4]void setAddress(const Q_IPV6ADDR &ip6Addr)
+[5]void setAddress(const sockaddr *address)
+[6]bool setAddress(const QString &address)
+[7]void setAddress(SpecialAddress address)
+*/
 
 HB_FUNC_STATIC( QHOSTADDRESS_SETADDRESS )
 {
@@ -298,7 +301,7 @@ HB_FUNC_STATIC( QHOSTADDRESS_SETADDRESS )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -307,7 +310,7 @@ QAbstractSocket::NetworkLayerProtocol protocol() const
 */
 HB_FUNC_STATIC( QHOSTADDRESS_PROTOCOL )
 {
-  QHostAddress * obj = (QHostAddress *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostAddress *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -315,12 +318,12 @@ HB_FUNC_STATIC( QHOSTADDRESS_PROTOCOL )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->protocol () );
+      RENUM( obj->protocol() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -329,35 +332,37 @@ HB_FUNC_STATIC( QHOSTADDRESS_PROTOCOL )
 /*
 quint32 toIPv4Address() const
 */
-void QHostAddress_toIPv4Address1 ()
+void QHostAddress_toIPv4Address1()
 {
-  QHostAddress * obj = (QHostAddress *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostAddress *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RQUINT32( obj->toIPv4Address () );
+    RQUINT32( obj->toIPv4Address() );
   }
 }
 
 /*
 quint32 toIPv4Address(bool *ok) const
 */
-void QHostAddress_toIPv4Address2 ()
+void QHostAddress_toIPv4Address2()
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,5,0))
-  QHostAddress * obj = (QHostAddress *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostAddress *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-       bool par1;
-      RQUINT32( obj->toIPv4Address ( &par1 ) );
-       hb_storl( par1, 1 );
+    bool par1;
+    RQUINT32( obj->toIPv4Address( &par1 ) );
+    hb_storl( par1, 1 );
   }
 #endif
 }
 
-//[1]quint32 toIPv4Address() const
-//[2]quint32 toIPv4Address(bool *ok) const
+/*
+[1]quint32 toIPv4Address() const
+[2]quint32 toIPv4Address(bool *ok) const
+*/
 
 HB_FUNC_STATIC( QHOSTADDRESS_TOIPV4ADDRESS )
 {
@@ -371,7 +376,7 @@ HB_FUNC_STATIC( QHOSTADDRESS_TOIPV4ADDRESS )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -384,7 +389,7 @@ QString toString() const
 */
 HB_FUNC_STATIC( QHOSTADDRESS_TOSTRING )
 {
-  QHostAddress * obj = (QHostAddress *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostAddress *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -392,12 +397,12 @@ HB_FUNC_STATIC( QHOSTADDRESS_TOSTRING )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->toString () );
+      RQSTRING( obj->toString() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -408,7 +413,7 @@ QString scopeId() const
 */
 HB_FUNC_STATIC( QHOSTADDRESS_SCOPEID )
 {
-  QHostAddress * obj = (QHostAddress *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostAddress *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -416,12 +421,12 @@ HB_FUNC_STATIC( QHOSTADDRESS_SCOPEID )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->scopeId () );
+      RQSTRING( obj->scopeId() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -432,7 +437,7 @@ void setScopeId(const QString &id)
 */
 HB_FUNC_STATIC( QHOSTADDRESS_SETSCOPEID )
 {
-  QHostAddress * obj = (QHostAddress *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostAddress *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -440,12 +445,12 @@ HB_FUNC_STATIC( QHOSTADDRESS_SETSCOPEID )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->setScopeId ( PQSTRING(1) );
+      obj->setScopeId( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -459,7 +464,7 @@ bool isEqual(const QHostAddress &address, ConversionMode mode = TolerantConversi
 HB_FUNC_STATIC( QHOSTADDRESS_ISEQUAL )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,8,0))
-  QHostAddress * obj = (QHostAddress *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostAddress *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -467,12 +472,12 @@ HB_FUNC_STATIC( QHOSTADDRESS_ISEQUAL )
     if( ISBETWEEN(1,2) && ISQHOSTADDRESS(1) && ISOPTNUM(2) )
     {
 #endif
-      RBOOL( obj->isEqual ( *PQHOSTADDRESS(1), ISNIL(2)? (QHostAddress::ConversionMode) QHostAddress::TolerantConversion : (QHostAddress::ConversionMode) hb_parni(2) ) );
+      RBOOL( obj->isEqual( *PQHOSTADDRESS(1), ISNIL(2)? (QHostAddress::ConversionMode) QHostAddress::TolerantConversion : (QHostAddress::ConversionMode) hb_parni(2) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -484,7 +489,7 @@ bool isNull() const
 */
 HB_FUNC_STATIC( QHOSTADDRESS_ISNULL )
 {
-  QHostAddress * obj = (QHostAddress *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostAddress *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -492,12 +497,12 @@ HB_FUNC_STATIC( QHOSTADDRESS_ISNULL )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isNull () );
+      RBOOL( obj->isNull() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -508,7 +513,7 @@ void clear()
 */
 HB_FUNC_STATIC( QHOSTADDRESS_CLEAR )
 {
-  QHostAddress * obj = (QHostAddress *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostAddress *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -516,12 +521,12 @@ HB_FUNC_STATIC( QHOSTADDRESS_CLEAR )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->clear ();
+      obj->clear();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -532,13 +537,13 @@ HB_FUNC_STATIC( QHOSTADDRESS_CLEAR )
 /*
 bool isInSubnet(const QHostAddress &subnet, int netmask) const
 */
-void QHostAddress_isInSubnet1 ()
+void QHostAddress_isInSubnet1()
 {
-  QHostAddress * obj = (QHostAddress *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostAddress *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RBOOL( obj->isInSubnet ( *PQHOSTADDRESS(1), PINT(2) ) );
+    RBOOL( obj->isInSubnet( *PQHOSTADDRESS(1), PINT(2) ) );
   }
 }
 
@@ -546,8 +551,10 @@ void QHostAddress_isInSubnet1 ()
 bool isInSubnet(const QPair<QHostAddress, int> &subnet) const
 */
 
-//[1]bool isInSubnet(const QHostAddress &subnet, int netmask) const
-//[2]bool isInSubnet(const QPair<QHostAddress, int> &subnet) const
+/*
+[1]bool isInSubnet(const QHostAddress &subnet, int netmask) const
+[2]bool isInSubnet(const QPair<QHostAddress, int> &subnet) const
+*/
 
 HB_FUNC_STATIC( QHOSTADDRESS_ISINSUBNET )
 {
@@ -557,7 +564,7 @@ HB_FUNC_STATIC( QHOSTADDRESS_ISINSUBNET )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -566,7 +573,7 @@ bool isLoopback() const
 */
 HB_FUNC_STATIC( QHOSTADDRESS_ISLOOPBACK )
 {
-  QHostAddress * obj = (QHostAddress *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostAddress *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -574,12 +581,12 @@ HB_FUNC_STATIC( QHOSTADDRESS_ISLOOPBACK )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isLoopback () );
+      RBOOL( obj->isLoopback() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -591,7 +598,7 @@ bool isMulticast() const
 HB_FUNC_STATIC( QHOSTADDRESS_ISMULTICAST )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,6,0))
-  QHostAddress * obj = (QHostAddress *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostAddress *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -599,12 +606,12 @@ HB_FUNC_STATIC( QHOSTADDRESS_ISMULTICAST )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isMulticast () );
+      RBOOL( obj->isMulticast() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -621,25 +628,25 @@ HB_FUNC_STATIC( QHOSTADDRESS_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -666,13 +673,13 @@ HB_FUNC_STATIC( QHOSTADDRESS_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

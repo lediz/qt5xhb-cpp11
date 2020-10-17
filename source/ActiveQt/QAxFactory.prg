@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -47,7 +47,7 @@ CLASS QAxFactory INHERIT QObject
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QAxFactory
+PROCEDURE destroyObject() CLASS QAxFactory
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -64,7 +64,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <ActiveQt/QAxFactory>
@@ -72,14 +73,16 @@ RETURN
 
 HB_FUNC_STATIC( QAXFACTORY_DELETE )
 {
-  QAxFactory * obj = (QAxFactory *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAxFactory *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -88,11 +91,11 @@ HB_FUNC_STATIC( QAXFACTORY_DELETE )
 }
 
 /*
-virtual QUuid appID () const
+virtual QUuid appID() const
 */
 HB_FUNC_STATIC( QAXFACTORY_APPID )
 {
-  QAxFactory * obj = (QAxFactory *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAxFactory *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -100,24 +103,24 @@ HB_FUNC_STATIC( QAXFACTORY_APPID )
     if( ISNUMPAR(0) )
     {
 #endif
-      QUuid * ptr = new QUuid( obj->appID () );
-      _qt5xhb_createReturnClass ( ptr, "QUUID", true );
+      auto ptr = new QUuid( obj->appID() );
+      Qt5xHb::createReturnClass( ptr, "QUUID", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual QUuid classID ( const QString & key ) const
+virtual QUuid classID( const QString & key ) const
 */
 HB_FUNC_STATIC( QAXFACTORY_CLASSID )
 {
-  QAxFactory * obj = (QAxFactory *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAxFactory *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -125,24 +128,24 @@ HB_FUNC_STATIC( QAXFACTORY_CLASSID )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      QUuid * ptr = new QUuid( obj->classID ( PQSTRING(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QUUID", true );
+      auto ptr = new QUuid( obj->classID( PQSTRING(1) ) );
+      Qt5xHb::createReturnClass( ptr, "QUUID", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual QObject * createObject ( const QString & key ) = 0
+virtual QObject * createObject( const QString & key ) = 0
 */
 HB_FUNC_STATIC( QAXFACTORY_CREATEOBJECT )
 {
-  QAxFactory * obj = (QAxFactory *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAxFactory *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -150,24 +153,24 @@ HB_FUNC_STATIC( QAXFACTORY_CREATEOBJECT )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      QObject * ptr = obj->createObject ( PQSTRING(1) );
-      _qt5xhb_createReturnQObjectClass ( ptr, "QOBJECT" );
+      QObject * ptr = obj->createObject( PQSTRING(1) );
+      Qt5xHb::createReturnQObjectClass( ptr, "QOBJECT" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual QUuid eventsID ( const QString & key ) const
+virtual QUuid eventsID( const QString & key ) const
 */
 HB_FUNC_STATIC( QAXFACTORY_EVENTSID )
 {
-  QAxFactory * obj = (QAxFactory *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAxFactory *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -175,24 +178,24 @@ HB_FUNC_STATIC( QAXFACTORY_EVENTSID )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      QUuid * ptr = new QUuid( obj->eventsID ( PQSTRING(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QUUID", true );
+      auto ptr = new QUuid( obj->eventsID( PQSTRING(1) ) );
+      Qt5xHb::createReturnClass( ptr, "QUUID", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual QString exposeToSuperClass ( const QString & key ) const
+virtual QString exposeToSuperClass( const QString & key ) const
 */
 HB_FUNC_STATIC( QAXFACTORY_EXPOSETOSUPERCLASS )
 {
-  QAxFactory * obj = (QAxFactory *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAxFactory *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -200,23 +203,23 @@ HB_FUNC_STATIC( QAXFACTORY_EXPOSETOSUPERCLASS )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      RQSTRING( obj->exposeToSuperClass ( PQSTRING(1) ) );
+      RQSTRING( obj->exposeToSuperClass( PQSTRING(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual QStringList featureList () const = 0
+virtual QStringList featureList() const = 0
 */
 HB_FUNC_STATIC( QAXFACTORY_FEATURELIST )
 {
-  QAxFactory * obj = (QAxFactory *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAxFactory *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -224,23 +227,23 @@ HB_FUNC_STATIC( QAXFACTORY_FEATURELIST )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRINGLIST( obj->featureList () );
+      RQSTRINGLIST( obj->featureList() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual bool hasStockEvents ( const QString & key ) const
+virtual bool hasStockEvents( const QString & key ) const
 */
 HB_FUNC_STATIC( QAXFACTORY_HASSTOCKEVENTS )
 {
-  QAxFactory * obj = (QAxFactory *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAxFactory *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -248,23 +251,23 @@ HB_FUNC_STATIC( QAXFACTORY_HASSTOCKEVENTS )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      RBOOL( obj->hasStockEvents ( PQSTRING(1) ) );
+      RBOOL( obj->hasStockEvents( PQSTRING(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual QUuid interfaceID ( const QString & key ) const
+virtual QUuid interfaceID( const QString & key ) const
 */
 HB_FUNC_STATIC( QAXFACTORY_INTERFACEID )
 {
-  QAxFactory * obj = (QAxFactory *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAxFactory *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -272,24 +275,24 @@ HB_FUNC_STATIC( QAXFACTORY_INTERFACEID )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      QUuid * ptr = new QUuid( obj->interfaceID ( PQSTRING(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QUUID", true );
+      auto ptr = new QUuid( obj->interfaceID( PQSTRING(1) ) );
+      Qt5xHb::createReturnClass( ptr, "QUUID", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual bool isService () const
+virtual bool isService() const
 */
 HB_FUNC_STATIC( QAXFACTORY_ISSERVICE )
 {
-  QAxFactory * obj = (QAxFactory *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAxFactory *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -297,23 +300,23 @@ HB_FUNC_STATIC( QAXFACTORY_ISSERVICE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isService () );
+      RBOOL( obj->isService() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual const QMetaObject * metaObject ( const QString & key ) const = 0
+virtual const QMetaObject * metaObject( const QString & key ) const = 0
 */
 HB_FUNC_STATIC( QAXFACTORY_METAOBJECT )
 {
-  QAxFactory * obj = (QAxFactory *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAxFactory *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -321,24 +324,24 @@ HB_FUNC_STATIC( QAXFACTORY_METAOBJECT )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      const QMetaObject * ptr = obj->metaObject ( PQSTRING(1) );
-      _qt5xhb_createReturnClass ( ptr, "QMETAOBJECT", false );
+      const QMetaObject * ptr = obj->metaObject( PQSTRING(1) );
+      Qt5xHb::createReturnClass( ptr, "QMETAOBJECT", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual void registerClass ( const QString & key, QSettings * settings ) const
+virtual void registerClass( const QString & key, QSettings * settings ) const
 */
 HB_FUNC_STATIC( QAXFACTORY_REGISTERCLASS )
 {
-  QAxFactory * obj = (QAxFactory *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAxFactory *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -346,12 +349,12 @@ HB_FUNC_STATIC( QAXFACTORY_REGISTERCLASS )
     if( ISNUMPAR(2) && ISCHAR(1) && ISQSETTINGS(2) )
     {
 #endif
-      obj->registerClass ( PQSTRING(1), PQSETTINGS(2) );
+      obj->registerClass( PQSTRING(1), PQSETTINGS(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -360,11 +363,11 @@ HB_FUNC_STATIC( QAXFACTORY_REGISTERCLASS )
 }
 
 /*
-virtual bool stayTopLevel ( const QString & key ) const
+virtual bool stayTopLevel( const QString & key ) const
 */
 HB_FUNC_STATIC( QAXFACTORY_STAYTOPLEVEL )
 {
-  QAxFactory * obj = (QAxFactory *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAxFactory *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -372,23 +375,23 @@ HB_FUNC_STATIC( QAXFACTORY_STAYTOPLEVEL )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      RBOOL( obj->stayTopLevel ( PQSTRING(1) ) );
+      RBOOL( obj->stayTopLevel( PQSTRING(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual QUuid typeLibID () const
+virtual QUuid typeLibID() const
 */
 HB_FUNC_STATIC( QAXFACTORY_TYPELIBID )
 {
-  QAxFactory * obj = (QAxFactory *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAxFactory *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -396,24 +399,24 @@ HB_FUNC_STATIC( QAXFACTORY_TYPELIBID )
     if( ISNUMPAR(0) )
     {
 #endif
-      QUuid * ptr = new QUuid( obj->typeLibID () );
-      _qt5xhb_createReturnClass ( ptr, "QUUID", true );
+      auto ptr = new QUuid( obj->typeLibID() );
+      Qt5xHb::createReturnClass( ptr, "QUUID", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-virtual void unregisterClass ( const QString & key, QSettings * settings ) const
+virtual void unregisterClass( const QString & key, QSettings * settings ) const
 */
 HB_FUNC_STATIC( QAXFACTORY_UNREGISTERCLASS )
 {
-  QAxFactory * obj = (QAxFactory *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAxFactory *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -421,12 +424,12 @@ HB_FUNC_STATIC( QAXFACTORY_UNREGISTERCLASS )
     if( ISNUMPAR(2) && ISCHAR(1) && ISQSETTINGS(2) )
     {
 #endif
-      obj->unregisterClass ( PQSTRING(1), PQSETTINGS(2) );
+      obj->unregisterClass( PQSTRING(1), PQSETTINGS(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -435,11 +438,11 @@ HB_FUNC_STATIC( QAXFACTORY_UNREGISTERCLASS )
 }
 
 /*
-virtual bool validateLicenseKey ( const QString & key, const QString & licenseKey ) const
+virtual bool validateLicenseKey( const QString & key, const QString & licenseKey ) const
 */
 HB_FUNC_STATIC( QAXFACTORY_VALIDATELICENSEKEY )
 {
-  QAxFactory * obj = (QAxFactory *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAxFactory *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -447,127 +450,127 @@ HB_FUNC_STATIC( QAXFACTORY_VALIDATELICENSEKEY )
     if( ISNUMPAR(2) && ISCHAR(1) && ISCHAR(2) )
     {
 #endif
-      RBOOL( obj->validateLicenseKey ( PQSTRING(1), PQSTRING(2) ) );
+      RBOOL( obj->validateLicenseKey( PQSTRING(1), PQSTRING(2) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-static bool isServer ()
+static bool isServer()
 */
 HB_FUNC_STATIC( QAXFACTORY_ISSERVER )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(0) )
+  if( ISNUMPAR(0) )
   {
 #endif
-      RBOOL( QAxFactory::isServer () );
+    RBOOL( QAxFactory::isServer() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
 
 /*
-static bool registerActiveObject ( QObject * object )
+static bool registerActiveObject( QObject * object )
 */
 HB_FUNC_STATIC( QAXFACTORY_REGISTERACTIVEOBJECT )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISQOBJECT(1) )
+  if( ISNUMPAR(1) && ISQOBJECT(1) )
   {
 #endif
-      RBOOL( QAxFactory::registerActiveObject ( PQOBJECT(1) ) );
+    RBOOL( QAxFactory::registerActiveObject( PQOBJECT(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
 
 /*
-static QString serverDirPath ()
+static QString serverDirPath()
 */
 HB_FUNC_STATIC( QAXFACTORY_SERVERDIRPATH )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(0) )
+  if( ISNUMPAR(0) )
   {
 #endif
-      RQSTRING( QAxFactory::serverDirPath () );
+    RQSTRING( QAxFactory::serverDirPath() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
 
 /*
-static QString serverFilePath ()
+static QString serverFilePath()
 */
 HB_FUNC_STATIC( QAXFACTORY_SERVERFILEPATH )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(0) )
+  if( ISNUMPAR(0) )
   {
 #endif
-      RQSTRING( QAxFactory::serverFilePath () );
+    RQSTRING( QAxFactory::serverFilePath() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
 
 /*
-static bool startServer ( ServerType type = MultipleInstances )
+static bool startServer( QAxFactory::ServerType type = QAxFactory::MultipleInstances )
 */
 HB_FUNC_STATIC( QAXFACTORY_STARTSERVER )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISBETWEEN(0,1) && ISOPTNUM(1) )
+  if( ISBETWEEN(0,1) && (ISNUM(1)||ISNIL(1)) )
   {
 #endif
-      RBOOL( QAxFactory::startServer ( ISNIL(1)? (QAxFactory::ServerType) QAxFactory::MultipleInstances : (QAxFactory::ServerType) hb_parni(1) ) );
+    RBOOL( QAxFactory::startServer( ISNIL(1)? (QAxFactory::ServerType) QAxFactory::MultipleInstances : (QAxFactory::ServerType) hb_parni(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
 
 /*
-static bool stopServer ()
+static bool stopServer()
 */
 HB_FUNC_STATIC( QAXFACTORY_STOPSERVER )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(0) )
+  if( ISNUMPAR(0) )
   {
 #endif
-      RBOOL( QAxFactory::stopServer () );
+    RBOOL( QAxFactory::stopServer() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }

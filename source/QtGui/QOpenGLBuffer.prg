@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -39,7 +39,7 @@ CLASS QOpenGLBuffer INHERIT QObject
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QOpenGLBuffer
+PROCEDURE destroyObject() CLASS QOpenGLBuffer
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -56,7 +56,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtGui/QOpenGLBuffer>
@@ -65,33 +64,35 @@ RETURN
 /*
 QOpenGLBuffer()
 */
-void QOpenGLBuffer_new1 ()
+void QOpenGLBuffer_new1()
 {
-  QOpenGLBuffer * o = new QOpenGLBuffer ();
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QOpenGLBuffer();
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QOpenGLBuffer(QOpenGLBuffer::Type type)
 */
-void QOpenGLBuffer_new2 ()
+void QOpenGLBuffer_new2()
 {
-  QOpenGLBuffer * o = new QOpenGLBuffer ( (QOpenGLBuffer::Type) hb_parni(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QOpenGLBuffer( (QOpenGLBuffer::Type) hb_parni(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QOpenGLBuffer(const QOpenGLBuffer & other)
 */
-void QOpenGLBuffer_new3 ()
+void QOpenGLBuffer_new3()
 {
-  QOpenGLBuffer * o = new QOpenGLBuffer ( *PQOPENGLBUFFER(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QOpenGLBuffer( *PQOPENGLBUFFER(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
-//[1]QOpenGLBuffer()
-//[2]QOpenGLBuffer(QOpenGLBuffer::Type type)
-//[3]QOpenGLBuffer(const QOpenGLBuffer & other)
+/*
+[1]QOpenGLBuffer()
+[2]QOpenGLBuffer(QOpenGLBuffer::Type type)
+[3]QOpenGLBuffer(const QOpenGLBuffer & other)
+*/
 
 HB_FUNC_STATIC( QOPENGLBUFFER_NEW )
 {
@@ -109,20 +110,20 @@ HB_FUNC_STATIC( QOPENGLBUFFER_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QOPENGLBUFFER_DELETE )
 {
-  QOpenGLBuffer * obj = (QOpenGLBuffer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLBuffer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -133,13 +134,13 @@ HB_FUNC_STATIC( QOPENGLBUFFER_DELETE )
 /*
 void allocate(const void * data, int count)
 */
-void QOpenGLBuffer_allocate1 ()
+void QOpenGLBuffer_allocate1()
 {
-  QOpenGLBuffer * obj = (QOpenGLBuffer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLBuffer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->allocate ( (const void *) hb_parptr(1), PINT(2) );
+    obj->allocate( (const void *) hb_parptr(1), PINT(2) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -148,20 +149,22 @@ void QOpenGLBuffer_allocate1 ()
 /*
 void allocate(int count)
 */
-void QOpenGLBuffer_allocate2 ()
+void QOpenGLBuffer_allocate2()
 {
-  QOpenGLBuffer * obj = (QOpenGLBuffer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLBuffer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->allocate ( PINT(1) );
+    obj->allocate( PINT(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void allocate(const void * data, int count)
-//[2]void allocate(int count)
+/*
+[1]void allocate(const void * data, int count)
+[2]void allocate(int count)
+*/
 
 HB_FUNC_STATIC( QOPENGLBUFFER_ALLOCATE )
 {
@@ -175,7 +178,7 @@ HB_FUNC_STATIC( QOPENGLBUFFER_ALLOCATE )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -184,7 +187,7 @@ bool bind()
 */
 HB_FUNC_STATIC( QOPENGLBUFFER_BIND )
 {
-  QOpenGLBuffer * obj = (QOpenGLBuffer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLBuffer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -192,12 +195,12 @@ HB_FUNC_STATIC( QOPENGLBUFFER_BIND )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->bind () );
+      RBOOL( obj->bind() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -208,7 +211,7 @@ GLuint bufferId() const
 */
 HB_FUNC_STATIC( QOPENGLBUFFER_BUFFERID )
 {
-  QOpenGLBuffer * obj = (QOpenGLBuffer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLBuffer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -216,12 +219,12 @@ HB_FUNC_STATIC( QOPENGLBUFFER_BUFFERID )
     if( ISNUMPAR(0) )
     {
 #endif
-      RGLUINT( obj->bufferId () );
+      RGLUINT( obj->bufferId() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -232,7 +235,7 @@ bool create()
 */
 HB_FUNC_STATIC( QOPENGLBUFFER_CREATE )
 {
-  QOpenGLBuffer * obj = (QOpenGLBuffer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLBuffer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -240,12 +243,12 @@ HB_FUNC_STATIC( QOPENGLBUFFER_CREATE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->create () );
+      RBOOL( obj->create() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -256,7 +259,7 @@ void destroy()
 */
 HB_FUNC_STATIC( QOPENGLBUFFER_DESTROY )
 {
-  QOpenGLBuffer * obj = (QOpenGLBuffer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLBuffer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -264,12 +267,12 @@ HB_FUNC_STATIC( QOPENGLBUFFER_DESTROY )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->destroy ();
+      obj->destroy();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -282,7 +285,7 @@ bool isCreated() const
 */
 HB_FUNC_STATIC( QOPENGLBUFFER_ISCREATED )
 {
-  QOpenGLBuffer * obj = (QOpenGLBuffer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLBuffer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -290,12 +293,12 @@ HB_FUNC_STATIC( QOPENGLBUFFER_ISCREATED )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isCreated () );
+      RBOOL( obj->isCreated() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -306,7 +309,7 @@ void * map(QOpenGLBuffer::Access access)
 */
 HB_FUNC_STATIC( QOPENGLBUFFER_MAP )
 {
-  QOpenGLBuffer * obj = (QOpenGLBuffer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLBuffer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -314,12 +317,12 @@ HB_FUNC_STATIC( QOPENGLBUFFER_MAP )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      hb_retptr( (void *) obj->map ( (QOpenGLBuffer::Access) hb_parni(1) ) );
+      hb_retptr( (void *) obj->map( (QOpenGLBuffer::Access) hb_parni(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -330,7 +333,7 @@ bool read(int offset, void * data, int count)
 */
 HB_FUNC_STATIC( QOPENGLBUFFER_READ )
 {
-  QOpenGLBuffer * obj = (QOpenGLBuffer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLBuffer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -338,12 +341,12 @@ HB_FUNC_STATIC( QOPENGLBUFFER_READ )
     if( ISNUMPAR(3) && ISNUM(1) && ISPOINTER(2) && ISNUM(3) )
     {
 #endif
-      RBOOL( obj->read ( PINT(1), (void *) hb_parptr(2), PINT(3) ) );
+      RBOOL( obj->read( PINT(1), (void *) hb_parptr(2), PINT(3) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -352,13 +355,13 @@ HB_FUNC_STATIC( QOPENGLBUFFER_READ )
 /*
 void release()
 */
-void QOpenGLBuffer_release1 ()
+void QOpenGLBuffer_release1()
 {
-  QOpenGLBuffer * obj = (QOpenGLBuffer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLBuffer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->release ();
+    obj->release();
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -367,16 +370,17 @@ void QOpenGLBuffer_release1 ()
 /*
 static void release(QOpenGLBuffer::Type type)
 */
-void QOpenGLBuffer_release2 ()
+void QOpenGLBuffer_release2()
 {
-
-      QOpenGLBuffer::release ( (QOpenGLBuffer::Type) hb_parni(1) );
+  QOpenGLBuffer::release( (QOpenGLBuffer::Type) hb_parni(1) );
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void release()
-//[2]void release(QOpenGLBuffer::Type type)
+/*
+[1]void release()
+[2]void release(QOpenGLBuffer::Type type)
+*/
 
 HB_FUNC_STATIC( QOPENGLBUFFER_RELEASE )
 {
@@ -390,7 +394,7 @@ HB_FUNC_STATIC( QOPENGLBUFFER_RELEASE )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -399,7 +403,7 @@ void setUsagePattern(QOpenGLBuffer::UsagePattern value)
 */
 HB_FUNC_STATIC( QOPENGLBUFFER_SETUSAGEPATTERN )
 {
-  QOpenGLBuffer * obj = (QOpenGLBuffer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLBuffer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -407,12 +411,12 @@ HB_FUNC_STATIC( QOPENGLBUFFER_SETUSAGEPATTERN )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setUsagePattern ( (QOpenGLBuffer::UsagePattern) hb_parni(1) );
+      obj->setUsagePattern( (QOpenGLBuffer::UsagePattern) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -425,7 +429,7 @@ int size() const
 */
 HB_FUNC_STATIC( QOPENGLBUFFER_SIZE )
 {
-  QOpenGLBuffer * obj = (QOpenGLBuffer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLBuffer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -433,12 +437,12 @@ HB_FUNC_STATIC( QOPENGLBUFFER_SIZE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->size () );
+      RINT( obj->size() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -449,7 +453,7 @@ QOpenGLBuffer::Type type() const
 */
 HB_FUNC_STATIC( QOPENGLBUFFER_TYPE )
 {
-  QOpenGLBuffer * obj = (QOpenGLBuffer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLBuffer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -457,12 +461,12 @@ HB_FUNC_STATIC( QOPENGLBUFFER_TYPE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->type () );
+      RENUM( obj->type() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -473,7 +477,7 @@ bool unmap()
 */
 HB_FUNC_STATIC( QOPENGLBUFFER_UNMAP )
 {
-  QOpenGLBuffer * obj = (QOpenGLBuffer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLBuffer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -481,12 +485,12 @@ HB_FUNC_STATIC( QOPENGLBUFFER_UNMAP )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->unmap () );
+      RBOOL( obj->unmap() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -497,7 +501,7 @@ QOpenGLBuffer::UsagePattern usagePattern() const
 */
 HB_FUNC_STATIC( QOPENGLBUFFER_USAGEPATTERN )
 {
-  QOpenGLBuffer * obj = (QOpenGLBuffer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLBuffer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -505,12 +509,12 @@ HB_FUNC_STATIC( QOPENGLBUFFER_USAGEPATTERN )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->usagePattern () );
+      RENUM( obj->usagePattern() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -521,7 +525,7 @@ void write(int offset, const void * data, int count)
 */
 HB_FUNC_STATIC( QOPENGLBUFFER_WRITE )
 {
-  QOpenGLBuffer * obj = (QOpenGLBuffer *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLBuffer *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -529,12 +533,12 @@ HB_FUNC_STATIC( QOPENGLBUFFER_WRITE )
     if( ISNUMPAR(3) && ISNUM(1) && ISPOINTER(2) && ISNUM(3) )
     {
 #endif
-      obj->write ( PINT(1), (const void *) hb_parptr(2), PINT(3) );
+      obj->write( PINT(1), (const void *) hb_parptr(2), PINT(3) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

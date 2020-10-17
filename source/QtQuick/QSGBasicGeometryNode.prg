@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -26,7 +26,7 @@ CLASS QSGBasicGeometryNode INHERIT QSGNode
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QSGBasicGeometryNode
+PROCEDURE destroyObject() CLASS QSGBasicGeometryNode
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -43,7 +43,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtQuick/QSGBasicGeometryNode>
@@ -51,14 +50,14 @@ RETURN
 
 HB_FUNC_STATIC( QSGBASICGEOMETRYNODE_DELETE )
 {
-  QSGBasicGeometryNode * obj = (QSGBasicGeometryNode *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSGBasicGeometryNode *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -71,7 +70,7 @@ QSGGeometry * geometry()
 */
 HB_FUNC_STATIC( QSGBASICGEOMETRYNODE_GEOMETRY )
 {
-  QSGBasicGeometryNode * obj = (QSGBasicGeometryNode *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSGBasicGeometryNode *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -79,13 +78,13 @@ HB_FUNC_STATIC( QSGBASICGEOMETRYNODE_GEOMETRY )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSGGeometry * ptr = obj->geometry ();
-      _qt5xhb_createReturnClass ( ptr, "QSGGEOMETRY", false );
+      QSGGeometry * ptr = obj->geometry();
+      Qt5xHb::createReturnClass( ptr, "QSGGEOMETRY", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -96,7 +95,7 @@ void setGeometry(QSGGeometry * geometry)
 */
 HB_FUNC_STATIC( QSGBASICGEOMETRYNODE_SETGEOMETRY )
 {
-  QSGBasicGeometryNode * obj = (QSGBasicGeometryNode *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSGBasicGeometryNode *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -104,12 +103,12 @@ HB_FUNC_STATIC( QSGBASICGEOMETRYNODE_SETGEOMETRY )
     if( ISNUMPAR(1) && ISQSGGEOMETRY(1) )
     {
 #endif
-      obj->setGeometry ( PQSGGEOMETRY(1) );
+      obj->setGeometry( PQSGGEOMETRY(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

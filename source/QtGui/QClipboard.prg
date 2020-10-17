@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -44,7 +44,7 @@ CLASS QClipboard INHERIT QObject
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QClipboard
+PROCEDURE destroyObject() CLASS QClipboard
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -61,14 +61,15 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtGui/QClipboard>
 #endif
 
-#include <QtGui/QImage>
 #include <QtCore/QMimeData>
+#include <QtGui/QImage>
 #include <QtGui/QPixmap>
 
 /*
@@ -76,7 +77,7 @@ void clear ( Mode mode = Clipboard )
 */
 HB_FUNC_STATIC( QCLIPBOARD_CLEAR )
 {
-  QClipboard * obj = (QClipboard *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QClipboard *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -84,12 +85,12 @@ HB_FUNC_STATIC( QCLIPBOARD_CLEAR )
     if( ISBETWEEN(0,1) && ISOPTNUM(1) )
     {
 #endif
-      obj->clear ( ISNIL(1)? (QClipboard::Mode) QClipboard::Clipboard : (QClipboard::Mode) hb_parni(1) );
+      obj->clear( ISNIL(1)? (QClipboard::Mode) QClipboard::Clipboard : (QClipboard::Mode) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -102,7 +103,7 @@ QImage image ( Mode mode = Clipboard ) const
 */
 HB_FUNC_STATIC( QCLIPBOARD_IMAGE )
 {
-  QClipboard * obj = (QClipboard *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QClipboard *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -110,13 +111,13 @@ HB_FUNC_STATIC( QCLIPBOARD_IMAGE )
     if( ISBETWEEN(0,1) && ISOPTNUM(1) )
     {
 #endif
-      QImage * ptr = new QImage( obj->image ( ISNIL(1)? (QClipboard::Mode) QClipboard::Clipboard : (QClipboard::Mode) hb_parni(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QIMAGE", true );
+      auto ptr = new QImage( obj->image( ISNIL(1)? (QClipboard::Mode) QClipboard::Clipboard : (QClipboard::Mode) hb_parni(1) ) );
+      Qt5xHb::createReturnClass( ptr, "QIMAGE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -127,7 +128,7 @@ const QMimeData * mimeData ( Mode mode = Clipboard ) const
 */
 HB_FUNC_STATIC( QCLIPBOARD_MIMEDATA )
 {
-  QClipboard * obj = (QClipboard *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QClipboard *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -135,13 +136,13 @@ HB_FUNC_STATIC( QCLIPBOARD_MIMEDATA )
     if( ISBETWEEN(0,1) && ISOPTNUM(1) )
     {
 #endif
-      const QMimeData * ptr = obj->mimeData ( ISNIL(1)? (QClipboard::Mode) QClipboard::Clipboard : (QClipboard::Mode) hb_parni(1) );
-      _qt5xhb_createReturnQObjectClass ( ptr, "QMIMEDATA" );
+      const QMimeData * ptr = obj->mimeData( ISNIL(1)? (QClipboard::Mode) QClipboard::Clipboard : (QClipboard::Mode) hb_parni(1) );
+      Qt5xHb::createReturnQObjectClass( ptr, "QMIMEDATA" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -152,7 +153,7 @@ bool ownsClipboard () const
 */
 HB_FUNC_STATIC( QCLIPBOARD_OWNSCLIPBOARD )
 {
-  QClipboard * obj = (QClipboard *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QClipboard *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -160,12 +161,12 @@ HB_FUNC_STATIC( QCLIPBOARD_OWNSCLIPBOARD )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->ownsClipboard () );
+      RBOOL( obj->ownsClipboard() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -176,7 +177,7 @@ bool ownsFindBuffer () const
 */
 HB_FUNC_STATIC( QCLIPBOARD_OWNSFINDBUFFER )
 {
-  QClipboard * obj = (QClipboard *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QClipboard *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -184,12 +185,12 @@ HB_FUNC_STATIC( QCLIPBOARD_OWNSFINDBUFFER )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->ownsFindBuffer () );
+      RBOOL( obj->ownsFindBuffer() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -200,7 +201,7 @@ bool ownsSelection () const
 */
 HB_FUNC_STATIC( QCLIPBOARD_OWNSSELECTION )
 {
-  QClipboard * obj = (QClipboard *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QClipboard *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -208,12 +209,12 @@ HB_FUNC_STATIC( QCLIPBOARD_OWNSSELECTION )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->ownsSelection () );
+      RBOOL( obj->ownsSelection() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -224,7 +225,7 @@ QPixmap pixmap ( Mode mode = Clipboard ) const
 */
 HB_FUNC_STATIC( QCLIPBOARD_PIXMAP )
 {
-  QClipboard * obj = (QClipboard *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QClipboard *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -232,13 +233,13 @@ HB_FUNC_STATIC( QCLIPBOARD_PIXMAP )
     if( ISBETWEEN(0,1) && ISOPTNUM(1) )
     {
 #endif
-      QPixmap * ptr = new QPixmap( obj->pixmap ( ISNIL(1)? (QClipboard::Mode) QClipboard::Clipboard : (QClipboard::Mode) hb_parni(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QPIXMAP", true );
+      auto ptr = new QPixmap( obj->pixmap( ISNIL(1)? (QClipboard::Mode) QClipboard::Clipboard : (QClipboard::Mode) hb_parni(1) ) );
+      Qt5xHb::createReturnClass( ptr, "QPIXMAP", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -249,7 +250,7 @@ void setImage ( const QImage & image, Mode mode = Clipboard )
 */
 HB_FUNC_STATIC( QCLIPBOARD_SETIMAGE )
 {
-  QClipboard * obj = (QClipboard *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QClipboard *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -257,12 +258,12 @@ HB_FUNC_STATIC( QCLIPBOARD_SETIMAGE )
     if( ISBETWEEN(1,2) && ISQIMAGE(1) && ISOPTNUM(2) )
     {
 #endif
-      obj->setImage ( *PQIMAGE(1), ISNIL(2)? (QClipboard::Mode) QClipboard::Clipboard : (QClipboard::Mode) hb_parni(2) );
+      obj->setImage( *PQIMAGE(1), ISNIL(2)? (QClipboard::Mode) QClipboard::Clipboard : (QClipboard::Mode) hb_parni(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -275,7 +276,7 @@ void setMimeData ( QMimeData * src, Mode mode = Clipboard )
 */
 HB_FUNC_STATIC( QCLIPBOARD_SETMIMEDATA )
 {
-  QClipboard * obj = (QClipboard *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QClipboard *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -283,12 +284,12 @@ HB_FUNC_STATIC( QCLIPBOARD_SETMIMEDATA )
     if( ISBETWEEN(1,2) && ISQMIMEDATA(1) && ISOPTNUM(2) )
     {
 #endif
-      obj->setMimeData ( PQMIMEDATA(1), ISNIL(2)? (QClipboard::Mode) QClipboard::Clipboard : (QClipboard::Mode) hb_parni(2) );
+      obj->setMimeData( PQMIMEDATA(1), ISNIL(2)? (QClipboard::Mode) QClipboard::Clipboard : (QClipboard::Mode) hb_parni(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -301,7 +302,7 @@ void setPixmap ( const QPixmap & pixmap, Mode mode = Clipboard )
 */
 HB_FUNC_STATIC( QCLIPBOARD_SETPIXMAP )
 {
-  QClipboard * obj = (QClipboard *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QClipboard *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -309,12 +310,12 @@ HB_FUNC_STATIC( QCLIPBOARD_SETPIXMAP )
     if( ISBETWEEN(1,2) && ISQPIXMAP(1) && ISOPTNUM(2) )
     {
 #endif
-      obj->setPixmap ( *PQPIXMAP(1), ISNIL(2)? (QClipboard::Mode) QClipboard::Clipboard : (QClipboard::Mode) hb_parni(2) );
+      obj->setPixmap( *PQPIXMAP(1), ISNIL(2)? (QClipboard::Mode) QClipboard::Clipboard : (QClipboard::Mode) hb_parni(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -327,7 +328,7 @@ void setText ( const QString & text, Mode mode = Clipboard )
 */
 HB_FUNC_STATIC( QCLIPBOARD_SETTEXT )
 {
-  QClipboard * obj = (QClipboard *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QClipboard *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -335,12 +336,12 @@ HB_FUNC_STATIC( QCLIPBOARD_SETTEXT )
     if( ISBETWEEN(1,2) && ISCHAR(1) && ISOPTNUM(2) )
     {
 #endif
-      obj->setText ( PQSTRING(1), ISNIL(2)? (QClipboard::Mode) QClipboard::Clipboard : (QClipboard::Mode) hb_parni(2) );
+      obj->setText( PQSTRING(1), ISNIL(2)? (QClipboard::Mode) QClipboard::Clipboard : (QClipboard::Mode) hb_parni(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -353,7 +354,7 @@ bool supportsFindBuffer () const
 */
 HB_FUNC_STATIC( QCLIPBOARD_SUPPORTSFINDBUFFER )
 {
-  QClipboard * obj = (QClipboard *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QClipboard *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -361,12 +362,12 @@ HB_FUNC_STATIC( QCLIPBOARD_SUPPORTSFINDBUFFER )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->supportsFindBuffer () );
+      RBOOL( obj->supportsFindBuffer() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -377,7 +378,7 @@ bool supportsSelection () const
 */
 HB_FUNC_STATIC( QCLIPBOARD_SUPPORTSSELECTION )
 {
-  QClipboard * obj = (QClipboard *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QClipboard *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -385,12 +386,12 @@ HB_FUNC_STATIC( QCLIPBOARD_SUPPORTSSELECTION )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->supportsSelection () );
+      RBOOL( obj->supportsSelection() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -399,13 +400,13 @@ HB_FUNC_STATIC( QCLIPBOARD_SUPPORTSSELECTION )
 /*
 QString text ( Mode mode = Clipboard ) const
 */
-void QClipboard_text1 ()
+void QClipboard_text1()
 {
-  QClipboard * obj = (QClipboard *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QClipboard *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RQSTRING( obj->text ( ISNIL(1)? (QClipboard::Mode) QClipboard::Clipboard : (QClipboard::Mode) hb_parni(1) ) );
+    RQSTRING( obj->text( ISNIL(1)? (QClipboard::Mode) QClipboard::Clipboard : (QClipboard::Mode) hb_parni(1) ) );
   }
 }
 
@@ -414,18 +415,20 @@ QString text ( QString & subtype, Mode mode = Clipboard ) const
 */
 void QClipboard_text2 ()
 {
-  QClipboard * obj = (QClipboard *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QClipboard *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj )
   {
-      QString par1 = PQSTRING(1);
-      RQSTRING( obj->text ( par1, ISNIL(2)? (QClipboard::Mode) QClipboard::Clipboard : (QClipboard::Mode) hb_parni(2) ) );
-      hb_storc( QSTRINGTOSTRING(par1), 1 );
+    QString par1 = PQSTRING(1);
+    RQSTRING( obj->text ( par1, ISNIL(2)? (QClipboard::Mode) QClipboard::Clipboard : (QClipboard::Mode) hb_parni(2) ) );
+    hb_storc( QSTRINGTOSTRING(par1), 1 );
   }
 }
 
-//[1]QString text ( Mode mode = Clipboard ) const
-//[2]QString text ( QString & subtype, Mode mode = Clipboard ) const
+/*
+[1]QString text ( Mode mode = Clipboard ) const
+[2]QString text ( QString & subtype, Mode mode = Clipboard ) const
+*/
 
 HB_FUNC_STATIC( QCLIPBOARD_TEXT )
 {
@@ -439,7 +442,7 @@ HB_FUNC_STATIC( QCLIPBOARD_TEXT )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -448,35 +451,36 @@ void changed( QClipboard::Mode mode )
 */
 HB_FUNC_STATIC( QCLIPBOARD_ONCHANGED )
 {
-  QClipboard * sender = (QClipboard *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QClipboard *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("changed(QClipboard::Mode)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("changed(QClipboard::Mode)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QClipboard::changed, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QClipboard::Mode arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QCLIPBOARD" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, (int) arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QCLIPBOARD" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, (int) arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -487,9 +491,9 @@ HB_FUNC_STATIC( QCLIPBOARD_ONCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -509,33 +513,34 @@ void dataChanged()
 */
 HB_FUNC_STATIC( QCLIPBOARD_ONDATACHANGED )
 {
-  QClipboard * sender = (QClipboard *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QClipboard *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("dataChanged()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("dataChanged()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QClipboard::dataChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QCLIPBOARD" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QCLIPBOARD" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -546,9 +551,9 @@ HB_FUNC_STATIC( QCLIPBOARD_ONDATACHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -568,33 +573,34 @@ void findBufferChanged()
 */
 HB_FUNC_STATIC( QCLIPBOARD_ONFINDBUFFERCHANGED )
 {
-  QClipboard * sender = (QClipboard *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QClipboard *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("findBufferChanged()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("findBufferChanged()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QClipboard::findBufferChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QCLIPBOARD" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QCLIPBOARD" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -605,9 +611,9 @@ HB_FUNC_STATIC( QCLIPBOARD_ONFINDBUFFERCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -627,33 +633,34 @@ void selectionChanged()
 */
 HB_FUNC_STATIC( QCLIPBOARD_ONSELECTIONCHANGED )
 {
-  QClipboard * sender = (QClipboard *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QClipboard *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("selectionChanged()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("selectionChanged()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QClipboard::selectionChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QCLIPBOARD" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QCLIPBOARD" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -664,9 +671,9 @@ HB_FUNC_STATIC( QCLIPBOARD_ONSELECTIONCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }

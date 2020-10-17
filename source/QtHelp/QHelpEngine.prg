@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -34,7 +34,7 @@ CLASS QHelpEngine INHERIT QHelpEngineCore
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QHelpEngine
+PROCEDURE destroyObject() CLASS QHelpEngine
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -51,7 +51,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtHelp/QHelpEngine>
@@ -68,25 +69,27 @@ HB_FUNC_STATIC( QHELPENGINE_NEW )
 {
   if( ISBETWEEN(1,2) && ISCHAR(1) && (ISQOBJECT(2)||ISNIL(2)) )
   {
-    QHelpEngine * o = new QHelpEngine ( PQSTRING(1), OPQOBJECT(2,nullptr) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QHelpEngine( PQSTRING(1), OPQOBJECT(2,nullptr) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QHELPENGINE_DELETE )
 {
-  QHelpEngine * obj = (QHelpEngine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHelpEngine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -99,7 +102,7 @@ QHelpContentModel * contentModel () const
 */
 HB_FUNC_STATIC( QHELPENGINE_CONTENTMODEL )
 {
-  QHelpEngine * obj = (QHelpEngine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHelpEngine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -107,13 +110,13 @@ HB_FUNC_STATIC( QHELPENGINE_CONTENTMODEL )
     if( ISNUMPAR(0) )
     {
 #endif
-      QHelpContentModel * ptr = obj->contentModel ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QHELPCONTENTMODEL" );
+      QHelpContentModel * ptr = obj->contentModel();
+      Qt5xHb::createReturnQObjectClass( ptr, "QHELPCONTENTMODEL" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -124,7 +127,7 @@ QHelpContentWidget * contentWidget ()
 */
 HB_FUNC_STATIC( QHELPENGINE_CONTENTWIDGET )
 {
-  QHelpEngine * obj = (QHelpEngine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHelpEngine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -132,13 +135,13 @@ HB_FUNC_STATIC( QHELPENGINE_CONTENTWIDGET )
     if( ISNUMPAR(0) )
     {
 #endif
-      QHelpContentWidget * ptr = obj->contentWidget ();
-      _qt5xhb_createReturnQWidgetClass ( ptr, "QHELPCONTENTWIDGET" );
+      QHelpContentWidget * ptr = obj->contentWidget();
+      Qt5xHb::createReturnQWidgetClass( ptr, "QHELPCONTENTWIDGET" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -149,7 +152,7 @@ QHelpIndexModel * indexModel () const
 */
 HB_FUNC_STATIC( QHELPENGINE_INDEXMODEL )
 {
-  QHelpEngine * obj = (QHelpEngine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHelpEngine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -157,13 +160,13 @@ HB_FUNC_STATIC( QHELPENGINE_INDEXMODEL )
     if( ISNUMPAR(0) )
     {
 #endif
-      QHelpIndexModel * ptr = obj->indexModel ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QHELPINDEXMODEL" );
+      QHelpIndexModel * ptr = obj->indexModel();
+      Qt5xHb::createReturnQObjectClass( ptr, "QHELPINDEXMODEL" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -174,7 +177,7 @@ QHelpIndexWidget * indexWidget ()
 */
 HB_FUNC_STATIC( QHELPENGINE_INDEXWIDGET )
 {
-  QHelpEngine * obj = (QHelpEngine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHelpEngine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -182,13 +185,13 @@ HB_FUNC_STATIC( QHELPENGINE_INDEXWIDGET )
     if( ISNUMPAR(0) )
     {
 #endif
-      QHelpIndexWidget * ptr = obj->indexWidget ();
-      _qt5xhb_createReturnQWidgetClass ( ptr, "QHELPINDEXWIDGET" );
+      QHelpIndexWidget * ptr = obj->indexWidget();
+      Qt5xHb::createReturnQWidgetClass( ptr, "QHELPINDEXWIDGET" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -199,7 +202,7 @@ QHelpSearchEngine * searchEngine ()
 */
 HB_FUNC_STATIC( QHELPENGINE_SEARCHENGINE )
 {
-  QHelpEngine * obj = (QHelpEngine *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHelpEngine *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -207,13 +210,13 @@ HB_FUNC_STATIC( QHELPENGINE_SEARCHENGINE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QHelpSearchEngine * ptr = obj->searchEngine ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QHELPSEARCHENGINE" );
+      QHelpSearchEngine * ptr = obj->searchEngine();
+      Qt5xHb::createReturnQObjectClass( ptr, "QHELPSEARCHENGINE" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

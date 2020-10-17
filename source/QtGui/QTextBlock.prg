@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -68,7 +68,7 @@ CLASS QTextBlock
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QTextBlock
+PROCEDURE destroyObject() CLASS QTextBlock
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -85,7 +85,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtGui/QTextBlock>
@@ -101,24 +100,26 @@ QTextBlock(QTextDocumentPrivate *priv, int b)
 /*
 QTextBlock()
 */
-void QTextBlock_new2 ()
+void QTextBlock_new2()
 {
-  QTextBlock * o = new QTextBlock ();
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QTextBlock();
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QTextBlock(const QTextBlock &o)
 */
-void QTextBlock_new3 ()
+void QTextBlock_new3()
 {
-  QTextBlock * o = new QTextBlock ( *PQTEXTBLOCK(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QTextBlock( *PQTEXTBLOCK(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
-//[1]QTextBlock(QTextDocumentPrivate *priv, int b)
-//[2]QTextBlock()
-//[3]QTextBlock(const QTextBlock &o)
+/*
+[1]QTextBlock(QTextDocumentPrivate *priv, int b)
+[2]QTextBlock()
+[3]QTextBlock(const QTextBlock &o)
+*/
 
 HB_FUNC_STATIC( QTEXTBLOCK_NEW )
 {
@@ -132,20 +133,20 @@ HB_FUNC_STATIC( QTEXTBLOCK_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QTEXTBLOCK_DELETE )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -158,7 +159,7 @@ bool isValid() const
 */
 HB_FUNC_STATIC( QTEXTBLOCK_ISVALID )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -166,12 +167,12 @@ HB_FUNC_STATIC( QTEXTBLOCK_ISVALID )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isValid () );
+      RBOOL( obj->isValid() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -182,7 +183,7 @@ int position() const
 */
 HB_FUNC_STATIC( QTEXTBLOCK_POSITION )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -190,12 +191,12 @@ HB_FUNC_STATIC( QTEXTBLOCK_POSITION )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->position () );
+      RINT( obj->position() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -206,7 +207,7 @@ int length() const
 */
 HB_FUNC_STATIC( QTEXTBLOCK_LENGTH )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -214,12 +215,12 @@ HB_FUNC_STATIC( QTEXTBLOCK_LENGTH )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->length () );
+      RINT( obj->length() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -230,7 +231,7 @@ bool contains(int position) const
 */
 HB_FUNC_STATIC( QTEXTBLOCK_CONTAINS )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -238,12 +239,12 @@ HB_FUNC_STATIC( QTEXTBLOCK_CONTAINS )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      RBOOL( obj->contains ( PINT(1) ) );
+      RBOOL( obj->contains( PINT(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -254,7 +255,7 @@ QTextLayout *layout() const
 */
 HB_FUNC_STATIC( QTEXTBLOCK_LAYOUT )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -262,13 +263,13 @@ HB_FUNC_STATIC( QTEXTBLOCK_LAYOUT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QTextLayout * ptr = obj->layout ();
-      _qt5xhb_createReturnClass ( ptr, "QTEXTLAYOUT", false );
+      QTextLayout * ptr = obj->layout();
+      Qt5xHb::createReturnClass( ptr, "QTEXTLAYOUT", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -279,7 +280,7 @@ void clearLayout()
 */
 HB_FUNC_STATIC( QTEXTBLOCK_CLEARLAYOUT )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -287,12 +288,12 @@ HB_FUNC_STATIC( QTEXTBLOCK_CLEARLAYOUT )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->clearLayout ();
+      obj->clearLayout();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -305,7 +306,7 @@ QTextBlockFormat blockFormat() const
 */
 HB_FUNC_STATIC( QTEXTBLOCK_BLOCKFORMAT )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -313,13 +314,13 @@ HB_FUNC_STATIC( QTEXTBLOCK_BLOCKFORMAT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QTextBlockFormat * ptr = new QTextBlockFormat( obj->blockFormat () );
-      _qt5xhb_createReturnClass ( ptr, "QTEXTBLOCKFORMAT", true );
+      auto ptr = new QTextBlockFormat( obj->blockFormat() );
+      Qt5xHb::createReturnClass( ptr, "QTEXTBLOCKFORMAT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -330,7 +331,7 @@ int blockFormatIndex() const
 */
 HB_FUNC_STATIC( QTEXTBLOCK_BLOCKFORMATINDEX )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -338,12 +339,12 @@ HB_FUNC_STATIC( QTEXTBLOCK_BLOCKFORMATINDEX )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->blockFormatIndex () );
+      RINT( obj->blockFormatIndex() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -354,7 +355,7 @@ QTextCharFormat charFormat() const
 */
 HB_FUNC_STATIC( QTEXTBLOCK_CHARFORMAT )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -362,13 +363,13 @@ HB_FUNC_STATIC( QTEXTBLOCK_CHARFORMAT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QTextCharFormat * ptr = new QTextCharFormat( obj->charFormat () );
-      _qt5xhb_createReturnClass ( ptr, "QTEXTCHARFORMAT", true );
+      auto ptr = new QTextCharFormat( obj->charFormat() );
+      Qt5xHb::createReturnClass( ptr, "QTEXTCHARFORMAT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -379,7 +380,7 @@ int charFormatIndex() const
 */
 HB_FUNC_STATIC( QTEXTBLOCK_CHARFORMATINDEX )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -387,12 +388,12 @@ HB_FUNC_STATIC( QTEXTBLOCK_CHARFORMATINDEX )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->charFormatIndex () );
+      RINT( obj->charFormatIndex() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -403,7 +404,7 @@ Qt::LayoutDirection textDirection() const
 */
 HB_FUNC_STATIC( QTEXTBLOCK_TEXTDIRECTION )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -411,12 +412,12 @@ HB_FUNC_STATIC( QTEXTBLOCK_TEXTDIRECTION )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->textDirection () );
+      RENUM( obj->textDirection() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -427,7 +428,7 @@ QString text() const
 */
 HB_FUNC_STATIC( QTEXTBLOCK_TEXT )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -435,12 +436,12 @@ HB_FUNC_STATIC( QTEXTBLOCK_TEXT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->text () );
+      RQSTRING( obj->text() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -451,7 +452,7 @@ const QTextDocument *document() const
 */
 HB_FUNC_STATIC( QTEXTBLOCK_DOCUMENT )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -459,13 +460,13 @@ HB_FUNC_STATIC( QTEXTBLOCK_DOCUMENT )
     if( ISNUMPAR(0) )
     {
 #endif
-      const QTextDocument * ptr = obj->document ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QTEXTDOCUMENT" );
+      const QTextDocument * ptr = obj->document();
+      Qt5xHb::createReturnQObjectClass( ptr, "QTEXTDOCUMENT" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -476,7 +477,7 @@ QTextList *textList() const
 */
 HB_FUNC_STATIC( QTEXTBLOCK_TEXTLIST )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -484,13 +485,13 @@ HB_FUNC_STATIC( QTEXTBLOCK_TEXTLIST )
     if( ISNUMPAR(0) )
     {
 #endif
-      QTextList * ptr = obj->textList ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QTEXTLIST" );
+      QTextList * ptr = obj->textList();
+      Qt5xHb::createReturnQObjectClass( ptr, "QTEXTLIST" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -501,7 +502,7 @@ QTextBlockUserData *userData() const
 */
 HB_FUNC_STATIC( QTEXTBLOCK_USERDATA )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -509,13 +510,13 @@ HB_FUNC_STATIC( QTEXTBLOCK_USERDATA )
     if( ISNUMPAR(0) )
     {
 #endif
-      QTextBlockUserData * ptr = obj->userData ();
-      _qt5xhb_createReturnClass ( ptr, "QTEXTBLOCKUSERDATA", false );
+      QTextBlockUserData * ptr = obj->userData();
+      Qt5xHb::createReturnClass( ptr, "QTEXTBLOCKUSERDATA", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -526,7 +527,7 @@ void setUserData(QTextBlockUserData *data)
 */
 HB_FUNC_STATIC( QTEXTBLOCK_SETUSERDATA )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -534,12 +535,12 @@ HB_FUNC_STATIC( QTEXTBLOCK_SETUSERDATA )
     if( ISNUMPAR(1) && ISQTEXTBLOCKUSERDATA(1) )
     {
 #endif
-      obj->setUserData ( PQTEXTBLOCKUSERDATA(1) );
+      obj->setUserData( PQTEXTBLOCKUSERDATA(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -552,7 +553,7 @@ int userState() const
 */
 HB_FUNC_STATIC( QTEXTBLOCK_USERSTATE )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -560,12 +561,12 @@ HB_FUNC_STATIC( QTEXTBLOCK_USERSTATE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->userState () );
+      RINT( obj->userState() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -576,7 +577,7 @@ void setUserState(int state)
 */
 HB_FUNC_STATIC( QTEXTBLOCK_SETUSERSTATE )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -584,12 +585,12 @@ HB_FUNC_STATIC( QTEXTBLOCK_SETUSERSTATE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setUserState ( PINT(1) );
+      obj->setUserState( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -602,7 +603,7 @@ int revision() const
 */
 HB_FUNC_STATIC( QTEXTBLOCK_REVISION )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -610,12 +611,12 @@ HB_FUNC_STATIC( QTEXTBLOCK_REVISION )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->revision () );
+      RINT( obj->revision() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -626,7 +627,7 @@ void setRevision(int rev)
 */
 HB_FUNC_STATIC( QTEXTBLOCK_SETREVISION )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -634,12 +635,12 @@ HB_FUNC_STATIC( QTEXTBLOCK_SETREVISION )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setRevision ( PINT(1) );
+      obj->setRevision( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -652,7 +653,7 @@ bool isVisible() const
 */
 HB_FUNC_STATIC( QTEXTBLOCK_ISVISIBLE )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -660,12 +661,12 @@ HB_FUNC_STATIC( QTEXTBLOCK_ISVISIBLE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isVisible () );
+      RBOOL( obj->isVisible() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -676,7 +677,7 @@ void setVisible(bool visible)
 */
 HB_FUNC_STATIC( QTEXTBLOCK_SETVISIBLE )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -684,12 +685,12 @@ HB_FUNC_STATIC( QTEXTBLOCK_SETVISIBLE )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setVisible ( PBOOL(1) );
+      obj->setVisible( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -702,7 +703,7 @@ int blockNumber() const
 */
 HB_FUNC_STATIC( QTEXTBLOCK_BLOCKNUMBER )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -710,12 +711,12 @@ HB_FUNC_STATIC( QTEXTBLOCK_BLOCKNUMBER )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->blockNumber () );
+      RINT( obj->blockNumber() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -726,7 +727,7 @@ int firstLineNumber() const
 */
 HB_FUNC_STATIC( QTEXTBLOCK_FIRSTLINENUMBER )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -734,12 +735,12 @@ HB_FUNC_STATIC( QTEXTBLOCK_FIRSTLINENUMBER )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->firstLineNumber () );
+      RINT( obj->firstLineNumber() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -750,7 +751,7 @@ void setLineCount(int count)
 */
 HB_FUNC_STATIC( QTEXTBLOCK_SETLINECOUNT )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -758,12 +759,12 @@ HB_FUNC_STATIC( QTEXTBLOCK_SETLINECOUNT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setLineCount ( PINT(1) );
+      obj->setLineCount( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -776,7 +777,7 @@ int lineCount() const
 */
 HB_FUNC_STATIC( QTEXTBLOCK_LINECOUNT )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -784,12 +785,12 @@ HB_FUNC_STATIC( QTEXTBLOCK_LINECOUNT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->lineCount () );
+      RINT( obj->lineCount() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -800,7 +801,7 @@ QTextBlock next() const
 */
 HB_FUNC_STATIC( QTEXTBLOCK_NEXT )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -808,13 +809,13 @@ HB_FUNC_STATIC( QTEXTBLOCK_NEXT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QTextBlock * ptr = new QTextBlock( obj->next () );
-      _qt5xhb_createReturnClass ( ptr, "QTEXTBLOCK", true );
+      auto ptr = new QTextBlock( obj->next() );
+      Qt5xHb::createReturnClass( ptr, "QTEXTBLOCK", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -825,7 +826,7 @@ QTextBlock previous() const
 */
 HB_FUNC_STATIC( QTEXTBLOCK_PREVIOUS )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -833,13 +834,13 @@ HB_FUNC_STATIC( QTEXTBLOCK_PREVIOUS )
     if( ISNUMPAR(0) )
     {
 #endif
-      QTextBlock * ptr = new QTextBlock( obj->previous () );
-      _qt5xhb_createReturnClass ( ptr, "QTEXTBLOCK", true );
+      auto ptr = new QTextBlock( obj->previous() );
+      Qt5xHb::createReturnClass( ptr, "QTEXTBLOCK", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -854,7 +855,7 @@ int fragmentIndex() const
 */
 HB_FUNC_STATIC( QTEXTBLOCK_FRAGMENTINDEX )
 {
-  QTextBlock * obj = (QTextBlock *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTextBlock *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -862,12 +863,12 @@ HB_FUNC_STATIC( QTEXTBLOCK_FRAGMENTINDEX )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->fragmentIndex () );
+      RINT( obj->fragmentIndex() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -879,25 +880,25 @@ HB_FUNC_STATIC( QTEXTBLOCK_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -924,13 +925,13 @@ HB_FUNC_STATIC( QTEXTBLOCK_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

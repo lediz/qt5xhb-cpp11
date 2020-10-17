@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb Project - Test Program
+  Qt5xHb/C++11 Project - Test Program
 
   Copyright (C) 2020 Marcos Antonio Gambeta
 
@@ -8,7 +8,7 @@
   marcosgambeta AT outlook DOT com
 
   Website:
-  https://github.com/marcosgambeta/Qt5xHb
+  https://github.com/marcosgambeta/qt5xhb-cpp11
 
 */
 
@@ -16,7 +16,7 @@
 
 STATIC aDados
 
-PROCEDURE Main ()
+PROCEDURE Main()
 
    LOCAL oApp
    LOCAL oWindow
@@ -74,7 +74,7 @@ CLASS myModel INHERIT HAbstractTableModelV2
 
 END CLASS
 
-METHOD new (...) CLASS myModel
+METHOD new(...) CLASS myModel
 
    ::super:new(...)
 
@@ -87,16 +87,15 @@ METHOD new (...) CLASS myModel
 
 RETURN self
 
-METHOD rowCount () CLASS myModel
+METHOD rowCount() CLASS myModel
 RETURN len(aDados)
 
-METHOD columnCount () CLASS myModel
+METHOD columnCount() CLASS myModel
 RETURN len(aDados[1])
 
-METHOD data (pIndex, nRole) CLASS myModel
+METHOD data(oIndex, nRole) CLASS myModel
 
    LOCAL oVariant := QVariant():new()
-   LOCAL oIndex := QModelIndex():newFrom(pIndex)
    LOCAL nRow := oIndex:row()
    LOCAL nColumn := oIndex:column()
 
@@ -112,7 +111,7 @@ METHOD data (pIndex, nRole) CLASS myModel
 
 RETURN oVariant
 
-METHOD headerData (nSection, nOrientation, nRole) CLASS myModel
+METHOD headerData(nSection, nOrientation, nRole) CLASS myModel
 
    LOCAL oVariant := QVariant():new()
 
@@ -124,20 +123,17 @@ METHOD headerData (nSection, nOrientation, nRole) CLASS myModel
 
 RETURN oVariant
 
-METHOD flags (pIndex) CLASS myModel
+METHOD flags(oIndex) CLASS myModel
 
    LOCAL nFlags := Qt_ItemIsSelectable + Qt_ItemIsEditable + Qt_ItemIsEnabled
-   LOCAL oIndex := QModelIndex():newFrom(pIndex)
    LOCAL nRow := oIndex:row()
    LOCAL nColumn := oIndex:column()
 
 RETURN nFlags
 
-METHOD setData (pIndex, pVariant, nRole) CLASS myModel
+METHOD setData(oIndex, oVariant, nRole) CLASS myModel
 
    LOCAL lSuccess := .F.
-   LOCAL oIndex := QModelIndex():newFrom(pIndex)
-   LOCAL oVariant := QVariant():newFrom(pVariant)
    LOCAL nRow := oIndex:row()
    LOCAL nColumn := oIndex:column()
    LOCAL cValue := ""

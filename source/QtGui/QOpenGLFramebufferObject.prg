@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -61,7 +61,7 @@ CLASS QOpenGLFramebufferObject
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QOpenGLFramebufferObject
+PROCEDURE destroyObject() CLASS QOpenGLFramebufferObject
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -78,7 +78,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtGui/QOpenGLFramebufferObject>
@@ -91,8 +90,8 @@ QOpenGLFramebufferObject(const QSize &size, GLenum target = GL_TEXTURE_2D)
 */
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_NEW1 )
 {
-  QOpenGLFramebufferObject * o = new QOpenGLFramebufferObject ( *PQSIZE(1), OPGLENUM(2,GL_TEXTURE_2D) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QOpenGLFramebufferObject( *PQSIZE(1), OPGLENUM(2,GL_TEXTURE_2D) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
@@ -100,8 +99,8 @@ QOpenGLFramebufferObject(int width, int height, GLenum target = GL_TEXTURE_2D)
 */
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_NEW2 )
 {
-  QOpenGLFramebufferObject * o = new QOpenGLFramebufferObject ( PINT(1), PINT(2), OPGLENUM(3,GL_TEXTURE_2D) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QOpenGLFramebufferObject( PINT(1), PINT(2), OPGLENUM(3,GL_TEXTURE_2D) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 #if !defined(QT_OPENGL_ES) || defined(Q_QDOC)
@@ -111,8 +110,8 @@ QOpenGLFramebufferObject(const QSize &size, Attachment attachment,GLenum target 
 */
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_NEW3 )
 {
-  QOpenGLFramebufferObject * o = new QOpenGLFramebufferObject ( *PQSIZE(1), (QOpenGLFramebufferObject::Attachment) hb_parni(2), OPGLENUM(3,GL_TEXTURE_2D), OPGLENUM(4,GL_RGBA8) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QOpenGLFramebufferObject( *PQSIZE(1), (QOpenGLFramebufferObject::Attachment) hb_parni(2), OPGLENUM(3,GL_TEXTURE_2D), OPGLENUM(4,GL_RGBA8) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
@@ -120,8 +119,8 @@ QOpenGLFramebufferObject(int width, int height, Attachment attachment,GLenum tar
 */
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_NEW4 )
 {
-  QOpenGLFramebufferObject * o = new QOpenGLFramebufferObject ( PINT(1), PINT(2), (QOpenGLFramebufferObject::Attachment) hb_parni(3), OPGLENUM(4,GL_TEXTURE_2D), OPGLENUM(5,GL_RGBA8) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QOpenGLFramebufferObject( PINT(1), PINT(2), (QOpenGLFramebufferObject::Attachment) hb_parni(3), OPGLENUM(4,GL_TEXTURE_2D), OPGLENUM(5,GL_RGBA8) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_NEW5 )
@@ -147,8 +146,8 @@ QOpenGLFramebufferObject(const QSize &size, Attachment attachment,GLenum target 
 */
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_NEW5 )
 {
-  QOpenGLFramebufferObject * o = new QOpenGLFramebufferObject ( *PQSIZE(1), (QOpenGLFramebufferObject::Attachment) hb_parni(2), OPGLENUM(3,GL_TEXTURE_2D), OPGLENUM(4,GL_RGBA) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QOpenGLFramebufferObject( *PQSIZE(1), (QOpenGLFramebufferObject::Attachment) hb_parni(2), OPGLENUM(3,GL_TEXTURE_2D), OPGLENUM(4,GL_RGBA) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
@@ -156,8 +155,8 @@ QOpenGLFramebufferObject(int width, int height, Attachment attachment,GLenum tar
 */
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_NEW6 )
 {
-  QOpenGLFramebufferObject * o = new QOpenGLFramebufferObject ( PINT(1), PINT(2), (QOpenGLFramebufferObject::Attachment) hb_parni(3), OPGLENUM(4,GL_TEXTURE_2D), OPGLENUM(5,GL_RGBA) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QOpenGLFramebufferObject( PINT(1), PINT(2), (QOpenGLFramebufferObject::Attachment) hb_parni(3), OPGLENUM(4,GL_TEXTURE_2D), OPGLENUM(5,GL_RGBA) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 #endif
@@ -167,8 +166,8 @@ QOpenGLFramebufferObject(const QSize &size, const QOpenGLFramebufferObjectFormat
 */
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_NEW7 )
 {
-  QOpenGLFramebufferObject * o = new QOpenGLFramebufferObject ( *PQSIZE(1), *PQOPENGLFRAMEBUFFEROBJECTFORMAT(2) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QOpenGLFramebufferObject( *PQSIZE(1), *PQOPENGLFRAMEBUFFEROBJECTFORMAT(2) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
@@ -176,18 +175,20 @@ QOpenGLFramebufferObject(int width, int height, const QOpenGLFramebufferObjectFo
 */
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_NEW8 )
 {
-  QOpenGLFramebufferObject * o = new QOpenGLFramebufferObject ( PINT(1), PINT(2), *PQOPENGLFRAMEBUFFEROBJECTFORMAT(3) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QOpenGLFramebufferObject( PINT(1), PINT(2), *PQOPENGLFRAMEBUFFEROBJECTFORMAT(3) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
-//[1]QOpenGLFramebufferObject(const QSize &size, GLenum target = GL_TEXTURE_2D)
-//[2]QOpenGLFramebufferObject(int width, int height, GLenum target = GL_TEXTURE_2D)
-//[3]QOpenGLFramebufferObject(const QSize &size, Attachment attachment,GLenum target = GL_TEXTURE_2D, GLenum internal_format = GL_RGBA8)
-//[4]QOpenGLFramebufferObject(int width, int height, Attachment attachment,GLenum target = GL_TEXTURE_2D, GLenum internal_format = GL_RGBA8)
-//[5]QOpenGLFramebufferObject(const QSize &size, Attachment attachment,GLenum target = GL_TEXTURE_2D, GLenum internal_format = GL_RGBA)
-//[6]QOpenGLFramebufferObject(int width, int height, Attachment attachment,GLenum target = GL_TEXTURE_2D, GLenum internal_format = GL_RGBA)
-//[7]QOpenGLFramebufferObject(const QSize &size, const QOpenGLFramebufferObjectFormat &format)
-//[8]QOpenGLFramebufferObject(int width, int height, const QOpenGLFramebufferObjectFormat &format)
+/*
+[1]QOpenGLFramebufferObject(const QSize &size, GLenum target = GL_TEXTURE_2D)
+[2]QOpenGLFramebufferObject(int width, int height, GLenum target = GL_TEXTURE_2D)
+[3]QOpenGLFramebufferObject(const QSize &size, Attachment attachment,GLenum target = GL_TEXTURE_2D, GLenum internal_format = GL_RGBA8)
+[4]QOpenGLFramebufferObject(int width, int height, Attachment attachment,GLenum target = GL_TEXTURE_2D, GLenum internal_format = GL_RGBA8)
+[5]QOpenGLFramebufferObject(const QSize &size, Attachment attachment,GLenum target = GL_TEXTURE_2D, GLenum internal_format = GL_RGBA)
+[6]QOpenGLFramebufferObject(int width, int height, Attachment attachment,GLenum target = GL_TEXTURE_2D, GLenum internal_format = GL_RGBA)
+[7]QOpenGLFramebufferObject(const QSize &size, const QOpenGLFramebufferObjectFormat &format)
+[8]QOpenGLFramebufferObject(int width, int height, const QOpenGLFramebufferObjectFormat &format)
+*/
 
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_NEW )
 {
@@ -228,20 +229,20 @@ HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_DELETE )
 {
-  QOpenGLFramebufferObject * obj = (QOpenGLFramebufferObject *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLFramebufferObject *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -254,7 +255,7 @@ QOpenGLFramebufferObjectFormat format() const
 */
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_FORMAT )
 {
-  QOpenGLFramebufferObject * obj = (QOpenGLFramebufferObject *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLFramebufferObject *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -262,13 +263,13 @@ HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_FORMAT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QOpenGLFramebufferObjectFormat * ptr = new QOpenGLFramebufferObjectFormat( obj->format () );
-      _qt5xhb_createReturnClass ( ptr, "QOPENGLFRAMEBUFFEROBJECTFORMAT", true );
+      auto ptr = new QOpenGLFramebufferObjectFormat( obj->format() );
+      Qt5xHb::createReturnClass( ptr, "QOPENGLFRAMEBUFFEROBJECTFORMAT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -279,7 +280,7 @@ bool isValid() const
 */
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_ISVALID )
 {
-  QOpenGLFramebufferObject * obj = (QOpenGLFramebufferObject *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLFramebufferObject *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -287,12 +288,12 @@ HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_ISVALID )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isValid () );
+      RBOOL( obj->isValid() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -303,7 +304,7 @@ bool isBound() const
 */
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_ISBOUND )
 {
-  QOpenGLFramebufferObject * obj = (QOpenGLFramebufferObject *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLFramebufferObject *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -311,12 +312,12 @@ HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_ISBOUND )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isBound () );
+      RBOOL( obj->isBound() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -327,7 +328,7 @@ bool bind()
 */
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_BIND )
 {
-  QOpenGLFramebufferObject * obj = (QOpenGLFramebufferObject *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLFramebufferObject *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -335,12 +336,12 @@ HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_BIND )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->bind () );
+      RBOOL( obj->bind() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -351,7 +352,7 @@ bool release()
 */
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_RELEASE )
 {
-  QOpenGLFramebufferObject * obj = (QOpenGLFramebufferObject *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLFramebufferObject *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -359,12 +360,12 @@ HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_RELEASE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->release () );
+      RBOOL( obj->release() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -375,7 +376,7 @@ int width() const
 */
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_WIDTH )
 {
-  QOpenGLFramebufferObject * obj = (QOpenGLFramebufferObject *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLFramebufferObject *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -383,12 +384,12 @@ HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_WIDTH )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->width () );
+      RINT( obj->width() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -399,7 +400,7 @@ int height() const
 */
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_HEIGHT )
 {
-  QOpenGLFramebufferObject * obj = (QOpenGLFramebufferObject *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLFramebufferObject *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -407,12 +408,12 @@ HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_HEIGHT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->height () );
+      RINT( obj->height() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -423,7 +424,7 @@ GLuint texture() const
 */
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_TEXTURE )
 {
-  QOpenGLFramebufferObject * obj = (QOpenGLFramebufferObject *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLFramebufferObject *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -431,12 +432,12 @@ HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_TEXTURE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RGLUINT( obj->texture () );
+      RGLUINT( obj->texture() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -447,7 +448,7 @@ QSize size() const
 */
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_SIZE )
 {
-  QOpenGLFramebufferObject * obj = (QOpenGLFramebufferObject *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLFramebufferObject *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -455,13 +456,13 @@ HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_SIZE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSize * ptr = new QSize( obj->size () );
-      _qt5xhb_createReturnClass ( ptr, "QSIZE", true );
+      auto ptr = new QSize( obj->size() );
+      Qt5xHb::createReturnClass( ptr, "QSIZE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -472,7 +473,7 @@ QImage toImage() const
 */
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_TOIMAGE )
 {
-  QOpenGLFramebufferObject * obj = (QOpenGLFramebufferObject *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLFramebufferObject *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -480,13 +481,13 @@ HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_TOIMAGE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QImage * ptr = new QImage( obj->toImage () );
-      _qt5xhb_createReturnClass ( ptr, "QIMAGE", true );
+      auto ptr = new QImage( obj->toImage() );
+      Qt5xHb::createReturnClass( ptr, "QIMAGE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -497,7 +498,7 @@ Attachment attachment() const
 */
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_ATTACHMENT )
 {
-  QOpenGLFramebufferObject * obj = (QOpenGLFramebufferObject *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLFramebufferObject *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -505,12 +506,12 @@ HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_ATTACHMENT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->attachment () );
+      RENUM( obj->attachment() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -521,7 +522,7 @@ void setAttachment(Attachment attachment)
 */
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_SETATTACHMENT )
 {
-  QOpenGLFramebufferObject * obj = (QOpenGLFramebufferObject *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLFramebufferObject *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -529,12 +530,12 @@ HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_SETATTACHMENT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setAttachment ( (QOpenGLFramebufferObject::Attachment) hb_parni(1) );
+      obj->setAttachment( (QOpenGLFramebufferObject::Attachment) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -547,7 +548,7 @@ GLuint handle() const
 */
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_HANDLE )
 {
-  QOpenGLFramebufferObject * obj = (QOpenGLFramebufferObject *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QOpenGLFramebufferObject *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -555,12 +556,12 @@ HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_HANDLE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RGLUINT( obj->handle () );
+      RGLUINT( obj->handle() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -572,15 +573,15 @@ static bool bindDefault()
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_BINDDEFAULT )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(0) )
+  if( ISNUMPAR(0) )
   {
 #endif
-      RBOOL( QOpenGLFramebufferObject::bindDefault () );
+    RBOOL( QOpenGLFramebufferObject::bindDefault() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
@@ -591,15 +592,15 @@ static bool hasOpenGLFramebufferObjects()
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_HASOPENGLFRAMEBUFFEROBJECTS )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(0) )
+  if( ISNUMPAR(0) )
   {
 #endif
-      RBOOL( QOpenGLFramebufferObject::hasOpenGLFramebufferObjects () );
+    RBOOL( QOpenGLFramebufferObject::hasOpenGLFramebufferObjects() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
@@ -610,15 +611,15 @@ static bool hasOpenGLFramebufferBlit()
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_HASOPENGLFRAMEBUFFERBLIT )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(0) )
+  if( ISNUMPAR(0) )
   {
 #endif
-      RBOOL( QOpenGLFramebufferObject::hasOpenGLFramebufferBlit () );
+    RBOOL( QOpenGLFramebufferObject::hasOpenGLFramebufferBlit() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
@@ -626,10 +627,9 @@ HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_HASOPENGLFRAMEBUFFERBLIT )
 /*
 static void blitFramebuffer(QOpenGLFramebufferObject *target, const QRect &targetRect,QOpenGLFramebufferObject *source, const QRect &sourceRect,GLbitfield buffers = GL_COLOR_BUFFER_BIT,GLenum filter = GL_NEAREST)
 */
-void QOpenGLFramebufferObject_blitFramebuffer1 ()
+void QOpenGLFramebufferObject_blitFramebuffer1()
 {
-
-      QOpenGLFramebufferObject::blitFramebuffer ( PQOPENGLFRAMEBUFFEROBJECT(1), *PQRECT(2), PQOPENGLFRAMEBUFFEROBJECT(3), *PQRECT(4), OPGLBITFIELD(5,GL_COLOR_BUFFER_BIT), OPGLENUM(6,GL_NEAREST) );
+  QOpenGLFramebufferObject::blitFramebuffer( PQOPENGLFRAMEBUFFEROBJECT(1), *PQRECT(2), PQOPENGLFRAMEBUFFEROBJECT(3), *PQRECT(4), OPGLBITFIELD(5,GL_COLOR_BUFFER_BIT), OPGLENUM(6,GL_NEAREST) );
 
   hb_itemReturn( hb_stackSelfItem() );
 }
@@ -637,16 +637,17 @@ void QOpenGLFramebufferObject_blitFramebuffer1 ()
 /*
 static void blitFramebuffer(QOpenGLFramebufferObject *target,QOpenGLFramebufferObject *source,GLbitfield buffers = GL_COLOR_BUFFER_BIT,GLenum filter = GL_NEAREST)
 */
-void QOpenGLFramebufferObject_blitFramebuffer2 ()
+void QOpenGLFramebufferObject_blitFramebuffer2()
 {
-
-      QOpenGLFramebufferObject::blitFramebuffer ( PQOPENGLFRAMEBUFFEROBJECT(1), PQOPENGLFRAMEBUFFEROBJECT(2), OPGLBITFIELD(3,GL_COLOR_BUFFER_BIT), OPGLENUM(4,GL_NEAREST) );
+  QOpenGLFramebufferObject::blitFramebuffer( PQOPENGLFRAMEBUFFEROBJECT(1), PQOPENGLFRAMEBUFFEROBJECT(2), OPGLBITFIELD(3,GL_COLOR_BUFFER_BIT), OPGLENUM(4,GL_NEAREST) );
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void blitFramebuffer(QOpenGLFramebufferObject *target, const QRect &targetRect,QOpenGLFramebufferObject *source, const QRect &sourceRect,GLbitfield buffers = GL_COLOR_BUFFER_BIT,GLenum filter = GL_NEAREST)
-//[2]void blitFramebuffer(QOpenGLFramebufferObject *target,QOpenGLFramebufferObject *source,GLbitfield buffers = GL_COLOR_BUFFER_BIT,GLenum filter = GL_NEAREST)
+/*
+[1]void blitFramebuffer(QOpenGLFramebufferObject *target, const QRect &targetRect,QOpenGLFramebufferObject *source, const QRect &sourceRect,GLbitfield buffers = GL_COLOR_BUFFER_BIT,GLenum filter = GL_NEAREST)
+[2]void blitFramebuffer(QOpenGLFramebufferObject *target,QOpenGLFramebufferObject *source,GLbitfield buffers = GL_COLOR_BUFFER_BIT,GLenum filter = GL_NEAREST)
+*/
 
 HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_BLITFRAMEBUFFER )
 {
@@ -660,7 +661,7 @@ HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_BLITFRAMEBUFFER )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -670,25 +671,25 @@ HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -715,13 +716,13 @@ HB_FUNC_STATIC( QOPENGLFRAMEBUFFEROBJECT_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

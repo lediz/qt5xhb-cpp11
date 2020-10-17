@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -156,7 +156,7 @@ CLASS QWindow INHERIT QObject,QSurface
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QWindow
+PROCEDURE destroyObject() CLASS QWindow
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -173,7 +173,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtGui/QWindow>
@@ -184,27 +185,29 @@ RETURN
 /*
 QWindow(QScreen * screen = nullptr)
 */
-void QWindow_new1 ()
+void QWindow_new1()
 {
-  QWindow * o = new QWindow ( OPQSCREEN(1,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QWindow( OPQSCREEN(1,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
 /*
 QWindow(QWindow * parent)
 */
-void QWindow_new2 ()
+void QWindow_new2()
 {
-  QWindow * o = new QWindow ( PQWINDOW(1) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QWindow( PQWINDOW(1) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
 /*
 QWindow(QWindowPrivate &dd, QWindow *parent) [protected]
 */
 
-//[1]explicit QWindow(QScreen *screen = nullptr)
-//[2]explicit QWindow(QWindow *parent)
+/*
+[1]explicit QWindow(QScreen *screen = nullptr)
+[2]explicit QWindow(QWindow *parent)
+*/
 
 HB_FUNC_STATIC( QWINDOW_NEW )
 {
@@ -218,7 +221,7 @@ HB_FUNC_STATIC( QWINDOW_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -227,14 +230,16 @@ virtual ~QWindow()
 */
 HB_FUNC_STATIC( QWINDOW_DELETE )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -247,7 +252,7 @@ QString title() const
 */
 HB_FUNC_STATIC( QWINDOW_TITLE )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -255,12 +260,12 @@ HB_FUNC_STATIC( QWINDOW_TITLE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->title () );
+      RQSTRING( obj->title() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -271,7 +276,7 @@ void setTitle(const QString &) [slot]
 */
 HB_FUNC_STATIC( QWINDOW_SETTITLE )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -279,12 +284,12 @@ HB_FUNC_STATIC( QWINDOW_SETTITLE )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->setTitle ( PQSTRING(1) );
+      obj->setTitle( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -297,7 +302,7 @@ Qt::WindowModality modality() const
 */
 HB_FUNC_STATIC( QWINDOW_MODALITY )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -305,12 +310,12 @@ HB_FUNC_STATIC( QWINDOW_MODALITY )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->modality () );
+      RENUM( obj->modality() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -321,7 +326,7 @@ void setModality(Qt::WindowModality modality)
 */
 HB_FUNC_STATIC( QWINDOW_SETMODALITY )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -329,12 +334,12 @@ HB_FUNC_STATIC( QWINDOW_SETMODALITY )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setModality ( (Qt::WindowModality) hb_parni(1) );
+      obj->setModality( (Qt::WindowModality) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -347,7 +352,7 @@ Qt::WindowFlags flags() const
 */
 HB_FUNC_STATIC( QWINDOW_FLAGS )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -355,12 +360,12 @@ HB_FUNC_STATIC( QWINDOW_FLAGS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->flags () );
+      RENUM( obj->flags() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -371,7 +376,7 @@ void setFlags(Qt::WindowFlags flags)
 */
 HB_FUNC_STATIC( QWINDOW_SETFLAGS )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -379,12 +384,12 @@ HB_FUNC_STATIC( QWINDOW_SETFLAGS )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setFlags ( (Qt::WindowFlags) hb_parni(1) );
+      obj->setFlags( (Qt::WindowFlags) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -397,7 +402,7 @@ int x() const
 */
 HB_FUNC_STATIC( QWINDOW_X )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -405,12 +410,12 @@ HB_FUNC_STATIC( QWINDOW_X )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->x () );
+      RINT( obj->x() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -421,7 +426,7 @@ void setX(int arg) [slot]
 */
 HB_FUNC_STATIC( QWINDOW_SETX )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -429,12 +434,12 @@ HB_FUNC_STATIC( QWINDOW_SETX )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setX ( PINT(1) );
+      obj->setX( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -447,7 +452,7 @@ int y() const
 */
 HB_FUNC_STATIC( QWINDOW_Y )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -455,12 +460,12 @@ HB_FUNC_STATIC( QWINDOW_Y )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->y () );
+      RINT( obj->y() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -471,7 +476,7 @@ void setY(int arg) [slot]
 */
 HB_FUNC_STATIC( QWINDOW_SETY )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -479,12 +484,12 @@ HB_FUNC_STATIC( QWINDOW_SETY )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setY ( PINT(1) );
+      obj->setY( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -497,7 +502,7 @@ int width() const
 */
 HB_FUNC_STATIC( QWINDOW_WIDTH )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -505,12 +510,12 @@ HB_FUNC_STATIC( QWINDOW_WIDTH )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->width () );
+      RINT( obj->width() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -521,7 +526,7 @@ void setWidth(int arg) [slot]
 */
 HB_FUNC_STATIC( QWINDOW_SETWIDTH )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -529,12 +534,12 @@ HB_FUNC_STATIC( QWINDOW_SETWIDTH )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setWidth ( PINT(1) );
+      obj->setWidth( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -547,7 +552,7 @@ int height() const
 */
 HB_FUNC_STATIC( QWINDOW_HEIGHT )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -555,12 +560,12 @@ HB_FUNC_STATIC( QWINDOW_HEIGHT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->height () );
+      RINT( obj->height() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -571,7 +576,7 @@ void setHeight(int arg) [slot]
 */
 HB_FUNC_STATIC( QWINDOW_SETHEIGHT )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -579,12 +584,12 @@ HB_FUNC_STATIC( QWINDOW_SETHEIGHT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setHeight ( PINT(1) );
+      obj->setHeight( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -597,7 +602,7 @@ int minimumWidth() const
 */
 HB_FUNC_STATIC( QWINDOW_MINIMUMWIDTH )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -605,12 +610,12 @@ HB_FUNC_STATIC( QWINDOW_MINIMUMWIDTH )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->minimumWidth () );
+      RINT( obj->minimumWidth() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -621,7 +626,7 @@ void setMinimumWidth(int w) [slot]
 */
 HB_FUNC_STATIC( QWINDOW_SETMINIMUMWIDTH )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -629,12 +634,12 @@ HB_FUNC_STATIC( QWINDOW_SETMINIMUMWIDTH )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setMinimumWidth ( PINT(1) );
+      obj->setMinimumWidth( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -647,7 +652,7 @@ int minimumHeight() const
 */
 HB_FUNC_STATIC( QWINDOW_MINIMUMHEIGHT )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -655,12 +660,12 @@ HB_FUNC_STATIC( QWINDOW_MINIMUMHEIGHT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->minimumHeight () );
+      RINT( obj->minimumHeight() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -671,7 +676,7 @@ void setMinimumHeight(int h) [slot]
 */
 HB_FUNC_STATIC( QWINDOW_SETMINIMUMHEIGHT )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -679,12 +684,12 @@ HB_FUNC_STATIC( QWINDOW_SETMINIMUMHEIGHT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setMinimumHeight ( PINT(1) );
+      obj->setMinimumHeight( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -697,7 +702,7 @@ int maximumWidth() const
 */
 HB_FUNC_STATIC( QWINDOW_MAXIMUMWIDTH )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -705,12 +710,12 @@ HB_FUNC_STATIC( QWINDOW_MAXIMUMWIDTH )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->maximumWidth () );
+      RINT( obj->maximumWidth() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -721,7 +726,7 @@ void setMaximumWidth(int w) [slot]
 */
 HB_FUNC_STATIC( QWINDOW_SETMAXIMUMWIDTH )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -729,12 +734,12 @@ HB_FUNC_STATIC( QWINDOW_SETMAXIMUMWIDTH )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setMaximumWidth ( PINT(1) );
+      obj->setMaximumWidth( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -747,7 +752,7 @@ int maximumHeight() const
 */
 HB_FUNC_STATIC( QWINDOW_MAXIMUMHEIGHT )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -755,12 +760,12 @@ HB_FUNC_STATIC( QWINDOW_MAXIMUMHEIGHT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->maximumHeight () );
+      RINT( obj->maximumHeight() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -771,7 +776,7 @@ void setMaximumHeight(int h) [slot]
 */
 HB_FUNC_STATIC( QWINDOW_SETMAXIMUMHEIGHT )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -779,12 +784,12 @@ HB_FUNC_STATIC( QWINDOW_SETMAXIMUMHEIGHT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setMaximumHeight ( PINT(1) );
+      obj->setMaximumHeight( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -797,7 +802,7 @@ bool isVisible() const
 */
 HB_FUNC_STATIC( QWINDOW_ISVISIBLE )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -805,12 +810,12 @@ HB_FUNC_STATIC( QWINDOW_ISVISIBLE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isVisible () );
+      RBOOL( obj->isVisible() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -821,7 +826,7 @@ void setVisible(bool visible) [slot]
 */
 HB_FUNC_STATIC( QWINDOW_SETVISIBLE )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -829,12 +834,12 @@ HB_FUNC_STATIC( QWINDOW_SETVISIBLE )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setVisible ( PBOOL(1) );
+      obj->setVisible( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -848,7 +853,7 @@ bool isActive() const
 HB_FUNC_STATIC( QWINDOW_ISACTIVE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -856,12 +861,12 @@ HB_FUNC_STATIC( QWINDOW_ISACTIVE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isActive () );
+      RBOOL( obj->isActive() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -874,7 +879,7 @@ Visibility visibility() const
 HB_FUNC_STATIC( QWINDOW_VISIBILITY )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -882,12 +887,12 @@ HB_FUNC_STATIC( QWINDOW_VISIBILITY )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->visibility () );
+      RENUM( obj->visibility() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -900,7 +905,7 @@ void setVisibility(Visibility v)
 HB_FUNC_STATIC( QWINDOW_SETVISIBILITY )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -908,12 +913,12 @@ HB_FUNC_STATIC( QWINDOW_SETVISIBILITY )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setVisibility ( (QWindow::Visibility) hb_parni(1) );
+      obj->setVisibility( (QWindow::Visibility) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -927,7 +932,7 @@ Qt::ScreenOrientation contentOrientation() const
 */
 HB_FUNC_STATIC( QWINDOW_CONTENTORIENTATION )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -935,12 +940,12 @@ HB_FUNC_STATIC( QWINDOW_CONTENTORIENTATION )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->contentOrientation () );
+      RENUM( obj->contentOrientation() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -951,7 +956,7 @@ void reportContentOrientationChange(Qt::ScreenOrientation orientation)
 */
 HB_FUNC_STATIC( QWINDOW_REPORTCONTENTORIENTATIONCHANGE )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -959,12 +964,12 @@ HB_FUNC_STATIC( QWINDOW_REPORTCONTENTORIENTATIONCHANGE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->reportContentOrientationChange ( (Qt::ScreenOrientation) hb_parni(1) );
+      obj->reportContentOrientationChange( (Qt::ScreenOrientation) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -978,7 +983,7 @@ qreal opacity() const
 HB_FUNC_STATIC( QWINDOW_OPACITY )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -986,12 +991,12 @@ HB_FUNC_STATIC( QWINDOW_OPACITY )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQREAL( obj->opacity () );
+      RQREAL( obj->opacity() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1004,7 +1009,7 @@ void setOpacity(qreal level)
 HB_FUNC_STATIC( QWINDOW_SETOPACITY )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1012,12 +1017,12 @@ HB_FUNC_STATIC( QWINDOW_SETOPACITY )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setOpacity ( PQREAL(1) );
+      obj->setOpacity( PQREAL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1031,7 +1036,7 @@ QSize baseSize() const
 */
 HB_FUNC_STATIC( QWINDOW_BASESIZE )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1039,13 +1044,13 @@ HB_FUNC_STATIC( QWINDOW_BASESIZE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSize * ptr = new QSize( obj->baseSize () );
-      _qt5xhb_createReturnClass ( ptr, "QSIZE", true );
+      auto ptr = new QSize( obj->baseSize() );
+      Qt5xHb::createReturnClass( ptr, "QSIZE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1056,7 +1061,7 @@ void create()
 */
 HB_FUNC_STATIC( QWINDOW_CREATE )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1064,12 +1069,12 @@ HB_FUNC_STATIC( QWINDOW_CREATE )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->create ();
+      obj->create();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1083,7 +1088,7 @@ QCursor cursor() const
 HB_FUNC_STATIC( QWINDOW_CURSOR )
 {
 #ifndef QT_NO_CURSOR
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1091,13 +1096,13 @@ HB_FUNC_STATIC( QWINDOW_CURSOR )
     if( ISNUMPAR(0) )
     {
 #endif
-      QCursor * ptr = new QCursor( obj->cursor () );
-      _qt5xhb_createReturnClass ( ptr, "QCURSOR", true );
+      auto ptr = new QCursor( obj->cursor() );
+      Qt5xHb::createReturnClass( ptr, "QCURSOR", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1109,7 +1114,7 @@ void destroy()
 */
 HB_FUNC_STATIC( QWINDOW_DESTROY )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1117,12 +1122,12 @@ HB_FUNC_STATIC( QWINDOW_DESTROY )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->destroy ();
+      obj->destroy();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1135,7 +1140,7 @@ virtual QObject * focusObject() const
 */
 HB_FUNC_STATIC( QWINDOW_FOCUSOBJECT )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1143,13 +1148,13 @@ HB_FUNC_STATIC( QWINDOW_FOCUSOBJECT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QObject * ptr = obj->focusObject ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QOBJECT" );
+      QObject * ptr = obj->focusObject();
+      Qt5xHb::createReturnQObjectClass( ptr, "QOBJECT" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1160,7 +1165,7 @@ QRect frameGeometry() const
 */
 HB_FUNC_STATIC( QWINDOW_FRAMEGEOMETRY )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1168,13 +1173,13 @@ HB_FUNC_STATIC( QWINDOW_FRAMEGEOMETRY )
     if( ISNUMPAR(0) )
     {
 #endif
-      QRect * ptr = new QRect( obj->frameGeometry () );
-      _qt5xhb_createReturnClass ( ptr, "QRECT", true );
+      auto ptr = new QRect( obj->frameGeometry() );
+      Qt5xHb::createReturnClass( ptr, "QRECT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1185,7 +1190,7 @@ QMargins frameMargins() const
 */
 HB_FUNC_STATIC( QWINDOW_FRAMEMARGINS )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1193,13 +1198,13 @@ HB_FUNC_STATIC( QWINDOW_FRAMEMARGINS )
     if( ISNUMPAR(0) )
     {
 #endif
-      QMargins * ptr = new QMargins( obj->frameMargins () );
-      _qt5xhb_createReturnClass ( ptr, "QMARGINS", true );
+      auto ptr = new QMargins( obj->frameMargins() );
+      Qt5xHb::createReturnClass( ptr, "QMARGINS", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1210,7 +1215,7 @@ QRect geometry() const
 */
 HB_FUNC_STATIC( QWINDOW_GEOMETRY )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1218,13 +1223,13 @@ HB_FUNC_STATIC( QWINDOW_GEOMETRY )
     if( ISNUMPAR(0) )
     {
 #endif
-      QRect * ptr = new QRect( obj->geometry () );
-      _qt5xhb_createReturnClass ( ptr, "QRECT", true );
+      auto ptr = new QRect( obj->geometry() );
+      Qt5xHb::createReturnClass( ptr, "QRECT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1235,7 +1240,7 @@ bool isAncestorOf(const QWindow * child, AncestorMode mode = IncludeTransients) 
 */
 HB_FUNC_STATIC( QWINDOW_ISANCESTOROF )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1243,12 +1248,12 @@ HB_FUNC_STATIC( QWINDOW_ISANCESTOROF )
     if( ISBETWEEN(1,2) && ISQWINDOW(1) && ISOPTNUM(2) )
     {
 #endif
-      RBOOL( obj->isAncestorOf ( PQWINDOW(1), ISNIL(2)? (QWindow::AncestorMode) QWindow::IncludeTransients : (QWindow::AncestorMode) hb_parni(2) ) );
+      RBOOL( obj->isAncestorOf( PQWINDOW(1), ISNIL(2)? (QWindow::AncestorMode) QWindow::IncludeTransients : (QWindow::AncestorMode) hb_parni(2) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1259,7 +1264,7 @@ bool isExposed() const
 */
 HB_FUNC_STATIC( QWINDOW_ISEXPOSED )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1267,12 +1272,12 @@ HB_FUNC_STATIC( QWINDOW_ISEXPOSED )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isExposed () );
+      RBOOL( obj->isExposed() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1283,7 +1288,7 @@ bool isModal() const
 */
 HB_FUNC_STATIC( QWINDOW_ISMODAL )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1291,12 +1296,12 @@ HB_FUNC_STATIC( QWINDOW_ISMODAL )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isModal () );
+      RBOOL( obj->isModal() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1307,7 +1312,7 @@ bool isTopLevel() const
 */
 HB_FUNC_STATIC( QWINDOW_ISTOPLEVEL )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1315,12 +1320,12 @@ HB_FUNC_STATIC( QWINDOW_ISTOPLEVEL )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isTopLevel () );
+      RBOOL( obj->isTopLevel() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1331,7 +1336,7 @@ QPoint mapFromGlobal(const QPoint & pos) const
 */
 HB_FUNC_STATIC( QWINDOW_MAPFROMGLOBAL )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1339,13 +1344,13 @@ HB_FUNC_STATIC( QWINDOW_MAPFROMGLOBAL )
     if( ISNUMPAR(1) && ISQPOINT(1) )
     {
 #endif
-      QPoint * ptr = new QPoint( obj->mapFromGlobal ( *PQPOINT(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QPOINT", true );
+      auto ptr = new QPoint( obj->mapFromGlobal( *PQPOINT(1) ) );
+      Qt5xHb::createReturnClass( ptr, "QPOINT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1356,7 +1361,7 @@ QPoint mapToGlobal(const QPoint & pos) const
 */
 HB_FUNC_STATIC( QWINDOW_MAPTOGLOBAL )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1364,13 +1369,13 @@ HB_FUNC_STATIC( QWINDOW_MAPTOGLOBAL )
     if( ISNUMPAR(1) && ISQPOINT(1) )
     {
 #endif
-      QPoint * ptr = new QPoint( obj->mapToGlobal ( *PQPOINT(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QPOINT", true );
+      auto ptr = new QPoint( obj->mapToGlobal( *PQPOINT(1) ) );
+      Qt5xHb::createReturnClass( ptr, "QPOINT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1381,7 +1386,7 @@ QSize maximumSize() const
 */
 HB_FUNC_STATIC( QWINDOW_MAXIMUMSIZE )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1389,13 +1394,13 @@ HB_FUNC_STATIC( QWINDOW_MAXIMUMSIZE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSize * ptr = new QSize( obj->maximumSize () );
-      _qt5xhb_createReturnClass ( ptr, "QSIZE", true );
+      auto ptr = new QSize( obj->maximumSize() );
+      Qt5xHb::createReturnClass( ptr, "QSIZE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1406,7 +1411,7 @@ QSize minimumSize() const
 */
 HB_FUNC_STATIC( QWINDOW_MINIMUMSIZE )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1414,13 +1419,13 @@ HB_FUNC_STATIC( QWINDOW_MINIMUMSIZE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSize * ptr = new QSize( obj->minimumSize () );
-      _qt5xhb_createReturnClass ( ptr, "QSIZE", true );
+      auto ptr = new QSize( obj->minimumSize() );
+      Qt5xHb::createReturnClass( ptr, "QSIZE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1429,15 +1434,15 @@ HB_FUNC_STATIC( QWINDOW_MINIMUMSIZE )
 /*
 QWindow *parent(AncestorMode mode) const
 */
-void QWindow_parent1 ()
+void QWindow_parent1()
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,9,0))
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QWindow * ptr = obj->parent ( (QWindow::AncestorMode) hb_parni(1) );
-      _qt5xhb_createReturnQObjectClass ( ptr, "QWINDOW" );
+    QWindow * ptr = obj->parent( (QWindow::AncestorMode) hb_parni(1) );
+    Qt5xHb::createReturnQObjectClass( ptr, "QWINDOW" );
   }
 #endif
 }
@@ -1445,19 +1450,21 @@ void QWindow_parent1 ()
 /*
 QWindow * parent() const
 */
-void QWindow_parent2 ()
+void QWindow_parent2()
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QWindow * ptr = obj->parent ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QWINDOW" );
+    QWindow * ptr = obj->parent();
+    Qt5xHb::createReturnQObjectClass( ptr, "QWINDOW" );
   }
 }
 
-//[1]QWindow *parent(AncestorMode mode) const
-//[2]QWindow * parent() const
+/*
+[1]QWindow *parent(AncestorMode mode) const
+[2]QWindow * parent() const
+*/
 
 HB_FUNC_STATIC( QWINDOW_PARENT )
 {
@@ -1471,7 +1478,7 @@ HB_FUNC_STATIC( QWINDOW_PARENT )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -1480,7 +1487,7 @@ QSurfaceFormat requestedFormat() const
 */
 HB_FUNC_STATIC( QWINDOW_REQUESTEDFORMAT )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1488,13 +1495,13 @@ HB_FUNC_STATIC( QWINDOW_REQUESTEDFORMAT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSurfaceFormat * ptr = new QSurfaceFormat( obj->requestedFormat () );
-      _qt5xhb_createReturnClass ( ptr, "QSURFACEFORMAT", true );
+      auto ptr = new QSurfaceFormat( obj->requestedFormat() );
+      Qt5xHb::createReturnClass( ptr, "QSURFACEFORMAT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1503,13 +1510,13 @@ HB_FUNC_STATIC( QWINDOW_REQUESTEDFORMAT )
 /*
 void resize(const QSize & newSize)
 */
-void QWindow_resize1 ()
+void QWindow_resize1()
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->resize ( *PQSIZE(1) );
+    obj->resize( *PQSIZE(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -1518,20 +1525,22 @@ void QWindow_resize1 ()
 /*
 void resize(int w, int h)
 */
-void QWindow_resize2 ()
+void QWindow_resize2()
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->resize ( PINT(1), PINT(2) );
+    obj->resize( PINT(1), PINT(2) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void resize(const QSize & newSize)
-//[2]void resize(int w, int h)
+/*
+[1]void resize(const QSize & newSize)
+[2]void resize(int w, int h)
+*/
 
 HB_FUNC_STATIC( QWINDOW_RESIZE )
 {
@@ -1545,7 +1554,7 @@ HB_FUNC_STATIC( QWINDOW_RESIZE )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -1554,7 +1563,7 @@ QScreen * screen() const
 */
 HB_FUNC_STATIC( QWINDOW_SCREEN )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1562,13 +1571,13 @@ HB_FUNC_STATIC( QWINDOW_SCREEN )
     if( ISNUMPAR(0) )
     {
 #endif
-      QScreen * ptr = obj->screen ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QSCREEN" );
+      QScreen * ptr = obj->screen();
+      Qt5xHb::createReturnQObjectClass( ptr, "QSCREEN" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1579,7 +1588,7 @@ void setBaseSize(const QSize & size)
 */
 HB_FUNC_STATIC( QWINDOW_SETBASESIZE )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1587,12 +1596,12 @@ HB_FUNC_STATIC( QWINDOW_SETBASESIZE )
     if( ISNUMPAR(1) && ISQSIZE(1) )
     {
 #endif
-      obj->setBaseSize ( *PQSIZE(1) );
+      obj->setBaseSize( *PQSIZE(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1606,7 +1615,7 @@ void setCursor(const QCursor &)
 HB_FUNC_STATIC( QWINDOW_SETCURSOR )
 {
 #ifndef QT_NO_CURSOR
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1614,12 +1623,12 @@ HB_FUNC_STATIC( QWINDOW_SETCURSOR )
     if( ISNUMPAR(1) && ISQCURSOR(1) )
     {
 #endif
-      obj->setCursor ( *PQCURSOR(1) );
+      obj->setCursor( *PQCURSOR(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1633,7 +1642,7 @@ void setFormat(const QSurfaceFormat & format)
 */
 HB_FUNC_STATIC( QWINDOW_SETFORMAT )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1641,12 +1650,12 @@ HB_FUNC_STATIC( QWINDOW_SETFORMAT )
     if( ISNUMPAR(1) && ISQSURFACEFORMAT(1) )
     {
 #endif
-      obj->setFormat ( *PQSURFACEFORMAT(1) );
+      obj->setFormat( *PQSURFACEFORMAT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1657,13 +1666,13 @@ HB_FUNC_STATIC( QWINDOW_SETFORMAT )
 /*
 void setGeometry(int posx, int posy, int w, int h) [slot]
 */
-void QWindow_setGeometry1 ()
+void QWindow_setGeometry1()
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setGeometry ( PINT(1), PINT(2), PINT(3), PINT(4) );
+    obj->setGeometry( PINT(1), PINT(2), PINT(3), PINT(4) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -1672,20 +1681,22 @@ void QWindow_setGeometry1 ()
 /*
 void setGeometry(const QRect & rect) [slot]
 */
-void QWindow_setGeometry2 ()
+void QWindow_setGeometry2()
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setGeometry ( *PQRECT(1) );
+    obj->setGeometry( *PQRECT(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void setGeometry(int posx, int posy, int w, int h)
-//[2]void setGeometry(const QRect & rect)
+/*
+[1]void setGeometry(int posx, int posy, int w, int h)
+[2]void setGeometry(const QRect & rect)
+*/
 
 HB_FUNC_STATIC( QWINDOW_SETGEOMETRY )
 {
@@ -1699,7 +1710,7 @@ HB_FUNC_STATIC( QWINDOW_SETGEOMETRY )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -1708,7 +1719,7 @@ bool setKeyboardGrabEnabled(bool grab)
 */
 HB_FUNC_STATIC( QWINDOW_SETKEYBOARDGRABENABLED )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1716,12 +1727,12 @@ HB_FUNC_STATIC( QWINDOW_SETKEYBOARDGRABENABLED )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      RBOOL( obj->setKeyboardGrabEnabled ( PBOOL(1) ) );
+      RBOOL( obj->setKeyboardGrabEnabled( PBOOL(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1732,7 +1743,7 @@ void setMaximumSize(const QSize & size)
 */
 HB_FUNC_STATIC( QWINDOW_SETMAXIMUMSIZE )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1740,12 +1751,12 @@ HB_FUNC_STATIC( QWINDOW_SETMAXIMUMSIZE )
     if( ISNUMPAR(1) && ISQSIZE(1) )
     {
 #endif
-      obj->setMaximumSize ( *PQSIZE(1) );
+      obj->setMaximumSize( *PQSIZE(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1758,7 +1769,7 @@ void setMinimumSize(const QSize & size)
 */
 HB_FUNC_STATIC( QWINDOW_SETMINIMUMSIZE )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1766,12 +1777,12 @@ HB_FUNC_STATIC( QWINDOW_SETMINIMUMSIZE )
     if( ISNUMPAR(1) && ISQSIZE(1) )
     {
 #endif
-      obj->setMinimumSize ( *PQSIZE(1) );
+      obj->setMinimumSize( *PQSIZE(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1784,7 +1795,7 @@ bool setMouseGrabEnabled(bool grab)
 */
 HB_FUNC_STATIC( QWINDOW_SETMOUSEGRABENABLED )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1792,12 +1803,12 @@ HB_FUNC_STATIC( QWINDOW_SETMOUSEGRABENABLED )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      RBOOL( obj->setMouseGrabEnabled ( PBOOL(1) ) );
+      RBOOL( obj->setMouseGrabEnabled( PBOOL(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1808,7 +1819,7 @@ void setParent(QWindow * parent)
 */
 HB_FUNC_STATIC( QWINDOW_SETPARENT )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1816,12 +1827,12 @@ HB_FUNC_STATIC( QWINDOW_SETPARENT )
     if( ISNUMPAR(1) && ISQWINDOW(1) )
     {
 #endif
-      obj->setParent ( PQWINDOW(1) );
+      obj->setParent( PQWINDOW(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1834,7 +1845,7 @@ void setScreen(QScreen * newScreen)
 */
 HB_FUNC_STATIC( QWINDOW_SETSCREEN )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1842,12 +1853,12 @@ HB_FUNC_STATIC( QWINDOW_SETSCREEN )
     if( ISNUMPAR(1) && ISQSCREEN(1) )
     {
 #endif
-      obj->setScreen ( PQSCREEN(1) );
+      obj->setScreen( PQSCREEN(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1860,7 +1871,7 @@ void setSizeIncrement(const QSize & size)
 */
 HB_FUNC_STATIC( QWINDOW_SETSIZEINCREMENT )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1868,12 +1879,12 @@ HB_FUNC_STATIC( QWINDOW_SETSIZEINCREMENT )
     if( ISNUMPAR(1) && ISQSIZE(1) )
     {
 #endif
-      obj->setSizeIncrement ( *PQSIZE(1) );
+      obj->setSizeIncrement( *PQSIZE(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1886,7 +1897,7 @@ void setSurfaceType(SurfaceType surfaceType)
 */
 HB_FUNC_STATIC( QWINDOW_SETSURFACETYPE )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1894,12 +1905,12 @@ HB_FUNC_STATIC( QWINDOW_SETSURFACETYPE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setSurfaceType ( (QSurface::SurfaceType) hb_parni(1) );
+      obj->setSurfaceType( (QSurface::SurfaceType) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1912,7 +1923,7 @@ void setTransientParent(QWindow * parent)
 */
 HB_FUNC_STATIC( QWINDOW_SETTRANSIENTPARENT )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1920,12 +1931,12 @@ HB_FUNC_STATIC( QWINDOW_SETTRANSIENTPARENT )
     if( ISNUMPAR(1) && ISQWINDOW(1) )
     {
 #endif
-      obj->setTransientParent ( PQWINDOW(1) );
+      obj->setTransientParent( PQWINDOW(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1938,7 +1949,7 @@ QSize sizeIncrement() const
 */
 HB_FUNC_STATIC( QWINDOW_SIZEINCREMENT )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1946,13 +1957,13 @@ HB_FUNC_STATIC( QWINDOW_SIZEINCREMENT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSize * ptr = new QSize( obj->sizeIncrement () );
-      _qt5xhb_createReturnClass ( ptr, "QSIZE", true );
+      auto ptr = new QSize( obj->sizeIncrement() );
+      Qt5xHb::createReturnClass( ptr, "QSIZE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1963,7 +1974,7 @@ QWindow * transientParent() const
 */
 HB_FUNC_STATIC( QWINDOW_TRANSIENTPARENT )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1971,13 +1982,13 @@ HB_FUNC_STATIC( QWINDOW_TRANSIENTPARENT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QWindow * ptr = obj->transientParent ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QWINDOW" );
+      QWindow * ptr = obj->transientParent();
+      Qt5xHb::createReturnQObjectClass( ptr, "QWINDOW" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1989,7 +2000,7 @@ void unsetCursor()
 HB_FUNC_STATIC( QWINDOW_UNSETCURSOR )
 {
 #ifndef QT_NO_CURSOR
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1997,12 +2008,12 @@ HB_FUNC_STATIC( QWINDOW_UNSETCURSOR )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->unsetCursor ();
+      obj->unsetCursor();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2016,7 +2027,7 @@ Qt::WindowState windowState() const
 */
 HB_FUNC_STATIC( QWINDOW_WINDOWSTATE )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2024,12 +2035,12 @@ HB_FUNC_STATIC( QWINDOW_WINDOWSTATE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->windowState () );
+      RENUM( obj->windowState() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2040,7 +2051,7 @@ virtual QSurfaceFormat format() const override
 */
 HB_FUNC_STATIC( QWINDOW_FORMAT )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2048,13 +2059,13 @@ HB_FUNC_STATIC( QWINDOW_FORMAT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSurfaceFormat * ptr = new QSurfaceFormat( obj->format () );
-      _qt5xhb_createReturnClass ( ptr, "QSURFACEFORMAT", true );
+      auto ptr = new QSurfaceFormat( obj->format() );
+      Qt5xHb::createReturnClass( ptr, "QSURFACEFORMAT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2065,7 +2076,7 @@ virtual QSize size() const override
 */
 HB_FUNC_STATIC( QWINDOW_SIZE )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2073,13 +2084,13 @@ HB_FUNC_STATIC( QWINDOW_SIZE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSize * ptr = new QSize( obj->size () );
-      _qt5xhb_createReturnClass ( ptr, "QSIZE", true );
+      auto ptr = new QSize( obj->size() );
+      Qt5xHb::createReturnClass( ptr, "QSIZE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2090,7 +2101,7 @@ virtual SurfaceType surfaceType() const override
 */
 HB_FUNC_STATIC( QWINDOW_SURFACETYPE )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2098,12 +2109,12 @@ HB_FUNC_STATIC( QWINDOW_SURFACETYPE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->surfaceType () );
+      RENUM( obj->surfaceType() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2114,7 +2125,7 @@ bool close() [slot]
 */
 HB_FUNC_STATIC( QWINDOW_CLOSE )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2122,12 +2133,12 @@ HB_FUNC_STATIC( QWINDOW_CLOSE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->close () );
+      RBOOL( obj->close() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2138,7 +2149,7 @@ void hide() [slot]
 */
 HB_FUNC_STATIC( QWINDOW_HIDE )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2146,12 +2157,12 @@ HB_FUNC_STATIC( QWINDOW_HIDE )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->hide ();
+      obj->hide();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2164,7 +2175,7 @@ void lower() [slot]
 */
 HB_FUNC_STATIC( QWINDOW_LOWER )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2172,12 +2183,12 @@ HB_FUNC_STATIC( QWINDOW_LOWER )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->lower ();
+      obj->lower();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2190,7 +2201,7 @@ void raise() [slot]
 */
 HB_FUNC_STATIC( QWINDOW_RAISE )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2198,12 +2209,12 @@ HB_FUNC_STATIC( QWINDOW_RAISE )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->raise ();
+      obj->raise();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2216,7 +2227,7 @@ void show() [slot]
 */
 HB_FUNC_STATIC( QWINDOW_SHOW )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2224,12 +2235,12 @@ HB_FUNC_STATIC( QWINDOW_SHOW )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->show ();
+      obj->show();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2242,7 +2253,7 @@ void showFullScreen() [slot]
 */
 HB_FUNC_STATIC( QWINDOW_SHOWFULLSCREEN )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2250,12 +2261,12 @@ HB_FUNC_STATIC( QWINDOW_SHOWFULLSCREEN )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->showFullScreen ();
+      obj->showFullScreen();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2268,7 +2279,7 @@ void showMaximized() [slot]
 */
 HB_FUNC_STATIC( QWINDOW_SHOWMAXIMIZED )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2276,12 +2287,12 @@ HB_FUNC_STATIC( QWINDOW_SHOWMAXIMIZED )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->showMaximized ();
+      obj->showMaximized();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2294,7 +2305,7 @@ void showMinimized() [slot]
 */
 HB_FUNC_STATIC( QWINDOW_SHOWMINIMIZED )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2302,12 +2313,12 @@ HB_FUNC_STATIC( QWINDOW_SHOWMINIMIZED )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->showMinimized ();
+      obj->showMinimized();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2320,7 +2331,7 @@ void showNormal() [slot]
 */
 HB_FUNC_STATIC( QWINDOW_SHOWNORMAL )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2328,12 +2339,12 @@ HB_FUNC_STATIC( QWINDOW_SHOWNORMAL )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->showNormal ();
+      obj->showNormal();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2346,7 +2357,7 @@ QPoint position() const
 */
 HB_FUNC_STATIC( QWINDOW_POSITION )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2354,13 +2365,13 @@ HB_FUNC_STATIC( QWINDOW_POSITION )
     if( ISNUMPAR(0) )
     {
 #endif
-      QPoint * ptr = new QPoint( obj->position () );
-      _qt5xhb_createReturnClass ( ptr, "QPOINT", true );
+      auto ptr = new QPoint( obj->position() );
+      Qt5xHb::createReturnClass( ptr, "QPOINT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2369,13 +2380,13 @@ HB_FUNC_STATIC( QWINDOW_POSITION )
 /*
 void setPosition(const QPoint & pt)
 */
-void QWindow_setPosition1 ()
+void QWindow_setPosition1()
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setPosition ( *PQPOINT(1) );
+    obj->setPosition( *PQPOINT(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -2384,20 +2395,22 @@ void QWindow_setPosition1 ()
 /*
 void setPosition(int posx, int posy)
 */
-void QWindow_setPosition2 ()
+void QWindow_setPosition2()
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setPosition ( PINT(1), PINT(2) );
+    obj->setPosition( PINT(1), PINT(2) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void setPosition(const QPoint & pt)
-//[2]void setPosition(int posx, int posy)
+/*
+[1]void setPosition(const QPoint & pt)
+[2]void setPosition(int posx, int posy)
+*/
 
 HB_FUNC_STATIC( QWINDOW_SETPOSITION )
 {
@@ -2411,7 +2424,7 @@ HB_FUNC_STATIC( QWINDOW_SETPOSITION )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -2421,7 +2434,7 @@ Q_REVISION(3) void requestUpdate() [slot]
 HB_FUNC_STATIC( QWINDOW_REQUESTUPDATE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,5,0))
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2429,12 +2442,12 @@ HB_FUNC_STATIC( QWINDOW_REQUESTUPDATE )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->requestUpdate ();
+      obj->requestUpdate();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2448,7 +2461,7 @@ WId winId() const
 */
 HB_FUNC_STATIC( QWINDOW_WINID )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2456,12 +2469,12 @@ HB_FUNC_STATIC( QWINDOW_WINID )
     if( ISNUMPAR(0) )
     {
 #endif
-      hb_retptr( (void *) obj->winId () );
+      hb_retptr( (void *) obj->winId() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2473,7 +2486,7 @@ void setFlag(Qt::WindowType, bool on = true)
 HB_FUNC_STATIC( QWINDOW_SETFLAG )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,9,0))
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2481,12 +2494,12 @@ HB_FUNC_STATIC( QWINDOW_SETFLAG )
     if( ISBETWEEN(1,2) && ISNUM(1) && ISOPTLOG(2) )
     {
 #endif
-      obj->setFlag ( (Qt::WindowType) hb_parni(1), OPBOOL(2,true) );
+      obj->setFlag( (Qt::WindowType) hb_parni(1), OPBOOL(2,true) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2500,7 +2513,7 @@ Qt::WindowType type() const
 */
 HB_FUNC_STATIC( QWINDOW_TYPE )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2508,12 +2521,12 @@ HB_FUNC_STATIC( QWINDOW_TYPE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->type () );
+      RENUM( obj->type() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2524,7 +2537,7 @@ void setMask(const QRegion &region)
 */
 HB_FUNC_STATIC( QWINDOW_SETMASK )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2532,12 +2545,12 @@ HB_FUNC_STATIC( QWINDOW_SETMASK )
     if( ISNUMPAR(1) && ISQREGION(1) )
     {
 #endif
-      obj->setMask ( *PQREGION(1) );
+      obj->setMask( *PQREGION(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2550,7 +2563,7 @@ QRegion mask() const
 */
 HB_FUNC_STATIC( QWINDOW_MASK )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2558,13 +2571,13 @@ HB_FUNC_STATIC( QWINDOW_MASK )
     if( ISNUMPAR(0) )
     {
 #endif
-      QRegion * ptr = new QRegion( obj->mask () );
-      _qt5xhb_createReturnClass ( ptr, "QREGION", true );
+      auto ptr = new QRegion( obj->mask() );
+      Qt5xHb::createReturnClass( ptr, "QREGION", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2575,7 +2588,7 @@ qreal devicePixelRatio() const
 */
 HB_FUNC_STATIC( QWINDOW_DEVICEPIXELRATIO )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2583,12 +2596,12 @@ HB_FUNC_STATIC( QWINDOW_DEVICEPIXELRATIO )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQREAL( obj->devicePixelRatio () );
+      RQREAL( obj->devicePixelRatio() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2600,7 +2613,7 @@ Qt::WindowStates windowStates() const
 HB_FUNC_STATIC( QWINDOW_WINDOWSTATES )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,10,0))
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2608,12 +2621,12 @@ HB_FUNC_STATIC( QWINDOW_WINDOWSTATES )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->windowStates () );
+      RENUM( obj->windowStates() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2625,7 +2638,7 @@ void setWindowState(Qt::WindowState state)
 */
 HB_FUNC_STATIC( QWINDOW_SETWINDOWSTATE )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2633,12 +2646,12 @@ HB_FUNC_STATIC( QWINDOW_SETWINDOWSTATE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setWindowState ( (Qt::WindowState) hb_parni(1) );
+      obj->setWindowState( (Qt::WindowState) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2652,7 +2665,7 @@ void setWindowStates(Qt::WindowStates states)
 HB_FUNC_STATIC( QWINDOW_SETWINDOWSTATES )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,10,0))
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2660,12 +2673,12 @@ HB_FUNC_STATIC( QWINDOW_SETWINDOWSTATES )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setWindowStates ( (Qt::WindowStates) hb_parni(1) );
+      obj->setWindowStates( (Qt::WindowStates) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2679,7 +2692,7 @@ QPoint framePosition() const
 */
 HB_FUNC_STATIC( QWINDOW_FRAMEPOSITION )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2687,13 +2700,13 @@ HB_FUNC_STATIC( QWINDOW_FRAMEPOSITION )
     if( ISNUMPAR(0) )
     {
 #endif
-      QPoint * ptr = new QPoint( obj->framePosition () );
-      _qt5xhb_createReturnClass ( ptr, "QPOINT", true );
+      auto ptr = new QPoint( obj->framePosition() );
+      Qt5xHb::createReturnClass( ptr, "QPOINT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2704,7 +2717,7 @@ void setFramePosition(const QPoint &point)
 */
 HB_FUNC_STATIC( QWINDOW_SETFRAMEPOSITION )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2712,12 +2725,12 @@ HB_FUNC_STATIC( QWINDOW_SETFRAMEPOSITION )
     if( ISNUMPAR(1) && ISQPOINT(1) )
     {
 #endif
-      obj->setFramePosition ( *PQPOINT(1) );
+      obj->setFramePosition( *PQPOINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2730,7 +2743,7 @@ void setFilePath(const QString &filePath)
 */
 HB_FUNC_STATIC( QWINDOW_SETFILEPATH )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2738,12 +2751,12 @@ HB_FUNC_STATIC( QWINDOW_SETFILEPATH )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->setFilePath ( PQSTRING(1) );
+      obj->setFilePath( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2756,7 +2769,7 @@ QString filePath() const
 */
 HB_FUNC_STATIC( QWINDOW_FILEPATH )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2764,12 +2777,12 @@ HB_FUNC_STATIC( QWINDOW_FILEPATH )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->filePath () );
+      RQSTRING( obj->filePath() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2780,7 +2793,7 @@ void setIcon(const QIcon &icon)
 */
 HB_FUNC_STATIC( QWINDOW_SETICON )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2788,12 +2801,12 @@ HB_FUNC_STATIC( QWINDOW_SETICON )
     if( ISNUMPAR(1) && (ISQICON(1)||ISCHAR(1)) )
     {
 #endif
-      obj->setIcon ( ISOBJECT(1)? *(QIcon *) _qt5xhb_itemGetPtr(1) : QIcon(hb_parc(1)) );
+      obj->setIcon( ISOBJECT(1)? *(QIcon *) Qt5xHb::itemGetPtr(1) : QIcon(hb_parc(1)) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2806,7 +2819,7 @@ QIcon icon() const
 */
 HB_FUNC_STATIC( QWINDOW_ICON )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2814,13 +2827,13 @@ HB_FUNC_STATIC( QWINDOW_ICON )
     if( ISNUMPAR(0) )
     {
 #endif
-      QIcon * ptr = new QIcon( obj->icon () );
-      _qt5xhb_createReturnClass ( ptr, "QICON", true );
+      auto ptr = new QIcon( obj->icon() );
+      Qt5xHb::createReturnClass( ptr, "QICON", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2835,7 +2848,7 @@ virtual QAccessibleInterface *accessibleRoot() const
 */
 HB_FUNC_STATIC( QWINDOW_ACCESSIBLEROOT )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2843,13 +2856,13 @@ HB_FUNC_STATIC( QWINDOW_ACCESSIBLEROOT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QAccessibleInterface * ptr = obj->accessibleRoot ();
-      _qt5xhb_createReturnClass ( ptr, "QACCESSIBLEINTERFACE", false );
+      QAccessibleInterface * ptr = obj->accessibleRoot();
+      Qt5xHb::createReturnClass( ptr, "QACCESSIBLEINTERFACE", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2861,16 +2874,16 @@ static QWindow *fromWinId(WId id)
 HB_FUNC_STATIC( QWINDOW_FROMWINID )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISPOINTER(1) )
+  if( ISNUMPAR(1) && ISPOINTER(1) )
   {
 #endif
-      QWindow * ptr = QWindow::fromWinId ( (WId) hb_parptr(1) );
-      _qt5xhb_createReturnQObjectClass ( ptr, "QWINDOW" );
+    QWindow * ptr = QWindow::fromWinId( (WId) hb_parptr(1) );
+    Qt5xHb::createReturnQObjectClass( ptr, "QWINDOW" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
@@ -2888,7 +2901,7 @@ Q_REVISION(1) void requestActivate() [slot]
 */
 HB_FUNC_STATIC( QWINDOW_REQUESTACTIVATE )
 {
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2896,12 +2909,12 @@ HB_FUNC_STATIC( QWINDOW_REQUESTACTIVATE )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->requestActivate ();
+      obj->requestActivate();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -2915,7 +2928,7 @@ Q_REVISION(1) void alert(int msec) [slot]
 HB_FUNC_STATIC( QWINDOW_ALERT )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QWindow * obj = (QWindow *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -2923,12 +2936,12 @@ HB_FUNC_STATIC( QWINDOW_ALERT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->alert ( PINT(1) );
+      obj->alert( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -3019,33 +3032,34 @@ void activeChanged()
 HB_FUNC_STATIC( QWINDOW_ONACTIVECHANGED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QWindow * sender = (QWindow *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("activeChanged()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("activeChanged()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QWindow::activeChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QWINDOW" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QWINDOW" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -3056,9 +3070,9 @@ HB_FUNC_STATIC( QWINDOW_ONACTIVECHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -3072,7 +3086,7 @@ HB_FUNC_STATIC( QWINDOW_ONACTIVECHANGED )
     hb_retl( false );
   }
 #else
-hb_retl( false );
+  hb_retl( false );
 #endif
 }
 
@@ -3081,35 +3095,36 @@ void contentOrientationChanged(Qt::ScreenOrientation orientation)
 */
 HB_FUNC_STATIC( QWINDOW_ONCONTENTORIENTATIONCHANGED )
 {
-  QWindow * sender = (QWindow *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("contentOrientationChanged(Qt::ScreenOrientation)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("contentOrientationChanged(Qt::ScreenOrientation)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QWindow::contentOrientationChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (Qt::ScreenOrientation arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QWINDOW" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, (int) arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QWINDOW" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, (int) arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -3120,9 +3135,9 @@ HB_FUNC_STATIC( QWINDOW_ONCONTENTORIENTATIONCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -3142,35 +3157,36 @@ void focusObjectChanged(QObject *object)
 */
 HB_FUNC_STATIC( QWINDOW_ONFOCUSOBJECTCHANGED )
 {
-  QWindow * sender = (QWindow *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("focusObjectChanged(QObject*)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("focusObjectChanged(QObject*)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QWindow::focusObjectChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QObject * arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QWINDOW" );
-            PHB_ITEM pArg1 = Signals3_return_qobject( (QObject *) arg1, "QOBJECT" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QWINDOW" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_qobject( (QObject *) arg1, "QOBJECT" );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -3181,9 +3197,9 @@ HB_FUNC_STATIC( QWINDOW_ONFOCUSOBJECTCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -3203,35 +3219,36 @@ void heightChanged(int arg)
 */
 HB_FUNC_STATIC( QWINDOW_ONHEIGHTCHANGED )
 {
-  QWindow * sender = (QWindow *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("heightChanged(int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("heightChanged(int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QWindow::heightChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QWINDOW" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QWINDOW" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -3242,9 +3259,9 @@ HB_FUNC_STATIC( QWINDOW_ONHEIGHTCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -3264,35 +3281,36 @@ void maximumHeightChanged(int arg)
 */
 HB_FUNC_STATIC( QWINDOW_ONMAXIMUMHEIGHTCHANGED )
 {
-  QWindow * sender = (QWindow *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("maximumHeightChanged(int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("maximumHeightChanged(int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QWindow::maximumHeightChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QWINDOW" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QWINDOW" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -3303,9 +3321,9 @@ HB_FUNC_STATIC( QWINDOW_ONMAXIMUMHEIGHTCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -3325,35 +3343,36 @@ void maximumWidthChanged(int arg)
 */
 HB_FUNC_STATIC( QWINDOW_ONMAXIMUMWIDTHCHANGED )
 {
-  QWindow * sender = (QWindow *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("maximumWidthChanged(int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("maximumWidthChanged(int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QWindow::maximumWidthChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QWINDOW" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QWINDOW" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -3364,9 +3383,9 @@ HB_FUNC_STATIC( QWINDOW_ONMAXIMUMWIDTHCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -3386,35 +3405,36 @@ void minimumHeightChanged(int arg)
 */
 HB_FUNC_STATIC( QWINDOW_ONMINIMUMHEIGHTCHANGED )
 {
-  QWindow * sender = (QWindow *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("minimumHeightChanged(int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("minimumHeightChanged(int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QWindow::minimumHeightChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QWINDOW" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QWINDOW" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -3425,9 +3445,9 @@ HB_FUNC_STATIC( QWINDOW_ONMINIMUMHEIGHTCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -3447,35 +3467,36 @@ void minimumWidthChanged(int arg)
 */
 HB_FUNC_STATIC( QWINDOW_ONMINIMUMWIDTHCHANGED )
 {
-  QWindow * sender = (QWindow *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("minimumWidthChanged(int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("minimumWidthChanged(int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QWindow::minimumWidthChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QWINDOW" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QWINDOW" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -3486,9 +3507,9 @@ HB_FUNC_STATIC( QWINDOW_ONMINIMUMWIDTHCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -3508,35 +3529,36 @@ void modalityChanged(Qt::WindowModality modality)
 */
 HB_FUNC_STATIC( QWINDOW_ONMODALITYCHANGED )
 {
-  QWindow * sender = (QWindow *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("modalityChanged(Qt::WindowModality)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("modalityChanged(Qt::WindowModality)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QWindow::modalityChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (Qt::WindowModality arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QWINDOW" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, (int) arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QWINDOW" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, (int) arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -3547,9 +3569,9 @@ HB_FUNC_STATIC( QWINDOW_ONMODALITYCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -3570,35 +3592,36 @@ void opacityChanged(qreal opacity)
 HB_FUNC_STATIC( QWINDOW_ONOPACITYCHANGED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QWindow * sender = (QWindow *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("opacityChanged(qreal)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("opacityChanged(qreal)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QWindow::opacityChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (qreal arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QWINDOW" );
-            PHB_ITEM pArg1 = hb_itemPutND( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QWINDOW" );
+            PHB_ITEM pArg1 = hb_itemPutND( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -3609,9 +3632,9 @@ HB_FUNC_STATIC( QWINDOW_ONOPACITYCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -3625,7 +3648,7 @@ HB_FUNC_STATIC( QWINDOW_ONOPACITYCHANGED )
     hb_retl( false );
   }
 #else
-hb_retl( false );
+  hb_retl( false );
 #endif
 }
 
@@ -3634,35 +3657,36 @@ void screenChanged(QScreen *screen)
 */
 HB_FUNC_STATIC( QWINDOW_ONSCREENCHANGED )
 {
-  QWindow * sender = (QWindow *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("screenChanged(QScreen*)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("screenChanged(QScreen*)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QWindow::screenChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QScreen * arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QWINDOW" );
-            PHB_ITEM pArg1 = Signals3_return_qobject( (QObject *) arg1, "QSCREEN" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QWINDOW" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_qobject( (QObject *) arg1, "QSCREEN" );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -3673,9 +3697,9 @@ HB_FUNC_STATIC( QWINDOW_ONSCREENCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -3696,35 +3720,36 @@ void visibilityChanged(QWindow::Visibility visibility)
 HB_FUNC_STATIC( QWINDOW_ONVISIBILITYCHANGED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,1,0))
-  QWindow * sender = (QWindow *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("visibilityChanged(QWindow::Visibility)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("visibilityChanged(QWindow::Visibility)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QWindow::visibilityChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QWindow::Visibility arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QWINDOW" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, (int) arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QWINDOW" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, (int) arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -3735,9 +3760,9 @@ HB_FUNC_STATIC( QWINDOW_ONVISIBILITYCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -3751,7 +3776,7 @@ HB_FUNC_STATIC( QWINDOW_ONVISIBILITYCHANGED )
     hb_retl( false );
   }
 #else
-hb_retl( false );
+  hb_retl( false );
 #endif
 }
 
@@ -3760,35 +3785,36 @@ void visibleChanged(bool arg)
 */
 HB_FUNC_STATIC( QWINDOW_ONVISIBLECHANGED )
 {
-  QWindow * sender = (QWindow *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("visibleChanged(bool)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("visibleChanged(bool)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QWindow::visibleChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (bool arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QWINDOW" );
-            PHB_ITEM pArg1 = hb_itemPutL( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QWINDOW" );
+            PHB_ITEM pArg1 = hb_itemPutL( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -3799,9 +3825,9 @@ HB_FUNC_STATIC( QWINDOW_ONVISIBLECHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -3821,35 +3847,36 @@ void widthChanged(int arg)
 */
 HB_FUNC_STATIC( QWINDOW_ONWIDTHCHANGED )
 {
-  QWindow * sender = (QWindow *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("widthChanged(int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("widthChanged(int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QWindow::widthChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QWINDOW" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QWINDOW" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -3860,9 +3887,9 @@ HB_FUNC_STATIC( QWINDOW_ONWIDTHCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -3882,35 +3909,36 @@ void windowStateChanged(Qt::WindowState windowState)
 */
 HB_FUNC_STATIC( QWINDOW_ONWINDOWSTATECHANGED )
 {
-  QWindow * sender = (QWindow *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("windowStateChanged(Qt::WindowState)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("windowStateChanged(Qt::WindowState)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QWindow::windowStateChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (Qt::WindowState arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QWINDOW" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, (int) arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QWINDOW" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, (int) arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -3921,9 +3949,9 @@ HB_FUNC_STATIC( QWINDOW_ONWINDOWSTATECHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -3943,35 +3971,36 @@ void windowTitleChanged(const QString &title)
 */
 HB_FUNC_STATIC( QWINDOW_ONWINDOWTITLECHANGED )
 {
-  QWindow * sender = (QWindow *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("windowTitleChanged(QString)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("windowTitleChanged(QString)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QWindow::windowTitleChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (const QString & arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QWINDOW" );
-            PHB_ITEM pArg1 = hb_itemPutC( NULL, QSTRINGTOSTRING(arg1) );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QWINDOW" );
+            PHB_ITEM pArg1 = hb_itemPutC( nullptr, QSTRINGTOSTRING(arg1) );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -3982,9 +4011,9 @@ HB_FUNC_STATIC( QWINDOW_ONWINDOWTITLECHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -4004,35 +4033,36 @@ void xChanged(int arg)
 */
 HB_FUNC_STATIC( QWINDOW_ONXCHANGED )
 {
-  QWindow * sender = (QWindow *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("xChanged(int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("xChanged(int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QWindow::xChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QWINDOW" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QWINDOW" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -4043,9 +4073,9 @@ HB_FUNC_STATIC( QWINDOW_ONXCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -4065,35 +4095,36 @@ void yChanged(int arg)
 */
 HB_FUNC_STATIC( QWINDOW_ONYCHANGED )
 {
-  QWindow * sender = (QWindow *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QWindow *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("yChanged(int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("yChanged(int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QWindow::yChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QWINDOW" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QWINDOW" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -4104,9 +4135,9 @@ HB_FUNC_STATIC( QWINDOW_ONYCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }

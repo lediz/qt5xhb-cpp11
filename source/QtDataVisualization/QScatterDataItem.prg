@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -45,7 +45,7 @@ CLASS QScatterDataItem
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QScatterDataItem
+PROCEDURE destroyObject() CLASS QScatterDataItem
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -64,7 +64,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
@@ -77,51 +76,46 @@ using namespace QtDataVisualization;
 /*
 QScatterDataItem()
 */
-void QScatterDataItem_new1 ()
+void QScatterDataItem_new1()
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QScatterDataItem * o = new QScatterDataItem ();
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QScatterDataItem();
+  Qt5xHb::returnNewObject( obj, true );
 #endif
 }
 
 /*
-QScatterDataItem(const QVector3D &position)
+QScatterDataItem( const QVector3D & position )
 */
-void QScatterDataItem_new2 ()
+void QScatterDataItem_new2()
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QScatterDataItem * o = new QScatterDataItem ( *PQVECTOR3D(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QScatterDataItem( *PQVECTOR3D(1) );
+  Qt5xHb::returnNewObject( obj, true );
 #endif
 }
 
 /*
-QScatterDataItem(const QVector3D &position, const QQuaternion &rotation)
+QScatterDataItem( const QVector3D & position, const QQuaternion & rotation )
 */
-void QScatterDataItem_new3 ()
+void QScatterDataItem_new3()
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QScatterDataItem * o = new QScatterDataItem ( *PQVECTOR3D(1), *PQQUATERNION(2) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QScatterDataItem( *PQVECTOR3D(1), *PQQUATERNION(2) );
+  Qt5xHb::returnNewObject( obj, true );
 #endif
 }
 
 /*
-QScatterDataItem(const QScatterDataItem &other)
+QScatterDataItem( const QScatterDataItem & other )
 */
-void QScatterDataItem_new4 ()
+void QScatterDataItem_new4()
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QScatterDataItem * o = new QScatterDataItem ( *PQSCATTERDATAITEM(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QScatterDataItem( *PQSCATTERDATAITEM(1) );
+  Qt5xHb::returnNewObject( obj, true );
 #endif
 }
-
-//[1]QScatterDataItem()
-//[2]QScatterDataItem(const QVector3D &position)
-//[3]QScatterDataItem(const QVector3D &position, const QQuaternion &rotation)
-//[4]QScatterDataItem(const QScatterDataItem &other)
 
 HB_FUNC_STATIC( QSCATTERDATAITEM_NEW )
 {
@@ -143,7 +137,7 @@ HB_FUNC_STATIC( QSCATTERDATAITEM_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -153,14 +147,14 @@ HB_FUNC_STATIC( QSCATTERDATAITEM_NEW )
 HB_FUNC_STATIC( QSCATTERDATAITEM_DELETE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QScatterDataItem * obj = (QScatterDataItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QScatterDataItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -170,12 +164,12 @@ HB_FUNC_STATIC( QSCATTERDATAITEM_DELETE )
 }
 
 /*
-void setPosition(const QVector3D &pos)
+void setPosition( const QVector3D & pos )
 */
 HB_FUNC_STATIC( QSCATTERDATAITEM_SETPOSITION )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QScatterDataItem * obj = (QScatterDataItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QScatterDataItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -183,12 +177,12 @@ HB_FUNC_STATIC( QSCATTERDATAITEM_SETPOSITION )
     if( ISNUMPAR(1) && ISQVECTOR3D(1) )
     {
 #endif
-      obj->setPosition ( *PQVECTOR3D(1) );
+      obj->setPosition( *PQVECTOR3D(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -203,7 +197,7 @@ QVector3D position() const
 HB_FUNC_STATIC( QSCATTERDATAITEM_POSITION )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QScatterDataItem * obj = (QScatterDataItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QScatterDataItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -211,13 +205,13 @@ HB_FUNC_STATIC( QSCATTERDATAITEM_POSITION )
     if( ISNUMPAR(0) )
     {
 #endif
-      QVector3D * ptr = new QVector3D( obj->position () );
-      _qt5xhb_createReturnClass ( ptr, "QVECTOR3D", true );
+      auto ptr = new QVector3D( obj->position() );
+      Qt5xHb::createReturnClass( ptr, "QVECTOR3D", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -225,12 +219,12 @@ HB_FUNC_STATIC( QSCATTERDATAITEM_POSITION )
 }
 
 /*
-void setRotation(const QQuaternion &rot)
+void setRotation( const QQuaternion & rot )
 */
 HB_FUNC_STATIC( QSCATTERDATAITEM_SETROTATION )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QScatterDataItem * obj = (QScatterDataItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QScatterDataItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -238,12 +232,12 @@ HB_FUNC_STATIC( QSCATTERDATAITEM_SETROTATION )
     if( ISNUMPAR(1) && ISQQUATERNION(1) )
     {
 #endif
-      obj->setRotation ( *PQQUATERNION(1) );
+      obj->setRotation( *PQQUATERNION(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -258,7 +252,7 @@ QQuaternion rotation() const
 HB_FUNC_STATIC( QSCATTERDATAITEM_ROTATION )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QScatterDataItem * obj = (QScatterDataItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QScatterDataItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -266,13 +260,13 @@ HB_FUNC_STATIC( QSCATTERDATAITEM_ROTATION )
     if( ISNUMPAR(0) )
     {
 #endif
-      QQuaternion * ptr = new QQuaternion( obj->rotation () );
-      _qt5xhb_createReturnClass ( ptr, "QQUATERNION", true );
+      auto ptr = new QQuaternion( obj->rotation() );
+      Qt5xHb::createReturnClass( ptr, "QQUATERNION", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -280,12 +274,12 @@ HB_FUNC_STATIC( QSCATTERDATAITEM_ROTATION )
 }
 
 /*
-void setX(float value)
+void setX( float value )
 */
 HB_FUNC_STATIC( QSCATTERDATAITEM_SETX )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QScatterDataItem * obj = (QScatterDataItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QScatterDataItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -293,12 +287,12 @@ HB_FUNC_STATIC( QSCATTERDATAITEM_SETX )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setX ( PFLOAT(1) );
+      obj->setX( PFLOAT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -308,12 +302,12 @@ HB_FUNC_STATIC( QSCATTERDATAITEM_SETX )
 }
 
 /*
-void setY(float value)
+void setY( float value )
 */
 HB_FUNC_STATIC( QSCATTERDATAITEM_SETY )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QScatterDataItem * obj = (QScatterDataItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QScatterDataItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -321,12 +315,12 @@ HB_FUNC_STATIC( QSCATTERDATAITEM_SETY )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setY ( PFLOAT(1) );
+      obj->setY( PFLOAT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -336,12 +330,12 @@ HB_FUNC_STATIC( QSCATTERDATAITEM_SETY )
 }
 
 /*
-void setZ(float value)
+void setZ( float value )
 */
 HB_FUNC_STATIC( QSCATTERDATAITEM_SETZ )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QScatterDataItem * obj = (QScatterDataItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QScatterDataItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -349,12 +343,12 @@ HB_FUNC_STATIC( QSCATTERDATAITEM_SETZ )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setZ ( PFLOAT(1) );
+      obj->setZ( PFLOAT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -369,7 +363,7 @@ float x() const
 HB_FUNC_STATIC( QSCATTERDATAITEM_X )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QScatterDataItem * obj = (QScatterDataItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QScatterDataItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -377,12 +371,12 @@ HB_FUNC_STATIC( QSCATTERDATAITEM_X )
     if( ISNUMPAR(0) )
     {
 #endif
-      RFLOAT( obj->x () );
+      RFLOAT( obj->x() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -395,7 +389,7 @@ float y() const
 HB_FUNC_STATIC( QSCATTERDATAITEM_Y )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QScatterDataItem * obj = (QScatterDataItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QScatterDataItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -403,12 +397,12 @@ HB_FUNC_STATIC( QSCATTERDATAITEM_Y )
     if( ISNUMPAR(0) )
     {
 #endif
-      RFLOAT( obj->y () );
+      RFLOAT( obj->y() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -421,7 +415,7 @@ float z() const
 HB_FUNC_STATIC( QSCATTERDATAITEM_Z )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QScatterDataItem * obj = (QScatterDataItem *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QScatterDataItem *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -429,21 +423,17 @@ HB_FUNC_STATIC( QSCATTERDATAITEM_Z )
     if( ISNUMPAR(0) )
     {
 #endif
-      RFLOAT( obj->z () );
+      RFLOAT( obj->z() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 #endif
 }
-
-/*
-void createExtraData() [protected]
-*/
 
 HB_FUNC_STATIC( QSCATTERDATAITEM_NEWFROM )
 {
@@ -451,25 +441,25 @@ HB_FUNC_STATIC( QSCATTERDATAITEM_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -496,13 +486,13 @@ HB_FUNC_STATIC( QSCATTERDATAITEM_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

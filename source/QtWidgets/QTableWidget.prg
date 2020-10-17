@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -85,7 +85,7 @@ CLASS QTableWidget INHERIT QTableView
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QTableWidget
+PROCEDURE destroyObject() CLASS QTableWidget
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -102,7 +102,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtWidgets/QTableWidget>
@@ -111,23 +112,25 @@ RETURN
 /*
 QTableWidget ( QWidget * parent = nullptr )
 */
-void QTableWidget_new1 ()
+void QTableWidget_new1()
 {
-  QTableWidget * o = new QTableWidget ( OPQWIDGET(1,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QTableWidget( OPQWIDGET(1,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
 /*
 QTableWidget ( int rows, int columns, QWidget * parent = nullptr )
 */
-void QTableWidget_new2 ()
+void QTableWidget_new2()
 {
-  QTableWidget * o = new QTableWidget ( PINT(1), PINT(2), OPQWIDGET(3,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QTableWidget( PINT(1), PINT(2), OPQWIDGET(3,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
-//[1]QTableWidget ( QWidget * parent = nullptr )
-//[2]QTableWidget ( int rows, int columns, QWidget * parent = nullptr )
+/*
+[1]QTableWidget ( QWidget * parent = nullptr )
+[2]QTableWidget ( int rows, int columns, QWidget * parent = nullptr )
+*/
 
 HB_FUNC_STATIC( QTABLEWIDGET_NEW )
 {
@@ -141,20 +144,22 @@ HB_FUNC_STATIC( QTABLEWIDGET_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QTABLEWIDGET_DELETE )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -167,7 +172,7 @@ QWidget * cellWidget ( int row, int column ) const
 */
 HB_FUNC_STATIC( QTABLEWIDGET_CELLWIDGET )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -175,13 +180,13 @@ HB_FUNC_STATIC( QTABLEWIDGET_CELLWIDGET )
     if( ISNUMPAR(2) && ISNUM(1) && ISNUM(2) )
     {
 #endif
-      QWidget * ptr = obj->cellWidget ( PINT(1), PINT(2) );
-      _qt5xhb_createReturnQWidgetClass ( ptr, "QWIDGET" );
+      QWidget * ptr = obj->cellWidget( PINT(1), PINT(2) );
+      Qt5xHb::createReturnQWidgetClass( ptr, "QWIDGET" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -192,7 +197,7 @@ void closePersistentEditor ( QTableWidgetItem * item )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_CLOSEPERSISTENTEDITOR )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -200,12 +205,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_CLOSEPERSISTENTEDITOR )
     if( ISNUMPAR(1) && ISQTABLEWIDGETITEM(1) )
     {
 #endif
-      obj->closePersistentEditor ( PQTABLEWIDGETITEM(1) );
+      obj->closePersistentEditor( PQTABLEWIDGETITEM(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -218,7 +223,7 @@ int column ( const QTableWidgetItem * item ) const
 */
 HB_FUNC_STATIC( QTABLEWIDGET_COLUMN )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -226,12 +231,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_COLUMN )
     if( ISNUMPAR(1) && ISQTABLEWIDGETITEM(1) )
     {
 #endif
-      RINT( obj->column ( PQTABLEWIDGETITEM(1) ) );
+      RINT( obj->column( PQTABLEWIDGETITEM(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -242,7 +247,7 @@ int columnCount () const
 */
 HB_FUNC_STATIC( QTABLEWIDGET_COLUMNCOUNT )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -250,12 +255,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_COLUMNCOUNT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->columnCount () );
+      RINT( obj->columnCount() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -266,7 +271,7 @@ int currentColumn () const
 */
 HB_FUNC_STATIC( QTABLEWIDGET_CURRENTCOLUMN )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -274,12 +279,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_CURRENTCOLUMN )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->currentColumn () );
+      RINT( obj->currentColumn() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -290,7 +295,7 @@ QTableWidgetItem * currentItem () const
 */
 HB_FUNC_STATIC( QTABLEWIDGET_CURRENTITEM )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -298,13 +303,13 @@ HB_FUNC_STATIC( QTABLEWIDGET_CURRENTITEM )
     if( ISNUMPAR(0) )
     {
 #endif
-      QTableWidgetItem * ptr = obj->currentItem ();
-      _qt5xhb_createReturnClass ( ptr, "QTABLEWIDGETITEM", false );
+      QTableWidgetItem * ptr = obj->currentItem();
+      Qt5xHb::createReturnClass( ptr, "QTABLEWIDGETITEM", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -315,7 +320,7 @@ int currentRow () const
 */
 HB_FUNC_STATIC( QTABLEWIDGET_CURRENTROW )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -323,12 +328,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_CURRENTROW )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->currentRow () );
+      RINT( obj->currentRow() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -339,7 +344,7 @@ void editItem ( QTableWidgetItem * item )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_EDITITEM )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -347,12 +352,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_EDITITEM )
     if( ISNUMPAR(1) && ISQTABLEWIDGETITEM(1) )
     {
 #endif
-      obj->editItem ( PQTABLEWIDGETITEM(1) );
+      obj->editItem( PQTABLEWIDGETITEM(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -365,7 +370,7 @@ QTableWidgetItem * horizontalHeaderItem ( int column ) const
 */
 HB_FUNC_STATIC( QTABLEWIDGET_HORIZONTALHEADERITEM )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -373,13 +378,13 @@ HB_FUNC_STATIC( QTABLEWIDGET_HORIZONTALHEADERITEM )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      QTableWidgetItem * ptr = obj->horizontalHeaderItem ( PINT(1) );
-      _qt5xhb_createReturnClass ( ptr, "QTABLEWIDGETITEM", false );
+      QTableWidgetItem * ptr = obj->horizontalHeaderItem( PINT(1) );
+      Qt5xHb::createReturnClass( ptr, "QTABLEWIDGETITEM", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -390,7 +395,7 @@ QTableWidgetItem * item ( int row, int column ) const
 */
 HB_FUNC_STATIC( QTABLEWIDGET_ITEM )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -398,13 +403,13 @@ HB_FUNC_STATIC( QTABLEWIDGET_ITEM )
     if( ISNUMPAR(2) && ISNUM(1) && ISNUM(2) )
     {
 #endif
-      QTableWidgetItem * ptr = obj->item ( PINT(1), PINT(2) );
-      _qt5xhb_createReturnClass ( ptr, "QTABLEWIDGETITEM", false );
+      QTableWidgetItem * ptr = obj->item( PINT(1), PINT(2) );
+      Qt5xHb::createReturnClass( ptr, "QTABLEWIDGETITEM", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -413,33 +418,35 @@ HB_FUNC_STATIC( QTABLEWIDGET_ITEM )
 /*
 QTableWidgetItem * itemAt ( const QPoint & point ) const
 */
-void QTableWidget_itemAt1 ()
+void QTableWidget_itemAt1()
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QTableWidgetItem * ptr = obj->itemAt ( *PQPOINT(1) );
-      _qt5xhb_createReturnClass ( ptr, "QTABLEWIDGETITEM", false );
+    QTableWidgetItem * ptr = obj->itemAt( *PQPOINT(1) );
+    Qt5xHb::createReturnClass( ptr, "QTABLEWIDGETITEM", false );
   }
 }
 
 /*
 QTableWidgetItem * itemAt ( int ax, int ay ) const
 */
-void QTableWidget_itemAt2 ()
+void QTableWidget_itemAt2()
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QTableWidgetItem * ptr = obj->itemAt ( PINT(1), PINT(2) );
-      _qt5xhb_createReturnClass ( ptr, "QTABLEWIDGETITEM", false );
+    QTableWidgetItem * ptr = obj->itemAt( PINT(1), PINT(2) );
+    Qt5xHb::createReturnClass( ptr, "QTABLEWIDGETITEM", false );
   }
 }
 
-//[1]QTableWidgetItem * itemAt ( const QPoint & point ) const
-//[2]QTableWidgetItem * itemAt ( int ax, int ay ) const
+/*
+[1]QTableWidgetItem * itemAt ( const QPoint & point ) const
+[2]QTableWidgetItem * itemAt ( int ax, int ay ) const
+*/
 
 HB_FUNC_STATIC( QTABLEWIDGET_ITEMAT )
 {
@@ -453,7 +460,7 @@ HB_FUNC_STATIC( QTABLEWIDGET_ITEMAT )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -462,7 +469,7 @@ void openPersistentEditor ( QTableWidgetItem * item )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_OPENPERSISTENTEDITOR )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -470,12 +477,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_OPENPERSISTENTEDITOR )
     if( ISNUMPAR(1) && ISQTABLEWIDGETITEM(1) )
     {
 #endif
-      obj->openPersistentEditor ( PQTABLEWIDGETITEM(1) );
+      obj->openPersistentEditor( PQTABLEWIDGETITEM(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -488,7 +495,7 @@ void removeCellWidget ( int row, int column )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_REMOVECELLWIDGET )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -496,12 +503,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_REMOVECELLWIDGET )
     if( ISNUMPAR(2) && ISNUM(1) && ISNUM(2) )
     {
 #endif
-      obj->removeCellWidget ( PINT(1), PINT(2) );
+      obj->removeCellWidget( PINT(1), PINT(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -514,7 +521,7 @@ int row ( const QTableWidgetItem * item ) const
 */
 HB_FUNC_STATIC( QTABLEWIDGET_ROW )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -522,12 +529,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_ROW )
     if( ISNUMPAR(1) && ISQTABLEWIDGETITEM(1) )
     {
 #endif
-      RINT( obj->row ( PQTABLEWIDGETITEM(1) ) );
+      RINT( obj->row( PQTABLEWIDGETITEM(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -538,7 +545,7 @@ int rowCount () const
 */
 HB_FUNC_STATIC( QTABLEWIDGET_ROWCOUNT )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -546,12 +553,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_ROWCOUNT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->rowCount () );
+      RINT( obj->rowCount() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -562,7 +569,7 @@ void setCellWidget ( int row, int column, QWidget * widget )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_SETCELLWIDGET )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -570,12 +577,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_SETCELLWIDGET )
     if( ISNUMPAR(3) && ISNUM(1) && ISNUM(2) && ISQWIDGET(3) )
     {
 #endif
-      obj->setCellWidget ( PINT(1), PINT(2), PQWIDGET(3) );
+      obj->setCellWidget( PINT(1), PINT(2), PQWIDGET(3) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -588,7 +595,7 @@ void setColumnCount ( int columns )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_SETCOLUMNCOUNT )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -596,12 +603,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_SETCOLUMNCOUNT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setColumnCount ( PINT(1) );
+      obj->setColumnCount( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -612,13 +619,13 @@ HB_FUNC_STATIC( QTABLEWIDGET_SETCOLUMNCOUNT )
 /*
 void setCurrentCell ( int row, int column )
 */
-void QTableWidget_setCurrentCell1 ()
+void QTableWidget_setCurrentCell1()
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setCurrentCell ( PINT(1), PINT(2) );
+    obj->setCurrentCell( PINT(1), PINT(2) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -627,20 +634,22 @@ void QTableWidget_setCurrentCell1 ()
 /*
 void setCurrentCell ( int row, int column, QItemSelectionModel::SelectionFlags command )
 */
-void QTableWidget_setCurrentCell2 ()
+void QTableWidget_setCurrentCell2()
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setCurrentCell ( PINT(1), PINT(2), (QItemSelectionModel::SelectionFlags) hb_parni(3) );
+    obj->setCurrentCell( PINT(1), PINT(2), (QItemSelectionModel::SelectionFlags) hb_parni(3) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void setCurrentCell ( int row, int column )
-//[2]void setCurrentCell ( int row, int column, QItemSelectionModel::SelectionFlags command )
+/*
+[1]void setCurrentCell ( int row, int column )
+[2]void setCurrentCell ( int row, int column, QItemSelectionModel::SelectionFlags command )
+*/
 
 HB_FUNC_STATIC( QTABLEWIDGET_SETCURRENTCELL )
 {
@@ -654,20 +663,20 @@ HB_FUNC_STATIC( QTABLEWIDGET_SETCURRENTCELL )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 /*
 void setCurrentItem ( QTableWidgetItem * item )
 */
-void QTableWidget_setCurrentItem1 ()
+void QTableWidget_setCurrentItem1()
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setCurrentItem ( PQTABLEWIDGETITEM(1) );
+    obj->setCurrentItem( PQTABLEWIDGETITEM(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -676,20 +685,22 @@ void QTableWidget_setCurrentItem1 ()
 /*
 void setCurrentItem ( QTableWidgetItem * item, QItemSelectionModel::SelectionFlags command )
 */
-void QTableWidget_setCurrentItem2 ()
+void QTableWidget_setCurrentItem2()
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setCurrentItem ( PQTABLEWIDGETITEM(1), (QItemSelectionModel::SelectionFlags) hb_parni(2) );
+    obj->setCurrentItem( PQTABLEWIDGETITEM(1), (QItemSelectionModel::SelectionFlags) hb_parni(2) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void setCurrentItem ( QTableWidgetItem * item )
-//[2]void setCurrentItem ( QTableWidgetItem * item, QItemSelectionModel::SelectionFlags command )
+/*
+[1]void setCurrentItem ( QTableWidgetItem * item )
+[2]void setCurrentItem ( QTableWidgetItem * item, QItemSelectionModel::SelectionFlags command )
+*/
 
 HB_FUNC_STATIC( QTABLEWIDGET_SETCURRENTITEM )
 {
@@ -703,7 +714,7 @@ HB_FUNC_STATIC( QTABLEWIDGET_SETCURRENTITEM )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -712,7 +723,7 @@ void setHorizontalHeaderItem ( int column, QTableWidgetItem * item )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_SETHORIZONTALHEADERITEM )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -720,12 +731,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_SETHORIZONTALHEADERITEM )
     if( ISNUMPAR(2) && ISNUM(1) && ISQTABLEWIDGETITEM(2) )
     {
 #endif
-      obj->setHorizontalHeaderItem ( PINT(1), PQTABLEWIDGETITEM(2) );
+      obj->setHorizontalHeaderItem( PINT(1), PQTABLEWIDGETITEM(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -738,7 +749,7 @@ void setHorizontalHeaderLabels ( const QStringList & labels )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_SETHORIZONTALHEADERLABELS )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -746,12 +757,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_SETHORIZONTALHEADERLABELS )
     if( ISNUMPAR(1) && ISARRAY(1) )
     {
 #endif
-      obj->setHorizontalHeaderLabels ( PQSTRINGLIST(1) );
+      obj->setHorizontalHeaderLabels( PQSTRINGLIST(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -764,7 +775,7 @@ void setItem ( int row, int column, QTableWidgetItem * item )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_SETITEM )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -772,12 +783,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_SETITEM )
     if( ISNUMPAR(3) && ISNUM(1) && ISNUM(2) && ISQTABLEWIDGETITEM(3) )
     {
 #endif
-      obj->setItem ( PINT(1), PINT(2), PQTABLEWIDGETITEM(3) );
+      obj->setItem( PINT(1), PINT(2), PQTABLEWIDGETITEM(3) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -790,7 +801,7 @@ void setItemPrototype ( const QTableWidgetItem * item )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_SETITEMPROTOTYPE )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -798,12 +809,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_SETITEMPROTOTYPE )
     if( ISNUMPAR(1) && ISQTABLEWIDGETITEM(1) )
     {
 #endif
-      obj->setItemPrototype ( PQTABLEWIDGETITEM(1) );
+      obj->setItemPrototype( PQTABLEWIDGETITEM(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -816,7 +827,7 @@ void setRangeSelected ( const QTableWidgetSelectionRange & range, bool select )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_SETRANGESELECTED )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -824,12 +835,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_SETRANGESELECTED )
     if( ISNUMPAR(2) && ISQTABLEWIDGETSELECTIONRANGE(1) && ISLOG(2) )
     {
 #endif
-      obj->setRangeSelected ( *PQTABLEWIDGETSELECTIONRANGE(1), PBOOL(2) );
+      obj->setRangeSelected( *PQTABLEWIDGETSELECTIONRANGE(1), PBOOL(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -842,7 +853,7 @@ void setRowCount ( int rows )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_SETROWCOUNT )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -850,12 +861,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_SETROWCOUNT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setRowCount ( PINT(1) );
+      obj->setRowCount( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -868,7 +879,7 @@ void setVerticalHeaderItem ( int row, QTableWidgetItem * item )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_SETVERTICALHEADERITEM )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -876,12 +887,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_SETVERTICALHEADERITEM )
     if( ISNUMPAR(2) && ISNUM(1) && ISQTABLEWIDGETITEM(2) )
     {
 #endif
-      obj->setVerticalHeaderItem ( PINT(1), PQTABLEWIDGETITEM(2) );
+      obj->setVerticalHeaderItem( PINT(1), PQTABLEWIDGETITEM(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -894,7 +905,7 @@ void setVerticalHeaderLabels ( const QStringList & labels )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_SETVERTICALHEADERLABELS )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -902,12 +913,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_SETVERTICALHEADERLABELS )
     if( ISNUMPAR(1) && ISARRAY(1) )
     {
 #endif
-      obj->setVerticalHeaderLabels ( PQSTRINGLIST(1) );
+      obj->setVerticalHeaderLabels( PQSTRINGLIST(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -920,7 +931,7 @@ void sortItems ( int column, Qt::SortOrder order = Qt::AscendingOrder )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_SORTITEMS )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -928,12 +939,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_SORTITEMS )
     if( ISBETWEEN(1,2) && ISNUM(1) && ISOPTNUM(2) )
     {
 #endif
-      obj->sortItems ( PINT(1), ISNIL(2)? (Qt::SortOrder) Qt::AscendingOrder : (Qt::SortOrder) hb_parni(2) );
+      obj->sortItems( PINT(1), ISNIL(2)? (Qt::SortOrder) Qt::AscendingOrder : (Qt::SortOrder) hb_parni(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -946,7 +957,7 @@ QTableWidgetItem * takeHorizontalHeaderItem ( int column )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_TAKEHORIZONTALHEADERITEM )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -954,13 +965,13 @@ HB_FUNC_STATIC( QTABLEWIDGET_TAKEHORIZONTALHEADERITEM )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      QTableWidgetItem * ptr = obj->takeHorizontalHeaderItem ( PINT(1) );
-      _qt5xhb_createReturnClass ( ptr, "QTABLEWIDGETITEM", false );
+      QTableWidgetItem * ptr = obj->takeHorizontalHeaderItem( PINT(1) );
+      Qt5xHb::createReturnClass( ptr, "QTABLEWIDGETITEM", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -971,7 +982,7 @@ QTableWidgetItem * takeItem ( int row, int column )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_TAKEITEM )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -979,13 +990,13 @@ HB_FUNC_STATIC( QTABLEWIDGET_TAKEITEM )
     if( ISNUMPAR(2) && ISNUM(1) && ISNUM(2) )
     {
 #endif
-      QTableWidgetItem * ptr = obj->takeItem ( PINT(1), PINT(2) );
-      _qt5xhb_createReturnClass ( ptr, "QTABLEWIDGETITEM", false );
+      QTableWidgetItem * ptr = obj->takeItem( PINT(1), PINT(2) );
+      Qt5xHb::createReturnClass( ptr, "QTABLEWIDGETITEM", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -996,7 +1007,7 @@ QTableWidgetItem * takeVerticalHeaderItem ( int row )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_TAKEVERTICALHEADERITEM )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1004,13 +1015,13 @@ HB_FUNC_STATIC( QTABLEWIDGET_TAKEVERTICALHEADERITEM )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      QTableWidgetItem * ptr = obj->takeVerticalHeaderItem ( PINT(1) );
-      _qt5xhb_createReturnClass ( ptr, "QTABLEWIDGETITEM", false );
+      QTableWidgetItem * ptr = obj->takeVerticalHeaderItem( PINT(1) );
+      Qt5xHb::createReturnClass( ptr, "QTABLEWIDGETITEM", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1021,7 +1032,7 @@ QTableWidgetItem * verticalHeaderItem ( int row ) const
 */
 HB_FUNC_STATIC( QTABLEWIDGET_VERTICALHEADERITEM )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1029,13 +1040,13 @@ HB_FUNC_STATIC( QTABLEWIDGET_VERTICALHEADERITEM )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      QTableWidgetItem * ptr = obj->verticalHeaderItem ( PINT(1) );
-      _qt5xhb_createReturnClass ( ptr, "QTABLEWIDGETITEM", false );
+      QTableWidgetItem * ptr = obj->verticalHeaderItem( PINT(1) );
+      Qt5xHb::createReturnClass( ptr, "QTABLEWIDGETITEM", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1046,7 +1057,7 @@ int visualColumn ( int logicalColumn ) const
 */
 HB_FUNC_STATIC( QTABLEWIDGET_VISUALCOLUMN )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1054,12 +1065,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_VISUALCOLUMN )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      RINT( obj->visualColumn ( PINT(1) ) );
+      RINT( obj->visualColumn( PINT(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1070,7 +1081,7 @@ QRect visualItemRect ( const QTableWidgetItem * item ) const
 */
 HB_FUNC_STATIC( QTABLEWIDGET_VISUALITEMRECT )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1078,13 +1089,13 @@ HB_FUNC_STATIC( QTABLEWIDGET_VISUALITEMRECT )
     if( ISNUMPAR(1) && ISQTABLEWIDGETITEM(1) )
     {
 #endif
-      QRect * ptr = new QRect( obj->visualItemRect ( PQTABLEWIDGETITEM(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QRECT", true );
+      auto ptr = new QRect( obj->visualItemRect( PQTABLEWIDGETITEM(1) ) );
+      Qt5xHb::createReturnClass( ptr, "QRECT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1095,7 +1106,7 @@ int visualRow ( int logicalRow ) const
 */
 HB_FUNC_STATIC( QTABLEWIDGET_VISUALROW )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1103,12 +1114,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_VISUALROW )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      RINT( obj->visualRow ( PINT(1) ) );
+      RINT( obj->visualRow( PINT(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1119,7 +1130,7 @@ void clear ()
 */
 HB_FUNC_STATIC( QTABLEWIDGET_CLEAR )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1127,12 +1138,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_CLEAR )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->clear ();
+      obj->clear();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1145,7 +1156,7 @@ void clearContents ()
 */
 HB_FUNC_STATIC( QTABLEWIDGET_CLEARCONTENTS )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1153,12 +1164,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_CLEARCONTENTS )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->clearContents ();
+      obj->clearContents();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1171,7 +1182,7 @@ void insertColumn ( int column )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_INSERTCOLUMN )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1179,12 +1190,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_INSERTCOLUMN )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->insertColumn ( PINT(1) );
+      obj->insertColumn( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1197,7 +1208,7 @@ void insertRow ( int row )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_INSERTROW )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1205,12 +1216,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_INSERTROW )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->insertRow ( PINT(1) );
+      obj->insertRow( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1223,7 +1234,7 @@ void removeColumn ( int column )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_REMOVECOLUMN )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1231,12 +1242,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_REMOVECOLUMN )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->removeColumn ( PINT(1) );
+      obj->removeColumn( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1249,7 +1260,7 @@ void removeRow ( int row )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_REMOVEROW )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1257,12 +1268,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_REMOVEROW )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->removeRow ( PINT(1) );
+      obj->removeRow( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1275,7 +1286,7 @@ void scrollToItem ( const QTableWidgetItem * item, QAbstractItemView::ScrollHint
 */
 HB_FUNC_STATIC( QTABLEWIDGET_SCROLLTOITEM )
 {
-  QTableWidget * obj = (QTableWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1283,12 +1294,12 @@ HB_FUNC_STATIC( QTABLEWIDGET_SCROLLTOITEM )
     if( ISBETWEEN(1,2) && ISQTABLEWIDGETITEM(1) && ISOPTNUM(2) )
     {
 #endif
-      obj->scrollToItem ( PQTABLEWIDGETITEM(1), ISNIL(2)? (QAbstractItemView::ScrollHint) QAbstractItemView::EnsureVisible : (QAbstractItemView::ScrollHint) hb_parni(2) );
+      obj->scrollToItem( PQTABLEWIDGETITEM(1), ISNIL(2)? (QAbstractItemView::ScrollHint) QAbstractItemView::EnsureVisible : (QAbstractItemView::ScrollHint) hb_parni(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1301,29 +1312,30 @@ void cellActivated( int row, int column )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_ONCELLACTIVATED )
 {
-  QTableWidget * sender = (QTableWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("cellActivated(int,int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("cellActivated(int,int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QTableWidget::cellActivated, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1, int arg2) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QTABLEWIDGET" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            PHB_ITEM pArg2 = hb_itemPutNI( NULL, arg2 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 3, pSender, pArg1, pArg2 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QTABLEWIDGET" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            PHB_ITEM pArg2 = hb_itemPutNI( nullptr, arg2 );
+            hb_vmEvalBlockV( cb, 3, pSender, pArg1, pArg2 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -1331,7 +1343,7 @@ HB_FUNC_STATIC( QTABLEWIDGET_ONCELLACTIVATED )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1342,9 +1354,9 @@ HB_FUNC_STATIC( QTABLEWIDGET_ONCELLACTIVATED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1364,29 +1376,30 @@ void cellChanged( int row, int column )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_ONCELLCHANGED )
 {
-  QTableWidget * sender = (QTableWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("cellChanged(int,int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("cellChanged(int,int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QTableWidget::cellChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1, int arg2) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QTABLEWIDGET" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            PHB_ITEM pArg2 = hb_itemPutNI( NULL, arg2 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 3, pSender, pArg1, pArg2 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QTABLEWIDGET" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            PHB_ITEM pArg2 = hb_itemPutNI( nullptr, arg2 );
+            hb_vmEvalBlockV( cb, 3, pSender, pArg1, pArg2 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -1394,7 +1407,7 @@ HB_FUNC_STATIC( QTABLEWIDGET_ONCELLCHANGED )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1405,9 +1418,9 @@ HB_FUNC_STATIC( QTABLEWIDGET_ONCELLCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1427,29 +1440,30 @@ void cellClicked( int row, int column )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_ONCELLCLICKED )
 {
-  QTableWidget * sender = (QTableWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("cellClicked(int,int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("cellClicked(int,int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QTableWidget::cellClicked, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1, int arg2) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QTABLEWIDGET" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            PHB_ITEM pArg2 = hb_itemPutNI( NULL, arg2 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 3, pSender, pArg1, pArg2 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QTABLEWIDGET" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            PHB_ITEM pArg2 = hb_itemPutNI( nullptr, arg2 );
+            hb_vmEvalBlockV( cb, 3, pSender, pArg1, pArg2 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -1457,7 +1471,7 @@ HB_FUNC_STATIC( QTABLEWIDGET_ONCELLCLICKED )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1468,9 +1482,9 @@ HB_FUNC_STATIC( QTABLEWIDGET_ONCELLCLICKED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1490,29 +1504,30 @@ void cellDoubleClicked( int row, int column )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_ONCELLDOUBLECLICKED )
 {
-  QTableWidget * sender = (QTableWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("cellDoubleClicked(int,int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("cellDoubleClicked(int,int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QTableWidget::cellDoubleClicked, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1, int arg2) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QTABLEWIDGET" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            PHB_ITEM pArg2 = hb_itemPutNI( NULL, arg2 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 3, pSender, pArg1, pArg2 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QTABLEWIDGET" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            PHB_ITEM pArg2 = hb_itemPutNI( nullptr, arg2 );
+            hb_vmEvalBlockV( cb, 3, pSender, pArg1, pArg2 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -1520,7 +1535,7 @@ HB_FUNC_STATIC( QTABLEWIDGET_ONCELLDOUBLECLICKED )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1531,9 +1546,9 @@ HB_FUNC_STATIC( QTABLEWIDGET_ONCELLDOUBLECLICKED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1553,29 +1568,30 @@ void cellEntered( int row, int column )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_ONCELLENTERED )
 {
-  QTableWidget * sender = (QTableWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("cellEntered(int,int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("cellEntered(int,int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QTableWidget::cellEntered, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1, int arg2) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QTABLEWIDGET" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            PHB_ITEM pArg2 = hb_itemPutNI( NULL, arg2 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 3, pSender, pArg1, pArg2 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QTABLEWIDGET" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            PHB_ITEM pArg2 = hb_itemPutNI( nullptr, arg2 );
+            hb_vmEvalBlockV( cb, 3, pSender, pArg1, pArg2 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -1583,7 +1599,7 @@ HB_FUNC_STATIC( QTABLEWIDGET_ONCELLENTERED )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1594,9 +1610,9 @@ HB_FUNC_STATIC( QTABLEWIDGET_ONCELLENTERED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1616,29 +1632,30 @@ void cellPressed( int row, int column )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_ONCELLPRESSED )
 {
-  QTableWidget * sender = (QTableWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("cellPressed(int,int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("cellPressed(int,int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QTableWidget::cellPressed, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1, int arg2) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QTABLEWIDGET" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            PHB_ITEM pArg2 = hb_itemPutNI( NULL, arg2 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 3, pSender, pArg1, pArg2 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QTABLEWIDGET" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            PHB_ITEM pArg2 = hb_itemPutNI( nullptr, arg2 );
+            hb_vmEvalBlockV( cb, 3, pSender, pArg1, pArg2 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -1646,7 +1663,7 @@ HB_FUNC_STATIC( QTABLEWIDGET_ONCELLPRESSED )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1657,9 +1674,9 @@ HB_FUNC_STATIC( QTABLEWIDGET_ONCELLPRESSED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1679,31 +1696,32 @@ void currentCellChanged( int currentRow, int currentColumn, int previousRow, int
 */
 HB_FUNC_STATIC( QTABLEWIDGET_ONCURRENTCELLCHANGED )
 {
-  QTableWidget * sender = (QTableWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("currentCellChanged(int,int,int,int)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("currentCellChanged(int,int,int,int)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QTableWidget::currentCellChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (int arg1, int arg2, int arg3, int arg4) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QTABLEWIDGET" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, arg1 );
-            PHB_ITEM pArg2 = hb_itemPutNI( NULL, arg2 );
-            PHB_ITEM pArg3 = hb_itemPutNI( NULL, arg3 );
-            PHB_ITEM pArg4 = hb_itemPutNI( NULL, arg4 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 5, pSender, pArg1, pArg2, pArg3, pArg4 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QTABLEWIDGET" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, arg1 );
+            PHB_ITEM pArg2 = hb_itemPutNI( nullptr, arg2 );
+            PHB_ITEM pArg3 = hb_itemPutNI( nullptr, arg3 );
+            PHB_ITEM pArg4 = hb_itemPutNI( nullptr, arg4 );
+            hb_vmEvalBlockV( cb, 5, pSender, pArg1, pArg2, pArg3, pArg4 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -1713,7 +1731,7 @@ HB_FUNC_STATIC( QTABLEWIDGET_ONCURRENTCELLCHANGED )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1724,9 +1742,9 @@ HB_FUNC_STATIC( QTABLEWIDGET_ONCURRENTCELLCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1746,29 +1764,30 @@ void currentItemChanged( QTableWidgetItem * current, QTableWidgetItem * previous
 */
 HB_FUNC_STATIC( QTABLEWIDGET_ONCURRENTITEMCHANGED )
 {
-  QTableWidget * sender = (QTableWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("currentItemChanged(QTableWidgetItem*,QTableWidgetItem*)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("currentItemChanged(QTableWidgetItem*,QTableWidgetItem*)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QTableWidget::currentItemChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QTableWidgetItem * arg1, QTableWidgetItem * arg2) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QTABLEWIDGET" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) arg1, "QTABLEWIDGETITEM" );
-            PHB_ITEM pArg2 = Signals3_return_object( (void *) arg2, "QTABLEWIDGETITEM" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 3, pSender, pArg1, pArg2 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QTABLEWIDGET" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) arg1, "QTABLEWIDGETITEM" );
+            PHB_ITEM pArg2 = Qt5xHb::Signals_return_object( (void *) arg2, "QTABLEWIDGETITEM" );
+            hb_vmEvalBlockV( cb, 3, pSender, pArg1, pArg2 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
             hb_itemRelease( pArg2 );
@@ -1776,7 +1795,7 @@ HB_FUNC_STATIC( QTABLEWIDGET_ONCURRENTITEMCHANGED )
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1787,9 +1806,9 @@ HB_FUNC_STATIC( QTABLEWIDGET_ONCURRENTITEMCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1809,35 +1828,36 @@ void itemActivated( QTableWidgetItem * item )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_ONITEMACTIVATED )
 {
-  QTableWidget * sender = (QTableWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("itemActivated(QTableWidgetItem*)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("itemActivated(QTableWidgetItem*)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QTableWidget::itemActivated, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QTableWidgetItem * arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QTABLEWIDGET" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) arg1, "QTABLEWIDGETITEM" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QTABLEWIDGET" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) arg1, "QTABLEWIDGETITEM" );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1848,9 +1868,9 @@ HB_FUNC_STATIC( QTABLEWIDGET_ONITEMACTIVATED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1870,35 +1890,36 @@ void itemChanged( QTableWidgetItem * item )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_ONITEMCHANGED )
 {
-  QTableWidget * sender = (QTableWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("itemChanged(QTableWidgetItem*)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("itemChanged(QTableWidgetItem*)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QTableWidget::itemChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QTableWidgetItem * arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QTABLEWIDGET" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) arg1, "QTABLEWIDGETITEM" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QTABLEWIDGET" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) arg1, "QTABLEWIDGETITEM" );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1909,9 +1930,9 @@ HB_FUNC_STATIC( QTABLEWIDGET_ONITEMCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1931,35 +1952,36 @@ void itemClicked( QTableWidgetItem * item )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_ONITEMCLICKED )
 {
-  QTableWidget * sender = (QTableWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("itemClicked(QTableWidgetItem*)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("itemClicked(QTableWidgetItem*)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QTableWidget::itemClicked, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QTableWidgetItem * arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QTABLEWIDGET" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) arg1, "QTABLEWIDGETITEM" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QTABLEWIDGET" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) arg1, "QTABLEWIDGETITEM" );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -1970,9 +1992,9 @@ HB_FUNC_STATIC( QTABLEWIDGET_ONITEMCLICKED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -1992,35 +2014,36 @@ void itemDoubleClicked( QTableWidgetItem * item )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_ONITEMDOUBLECLICKED )
 {
-  QTableWidget * sender = (QTableWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("itemDoubleClicked(QTableWidgetItem*)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("itemDoubleClicked(QTableWidgetItem*)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QTableWidget::itemDoubleClicked, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QTableWidgetItem * arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QTABLEWIDGET" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) arg1, "QTABLEWIDGETITEM" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QTABLEWIDGET" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) arg1, "QTABLEWIDGETITEM" );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -2031,9 +2054,9 @@ HB_FUNC_STATIC( QTABLEWIDGET_ONITEMDOUBLECLICKED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -2053,35 +2076,36 @@ void itemEntered( QTableWidgetItem * item )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_ONITEMENTERED )
 {
-  QTableWidget * sender = (QTableWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("itemEntered(QTableWidgetItem*)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("itemEntered(QTableWidgetItem*)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QTableWidget::itemEntered, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QTableWidgetItem * arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QTABLEWIDGET" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) arg1, "QTABLEWIDGETITEM" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QTABLEWIDGET" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) arg1, "QTABLEWIDGETITEM" );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -2092,9 +2116,9 @@ HB_FUNC_STATIC( QTABLEWIDGET_ONITEMENTERED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -2114,35 +2138,36 @@ void itemPressed( QTableWidgetItem * item )
 */
 HB_FUNC_STATIC( QTABLEWIDGET_ONITEMPRESSED )
 {
-  QTableWidget * sender = (QTableWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("itemPressed(QTableWidgetItem*)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("itemPressed(QTableWidgetItem*)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QTableWidget::itemPressed, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QTableWidgetItem * arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QTABLEWIDGET" );
-            PHB_ITEM pArg1 = Signals3_return_object( (void *) arg1, "QTABLEWIDGETITEM" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QTABLEWIDGET" );
+            PHB_ITEM pArg1 = Qt5xHb::Signals_return_object( (void *) arg1, "QTABLEWIDGETITEM" );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -2153,9 +2178,9 @@ HB_FUNC_STATIC( QTABLEWIDGET_ONITEMPRESSED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -2175,33 +2200,34 @@ void itemSelectionChanged()
 */
 HB_FUNC_STATIC( QTABLEWIDGET_ONITEMSELECTIONCHANGED )
 {
-  QTableWidget * sender = (QTableWidget *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QTableWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("itemSelectionChanged()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("itemSelectionChanged()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QTableWidget::itemSelectionChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QTABLEWIDGET" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QTABLEWIDGET" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -2212,9 +2238,9 @@ HB_FUNC_STATIC( QTABLEWIDGET_ONITEMSELECTIONCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }

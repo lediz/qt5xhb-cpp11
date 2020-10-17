@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -38,7 +38,7 @@ CLASS QTemporaryDir
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QTemporaryDir
+PROCEDURE destroyObject() CLASS QTemporaryDir
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -55,7 +55,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtCore/QTemporaryDir>
@@ -64,23 +63,25 @@ RETURN
 /*
 QTemporaryDir()
 */
-void QTemporaryDir_new1 ()
+void QTemporaryDir_new1()
 {
-  QTemporaryDir * o = new QTemporaryDir ();
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QTemporaryDir();
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QTemporaryDir(const QString & templateName)
 */
-void QTemporaryDir_new2 ()
+void QTemporaryDir_new2()
 {
-  QTemporaryDir * o = new QTemporaryDir ( PQSTRING(1) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QTemporaryDir( PQSTRING(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
-//[1]QTemporaryDir()
-//[2]QTemporaryDir(const QString & templateName)
+/*
+[1]QTemporaryDir()
+[2]QTemporaryDir(const QString & templateName)
+*/
 
 HB_FUNC_STATIC( QTEMPORARYDIR_NEW )
 {
@@ -94,20 +95,20 @@ HB_FUNC_STATIC( QTEMPORARYDIR_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QTEMPORARYDIR_DELETE )
 {
-  QTemporaryDir * obj = (QTemporaryDir *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTemporaryDir *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -120,7 +121,7 @@ bool autoRemove() const
 */
 HB_FUNC_STATIC( QTEMPORARYDIR_AUTOREMOVE )
 {
-  QTemporaryDir * obj = (QTemporaryDir *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTemporaryDir *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -128,12 +129,12 @@ HB_FUNC_STATIC( QTEMPORARYDIR_AUTOREMOVE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->autoRemove () );
+      RBOOL( obj->autoRemove() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -144,7 +145,7 @@ bool isValid() const
 */
 HB_FUNC_STATIC( QTEMPORARYDIR_ISVALID )
 {
-  QTemporaryDir * obj = (QTemporaryDir *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTemporaryDir *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -152,12 +153,12 @@ HB_FUNC_STATIC( QTEMPORARYDIR_ISVALID )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isValid () );
+      RBOOL( obj->isValid() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -168,7 +169,7 @@ QString path() const
 */
 HB_FUNC_STATIC( QTEMPORARYDIR_PATH )
 {
-  QTemporaryDir * obj = (QTemporaryDir *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTemporaryDir *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -176,12 +177,12 @@ HB_FUNC_STATIC( QTEMPORARYDIR_PATH )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->path () );
+      RQSTRING( obj->path() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -192,7 +193,7 @@ bool remove()
 */
 HB_FUNC_STATIC( QTEMPORARYDIR_REMOVE )
 {
-  QTemporaryDir * obj = (QTemporaryDir *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTemporaryDir *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -200,12 +201,12 @@ HB_FUNC_STATIC( QTEMPORARYDIR_REMOVE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->remove () );
+      RBOOL( obj->remove() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -216,7 +217,7 @@ void setAutoRemove(bool b)
 */
 HB_FUNC_STATIC( QTEMPORARYDIR_SETAUTOREMOVE )
 {
-  QTemporaryDir * obj = (QTemporaryDir *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTemporaryDir *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -224,12 +225,12 @@ HB_FUNC_STATIC( QTEMPORARYDIR_SETAUTOREMOVE )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setAutoRemove ( PBOOL(1) );
+      obj->setAutoRemove( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -243,25 +244,25 @@ HB_FUNC_STATIC( QTEMPORARYDIR_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -288,13 +289,13 @@ HB_FUNC_STATIC( QTEMPORARYDIR_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -35,7 +35,7 @@ CLASS QPicture INHERIT QPaintDevice
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QPicture
+PROCEDURE destroyObject() CLASS QPicture
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -52,7 +52,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtGui/QPicture>
@@ -61,23 +60,25 @@ RETURN
 /*
 QPicture ( int formatVersion = -1 )
 */
-void QPicture_new1 ()
+void QPicture_new1()
 {
-  QPicture * o = new QPicture ( OPINT(1,-1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QPicture( OPINT(1,-1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QPicture ( const QPicture & pic )
 */
-void QPicture_new2 ()
+void QPicture_new2()
 {
-  QPicture * o = new QPicture ( *PQPICTURE(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QPicture( *PQPICTURE(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
-//[1]QPicture ( int formatVersion = -1 )
-//[2]QPicture ( const QPicture & pic )
+/*
+[1]QPicture ( int formatVersion = -1 )
+[2]QPicture ( const QPicture & pic )
+*/
 
 HB_FUNC_STATIC( QPICTURE_NEW )
 {
@@ -91,20 +92,20 @@ HB_FUNC_STATIC( QPICTURE_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QPICTURE_DELETE )
 {
-  QPicture * obj = (QPicture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPicture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -117,7 +118,7 @@ QRect boundingRect () const
 */
 HB_FUNC_STATIC( QPICTURE_BOUNDINGRECT )
 {
-  QPicture * obj = (QPicture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPicture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -125,13 +126,13 @@ HB_FUNC_STATIC( QPICTURE_BOUNDINGRECT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QRect * ptr = new QRect( obj->boundingRect () );
-      _qt5xhb_createReturnClass ( ptr, "QRECT", true );
+      auto ptr = new QRect( obj->boundingRect() );
+      Qt5xHb::createReturnClass( ptr, "QRECT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -142,7 +143,7 @@ const char * data () const
 */
 HB_FUNC_STATIC( QPICTURE_DATA )
 {
-  QPicture * obj = (QPicture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPicture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -150,12 +151,12 @@ HB_FUNC_STATIC( QPICTURE_DATA )
     if( ISNUMPAR(0) )
     {
 #endif
-      hb_retc( (const char *) obj->data () );
+      hb_retc( (const char *) obj->data() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -166,7 +167,7 @@ bool isNull () const
 */
 HB_FUNC_STATIC( QPICTURE_ISNULL )
 {
-  QPicture * obj = (QPicture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPicture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -174,12 +175,12 @@ HB_FUNC_STATIC( QPICTURE_ISNULL )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isNull () );
+      RBOOL( obj->isNull() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -188,31 +189,33 @@ HB_FUNC_STATIC( QPICTURE_ISNULL )
 /*
 bool load ( const QString & fileName, const char * format = nullptr )
 */
-void QPicture_load1 ()
+void QPicture_load1()
 {
-  QPicture * obj = (QPicture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPicture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RBOOL( obj->load ( PQSTRING(1), OPCONSTCHAR(2,nullptr) ) );
+    RBOOL( obj->load( PQSTRING(1), OPCONSTCHAR(2,nullptr) ) );
   }
 }
 
 /*
 bool load ( QIODevice * dev, const char * format = nullptr )
 */
-void QPicture_load2 ()
+void QPicture_load2()
 {
-  QPicture * obj = (QPicture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPicture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RBOOL( obj->load ( PQIODEVICE(1), OPCONSTCHAR(2,nullptr) ) );
+    RBOOL( obj->load( PQIODEVICE(1), OPCONSTCHAR(2,nullptr) ) );
   }
 }
 
-//[1]bool load ( const QString & fileName, const char * format = nullptr )
-//[2]bool load ( QIODevice * dev, const char * format = nullptr )
+/*
+[1]bool load ( const QString & fileName, const char * format = nullptr )
+[2]bool load ( QIODevice * dev, const char * format = nullptr )
+*/
 
 HB_FUNC_STATIC( QPICTURE_LOAD )
 {
@@ -226,7 +229,7 @@ HB_FUNC_STATIC( QPICTURE_LOAD )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -235,7 +238,7 @@ bool play ( QPainter * painter )
 */
 HB_FUNC_STATIC( QPICTURE_PLAY )
 {
-  QPicture * obj = (QPicture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPicture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -243,12 +246,12 @@ HB_FUNC_STATIC( QPICTURE_PLAY )
     if( ISNUMPAR(1) && ISQPAINTER(1) )
     {
 #endif
-      RBOOL( obj->play ( PQPAINTER(1) ) );
+      RBOOL( obj->play( PQPAINTER(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -257,31 +260,33 @@ HB_FUNC_STATIC( QPICTURE_PLAY )
 /*
 bool save ( const QString & fileName, const char * format = nullptr )
 */
-void QPicture_save1 ()
+void QPicture_save1()
 {
-  QPicture * obj = (QPicture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPicture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RBOOL( obj->save ( PQSTRING(1), OPCONSTCHAR(2,nullptr) ) );
+    RBOOL( obj->save( PQSTRING(1), OPCONSTCHAR(2,nullptr) ) );
   }
 }
 
 /*
 bool save ( QIODevice * dev, const char * format = nullptr )
 */
-void QPicture_save2 ()
+void QPicture_save2()
 {
-  QPicture * obj = (QPicture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPicture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RBOOL( obj->save ( PQIODEVICE(1), OPCONSTCHAR(2,nullptr) ) );
+    RBOOL( obj->save( PQIODEVICE(1), OPCONSTCHAR(2,nullptr) ) );
   }
 }
 
-//[1]bool save ( const QString & fileName, const char * format = nullptr )
-//[2]bool save ( QIODevice * dev, const char * format = nullptr )
+/*
+[1]bool save ( const QString & fileName, const char * format = nullptr )
+[2]bool save ( QIODevice * dev, const char * format = nullptr )
+*/
 
 HB_FUNC_STATIC( QPICTURE_SAVE )
 {
@@ -295,7 +300,7 @@ HB_FUNC_STATIC( QPICTURE_SAVE )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -304,7 +309,7 @@ void setBoundingRect ( const QRect & r )
 */
 HB_FUNC_STATIC( QPICTURE_SETBOUNDINGRECT )
 {
-  QPicture * obj = (QPicture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPicture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -312,12 +317,12 @@ HB_FUNC_STATIC( QPICTURE_SETBOUNDINGRECT )
     if( ISNUMPAR(1) && ISQRECT(1) )
     {
 #endif
-      obj->setBoundingRect ( *PQRECT(1) );
+      obj->setBoundingRect( *PQRECT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -330,7 +335,7 @@ virtual void setData ( const char * data, uint size )
 */
 HB_FUNC_STATIC( QPICTURE_SETDATA )
 {
-  QPicture * obj = (QPicture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPicture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -338,12 +343,12 @@ HB_FUNC_STATIC( QPICTURE_SETDATA )
     if( ISNUMPAR(2) && ISCHAR(1) && ISNUM(2) )
     {
 #endif
-      obj->setData ( PCONSTCHAR(1), PUINT(2) );
+      obj->setData( PCONSTCHAR(1), PUINT(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -356,7 +361,7 @@ uint size () const
 */
 HB_FUNC_STATIC( QPICTURE_SIZE )
 {
-  QPicture * obj = (QPicture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPicture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -364,12 +369,12 @@ HB_FUNC_STATIC( QPICTURE_SIZE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RUINT( obj->size () );
+      RUINT( obj->size() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -380,7 +385,7 @@ void swap ( QPicture & other )
 */
 HB_FUNC_STATIC( QPICTURE_SWAP )
 {
-  QPicture * obj = (QPicture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPicture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -388,12 +393,12 @@ HB_FUNC_STATIC( QPICTURE_SWAP )
     if( ISNUMPAR(1) && ISQPICTURE(1) )
     {
 #endif
-      obj->swap ( *PQPICTURE(1) );
+      obj->swap( *PQPICTURE(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

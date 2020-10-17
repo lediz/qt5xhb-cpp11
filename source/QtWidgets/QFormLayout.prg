@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -59,7 +59,7 @@ CLASS QFormLayout INHERIT QLayout
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QFormLayout
+PROCEDURE destroyObject() CLASS QFormLayout
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -76,7 +76,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtWidgets/QFormLayout>
@@ -89,25 +90,27 @@ HB_FUNC_STATIC( QFORMLAYOUT_NEW )
 {
   if( ISBETWEEN(0,1) && (ISQWIDGET(1)||ISNIL(1)) )
   {
-    QFormLayout * o = new QFormLayout ( OPQWIDGET(1,nullptr) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QFormLayout( OPQWIDGET(1,nullptr) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QFORMLAYOUT_DELETE )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -118,13 +121,13 @@ HB_FUNC_STATIC( QFORMLAYOUT_DELETE )
 /*
 void addRow ( QWidget * label, QWidget * field )
 */
-void QFormLayout_addRow1 ()
+void QFormLayout_addRow1()
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->addRow ( PQWIDGET(1), PQWIDGET(2) );
+    obj->addRow( PQWIDGET(1), PQWIDGET(2) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -133,13 +136,13 @@ void QFormLayout_addRow1 ()
 /*
 void addRow ( QWidget * label, QLayout * field )
 */
-void QFormLayout_addRow2 ()
+void QFormLayout_addRow2()
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->addRow ( PQWIDGET(1), PQLAYOUT(2) );
+    obj->addRow( PQWIDGET(1), PQLAYOUT(2) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -148,13 +151,13 @@ void QFormLayout_addRow2 ()
 /*
 void addRow ( const QString & labelText, QWidget * field )
 */
-void QFormLayout_addRow3 ()
+void QFormLayout_addRow3()
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->addRow ( PQSTRING(1), PQWIDGET(2) );
+    obj->addRow( PQSTRING(1), PQWIDGET(2) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -163,13 +166,13 @@ void QFormLayout_addRow3 ()
 /*
 void addRow ( const QString & labelText, QLayout * field )
 */
-void QFormLayout_addRow4 ()
+void QFormLayout_addRow4()
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->addRow ( PQSTRING(1), PQLAYOUT(2) );
+    obj->addRow( PQSTRING(1), PQLAYOUT(2) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -178,13 +181,13 @@ void QFormLayout_addRow4 ()
 /*
 void addRow ( QWidget * widget )
 */
-void QFormLayout_addRow5 ()
+void QFormLayout_addRow5()
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->addRow ( PQWIDGET(1) );
+    obj->addRow( PQWIDGET(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -193,24 +196,26 @@ void QFormLayout_addRow5 ()
 /*
 void addRow ( QLayout * layout )
 */
-void QFormLayout_addRow6 ()
+void QFormLayout_addRow6()
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->addRow ( PQLAYOUT(1) );
+    obj->addRow( PQLAYOUT(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void addRow ( QWidget * label, QWidget * field )
-//[2]void addRow ( QWidget * label, QLayout * field )
-//[3]void addRow ( const QString & labelText, QWidget * field )
-//[4]void addRow ( const QString & labelText, QLayout * field )
-//[5]void addRow ( QWidget * widget )
-//[6]void addRow ( QLayout * layout )
+/*
+[1]void addRow ( QWidget * label, QWidget * field )
+[2]void addRow ( QWidget * label, QLayout * field )
+[3]void addRow ( const QString & labelText, QWidget * field )
+[4]void addRow ( const QString & labelText, QLayout * field )
+[5]void addRow ( QWidget * widget )
+[6]void addRow ( QLayout * layout )
+*/
 
 HB_FUNC_STATIC( QFORMLAYOUT_ADDROW )
 {
@@ -240,7 +245,7 @@ HB_FUNC_STATIC( QFORMLAYOUT_ADDROW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -249,7 +254,7 @@ FieldGrowthPolicy fieldGrowthPolicy () const
 */
 HB_FUNC_STATIC( QFORMLAYOUT_FIELDGROWTHPOLICY )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -257,12 +262,12 @@ HB_FUNC_STATIC( QFORMLAYOUT_FIELDGROWTHPOLICY )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->fieldGrowthPolicy () );
+      RENUM( obj->fieldGrowthPolicy() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -273,7 +278,7 @@ Qt::Alignment formAlignment () const
 */
 HB_FUNC_STATIC( QFORMLAYOUT_FORMALIGNMENT )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -281,12 +286,12 @@ HB_FUNC_STATIC( QFORMLAYOUT_FORMALIGNMENT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->formAlignment () );
+      RENUM( obj->formAlignment() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -297,7 +302,7 @@ int horizontalSpacing () const
 */
 HB_FUNC_STATIC( QFORMLAYOUT_HORIZONTALSPACING )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -305,12 +310,12 @@ HB_FUNC_STATIC( QFORMLAYOUT_HORIZONTALSPACING )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->horizontalSpacing () );
+      RINT( obj->horizontalSpacing() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -319,13 +324,13 @@ HB_FUNC_STATIC( QFORMLAYOUT_HORIZONTALSPACING )
 /*
 void insertRow ( int row, QWidget * label, QWidget * field )
 */
-void QFormLayout_insertRow1 ()
+void QFormLayout_insertRow1()
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->insertRow ( PINT(1), PQWIDGET(2), PQWIDGET(3) );
+    obj->insertRow( PINT(1), PQWIDGET(2), PQWIDGET(3) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -334,13 +339,13 @@ void QFormLayout_insertRow1 ()
 /*
 void insertRow ( int row, QWidget * label, QLayout * field )
 */
-void QFormLayout_insertRow2 ()
+void QFormLayout_insertRow2()
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->insertRow ( PINT(1), PQWIDGET(2), PQLAYOUT(3) );
+    obj->insertRow( PINT(1), PQWIDGET(2), PQLAYOUT(3) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -349,13 +354,13 @@ void QFormLayout_insertRow2 ()
 /*
 void insertRow ( int row, const QString & labelText, QWidget * field )
 */
-void QFormLayout_insertRow3 ()
+void QFormLayout_insertRow3()
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->insertRow ( PINT(1), PQSTRING(2), PQWIDGET(3) );
+    obj->insertRow( PINT(1), PQSTRING(2), PQWIDGET(3) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -364,13 +369,13 @@ void QFormLayout_insertRow3 ()
 /*
 void insertRow ( int row, const QString & labelText, QLayout * field )
 */
-void QFormLayout_insertRow4 ()
+void QFormLayout_insertRow4()
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->insertRow ( PINT(1), PQSTRING(2), PQLAYOUT(3) );
+    obj->insertRow( PINT(1), PQSTRING(2), PQLAYOUT(3) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -379,13 +384,13 @@ void QFormLayout_insertRow4 ()
 /*
 void insertRow ( int row, QWidget * widget )
 */
-void QFormLayout_insertRow5 ()
+void QFormLayout_insertRow5()
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->insertRow ( PINT(1), PQWIDGET(2) );
+    obj->insertRow( PINT(1), PQWIDGET(2) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -394,24 +399,26 @@ void QFormLayout_insertRow5 ()
 /*
 void insertRow ( int row, QLayout * layout )
 */
-void QFormLayout_insertRow6 ()
+void QFormLayout_insertRow6()
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->insertRow ( PINT(1), PQLAYOUT(2) );
+    obj->insertRow( PINT(1), PQLAYOUT(2) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void insertRow ( int row, QWidget * label, QWidget * field )
-//[2]void insertRow ( int row, QWidget * label, QLayout * field )
-//[3]void insertRow ( int row, const QString & labelText, QWidget * field )
-//[4]void insertRow ( int row, const QString & labelText, QLayout * field )
-//[5]void insertRow ( int row, QWidget * widget )
-//[6]void insertRow ( int row, QLayout * layout )
+/*
+[1]void insertRow ( int row, QWidget * label, QWidget * field )
+[2]void insertRow ( int row, QWidget * label, QLayout * field )
+[3]void insertRow ( int row, const QString & labelText, QWidget * field )
+[4]void insertRow ( int row, const QString & labelText, QLayout * field )
+[5]void insertRow ( int row, QWidget * widget )
+[6]void insertRow ( int row, QLayout * layout )
+*/
 
 HB_FUNC_STATIC( QFORMLAYOUT_INSERTROW )
 {
@@ -441,40 +448,42 @@ HB_FUNC_STATIC( QFORMLAYOUT_INSERTROW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 /*
 QLayoutItem * itemAt ( int row, ItemRole role ) const
 */
-void QFormLayout_itemAt1 ()
+void QFormLayout_itemAt1()
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QLayoutItem * ptr = obj->itemAt ( PINT(1), (QFormLayout::ItemRole) hb_parni(2) );
-      _qt5xhb_createReturnClass ( ptr, "QLAYOUTITEM", false );
+    QLayoutItem * ptr = obj->itemAt( PINT(1), (QFormLayout::ItemRole) hb_parni(2) );
+    Qt5xHb::createReturnClass( ptr, "QLAYOUTITEM", false );
   }
 }
 
 /*
 virtual QLayoutItem * itemAt ( int index ) const
 */
-void QFormLayout_itemAt2 ()
+void QFormLayout_itemAt2()
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QLayoutItem * ptr = obj->itemAt ( PINT(1) );
-      _qt5xhb_createReturnClass ( ptr, "QLAYOUTITEM", false );
+    QLayoutItem * ptr = obj->itemAt( PINT(1) );
+    Qt5xHb::createReturnClass( ptr, "QLAYOUTITEM", false );
   }
 }
 
-//[1]QLayoutItem * itemAt ( int row, ItemRole role ) const
-//[2]virtual QLayoutItem * itemAt ( int index ) const
+/*
+[1]QLayoutItem * itemAt ( int row, ItemRole role ) const
+[2]virtual QLayoutItem * itemAt ( int index ) const
+*/
 
 HB_FUNC_STATIC( QFORMLAYOUT_ITEMAT )
 {
@@ -488,7 +497,7 @@ HB_FUNC_STATIC( QFORMLAYOUT_ITEMAT )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -497,7 +506,7 @@ Qt::Alignment labelAlignment () const
 */
 HB_FUNC_STATIC( QFORMLAYOUT_LABELALIGNMENT )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -505,12 +514,12 @@ HB_FUNC_STATIC( QFORMLAYOUT_LABELALIGNMENT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->labelAlignment () );
+      RENUM( obj->labelAlignment() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -519,33 +528,35 @@ HB_FUNC_STATIC( QFORMLAYOUT_LABELALIGNMENT )
 /*
 QWidget * labelForField ( QWidget * field ) const
 */
-void QFormLayout_labelForField1 ()
+void QFormLayout_labelForField1()
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QWidget * ptr = obj->labelForField ( PQWIDGET(1) );
-      _qt5xhb_createReturnQWidgetClass ( ptr, "QWIDGET" );
+    QWidget * ptr = obj->labelForField( PQWIDGET(1) );
+    Qt5xHb::createReturnQWidgetClass( ptr, "QWIDGET" );
   }
 }
 
 /*
 QWidget * labelForField ( QLayout * field ) const
 */
-void QFormLayout_labelForField2 ()
+void QFormLayout_labelForField2()
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QWidget * ptr = obj->labelForField ( PQLAYOUT(1) );
-      _qt5xhb_createReturnQWidgetClass ( ptr, "QWIDGET" );
+    QWidget * ptr = obj->labelForField( PQLAYOUT(1) );
+    Qt5xHb::createReturnQWidgetClass( ptr, "QWIDGET" );
   }
 }
 
-//[1]QWidget * labelForField ( QWidget * field ) const
-//[2]QWidget * labelForField ( QLayout * field ) const
+/*
+[1]QWidget * labelForField ( QWidget * field ) const
+[2]QWidget * labelForField ( QLayout * field ) const
+*/
 
 HB_FUNC_STATIC( QFORMLAYOUT_LABELFORFIELD )
 {
@@ -559,7 +570,7 @@ HB_FUNC_STATIC( QFORMLAYOUT_LABELFORFIELD )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -568,7 +579,7 @@ int rowCount () const
 */
 HB_FUNC_STATIC( QFORMLAYOUT_ROWCOUNT )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -576,12 +587,12 @@ HB_FUNC_STATIC( QFORMLAYOUT_ROWCOUNT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->rowCount () );
+      RINT( obj->rowCount() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -592,7 +603,7 @@ RowWrapPolicy rowWrapPolicy () const
 */
 HB_FUNC_STATIC( QFORMLAYOUT_ROWWRAPPOLICY )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -600,12 +611,12 @@ HB_FUNC_STATIC( QFORMLAYOUT_ROWWRAPPOLICY )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->rowWrapPolicy () );
+      RENUM( obj->rowWrapPolicy() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -616,7 +627,7 @@ void setFieldGrowthPolicy ( FieldGrowthPolicy policy )
 */
 HB_FUNC_STATIC( QFORMLAYOUT_SETFIELDGROWTHPOLICY )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -624,12 +635,12 @@ HB_FUNC_STATIC( QFORMLAYOUT_SETFIELDGROWTHPOLICY )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setFieldGrowthPolicy ( (QFormLayout::FieldGrowthPolicy) hb_parni(1) );
+      obj->setFieldGrowthPolicy( (QFormLayout::FieldGrowthPolicy) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -642,7 +653,7 @@ void setFormAlignment ( Qt::Alignment alignment )
 */
 HB_FUNC_STATIC( QFORMLAYOUT_SETFORMALIGNMENT )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -650,12 +661,12 @@ HB_FUNC_STATIC( QFORMLAYOUT_SETFORMALIGNMENT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setFormAlignment ( (Qt::Alignment) hb_parni(1) );
+      obj->setFormAlignment( (Qt::Alignment) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -668,7 +679,7 @@ void setHorizontalSpacing ( int spacing )
 */
 HB_FUNC_STATIC( QFORMLAYOUT_SETHORIZONTALSPACING )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -676,12 +687,12 @@ HB_FUNC_STATIC( QFORMLAYOUT_SETHORIZONTALSPACING )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setHorizontalSpacing ( PINT(1) );
+      obj->setHorizontalSpacing( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -694,7 +705,7 @@ void setItem ( int row, ItemRole role, QLayoutItem * item )
 */
 HB_FUNC_STATIC( QFORMLAYOUT_SETITEM )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -702,12 +713,12 @@ HB_FUNC_STATIC( QFORMLAYOUT_SETITEM )
     if( ISNUMPAR(3) && ISNUM(1) && ISNUM(2) && ISQLAYOUTITEM(3) )
     {
 #endif
-      obj->setItem ( PINT(1), (QFormLayout::ItemRole) hb_parni(2), PQLAYOUTITEM(3) );
+      obj->setItem( PINT(1), (QFormLayout::ItemRole) hb_parni(2), PQLAYOUTITEM(3) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -720,7 +731,7 @@ void setLabelAlignment ( Qt::Alignment alignment )
 */
 HB_FUNC_STATIC( QFORMLAYOUT_SETLABELALIGNMENT )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -728,12 +739,12 @@ HB_FUNC_STATIC( QFORMLAYOUT_SETLABELALIGNMENT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setLabelAlignment ( (Qt::Alignment) hb_parni(1) );
+      obj->setLabelAlignment( (Qt::Alignment) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -746,7 +757,7 @@ void setLayout ( int row, ItemRole role, QLayout * layout )
 */
 HB_FUNC_STATIC( QFORMLAYOUT_SETLAYOUT )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -754,12 +765,12 @@ HB_FUNC_STATIC( QFORMLAYOUT_SETLAYOUT )
     if( ISNUMPAR(3) && ISNUM(1) && ISNUM(2) && ISQLAYOUT(3) )
     {
 #endif
-      obj->setLayout ( PINT(1), (QFormLayout::ItemRole) hb_parni(2), PQLAYOUT(3) );
+      obj->setLayout( PINT(1), (QFormLayout::ItemRole) hb_parni(2), PQLAYOUT(3) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -772,7 +783,7 @@ void setRowWrapPolicy ( RowWrapPolicy policy )
 */
 HB_FUNC_STATIC( QFORMLAYOUT_SETROWWRAPPOLICY )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -780,12 +791,12 @@ HB_FUNC_STATIC( QFORMLAYOUT_SETROWWRAPPOLICY )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setRowWrapPolicy ( (QFormLayout::RowWrapPolicy) hb_parni(1) );
+      obj->setRowWrapPolicy( (QFormLayout::RowWrapPolicy) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -798,7 +809,7 @@ void setSpacing ( int spacing )
 */
 HB_FUNC_STATIC( QFORMLAYOUT_SETSPACING )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -806,12 +817,12 @@ HB_FUNC_STATIC( QFORMLAYOUT_SETSPACING )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setSpacing ( PINT(1) );
+      obj->setSpacing( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -824,7 +835,7 @@ void setVerticalSpacing ( int spacing )
 */
 HB_FUNC_STATIC( QFORMLAYOUT_SETVERTICALSPACING )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -832,12 +843,12 @@ HB_FUNC_STATIC( QFORMLAYOUT_SETVERTICALSPACING )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setVerticalSpacing ( PINT(1) );
+      obj->setVerticalSpacing( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -850,7 +861,7 @@ void setWidget ( int row, ItemRole role, QWidget * widget )
 */
 HB_FUNC_STATIC( QFORMLAYOUT_SETWIDGET )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -858,12 +869,12 @@ HB_FUNC_STATIC( QFORMLAYOUT_SETWIDGET )
     if( ISNUMPAR(3) && ISNUM(1) && ISNUM(2) && ISQWIDGET(3) )
     {
 #endif
-      obj->setWidget ( PINT(1), (QFormLayout::ItemRole) hb_parni(2), PQWIDGET(3) );
+      obj->setWidget( PINT(1), (QFormLayout::ItemRole) hb_parni(2), PQWIDGET(3) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -876,7 +887,7 @@ int spacing () const
 */
 HB_FUNC_STATIC( QFORMLAYOUT_SPACING )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -884,12 +895,12 @@ HB_FUNC_STATIC( QFORMLAYOUT_SPACING )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->spacing () );
+      RINT( obj->spacing() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -900,7 +911,7 @@ int verticalSpacing () const
 */
 HB_FUNC_STATIC( QFORMLAYOUT_VERTICALSPACING )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -908,12 +919,12 @@ HB_FUNC_STATIC( QFORMLAYOUT_VERTICALSPACING )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->verticalSpacing () );
+      RINT( obj->verticalSpacing() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -924,7 +935,7 @@ virtual void addItem ( QLayoutItem * item )
 */
 HB_FUNC_STATIC( QFORMLAYOUT_ADDITEM )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -932,12 +943,12 @@ HB_FUNC_STATIC( QFORMLAYOUT_ADDITEM )
     if( ISNUMPAR(1) && ISQLAYOUTITEM(1) )
     {
 #endif
-      obj->addItem ( PQLAYOUTITEM(1) );
+      obj->addItem( PQLAYOUTITEM(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -950,7 +961,7 @@ virtual int count () const
 */
 HB_FUNC_STATIC( QFORMLAYOUT_COUNT )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -958,12 +969,12 @@ HB_FUNC_STATIC( QFORMLAYOUT_COUNT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->count () );
+      RINT( obj->count() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -974,7 +985,7 @@ virtual Qt::Orientations expandingDirections () const
 */
 HB_FUNC_STATIC( QFORMLAYOUT_EXPANDINGDIRECTIONS )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -982,12 +993,12 @@ HB_FUNC_STATIC( QFORMLAYOUT_EXPANDINGDIRECTIONS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->expandingDirections () );
+      RENUM( obj->expandingDirections() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -998,7 +1009,7 @@ virtual bool hasHeightForWidth () const
 */
 HB_FUNC_STATIC( QFORMLAYOUT_HASHEIGHTFORWIDTH )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1006,12 +1017,12 @@ HB_FUNC_STATIC( QFORMLAYOUT_HASHEIGHTFORWIDTH )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->hasHeightForWidth () );
+      RBOOL( obj->hasHeightForWidth() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1022,7 +1033,7 @@ virtual int heightForWidth ( int width ) const
 */
 HB_FUNC_STATIC( QFORMLAYOUT_HEIGHTFORWIDTH )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1030,12 +1041,12 @@ HB_FUNC_STATIC( QFORMLAYOUT_HEIGHTFORWIDTH )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      RINT( obj->heightForWidth ( PINT(1) ) );
+      RINT( obj->heightForWidth( PINT(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1046,7 +1057,7 @@ virtual void invalidate ()
 */
 HB_FUNC_STATIC( QFORMLAYOUT_INVALIDATE )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1054,12 +1065,12 @@ HB_FUNC_STATIC( QFORMLAYOUT_INVALIDATE )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->invalidate ();
+      obj->invalidate();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1072,7 +1083,7 @@ virtual QSize minimumSize () const
 */
 HB_FUNC_STATIC( QFORMLAYOUT_MINIMUMSIZE )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1080,13 +1091,13 @@ HB_FUNC_STATIC( QFORMLAYOUT_MINIMUMSIZE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSize * ptr = new QSize( obj->minimumSize () );
-      _qt5xhb_createReturnClass ( ptr, "QSIZE", true );
+      auto ptr = new QSize( obj->minimumSize() );
+      Qt5xHb::createReturnClass( ptr, "QSIZE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1097,7 +1108,7 @@ virtual void setGeometry ( const QRect & rect )
 */
 HB_FUNC_STATIC( QFORMLAYOUT_SETGEOMETRY )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1105,12 +1116,12 @@ HB_FUNC_STATIC( QFORMLAYOUT_SETGEOMETRY )
     if( ISNUMPAR(1) && ISQRECT(1) )
     {
 #endif
-      obj->setGeometry ( *PQRECT(1) );
+      obj->setGeometry( *PQRECT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1123,7 +1134,7 @@ virtual QSize sizeHint () const
 */
 HB_FUNC_STATIC( QFORMLAYOUT_SIZEHINT )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1131,13 +1142,13 @@ HB_FUNC_STATIC( QFORMLAYOUT_SIZEHINT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QSize * ptr = new QSize( obj->sizeHint () );
-      _qt5xhb_createReturnClass ( ptr, "QSIZE", true );
+      auto ptr = new QSize( obj->sizeHint() );
+      Qt5xHb::createReturnClass( ptr, "QSIZE", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -1148,7 +1159,7 @@ virtual QLayoutItem * takeAt ( int index )
 */
 HB_FUNC_STATIC( QFORMLAYOUT_TAKEAT )
 {
-  QFormLayout * obj = (QFormLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QFormLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -1156,13 +1167,13 @@ HB_FUNC_STATIC( QFORMLAYOUT_TAKEAT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      QLayoutItem * ptr = obj->takeAt ( PINT(1) );
-      _qt5xhb_createReturnClass ( ptr, "QLAYOUTITEM", false );
+      QLayoutItem * ptr = obj->takeAt( PINT(1) );
+      Qt5xHb::createReturnClass( ptr, "QLAYOUTITEM", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

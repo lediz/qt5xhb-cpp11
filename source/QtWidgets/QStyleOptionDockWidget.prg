@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -33,7 +33,7 @@ CLASS QStyleOptionDockWidget INHERIT QStyleOption
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QStyleOptionDockWidget
+PROCEDURE destroyObject() CLASS QStyleOptionDockWidget
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -50,7 +50,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtWidgets/QStyleOptionDockWidget>
@@ -59,28 +58,30 @@ RETURN
 /*
 QStyleOptionDockWidget()
 */
-void QStyleOptionDockWidget_new1 ()
+void QStyleOptionDockWidget_new1()
 {
-  QStyleOptionDockWidget * o = new QStyleOptionDockWidget ();
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QStyleOptionDockWidget();
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QStyleOptionDockWidget(const QStyleOptionDockWidget &other)
 */
-void QStyleOptionDockWidget_new2 ()
+void QStyleOptionDockWidget_new2()
 {
-  QStyleOptionDockWidget * o = new QStyleOptionDockWidget ( *PQSTYLEOPTIONDOCKWIDGET(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QStyleOptionDockWidget( *PQSTYLEOPTIONDOCKWIDGET(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QStyleOptionDockWidget(int version) [protected]
 */
 
-//[1]QStyleOptionDockWidget()
-//[2]QStyleOptionDockWidget(const QStyleOptionDockWidget &other)
-//[3]QStyleOptionDockWidget(int version) [protected]
+/*
+[1]QStyleOptionDockWidget()
+[2]QStyleOptionDockWidget(const QStyleOptionDockWidget &other)
+[3]QStyleOptionDockWidget(int version) [protected]
+*/
 
 HB_FUNC_STATIC( QSTYLEOPTIONDOCKWIDGET_NEW )
 {
@@ -94,7 +95,7 @@ HB_FUNC_STATIC( QSTYLEOPTIONDOCKWIDGET_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -103,33 +104,33 @@ QString title
 */
 HB_FUNC_STATIC( QSTYLEOPTIONDOCKWIDGET_TITLE )
 {
-  QStyleOptionDockWidget * obj = (QStyleOptionDockWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionDockWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(0) )
     {
-      RQSTRING( obj->title  );
+      RQSTRING( obj->title );
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 }
 HB_FUNC_STATIC( QSTYLEOPTIONDOCKWIDGET_SETTITLE )
 {
-  QStyleOptionDockWidget * obj = (QStyleOptionDockWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionDockWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
-      obj->title = PQSTRING(1);
+      obj->title= PQSTRING(1);
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 
@@ -141,33 +142,33 @@ bool closable
 */
 HB_FUNC_STATIC( QSTYLEOPTIONDOCKWIDGET_CLOSABLE )
 {
-  QStyleOptionDockWidget * obj = (QStyleOptionDockWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionDockWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(0) )
     {
-      RBOOL( obj->closable  );
+      RBOOL( obj->closable );
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 }
 HB_FUNC_STATIC( QSTYLEOPTIONDOCKWIDGET_SETCLOSABLE )
 {
-  QStyleOptionDockWidget * obj = (QStyleOptionDockWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionDockWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(1) && ISLOG(1) )
     {
-      obj->closable = PBOOL(1);
+      obj->closable= PBOOL(1);
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 
@@ -179,33 +180,33 @@ bool movable
 */
 HB_FUNC_STATIC( QSTYLEOPTIONDOCKWIDGET_MOVABLE )
 {
-  QStyleOptionDockWidget * obj = (QStyleOptionDockWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionDockWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(0) )
     {
-      RBOOL( obj->movable  );
+      RBOOL( obj->movable );
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 }
 HB_FUNC_STATIC( QSTYLEOPTIONDOCKWIDGET_SETMOVABLE )
 {
-  QStyleOptionDockWidget * obj = (QStyleOptionDockWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionDockWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(1) && ISLOG(1) )
     {
-      obj->movable = PBOOL(1);
+      obj->movable= PBOOL(1);
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 
@@ -217,33 +218,33 @@ bool floatable
 */
 HB_FUNC_STATIC( QSTYLEOPTIONDOCKWIDGET_FLOATABLE )
 {
-  QStyleOptionDockWidget * obj = (QStyleOptionDockWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionDockWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(0) )
     {
-      RBOOL( obj->floatable  );
+      RBOOL( obj->floatable );
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 }
 HB_FUNC_STATIC( QSTYLEOPTIONDOCKWIDGET_SETFLOATABLE )
 {
-  QStyleOptionDockWidget * obj = (QStyleOptionDockWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionDockWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(1) && ISLOG(1) )
     {
-      obj->floatable = PBOOL(1);
+      obj->floatable= PBOOL(1);
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 
@@ -255,33 +256,33 @@ bool verticalTitleBar
 */
 HB_FUNC_STATIC( QSTYLEOPTIONDOCKWIDGET_VERTICALTITLEBAR )
 {
-  QStyleOptionDockWidget * obj = (QStyleOptionDockWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionDockWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(0) )
     {
-      RBOOL( obj->verticalTitleBar  );
+      RBOOL( obj->verticalTitleBar );
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 }
 HB_FUNC_STATIC( QSTYLEOPTIONDOCKWIDGET_SETVERTICALTITLEBAR )
 {
-  QStyleOptionDockWidget * obj = (QStyleOptionDockWidget *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionDockWidget *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(1) && ISLOG(1) )
     {
-      obj->verticalTitleBar = PBOOL(1);
+      obj->verticalTitleBar= PBOOL(1);
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 

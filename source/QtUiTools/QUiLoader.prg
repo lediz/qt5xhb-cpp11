@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -43,7 +43,7 @@ CLASS QUiLoader INHERIT QObject
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QUiLoader
+PROCEDURE destroyObject() CLASS QUiLoader
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -60,14 +60,15 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtUiTools/QUiLoader>
 #endif
 
-#include <QtCore/QStringList>
 #include <QtCore/QDir>
+#include <QtCore/QStringList>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QActionGroup>
 #include <QtWidgets/QLayout>
@@ -79,25 +80,27 @@ HB_FUNC_STATIC( QUILOADER_NEW )
 {
   if( ISBETWEEN(0,1) && (ISQOBJECT(1)||ISNIL(1)) )
   {
-    QUiLoader * o = new QUiLoader ( OPQOBJECT(1,nullptr) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QUiLoader( OPQOBJECT(1,nullptr) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QUILOADER_DELETE )
 {
-  QUiLoader * obj = (QUiLoader *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QUiLoader *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -110,7 +113,7 @@ void addPluginPath ( const QString & path )
 */
 HB_FUNC_STATIC( QUILOADER_ADDPLUGINPATH )
 {
-  QUiLoader * obj = (QUiLoader *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QUiLoader *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -118,12 +121,12 @@ HB_FUNC_STATIC( QUILOADER_ADDPLUGINPATH )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->addPluginPath ( PQSTRING(1) );
+      obj->addPluginPath( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -136,7 +139,7 @@ QStringList availableLayouts () const
 */
 HB_FUNC_STATIC( QUILOADER_AVAILABLELAYOUTS )
 {
-  QUiLoader * obj = (QUiLoader *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QUiLoader *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -144,12 +147,12 @@ HB_FUNC_STATIC( QUILOADER_AVAILABLELAYOUTS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRINGLIST( obj->availableLayouts () );
+      RQSTRINGLIST( obj->availableLayouts() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -160,7 +163,7 @@ QStringList availableWidgets () const
 */
 HB_FUNC_STATIC( QUILOADER_AVAILABLEWIDGETS )
 {
-  QUiLoader * obj = (QUiLoader *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QUiLoader *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -168,12 +171,12 @@ HB_FUNC_STATIC( QUILOADER_AVAILABLEWIDGETS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRINGLIST( obj->availableWidgets () );
+      RQSTRINGLIST( obj->availableWidgets() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -184,7 +187,7 @@ void clearPluginPaths ()
 */
 HB_FUNC_STATIC( QUILOADER_CLEARPLUGINPATHS )
 {
-  QUiLoader * obj = (QUiLoader *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QUiLoader *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -192,12 +195,12 @@ HB_FUNC_STATIC( QUILOADER_CLEARPLUGINPATHS )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->clearPluginPaths ();
+      obj->clearPluginPaths();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -210,7 +213,7 @@ virtual QAction * createAction ( QObject * parent = nullptr, const QString & nam
 */
 HB_FUNC_STATIC( QUILOADER_CREATEACTION )
 {
-  QUiLoader * obj = (QUiLoader *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QUiLoader *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -218,13 +221,13 @@ HB_FUNC_STATIC( QUILOADER_CREATEACTION )
     if( ISBETWEEN(0,2) && (ISQOBJECT(1)||ISNIL(1)) && ISOPTCHAR(2) )
     {
 #endif
-      QAction * ptr = obj->createAction ( OPQOBJECT(1,nullptr), OPQSTRING(2,QString()) );
-      _qt5xhb_createReturnQObjectClass ( ptr, "QACTION" );
+      QAction * ptr = obj->createAction( OPQOBJECT(1,nullptr), OPQSTRING(2,QString()) );
+      Qt5xHb::createReturnQObjectClass( ptr, "QACTION" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -235,7 +238,7 @@ virtual QActionGroup * createActionGroup ( QObject * parent = nullptr, const QSt
 */
 HB_FUNC_STATIC( QUILOADER_CREATEACTIONGROUP )
 {
-  QUiLoader * obj = (QUiLoader *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QUiLoader *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -243,13 +246,13 @@ HB_FUNC_STATIC( QUILOADER_CREATEACTIONGROUP )
     if( ISBETWEEN(0,2) && (ISQOBJECT(1)||ISNIL(1)) && ISOPTCHAR(2) )
     {
 #endif
-      QActionGroup * ptr = obj->createActionGroup ( OPQOBJECT(1,nullptr), OPQSTRING(2,QString()) );
-      _qt5xhb_createReturnQObjectClass ( ptr, "QACTIONGROUP" );
+      QActionGroup * ptr = obj->createActionGroup( OPQOBJECT(1,nullptr), OPQSTRING(2,QString()) );
+      Qt5xHb::createReturnQObjectClass( ptr, "QACTIONGROUP" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -260,7 +263,7 @@ virtual QLayout * createLayout ( const QString & className, QObject * parent = n
 */
 HB_FUNC_STATIC( QUILOADER_CREATELAYOUT )
 {
-  QUiLoader * obj = (QUiLoader *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QUiLoader *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -268,13 +271,13 @@ HB_FUNC_STATIC( QUILOADER_CREATELAYOUT )
     if( ISBETWEEN(1,3) && ISCHAR(1) && (ISQOBJECT(2)||ISNIL(2)) && ISOPTCHAR(3) )
     {
 #endif
-      QLayout * ptr = obj->createLayout ( PQSTRING(1), OPQOBJECT(2,nullptr), OPQSTRING(3,QString()) );
-      _qt5xhb_createReturnQObjectClass ( ptr, "QLAYOUT" );
+      QLayout * ptr = obj->createLayout( PQSTRING(1), OPQOBJECT(2,nullptr), OPQSTRING(3,QString()) );
+      Qt5xHb::createReturnQObjectClass( ptr, "QLAYOUT" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -285,7 +288,7 @@ virtual QWidget * createWidget ( const QString & className, QWidget * parent = n
 */
 HB_FUNC_STATIC( QUILOADER_CREATEWIDGET )
 {
-  QUiLoader * obj = (QUiLoader *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QUiLoader *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -293,13 +296,13 @@ HB_FUNC_STATIC( QUILOADER_CREATEWIDGET )
     if( ISBETWEEN(1,3) && ISCHAR(1) && (ISQWIDGET(2)||ISNIL(2)) && ISOPTCHAR(3) )
     {
 #endif
-      QWidget * ptr = obj->createWidget ( PQSTRING(1), OPQWIDGET(2,nullptr), OPQSTRING(3,QString()) );
-      _qt5xhb_createReturnQWidgetClass ( ptr, "QWIDGET" );
+      QWidget * ptr = obj->createWidget( PQSTRING(1), OPQWIDGET(2,nullptr), OPQSTRING(3,QString()) );
+      Qt5xHb::createReturnQWidgetClass( ptr, "QWIDGET" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -310,7 +313,7 @@ bool isLanguageChangeEnabled () const
 */
 HB_FUNC_STATIC( QUILOADER_ISLANGUAGECHANGEENABLED )
 {
-  QUiLoader * obj = (QUiLoader *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QUiLoader *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -318,12 +321,12 @@ HB_FUNC_STATIC( QUILOADER_ISLANGUAGECHANGEENABLED )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isLanguageChangeEnabled () );
+      RBOOL( obj->isLanguageChangeEnabled() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -334,7 +337,7 @@ QWidget * load ( QIODevice * device, QWidget * parentWidget = nullptr )
 */
 HB_FUNC_STATIC( QUILOADER_LOAD )
 {
-  QUiLoader * obj = (QUiLoader *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QUiLoader *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -342,13 +345,13 @@ HB_FUNC_STATIC( QUILOADER_LOAD )
     if( ISBETWEEN(1,2) && ISQIODEVICE(1) && (ISQWIDGET(2)||ISNIL(2)) )
     {
 #endif
-      QWidget * ptr = obj->load ( PQIODEVICE(1), OPQWIDGET(2,nullptr) );
-      _qt5xhb_createReturnQWidgetClass ( ptr, "QWIDGET" );
+      QWidget * ptr = obj->load( PQIODEVICE(1), OPQWIDGET(2,nullptr) );
+      Qt5xHb::createReturnQWidgetClass( ptr, "QWIDGET" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -359,7 +362,7 @@ QStringList pluginPaths () const
 */
 HB_FUNC_STATIC( QUILOADER_PLUGINPATHS )
 {
-  QUiLoader * obj = (QUiLoader *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QUiLoader *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -367,12 +370,12 @@ HB_FUNC_STATIC( QUILOADER_PLUGINPATHS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRINGLIST( obj->pluginPaths () );
+      RQSTRINGLIST( obj->pluginPaths() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -383,7 +386,7 @@ void setLanguageChangeEnabled ( bool enabled )
 */
 HB_FUNC_STATIC( QUILOADER_SETLANGUAGECHANGEENABLED )
 {
-  QUiLoader * obj = (QUiLoader *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QUiLoader *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -391,12 +394,12 @@ HB_FUNC_STATIC( QUILOADER_SETLANGUAGECHANGEENABLED )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setLanguageChangeEnabled ( PBOOL(1) );
+      obj->setLanguageChangeEnabled( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -409,7 +412,7 @@ void setWorkingDirectory ( const QDir & dir )
 */
 HB_FUNC_STATIC( QUILOADER_SETWORKINGDIRECTORY )
 {
-  QUiLoader * obj = (QUiLoader *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QUiLoader *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -417,12 +420,12 @@ HB_FUNC_STATIC( QUILOADER_SETWORKINGDIRECTORY )
     if( ISNUMPAR(1) && ISQDIR(1) )
     {
 #endif
-      obj->setWorkingDirectory ( *PQDIR(1) );
+      obj->setWorkingDirectory( *PQDIR(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -435,7 +438,7 @@ QDir workingDirectory () const
 */
 HB_FUNC_STATIC( QUILOADER_WORKINGDIRECTORY )
 {
-  QUiLoader * obj = (QUiLoader *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QUiLoader *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -443,13 +446,13 @@ HB_FUNC_STATIC( QUILOADER_WORKINGDIRECTORY )
     if( ISNUMPAR(0) )
     {
 #endif
-      QDir * ptr = new QDir( obj->workingDirectory () );
-      _qt5xhb_createReturnClass ( ptr, "QDIR", true );
+      auto ptr = new QDir( obj->workingDirectory() );
+      Qt5xHb::createReturnClass( ptr, "QDIR", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

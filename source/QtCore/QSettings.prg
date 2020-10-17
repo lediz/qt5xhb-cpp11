@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -56,7 +56,7 @@ CLASS QSettings INHERIT QObject
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QSettings
+PROCEDURE destroyObject() CLASS QSettings
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -73,7 +73,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtCore/QSettings>
@@ -84,53 +85,55 @@ RETURN
 /*
 QSettings ( const QString & organization, const QString & application = QString(), QObject * parent = nullptr )
 */
-void QSettings_new1 ()
+void QSettings_new1()
 {
-  QSettings * o = new QSettings ( PQSTRING(1), OPQSTRING(2,QString()), OPQOBJECT(3,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QSettings( PQSTRING(1), OPQSTRING(2,QString()), OPQOBJECT(3,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
 /*
 QSettings ( Scope scope, const QString & organization, const QString & application = QString(), QObject * parent = nullptr )
 */
-void QSettings_new2 ()
+void QSettings_new2()
 {
-  QSettings * o = new QSettings ( (QSettings::Scope) hb_parni(1), PQSTRING(2), OPQSTRING(3,QString()), OPQOBJECT(4,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QSettings( (QSettings::Scope) hb_parni(1), PQSTRING(2), OPQSTRING(3,QString()), OPQOBJECT(4,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
 /*
 QSettings ( Format format, Scope scope, const QString & organization, const QString & application = QString(), QObject * parent = nullptr )
 */
-void QSettings_new3 ()
+void QSettings_new3()
 {
-  QSettings * o = new QSettings ( (QSettings::Format) hb_parni(1), (QSettings::Scope) hb_parni(2), PQSTRING(3), OPQSTRING(4,QString()), OPQOBJECT(5,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QSettings( (QSettings::Format) hb_parni(1), (QSettings::Scope) hb_parni(2), PQSTRING(3), OPQSTRING(4,QString()), OPQOBJECT(5,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
 /*
 QSettings ( const QString & fileName, Format format, QObject * parent = nullptr )
 */
-void QSettings_new4 ()
+void QSettings_new4()
 {
-  QSettings * o = new QSettings ( PQSTRING(1), (QSettings::Format) hb_parni(2), OPQOBJECT(3,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QSettings( PQSTRING(1), (QSettings::Format) hb_parni(2), OPQOBJECT(3,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
 /*
 QSettings ( QObject * parent = nullptr )
 */
-void QSettings_new5 ()
+void QSettings_new5()
 {
-  QSettings * o = new QSettings ( OPQOBJECT(1,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QSettings( OPQOBJECT(1,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
-//[1]QSettings ( const QString & organization, const QString & application = QString(), QObject * parent = nullptr )
-//[2]QSettings ( Scope scope, const QString & organization, const QString & application = QString(), QObject * parent = nullptr )
-//[3]QSettings ( Format format, Scope scope, const QString & organization, const QString & application = QString(), QObject * parent = nullptr )
-//[4]QSettings ( const QString & fileName, Format format, QObject * parent = nullptr )
-//[5]QSettings ( QObject * parent = nullptr )
+/*
+[1]QSettings ( const QString & organization, const QString & application = QString(), QObject * parent = nullptr )
+[2]QSettings ( Scope scope, const QString & organization, const QString & application = QString(), QObject * parent = nullptr )
+[3]QSettings ( Format format, Scope scope, const QString & organization, const QString & application = QString(), QObject * parent = nullptr )
+[4]QSettings ( const QString & fileName, Format format, QObject * parent = nullptr )
+[5]QSettings ( QObject * parent = nullptr )
+*/
 
 HB_FUNC_STATIC( QSETTINGS_NEW )
 {
@@ -156,20 +159,22 @@ HB_FUNC_STATIC( QSETTINGS_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QSETTINGS_DELETE )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -182,7 +187,7 @@ QStringList allKeys () const
 */
 HB_FUNC_STATIC( QSETTINGS_ALLKEYS )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -190,12 +195,12 @@ HB_FUNC_STATIC( QSETTINGS_ALLKEYS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRINGLIST( obj->allKeys () );
+      RQSTRINGLIST( obj->allKeys() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -206,7 +211,7 @@ QString applicationName () const
 */
 HB_FUNC_STATIC( QSETTINGS_APPLICATIONNAME )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -214,12 +219,12 @@ HB_FUNC_STATIC( QSETTINGS_APPLICATIONNAME )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->applicationName () );
+      RQSTRING( obj->applicationName() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -230,7 +235,7 @@ void beginGroup ( const QString & prefix )
 */
 HB_FUNC_STATIC( QSETTINGS_BEGINGROUP )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -238,12 +243,12 @@ HB_FUNC_STATIC( QSETTINGS_BEGINGROUP )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->beginGroup ( PQSTRING(1) );
+      obj->beginGroup( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -256,7 +261,7 @@ int beginReadArray ( const QString & prefix )
 */
 HB_FUNC_STATIC( QSETTINGS_BEGINREADARRAY )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -264,12 +269,12 @@ HB_FUNC_STATIC( QSETTINGS_BEGINREADARRAY )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      RINT( obj->beginReadArray ( PQSTRING(1) ) );
+      RINT( obj->beginReadArray( PQSTRING(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -280,7 +285,7 @@ void beginWriteArray ( const QString & prefix, int size = -1 )
 */
 HB_FUNC_STATIC( QSETTINGS_BEGINWRITEARRAY )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -288,12 +293,12 @@ HB_FUNC_STATIC( QSETTINGS_BEGINWRITEARRAY )
     if( ISBETWEEN(1,2) && ISCHAR(1) && ISOPTNUM(2) )
     {
 #endif
-      obj->beginWriteArray ( PQSTRING(1), OPINT(2,-1) );
+      obj->beginWriteArray( PQSTRING(1), OPINT(2,-1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -306,7 +311,7 @@ QStringList childGroups () const
 */
 HB_FUNC_STATIC( QSETTINGS_CHILDGROUPS )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -314,12 +319,12 @@ HB_FUNC_STATIC( QSETTINGS_CHILDGROUPS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRINGLIST( obj->childGroups () );
+      RQSTRINGLIST( obj->childGroups() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -330,7 +335,7 @@ QStringList childKeys () const
 */
 HB_FUNC_STATIC( QSETTINGS_CHILDKEYS )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -338,12 +343,12 @@ HB_FUNC_STATIC( QSETTINGS_CHILDKEYS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRINGLIST( obj->childKeys () );
+      RQSTRINGLIST( obj->childKeys() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -354,7 +359,7 @@ void clear ()
 */
 HB_FUNC_STATIC( QSETTINGS_CLEAR )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -362,12 +367,12 @@ HB_FUNC_STATIC( QSETTINGS_CLEAR )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->clear ();
+      obj->clear();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -380,7 +385,7 @@ bool contains ( const QString & key ) const
 */
 HB_FUNC_STATIC( QSETTINGS_CONTAINS )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -388,12 +393,12 @@ HB_FUNC_STATIC( QSETTINGS_CONTAINS )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      RBOOL( obj->contains ( PQSTRING(1) ) );
+      RBOOL( obj->contains( PQSTRING(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -404,7 +409,7 @@ void endArray ()
 */
 HB_FUNC_STATIC( QSETTINGS_ENDARRAY )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -412,12 +417,12 @@ HB_FUNC_STATIC( QSETTINGS_ENDARRAY )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->endArray ();
+      obj->endArray();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -430,7 +435,7 @@ void endGroup ()
 */
 HB_FUNC_STATIC( QSETTINGS_ENDGROUP )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -438,12 +443,12 @@ HB_FUNC_STATIC( QSETTINGS_ENDGROUP )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->endGroup ();
+      obj->endGroup();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -456,7 +461,7 @@ bool fallbacksEnabled () const
 */
 HB_FUNC_STATIC( QSETTINGS_FALLBACKSENABLED )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -464,12 +469,12 @@ HB_FUNC_STATIC( QSETTINGS_FALLBACKSENABLED )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->fallbacksEnabled () );
+      RBOOL( obj->fallbacksEnabled() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -480,7 +485,7 @@ QString fileName () const
 */
 HB_FUNC_STATIC( QSETTINGS_FILENAME )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -488,12 +493,12 @@ HB_FUNC_STATIC( QSETTINGS_FILENAME )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->fileName () );
+      RQSTRING( obj->fileName() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -504,7 +509,7 @@ Format format () const
 */
 HB_FUNC_STATIC( QSETTINGS_FORMAT )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -512,12 +517,12 @@ HB_FUNC_STATIC( QSETTINGS_FORMAT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->format () );
+      RENUM( obj->format() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -528,7 +533,7 @@ QString group () const
 */
 HB_FUNC_STATIC( QSETTINGS_GROUP )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -536,12 +541,12 @@ HB_FUNC_STATIC( QSETTINGS_GROUP )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->group () );
+      RQSTRING( obj->group() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -552,7 +557,7 @@ QTextCodec * iniCodec () const
 */
 HB_FUNC_STATIC( QSETTINGS_INICODEC )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -560,13 +565,13 @@ HB_FUNC_STATIC( QSETTINGS_INICODEC )
     if( ISNUMPAR(0) )
     {
 #endif
-      QTextCodec * ptr = obj->iniCodec ();
-      _qt5xhb_createReturnClass ( ptr, "QTEXTCODEC", false );
+      QTextCodec * ptr = obj->iniCodec();
+      Qt5xHb::createReturnClass( ptr, "QTEXTCODEC", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -577,7 +582,7 @@ bool isWritable () const
 */
 HB_FUNC_STATIC( QSETTINGS_ISWRITABLE )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -585,12 +590,12 @@ HB_FUNC_STATIC( QSETTINGS_ISWRITABLE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isWritable () );
+      RBOOL( obj->isWritable() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -601,7 +606,7 @@ QString organizationName () const
 */
 HB_FUNC_STATIC( QSETTINGS_ORGANIZATIONNAME )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -609,12 +614,12 @@ HB_FUNC_STATIC( QSETTINGS_ORGANIZATIONNAME )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->organizationName () );
+      RQSTRING( obj->organizationName() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -625,7 +630,7 @@ void remove ( const QString & key )
 */
 HB_FUNC_STATIC( QSETTINGS_REMOVE )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -633,12 +638,12 @@ HB_FUNC_STATIC( QSETTINGS_REMOVE )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->remove ( PQSTRING(1) );
+      obj->remove( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -651,7 +656,7 @@ Scope scope () const
 */
 HB_FUNC_STATIC( QSETTINGS_SCOPE )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -659,12 +664,12 @@ HB_FUNC_STATIC( QSETTINGS_SCOPE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->scope () );
+      RENUM( obj->scope() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -675,7 +680,7 @@ void setArrayIndex ( int i )
 */
 HB_FUNC_STATIC( QSETTINGS_SETARRAYINDEX )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -683,12 +688,12 @@ HB_FUNC_STATIC( QSETTINGS_SETARRAYINDEX )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setArrayIndex ( PINT(1) );
+      obj->setArrayIndex( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -701,7 +706,7 @@ void setFallbacksEnabled ( bool b )
 */
 HB_FUNC_STATIC( QSETTINGS_SETFALLBACKSENABLED )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -709,12 +714,12 @@ HB_FUNC_STATIC( QSETTINGS_SETFALLBACKSENABLED )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->setFallbacksEnabled ( PBOOL(1) );
+      obj->setFallbacksEnabled( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -725,13 +730,13 @@ HB_FUNC_STATIC( QSETTINGS_SETFALLBACKSENABLED )
 /*
 void setIniCodec ( QTextCodec * codec )
 */
-void QSettings_setIniCodec1 ()
+void QSettings_setIniCodec1()
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setIniCodec ( PQTEXTCODEC(1) );
+    obj->setIniCodec( PQTEXTCODEC(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -740,17 +745,22 @@ void QSettings_setIniCodec1 ()
 /*
 void setIniCodec ( const char * codecName )
 */
-void QSettings_setIniCodec2 ()
+void QSettings_setIniCodec2()
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->setIniCodec ( PCONSTCHAR(1) );
+    obj->setIniCodec( PCONSTCHAR(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
+
+/*
+[1]void setIniCodec ( QTextCodec * codec )
+[2]void setIniCodec ( const char * codecName )
+*/
 
 HB_FUNC_STATIC( QSETTINGS_SETINICODEC )
 {
@@ -764,7 +774,7 @@ HB_FUNC_STATIC( QSETTINGS_SETINICODEC )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -773,7 +783,7 @@ void setValue ( const QString & key, const QVariant & value )
 */
 HB_FUNC_STATIC( QSETTINGS_SETVALUE )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -781,12 +791,12 @@ HB_FUNC_STATIC( QSETTINGS_SETVALUE )
     if( ISNUMPAR(2) && ISCHAR(1) && ISQVARIANT(2) )
     {
 #endif
-      obj->setValue ( PQSTRING(1), *PQVARIANT(2) );
+      obj->setValue( PQSTRING(1), *PQVARIANT(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -799,7 +809,7 @@ Status status () const
 */
 HB_FUNC_STATIC( QSETTINGS_STATUS )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -807,12 +817,12 @@ HB_FUNC_STATIC( QSETTINGS_STATUS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->status () );
+      RENUM( obj->status() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -823,7 +833,7 @@ void sync ()
 */
 HB_FUNC_STATIC( QSETTINGS_SYNC )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -831,12 +841,12 @@ HB_FUNC_STATIC( QSETTINGS_SYNC )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->sync ();
+      obj->sync();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -849,7 +859,7 @@ QVariant value ( const QString & key, const QVariant & defaultValue = QVariant()
 */
 HB_FUNC_STATIC( QSETTINGS_VALUE )
 {
-  QSettings * obj = (QSettings *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSettings *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -857,13 +867,13 @@ HB_FUNC_STATIC( QSETTINGS_VALUE )
     if( ISBETWEEN(1,2) && ISCHAR(1) && (ISQVARIANT(2)||ISNIL(2)) )
     {
 #endif
-      QVariant * ptr = new QVariant( obj->value ( PQSTRING(1), ISNIL(2)? QVariant() : *(QVariant *) _qt5xhb_itemGetPtr(2) ) );
-      _qt5xhb_createReturnClass ( ptr, "QVARIANT", true );
+      auto ptr = new QVariant( obj->value( PQSTRING(1), ISNIL(2)? QVariant() : *(QVariant *) Qt5xHb::itemGetPtr(2) ) );
+      Qt5xHb::createReturnClass( ptr, "QVARIANT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -875,15 +885,15 @@ static Format defaultFormat ()
 HB_FUNC_STATIC( QSETTINGS_DEFAULTFORMAT )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(0) )
+  if( ISNUMPAR(0) )
   {
 #endif
-      RENUM( QSettings::defaultFormat () );
+    RENUM( QSettings::defaultFormat() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
@@ -894,15 +904,15 @@ static void setDefaultFormat ( Format format )
 HB_FUNC_STATIC( QSETTINGS_SETDEFAULTFORMAT )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISNUM(1) )
+  if( ISNUMPAR(1) && ISNUM(1) )
   {
 #endif
-      QSettings::setDefaultFormat ( (QSettings::Format) hb_parni(1) );
+    QSettings::setDefaultFormat( (QSettings::Format) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 
@@ -915,15 +925,15 @@ static void setPath ( Format format, Scope scope, const QString & path )
 HB_FUNC_STATIC( QSETTINGS_SETPATH )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(3) && ISNUM(1) && ISNUM(2) && ISCHAR(3) )
+  if( ISNUMPAR(3) && ISNUM(1) && ISNUM(2) && ISCHAR(3) )
   {
 #endif
-      QSettings::setPath ( (QSettings::Format) hb_parni(1), (QSettings::Scope) hb_parni(2), PQSTRING(3) );
+    QSettings::setPath( (QSettings::Format) hb_parni(1), (QSettings::Scope) hb_parni(2), PQSTRING(3) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 

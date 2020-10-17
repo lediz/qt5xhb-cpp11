@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -38,7 +38,7 @@ CLASS QCategoryAxis INHERIT QValueAxis
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QCategoryAxis
+PROCEDURE destroyObject() CLASS QCategoryAxis
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -57,7 +57,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
@@ -68,26 +69,22 @@ RETURN
 using namespace QtCharts;
 
 /*
-explicit QCategoryAxis(QObject *parent = nullptr)
+QCategoryAxis( QObject * parent = nullptr )
 */
 HB_FUNC_STATIC( QCATEGORYAXIS_NEW )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
   if( ISBETWEEN(0,1) && (ISQOBJECT(1)||ISNIL(1)) )
   {
-    QCategoryAxis * o = new QCategoryAxis ( OPQOBJECT(1,nullptr) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QCategoryAxis( OPQOBJECT(1,nullptr) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
-
-/*
-QCategoryAxis(QCategoryAxisPrivate &d, QObject *parent = nullptr) [protected]
-*/
 
 /*
 ~QCategoryAxis()
@@ -95,14 +92,16 @@ QCategoryAxis(QCategoryAxisPrivate &d, QObject *parent = nullptr) [protected]
 HB_FUNC_STATIC( QCATEGORYAXIS_DELETE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QCategoryAxis * obj = (QCategoryAxis *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCategoryAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -112,25 +111,25 @@ HB_FUNC_STATIC( QCATEGORYAXIS_DELETE )
 }
 
 /*
-qreal startValue(const QString &categoryLabel = QString()) const
+qreal startValue( const QString & categoryLabel = QString() ) const
 */
 HB_FUNC_STATIC( QCATEGORYAXIS_STARTVALUE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QCategoryAxis * obj = (QCategoryAxis *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCategoryAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISBETWEEN(0,1) && ISOPTCHAR(1) )
+    if( ISBETWEEN(0,1) && (ISCHAR(1)||ISNIL(1)) )
     {
 #endif
-      RQREAL( obj->startValue ( OPQSTRING(1,QString()) ) );
+      RQREAL( obj->startValue( OPQSTRING(1,QString()) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -138,12 +137,12 @@ HB_FUNC_STATIC( QCATEGORYAXIS_STARTVALUE )
 }
 
 /*
-void setStartValue(qreal min)
+void setStartValue( qreal min )
 */
 HB_FUNC_STATIC( QCATEGORYAXIS_SETSTARTVALUE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QCategoryAxis * obj = (QCategoryAxis *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCategoryAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -151,12 +150,12 @@ HB_FUNC_STATIC( QCATEGORYAXIS_SETSTARTVALUE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setStartValue ( PQREAL(1) );
+      obj->setStartValue( PQREAL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -171,7 +170,7 @@ QStringList categoriesLabels()
 HB_FUNC_STATIC( QCATEGORYAXIS_CATEGORIESLABELS )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QCategoryAxis * obj = (QCategoryAxis *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCategoryAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -179,12 +178,12 @@ HB_FUNC_STATIC( QCATEGORYAXIS_CATEGORIESLABELS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRINGLIST( obj->categoriesLabels () );
+      RQSTRINGLIST( obj->categoriesLabels() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -197,7 +196,7 @@ int count() const
 HB_FUNC_STATIC( QCATEGORYAXIS_COUNT )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QCategoryAxis * obj = (QCategoryAxis *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCategoryAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -205,12 +204,12 @@ HB_FUNC_STATIC( QCATEGORYAXIS_COUNT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->count () );
+      RINT( obj->count() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -223,7 +222,7 @@ QCategoryAxis::AxisLabelsPosition labelsPosition() const
 HB_FUNC_STATIC( QCATEGORYAXIS_LABELSPOSITION )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QCategoryAxis * obj = (QCategoryAxis *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCategoryAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -231,12 +230,12 @@ HB_FUNC_STATIC( QCATEGORYAXIS_LABELSPOSITION )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->labelsPosition () );
+      RENUM( obj->labelsPosition() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -244,12 +243,12 @@ HB_FUNC_STATIC( QCATEGORYAXIS_LABELSPOSITION )
 }
 
 /*
-void setLabelsPosition(QCategoryAxis::AxisLabelsPosition position)
+void setLabelsPosition( QCategoryAxis::AxisLabelsPosition position )
 */
 HB_FUNC_STATIC( QCATEGORYAXIS_SETLABELSPOSITION )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QCategoryAxis * obj = (QCategoryAxis *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCategoryAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -257,12 +256,12 @@ HB_FUNC_STATIC( QCATEGORYAXIS_SETLABELSPOSITION )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setLabelsPosition ( (QCategoryAxis::AxisLabelsPosition) hb_parni(1) );
+      obj->setLabelsPosition( (QCategoryAxis::AxisLabelsPosition) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -272,12 +271,12 @@ HB_FUNC_STATIC( QCATEGORYAXIS_SETLABELSPOSITION )
 }
 
 /*
-AxisType type() const
+QAbstractAxis::AxisType type() const
 */
 HB_FUNC_STATIC( QCATEGORYAXIS_TYPE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QCategoryAxis * obj = (QCategoryAxis *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCategoryAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -285,12 +284,12 @@ HB_FUNC_STATIC( QCATEGORYAXIS_TYPE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->type () );
+      RENUM( obj->type() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -298,12 +297,12 @@ HB_FUNC_STATIC( QCATEGORYAXIS_TYPE )
 }
 
 /*
-void append(const QString &label, qreal categoryEndValue)
+void append( const QString & label, qreal categoryEndValue )
 */
 HB_FUNC_STATIC( QCATEGORYAXIS_APPEND )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QCategoryAxis * obj = (QCategoryAxis *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCategoryAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -311,12 +310,12 @@ HB_FUNC_STATIC( QCATEGORYAXIS_APPEND )
     if( ISNUMPAR(2) && ISCHAR(1) && ISNUM(2) )
     {
 #endif
-      obj->append ( PQSTRING(1), PQREAL(2) );
+      obj->append( PQSTRING(1), PQREAL(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -326,12 +325,12 @@ HB_FUNC_STATIC( QCATEGORYAXIS_APPEND )
 }
 
 /*
-void remove(const QString &label)
+void remove( const QString & label )
 */
 HB_FUNC_STATIC( QCATEGORYAXIS_REMOVE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QCategoryAxis * obj = (QCategoryAxis *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCategoryAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -339,12 +338,12 @@ HB_FUNC_STATIC( QCATEGORYAXIS_REMOVE )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->remove ( PQSTRING(1) );
+      obj->remove( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -354,12 +353,12 @@ HB_FUNC_STATIC( QCATEGORYAXIS_REMOVE )
 }
 
 /*
-void replaceLabel(const QString &oldLabel, const QString &newLabel)
+void replaceLabel( const QString & oldLabel, const QString & newLabel )
 */
 HB_FUNC_STATIC( QCATEGORYAXIS_REPLACELABEL )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QCategoryAxis * obj = (QCategoryAxis *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCategoryAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -367,12 +366,12 @@ HB_FUNC_STATIC( QCATEGORYAXIS_REPLACELABEL )
     if( ISNUMPAR(2) && ISCHAR(1) && ISCHAR(2) )
     {
 #endif
-      obj->replaceLabel ( PQSTRING(1), PQSTRING(2) );
+      obj->replaceLabel( PQSTRING(1), PQSTRING(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -382,12 +381,12 @@ HB_FUNC_STATIC( QCATEGORYAXIS_REPLACELABEL )
 }
 
 /*
-qreal endValue(const QString &categoryLabel) const
+qreal endValue( const QString & categoryLabel ) const
 */
 HB_FUNC_STATIC( QCATEGORYAXIS_ENDVALUE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QCategoryAxis * obj = (QCategoryAxis *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QCategoryAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -395,12 +394,12 @@ HB_FUNC_STATIC( QCATEGORYAXIS_ENDVALUE )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      RQREAL( obj->endValue ( PQSTRING(1) ) );
+      RQREAL( obj->endValue( PQSTRING(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -413,33 +412,34 @@ void categoriesChanged()
 HB_FUNC_STATIC( QCATEGORYAXIS_ONCATEGORIESCHANGED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QCategoryAxis * sender = (QCategoryAxis *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QCategoryAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("categoriesChanged()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("categoriesChanged()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QCategoryAxis::categoriesChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QCATEGORYAXIS" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QCATEGORYAXIS" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -450,9 +450,9 @@ HB_FUNC_STATIC( QCATEGORYAXIS_ONCATEGORIESCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -466,7 +466,7 @@ HB_FUNC_STATIC( QCATEGORYAXIS_ONCATEGORIESCHANGED )
     hb_retl( false );
   }
 #else
-hb_retl( false );
+  hb_retl( false );
 #endif
 }
 
@@ -476,35 +476,36 @@ void labelsPositionChanged( QCategoryAxis::AxisLabelsPosition position )
 HB_FUNC_STATIC( QCATEGORYAXIS_ONLABELSPOSITIONCHANGED )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QCategoryAxis * sender = (QCategoryAxis *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QCategoryAxis *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("labelsPositionChanged(QCategoryAxis::AxisLabelsPosition)");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("labelsPositionChanged(QCategoryAxis::AxisLabelsPosition)");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QCategoryAxis::labelsPositionChanged, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               (QCategoryAxis::AxisLabelsPosition arg1) {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QCATEGORYAXIS" );
-            PHB_ITEM pArg1 = hb_itemPutNI( NULL, (int) arg1 );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 2, pSender, pArg1 );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QCATEGORYAXIS" );
+            PHB_ITEM pArg1 = hb_itemPutNI( nullptr, (int) arg1 );
+            hb_vmEvalBlockV( cb, 2, pSender, pArg1 );
             hb_itemRelease( pSender );
             hb_itemRelease( pArg1 );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -515,9 +516,9 @@ HB_FUNC_STATIC( QCATEGORYAXIS_ONLABELSPOSITIONCHANGED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -531,7 +532,7 @@ HB_FUNC_STATIC( QCATEGORYAXIS_ONLABELSPOSITIONCHANGED )
     hb_retl( false );
   }
 #else
-hb_retl( false );
+  hb_retl( false );
 #endif
 }
 

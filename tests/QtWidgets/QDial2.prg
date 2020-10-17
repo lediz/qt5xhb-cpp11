@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb Project - Test Program
+  Qt5xHb/C++11 Project - Test Program
 
   Copyright (C) 2020 Marcos Antonio Gambeta
 
@@ -8,7 +8,7 @@
   marcosgambeta AT outlook DOT com
 
   Website:
-  https://github.com/marcosgambeta/Qt5xHb
+  https://github.com/marcosgambeta/qt5xhb-cpp11
 
 */
 
@@ -18,7 +18,7 @@
 REQUEST HB_GT_WIN
 #endif
 
-PROCEDURE Main ()
+PROCEDURE Main()
 
    LOCAL oApp
    LOCAL oWindow
@@ -47,7 +47,7 @@ PROCEDURE Main ()
 
 RETURN
 
-STATIC FUNCTION test (oSender,nAction)
+STATIC FUNCTION test(oSender,nAction)
 
    qout("action triggered")
    qout(oSender:classname())
@@ -55,14 +55,14 @@ STATIC FUNCTION test (oSender,nAction)
 
 RETURN NIL
 
-STATIC FUNCTION test2 (oSender)
+STATIC FUNCTION test2(oSender)
 
    qout("slider pressed")
    qout(oSender:classname())
 
 RETURN NIL
 
-STATIC FUNCTION test3 (oSender)
+STATIC FUNCTION test3(oSender)
 
    qout("slider released")
    qout(oSender:classname())

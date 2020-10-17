@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -27,7 +27,7 @@ CLASS QXYLegendMarker INHERIT QLegendMarker
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QXYLegendMarker
+PROCEDURE destroyObject() CLASS QXYLegendMarker
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -46,7 +46,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
@@ -57,26 +58,22 @@ RETURN
 using namespace QtCharts;
 
 /*
-explicit QXYLegendMarker(QXYSeries *series, QLegend *legend, QObject *parent = nullptr)
+QXYLegendMarker( QXYSeries * series, QLegend * legend, QObject * parent = nullptr )
 */
 HB_FUNC_STATIC( QXYLEGENDMARKER_NEW )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
   if( ISBETWEEN(2,3) && ISQXYSERIES(1) && ISQLEGEND(2) && (ISQOBJECT(3)||ISNIL(3)) )
   {
-    QXYLegendMarker * o = new QXYLegendMarker ( PQXYSERIES(1), PQLEGEND(2), OPQOBJECT(3,nullptr) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QXYLegendMarker( PQXYSERIES(1), PQLEGEND(2), OPQOBJECT(3,nullptr) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
-
-/*
-QXYLegendMarker(QXYLegendMarkerPrivate &d, QObject *parent = nullptr) [protected]
-*/
 
 /*
 virtual ~QXYLegendMarker()
@@ -84,14 +81,16 @@ virtual ~QXYLegendMarker()
 HB_FUNC_STATIC( QXYLEGENDMARKER_DELETE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QXYLegendMarker * obj = (QXYLegendMarker *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXYLegendMarker *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -101,12 +100,12 @@ HB_FUNC_STATIC( QXYLEGENDMARKER_DELETE )
 }
 
 /*
-virtual LegendMarkerType type()
+virtual QLegendMarker::LegendMarkerType type()
 */
 HB_FUNC_STATIC( QXYLEGENDMARKER_TYPE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QXYLegendMarker * obj = (QXYLegendMarker *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXYLegendMarker *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -114,12 +113,12 @@ HB_FUNC_STATIC( QXYLEGENDMARKER_TYPE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->type () );
+      RENUM( obj->type() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -127,12 +126,12 @@ HB_FUNC_STATIC( QXYLEGENDMARKER_TYPE )
 }
 
 /*
-virtual QXYSeries* series()
+virtual QXYSeries * series()
 */
 HB_FUNC_STATIC( QXYLEGENDMARKER_SERIES )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,7,0))
-  QXYLegendMarker * obj = (QXYLegendMarker *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QXYLegendMarker *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -140,13 +139,13 @@ HB_FUNC_STATIC( QXYLEGENDMARKER_SERIES )
     if( ISNUMPAR(0) )
     {
 #endif
-      QXYSeries * ptr = obj->series ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QXYSERIES" );
+      QXYSeries * ptr = obj->series();
+      Qt5xHb::createReturnQObjectClass( ptr, "QXYSERIES" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

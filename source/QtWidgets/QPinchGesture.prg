@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -46,7 +46,7 @@ CLASS QPinchGesture INHERIT QGesture
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QPinchGesture
+PROCEDURE destroyObject() CLASS QPinchGesture
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -63,7 +63,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtWidgets/QPinchGesture>
@@ -71,14 +72,16 @@ RETURN
 
 HB_FUNC_STATIC( QPINCHGESTURE_DELETE )
 {
-  QPinchGesture * obj = (QPinchGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPinchGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -91,7 +94,7 @@ QPointF centerPoint() const
 */
 HB_FUNC_STATIC( QPINCHGESTURE_CENTERPOINT )
 {
-  QPinchGesture * obj = (QPinchGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPinchGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -99,13 +102,13 @@ HB_FUNC_STATIC( QPINCHGESTURE_CENTERPOINT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QPointF * ptr = new QPointF( obj->centerPoint () );
-      _qt5xhb_createReturnClass ( ptr, "QPOINTF", true );
+      auto ptr = new QPointF( obj->centerPoint() );
+      Qt5xHb::createReturnClass( ptr, "QPOINTF", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -116,7 +119,7 @@ ChangeFlags changeFlags() const
 */
 HB_FUNC_STATIC( QPINCHGESTURE_CHANGEFLAGS )
 {
-  QPinchGesture * obj = (QPinchGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPinchGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -124,12 +127,12 @@ HB_FUNC_STATIC( QPINCHGESTURE_CHANGEFLAGS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->changeFlags () );
+      RENUM( obj->changeFlags() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -140,7 +143,7 @@ QPointF lastCenterPoint() const
 */
 HB_FUNC_STATIC( QPINCHGESTURE_LASTCENTERPOINT )
 {
-  QPinchGesture * obj = (QPinchGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPinchGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -148,13 +151,13 @@ HB_FUNC_STATIC( QPINCHGESTURE_LASTCENTERPOINT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QPointF * ptr = new QPointF( obj->lastCenterPoint () );
-      _qt5xhb_createReturnClass ( ptr, "QPOINTF", true );
+      auto ptr = new QPointF( obj->lastCenterPoint() );
+      Qt5xHb::createReturnClass( ptr, "QPOINTF", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -165,7 +168,7 @@ qreal lastRotationAngle() const
 */
 HB_FUNC_STATIC( QPINCHGESTURE_LASTROTATIONANGLE )
 {
-  QPinchGesture * obj = (QPinchGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPinchGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -173,12 +176,12 @@ HB_FUNC_STATIC( QPINCHGESTURE_LASTROTATIONANGLE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQREAL( obj->lastRotationAngle () );
+      RQREAL( obj->lastRotationAngle() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -189,7 +192,7 @@ qreal lastScaleFactor() const
 */
 HB_FUNC_STATIC( QPINCHGESTURE_LASTSCALEFACTOR )
 {
-  QPinchGesture * obj = (QPinchGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPinchGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -197,12 +200,12 @@ HB_FUNC_STATIC( QPINCHGESTURE_LASTSCALEFACTOR )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQREAL( obj->lastScaleFactor () );
+      RQREAL( obj->lastScaleFactor() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -213,7 +216,7 @@ qreal rotationAngle() const
 */
 HB_FUNC_STATIC( QPINCHGESTURE_ROTATIONANGLE )
 {
-  QPinchGesture * obj = (QPinchGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPinchGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -221,12 +224,12 @@ HB_FUNC_STATIC( QPINCHGESTURE_ROTATIONANGLE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQREAL( obj->rotationAngle () );
+      RQREAL( obj->rotationAngle() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -237,7 +240,7 @@ qreal scaleFactor() const
 */
 HB_FUNC_STATIC( QPINCHGESTURE_SCALEFACTOR )
 {
-  QPinchGesture * obj = (QPinchGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPinchGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -245,12 +248,12 @@ HB_FUNC_STATIC( QPINCHGESTURE_SCALEFACTOR )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQREAL( obj->scaleFactor () );
+      RQREAL( obj->scaleFactor() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -261,7 +264,7 @@ void setCenterPoint(const QPointF & value)
 */
 HB_FUNC_STATIC( QPINCHGESTURE_SETCENTERPOINT )
 {
-  QPinchGesture * obj = (QPinchGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPinchGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -269,12 +272,12 @@ HB_FUNC_STATIC( QPINCHGESTURE_SETCENTERPOINT )
     if( ISNUMPAR(1) && ISQPOINTF(1) )
     {
 #endif
-      obj->setCenterPoint ( *PQPOINTF(1) );
+      obj->setCenterPoint( *PQPOINTF(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -287,7 +290,7 @@ void setChangeFlags(ChangeFlags value)
 */
 HB_FUNC_STATIC( QPINCHGESTURE_SETCHANGEFLAGS )
 {
-  QPinchGesture * obj = (QPinchGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPinchGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -295,12 +298,12 @@ HB_FUNC_STATIC( QPINCHGESTURE_SETCHANGEFLAGS )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setChangeFlags ( (QPinchGesture::ChangeFlags) hb_parni(1) );
+      obj->setChangeFlags( (QPinchGesture::ChangeFlags) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -313,7 +316,7 @@ void setLastCenterPoint(const QPointF & value)
 */
 HB_FUNC_STATIC( QPINCHGESTURE_SETLASTCENTERPOINT )
 {
-  QPinchGesture * obj = (QPinchGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPinchGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -321,12 +324,12 @@ HB_FUNC_STATIC( QPINCHGESTURE_SETLASTCENTERPOINT )
     if( ISNUMPAR(1) && ISQPOINTF(1) )
     {
 #endif
-      obj->setLastCenterPoint ( *PQPOINTF(1) );
+      obj->setLastCenterPoint( *PQPOINTF(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -339,7 +342,7 @@ void setLastRotationAngle(qreal value)
 */
 HB_FUNC_STATIC( QPINCHGESTURE_SETLASTROTATIONANGLE )
 {
-  QPinchGesture * obj = (QPinchGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPinchGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -347,12 +350,12 @@ HB_FUNC_STATIC( QPINCHGESTURE_SETLASTROTATIONANGLE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setLastRotationAngle ( PQREAL(1) );
+      obj->setLastRotationAngle( PQREAL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -365,7 +368,7 @@ void setLastScaleFactor(qreal value)
 */
 HB_FUNC_STATIC( QPINCHGESTURE_SETLASTSCALEFACTOR )
 {
-  QPinchGesture * obj = (QPinchGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPinchGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -373,12 +376,12 @@ HB_FUNC_STATIC( QPINCHGESTURE_SETLASTSCALEFACTOR )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setLastScaleFactor ( PQREAL(1) );
+      obj->setLastScaleFactor( PQREAL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -391,7 +394,7 @@ void setRotationAngle(qreal value)
 */
 HB_FUNC_STATIC( QPINCHGESTURE_SETROTATIONANGLE )
 {
-  QPinchGesture * obj = (QPinchGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPinchGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -399,12 +402,12 @@ HB_FUNC_STATIC( QPINCHGESTURE_SETROTATIONANGLE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setRotationAngle ( PQREAL(1) );
+      obj->setRotationAngle( PQREAL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -417,7 +420,7 @@ void setScaleFactor(qreal value)
 */
 HB_FUNC_STATIC( QPINCHGESTURE_SETSCALEFACTOR )
 {
-  QPinchGesture * obj = (QPinchGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPinchGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -425,12 +428,12 @@ HB_FUNC_STATIC( QPINCHGESTURE_SETSCALEFACTOR )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setScaleFactor ( PQREAL(1) );
+      obj->setScaleFactor( PQREAL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -443,7 +446,7 @@ void setStartCenterPoint(const QPointF & value)
 */
 HB_FUNC_STATIC( QPINCHGESTURE_SETSTARTCENTERPOINT )
 {
-  QPinchGesture * obj = (QPinchGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPinchGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -451,12 +454,12 @@ HB_FUNC_STATIC( QPINCHGESTURE_SETSTARTCENTERPOINT )
     if( ISNUMPAR(1) && ISQPOINTF(1) )
     {
 #endif
-      obj->setStartCenterPoint ( *PQPOINTF(1) );
+      obj->setStartCenterPoint( *PQPOINTF(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -469,7 +472,7 @@ void setTotalChangeFlags(ChangeFlags value)
 */
 HB_FUNC_STATIC( QPINCHGESTURE_SETTOTALCHANGEFLAGS )
 {
-  QPinchGesture * obj = (QPinchGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPinchGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -477,12 +480,12 @@ HB_FUNC_STATIC( QPINCHGESTURE_SETTOTALCHANGEFLAGS )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setTotalChangeFlags ( (QPinchGesture::ChangeFlags) hb_parni(1) );
+      obj->setTotalChangeFlags( (QPinchGesture::ChangeFlags) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -495,7 +498,7 @@ void setTotalRotationAngle(qreal value)
 */
 HB_FUNC_STATIC( QPINCHGESTURE_SETTOTALROTATIONANGLE )
 {
-  QPinchGesture * obj = (QPinchGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPinchGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -503,12 +506,12 @@ HB_FUNC_STATIC( QPINCHGESTURE_SETTOTALROTATIONANGLE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setTotalRotationAngle ( PQREAL(1) );
+      obj->setTotalRotationAngle( PQREAL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -521,7 +524,7 @@ void setTotalScaleFactor(qreal value)
 */
 HB_FUNC_STATIC( QPINCHGESTURE_SETTOTALSCALEFACTOR )
 {
-  QPinchGesture * obj = (QPinchGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPinchGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -529,12 +532,12 @@ HB_FUNC_STATIC( QPINCHGESTURE_SETTOTALSCALEFACTOR )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setTotalScaleFactor ( PQREAL(1) );
+      obj->setTotalScaleFactor( PQREAL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -547,7 +550,7 @@ QPointF startCenterPoint() const
 */
 HB_FUNC_STATIC( QPINCHGESTURE_STARTCENTERPOINT )
 {
-  QPinchGesture * obj = (QPinchGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPinchGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -555,13 +558,13 @@ HB_FUNC_STATIC( QPINCHGESTURE_STARTCENTERPOINT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QPointF * ptr = new QPointF( obj->startCenterPoint () );
-      _qt5xhb_createReturnClass ( ptr, "QPOINTF", true );
+      auto ptr = new QPointF( obj->startCenterPoint() );
+      Qt5xHb::createReturnClass( ptr, "QPOINTF", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -572,7 +575,7 @@ ChangeFlags totalChangeFlags() const
 */
 HB_FUNC_STATIC( QPINCHGESTURE_TOTALCHANGEFLAGS )
 {
-  QPinchGesture * obj = (QPinchGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPinchGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -580,12 +583,12 @@ HB_FUNC_STATIC( QPINCHGESTURE_TOTALCHANGEFLAGS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->totalChangeFlags () );
+      RENUM( obj->totalChangeFlags() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -596,7 +599,7 @@ qreal totalRotationAngle() const
 */
 HB_FUNC_STATIC( QPINCHGESTURE_TOTALROTATIONANGLE )
 {
-  QPinchGesture * obj = (QPinchGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPinchGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -604,12 +607,12 @@ HB_FUNC_STATIC( QPINCHGESTURE_TOTALROTATIONANGLE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQREAL( obj->totalRotationAngle () );
+      RQREAL( obj->totalRotationAngle() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -620,7 +623,7 @@ qreal totalScaleFactor() const
 */
 HB_FUNC_STATIC( QPINCHGESTURE_TOTALSCALEFACTOR )
 {
-  QPinchGesture * obj = (QPinchGesture *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QPinchGesture *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -628,12 +631,12 @@ HB_FUNC_STATIC( QPINCHGESTURE_TOTALSCALEFACTOR )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQREAL( obj->totalScaleFactor () );
+      RQREAL( obj->totalScaleFactor() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

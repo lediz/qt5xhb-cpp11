@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -28,7 +28,7 @@ CLASS QDomProcessingInstruction INHERIT QDomNode
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QDomProcessingInstruction
+PROCEDURE destroyObject() CLASS QDomProcessingInstruction
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -45,7 +45,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtXml/QDomProcessingInstruction>
@@ -54,23 +53,25 @@ RETURN
 /*
 QDomProcessingInstruction ()
 */
-void QDomProcessingInstruction_new1 ()
+void QDomProcessingInstruction_new1()
 {
-  QDomProcessingInstruction * o = new QDomProcessingInstruction ();
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QDomProcessingInstruction();
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QDomProcessingInstruction ( const QDomProcessingInstruction & x )
 */
-void QDomProcessingInstruction_new2 ()
+void QDomProcessingInstruction_new2()
 {
-  QDomProcessingInstruction * o = new QDomProcessingInstruction ( *PQDOMPROCESSINGINSTRUCTION(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QDomProcessingInstruction( *PQDOMPROCESSINGINSTRUCTION(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
-//[1]QDomProcessingInstruction ()
-//[2]QDomProcessingInstruction ( const QDomProcessingInstruction & x )
+/*
+[1]QDomProcessingInstruction ()
+[2]QDomProcessingInstruction ( const QDomProcessingInstruction & x )
+*/
 
 HB_FUNC_STATIC( QDOMPROCESSINGINSTRUCTION_NEW )
 {
@@ -84,20 +85,20 @@ HB_FUNC_STATIC( QDOMPROCESSINGINSTRUCTION_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QDOMPROCESSINGINSTRUCTION_DELETE )
 {
-  QDomProcessingInstruction * obj = (QDomProcessingInstruction *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDomProcessingInstruction *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -110,7 +111,7 @@ QString data () const
 */
 HB_FUNC_STATIC( QDOMPROCESSINGINSTRUCTION_DATA )
 {
-  QDomProcessingInstruction * obj = (QDomProcessingInstruction *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDomProcessingInstruction *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -118,12 +119,12 @@ HB_FUNC_STATIC( QDOMPROCESSINGINSTRUCTION_DATA )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->data () );
+      RQSTRING( obj->data() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -134,7 +135,7 @@ QDomNode::NodeType nodeType () const
 */
 HB_FUNC_STATIC( QDOMPROCESSINGINSTRUCTION_NODETYPE )
 {
-  QDomProcessingInstruction * obj = (QDomProcessingInstruction *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDomProcessingInstruction *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -142,12 +143,12 @@ HB_FUNC_STATIC( QDOMPROCESSINGINSTRUCTION_NODETYPE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->nodeType () );
+      RENUM( obj->nodeType() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -158,7 +159,7 @@ void setData ( const QString & d )
 */
 HB_FUNC_STATIC( QDOMPROCESSINGINSTRUCTION_SETDATA )
 {
-  QDomProcessingInstruction * obj = (QDomProcessingInstruction *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDomProcessingInstruction *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -166,12 +167,12 @@ HB_FUNC_STATIC( QDOMPROCESSINGINSTRUCTION_SETDATA )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->setData ( PQSTRING(1) );
+      obj->setData( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -184,7 +185,7 @@ QString target () const
 */
 HB_FUNC_STATIC( QDOMPROCESSINGINSTRUCTION_TARGET )
 {
-  QDomProcessingInstruction * obj = (QDomProcessingInstruction *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDomProcessingInstruction *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -192,12 +193,12 @@ HB_FUNC_STATIC( QDOMPROCESSINGINSTRUCTION_TARGET )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->target () );
+      RQSTRING( obj->target() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

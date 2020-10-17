@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -29,7 +29,7 @@ CLASS QChildEvent INHERIT QEvent
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QChildEvent
+PROCEDURE destroyObject() CLASS QChildEvent
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -46,38 +46,37 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtCore/QChildEvent>
 #endif
 
 /*
-QChildEvent(Type type, QObject * child)
+QChildEvent( QEvent::Type type, QObject * child )
 */
 HB_FUNC_STATIC( QCHILDEVENT_NEW )
 {
   if( ISNUMPAR(2) && ISNUM(1) && ISQOBJECT(2) )
   {
-    QChildEvent * o = new QChildEvent ( (QEvent::Type) hb_parni(1), PQOBJECT(2) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QChildEvent( (QEvent::Type) hb_parni(1), PQOBJECT(2) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QCHILDEVENT_DELETE )
 {
-  QChildEvent * obj = (QChildEvent *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QChildEvent *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -90,7 +89,7 @@ bool added() const
 */
 HB_FUNC_STATIC( QCHILDEVENT_ADDED )
 {
-  QChildEvent * obj = (QChildEvent *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QChildEvent *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -98,12 +97,12 @@ HB_FUNC_STATIC( QCHILDEVENT_ADDED )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->added () );
+      RBOOL( obj->added() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -114,7 +113,7 @@ QObject * child() const
 */
 HB_FUNC_STATIC( QCHILDEVENT_CHILD )
 {
-  QChildEvent * obj = (QChildEvent *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QChildEvent *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -122,13 +121,13 @@ HB_FUNC_STATIC( QCHILDEVENT_CHILD )
     if( ISNUMPAR(0) )
     {
 #endif
-      QObject * ptr = obj->child ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QOBJECT" );
+      QObject * ptr = obj->child();
+      Qt5xHb::createReturnQObjectClass( ptr, "QOBJECT" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -139,7 +138,7 @@ bool polished() const
 */
 HB_FUNC_STATIC( QCHILDEVENT_POLISHED )
 {
-  QChildEvent * obj = (QChildEvent *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QChildEvent *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -147,12 +146,12 @@ HB_FUNC_STATIC( QCHILDEVENT_POLISHED )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->polished () );
+      RBOOL( obj->polished() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -163,7 +162,7 @@ bool removed() const
 */
 HB_FUNC_STATIC( QCHILDEVENT_REMOVED )
 {
-  QChildEvent * obj = (QChildEvent *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QChildEvent *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -171,12 +170,12 @@ HB_FUNC_STATIC( QCHILDEVENT_REMOVED )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->removed () );
+      RBOOL( obj->removed() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

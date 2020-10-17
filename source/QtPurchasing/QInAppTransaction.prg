@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -33,7 +33,7 @@ CLASS QInAppTransaction INHERIT QObject
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QInAppTransaction
+PROCEDURE destroyObject() CLASS QInAppTransaction
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -50,7 +50,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtPurchasing/QInAppTransaction>
@@ -67,14 +68,16 @@ explicit QInAppTransaction(TransactionStatus status, QInAppProduct *product, QOb
 */
 HB_FUNC_STATIC( QINAPPTRANSACTION_DELETE )
 {
-  QInAppTransaction * obj = (QInAppTransaction *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QInAppTransaction *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -87,7 +90,7 @@ TransactionStatus status() const
 */
 HB_FUNC_STATIC( QINAPPTRANSACTION_STATUS )
 {
-  QInAppTransaction * obj = (QInAppTransaction *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QInAppTransaction *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -95,12 +98,12 @@ HB_FUNC_STATIC( QINAPPTRANSACTION_STATUS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->status () );
+      RENUM( obj->status() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -111,7 +114,7 @@ QInAppProduct *product() const
 */
 HB_FUNC_STATIC( QINAPPTRANSACTION_PRODUCT )
 {
-  QInAppTransaction * obj = (QInAppTransaction *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QInAppTransaction *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -119,13 +122,13 @@ HB_FUNC_STATIC( QINAPPTRANSACTION_PRODUCT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QInAppProduct * ptr = obj->product ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QINAPPPRODUCT" );
+      QInAppProduct * ptr = obj->product();
+      Qt5xHb::createReturnQObjectClass( ptr, "QINAPPPRODUCT" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -136,7 +139,7 @@ virtual QString orderId() const
 */
 HB_FUNC_STATIC( QINAPPTRANSACTION_ORDERID )
 {
-  QInAppTransaction * obj = (QInAppTransaction *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QInAppTransaction *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -144,12 +147,12 @@ HB_FUNC_STATIC( QINAPPTRANSACTION_ORDERID )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->orderId () );
+      RQSTRING( obj->orderId() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -160,7 +163,7 @@ virtual FailureReason failureReason() const
 */
 HB_FUNC_STATIC( QINAPPTRANSACTION_FAILUREREASON )
 {
-  QInAppTransaction * obj = (QInAppTransaction *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QInAppTransaction *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -168,12 +171,12 @@ HB_FUNC_STATIC( QINAPPTRANSACTION_FAILUREREASON )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->failureReason () );
+      RENUM( obj->failureReason() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -184,7 +187,7 @@ virtual QString errorString() const
 */
 HB_FUNC_STATIC( QINAPPTRANSACTION_ERRORSTRING )
 {
-  QInAppTransaction * obj = (QInAppTransaction *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QInAppTransaction *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -192,12 +195,12 @@ HB_FUNC_STATIC( QINAPPTRANSACTION_ERRORSTRING )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->errorString () );
+      RQSTRING( obj->errorString() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -208,7 +211,7 @@ virtual QDateTime timestamp() const
 */
 HB_FUNC_STATIC( QINAPPTRANSACTION_TIMESTAMP )
 {
-  QInAppTransaction * obj = (QInAppTransaction *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QInAppTransaction *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -216,13 +219,13 @@ HB_FUNC_STATIC( QINAPPTRANSACTION_TIMESTAMP )
     if( ISNUMPAR(0) )
     {
 #endif
-      QDateTime * ptr = new QDateTime( obj->timestamp () );
-      _qt5xhb_createReturnClass ( ptr, "QDATETIME", true );
+      auto ptr = new QDateTime( obj->timestamp() );
+      Qt5xHb::createReturnClass( ptr, "QDATETIME", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -233,7 +236,7 @@ Q_INVOKABLE virtual void finalize() = 0
 */
 HB_FUNC_STATIC( QINAPPTRANSACTION_FINALIZE )
 {
-  QInAppTransaction * obj = (QInAppTransaction *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QInAppTransaction *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -241,12 +244,12 @@ HB_FUNC_STATIC( QINAPPTRANSACTION_FINALIZE )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->finalize ();
+      obj->finalize();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -259,7 +262,7 @@ Q_INVOKABLE virtual QString platformProperty(const QString &propertyName) const
 */
 HB_FUNC_STATIC( QINAPPTRANSACTION_PLATFORMPROPERTY )
 {
-  QInAppTransaction * obj = (QInAppTransaction *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QInAppTransaction *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -267,12 +270,12 @@ HB_FUNC_STATIC( QINAPPTRANSACTION_PLATFORMPROPERTY )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      RQSTRING( obj->platformProperty ( PQSTRING(1) ) );
+      RQSTRING( obj->platformProperty( PQSTRING(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

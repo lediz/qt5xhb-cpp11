@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -50,7 +50,7 @@ CLASS QTime
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QTime
+PROCEDURE destroyObject() CLASS QTime
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -67,7 +67,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtCore/QTime>
@@ -76,23 +75,25 @@ RETURN
 /*
 QTime()
 */
-void QTime_new1 ()
+void QTime_new1()
 {
-  QTime * o = new QTime ();
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QTime();
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QTime(int h, int m, int s = 0, int ms = 0)
 */
-void QTime_new2 ()
+void QTime_new2()
 {
-  QTime * o = new QTime ( PINT(1), PINT(2), OPINT(3,0), OPINT(4,0) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QTime( PINT(1), PINT(2), OPINT(3,0), OPINT(4,0) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
-//[1]QTime()
-//[2]QTime(int h, int m, int s = 0, int ms = 0)
+/*
+[1]QTime()
+[2]QTime(int h, int m, int s = 0, int ms = 0)
+*/
 
 HB_FUNC_STATIC( QTIME_NEW )
 {
@@ -106,20 +107,20 @@ HB_FUNC_STATIC( QTIME_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QTIME_DELETE )
 {
-  QTime * obj = (QTime *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTime *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -132,7 +133,7 @@ QTime addMSecs(int ms) const
 */
 HB_FUNC_STATIC( QTIME_ADDMSECS )
 {
-  QTime * obj = (QTime *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTime *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -140,13 +141,13 @@ HB_FUNC_STATIC( QTIME_ADDMSECS )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      QTime * ptr = new QTime( obj->addMSecs ( PINT(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QTIME", true );
+      auto ptr = new QTime( obj->addMSecs( PINT(1) ) );
+      Qt5xHb::createReturnClass( ptr, "QTIME", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -157,7 +158,7 @@ QTime addSecs(int s) const
 */
 HB_FUNC_STATIC( QTIME_ADDSECS )
 {
-  QTime * obj = (QTime *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTime *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -165,13 +166,13 @@ HB_FUNC_STATIC( QTIME_ADDSECS )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      QTime * ptr = new QTime( obj->addSecs ( PINT(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QTIME", true );
+      auto ptr = new QTime( obj->addSecs( PINT(1) ) );
+      Qt5xHb::createReturnClass( ptr, "QTIME", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -182,7 +183,7 @@ int elapsed() const
 */
 HB_FUNC_STATIC( QTIME_ELAPSED )
 {
-  QTime * obj = (QTime *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTime *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -190,12 +191,12 @@ HB_FUNC_STATIC( QTIME_ELAPSED )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->elapsed () );
+      RINT( obj->elapsed() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -206,7 +207,7 @@ int hour() const
 */
 HB_FUNC_STATIC( QTIME_HOUR )
 {
-  QTime * obj = (QTime *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTime *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -214,12 +215,12 @@ HB_FUNC_STATIC( QTIME_HOUR )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->hour () );
+      RINT( obj->hour() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -230,7 +231,7 @@ bool isNull() const
 */
 HB_FUNC_STATIC( QTIME_ISNULL )
 {
-  QTime * obj = (QTime *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTime *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -238,12 +239,12 @@ HB_FUNC_STATIC( QTIME_ISNULL )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isNull () );
+      RBOOL( obj->isNull() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -252,27 +253,28 @@ HB_FUNC_STATIC( QTIME_ISNULL )
 /*
 bool isValid() const
 */
-void QTime_isValid1 ()
+void QTime_isValid1()
 {
-  QTime * obj = (QTime *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTime *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RBOOL( obj->isValid () );
+    RBOOL( obj->isValid() );
   }
 }
 
 /*
 static bool isValid(int h, int m, int s, int ms = 0)
 */
-void QTime_isValid2 ()
+void QTime_isValid2()
 {
-
-      RBOOL( QTime::isValid ( PINT(1), PINT(2), PINT(3), OPINT(4,0) ) );
+  RBOOL( QTime::isValid( PINT(1), PINT(2), PINT(3), OPINT(4,0) ) );
 }
 
-//[1]bool isValid() const
-//[2]bool isValid(int h, int m, int s, int ms = 0)
+/*
+[1]bool isValid() const
+[2]bool isValid(int h, int m, int s, int ms = 0)
+*/
 
 HB_FUNC_STATIC( QTIME_ISVALID )
 {
@@ -286,7 +288,7 @@ HB_FUNC_STATIC( QTIME_ISVALID )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -295,7 +297,7 @@ int minute() const
 */
 HB_FUNC_STATIC( QTIME_MINUTE )
 {
-  QTime * obj = (QTime *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTime *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -303,12 +305,12 @@ HB_FUNC_STATIC( QTIME_MINUTE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->minute () );
+      RINT( obj->minute() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -319,7 +321,7 @@ int msec() const
 */
 HB_FUNC_STATIC( QTIME_MSEC )
 {
-  QTime * obj = (QTime *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTime *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -327,12 +329,12 @@ HB_FUNC_STATIC( QTIME_MSEC )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->msec () );
+      RINT( obj->msec() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -343,7 +345,7 @@ int msecsTo(const QTime & t) const
 */
 HB_FUNC_STATIC( QTIME_MSECSTO )
 {
-  QTime * obj = (QTime *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTime *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -351,12 +353,12 @@ HB_FUNC_STATIC( QTIME_MSECSTO )
     if( ISNUMPAR(1) && ISQTIME(1) )
     {
 #endif
-      RINT( obj->msecsTo ( *PQTIME(1) ) );
+      RINT( obj->msecsTo( *PQTIME(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -367,7 +369,7 @@ int restart()
 */
 HB_FUNC_STATIC( QTIME_RESTART )
 {
-  QTime * obj = (QTime *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTime *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -375,12 +377,12 @@ HB_FUNC_STATIC( QTIME_RESTART )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->restart () );
+      RINT( obj->restart() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -391,7 +393,7 @@ int second() const
 */
 HB_FUNC_STATIC( QTIME_SECOND )
 {
-  QTime * obj = (QTime *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTime *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -399,12 +401,12 @@ HB_FUNC_STATIC( QTIME_SECOND )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->second () );
+      RINT( obj->second() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -415,7 +417,7 @@ int secsTo(const QTime & t) const
 */
 HB_FUNC_STATIC( QTIME_SECSTO )
 {
-  QTime * obj = (QTime *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTime *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -423,12 +425,12 @@ HB_FUNC_STATIC( QTIME_SECSTO )
     if( ISNUMPAR(1) && ISQTIME(1) )
     {
 #endif
-      RINT( obj->secsTo ( *PQTIME(1) ) );
+      RINT( obj->secsTo( *PQTIME(1) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -439,7 +441,7 @@ bool setHMS(int h, int m, int s, int ms = 0)
 */
 HB_FUNC_STATIC( QTIME_SETHMS )
 {
-  QTime * obj = (QTime *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTime *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -447,12 +449,12 @@ HB_FUNC_STATIC( QTIME_SETHMS )
     if( ISBETWEEN(3,4) && ISNUM(1) && ISNUM(2) && ISNUM(3) && ISOPTNUM(4) )
     {
 #endif
-      RBOOL( obj->setHMS ( PINT(1), PINT(2), PINT(3), OPINT(4,0) ) );
+      RBOOL( obj->setHMS( PINT(1), PINT(2), PINT(3), OPINT(4,0) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -463,7 +465,7 @@ void start()
 */
 HB_FUNC_STATIC( QTIME_START )
 {
-  QTime * obj = (QTime *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTime *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -471,12 +473,12 @@ HB_FUNC_STATIC( QTIME_START )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->start ();
+      obj->start();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -487,31 +489,33 @@ HB_FUNC_STATIC( QTIME_START )
 /*
 QString toString(const QString & format) const
 */
-void QTime_toString1 ()
+void QTime_toString1()
 {
-  QTime * obj = (QTime *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTime *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RQSTRING( obj->toString ( PQSTRING(1) ) );
+    RQSTRING( obj->toString( PQSTRING(1) ) );
   }
 }
 
 /*
 QString toString(Qt::DateFormat format = Qt::TextDate) const
 */
-void QTime_toString2 ()
+void QTime_toString2()
 {
-  QTime * obj = (QTime *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QTime *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RQSTRING( obj->toString ( ISNIL(1)? (Qt::DateFormat) Qt::TextDate : (Qt::DateFormat) hb_parni(1) ) );
+    RQSTRING( obj->toString( ISNIL(1)? (Qt::DateFormat) Qt::TextDate : (Qt::DateFormat) hb_parni(1) ) );
   }
 }
 
-//[1]QString toString(const QString & format) const
-//[2]QString toString(Qt::DateFormat format = Qt::TextDate) const
+/*
+[1]QString toString(const QString & format) const
+[2]QString toString(Qt::DateFormat format = Qt::TextDate) const
+*/
 
 HB_FUNC_STATIC( QTIME_TOSTRING )
 {
@@ -525,7 +529,7 @@ HB_FUNC_STATIC( QTIME_TOSTRING )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -535,16 +539,16 @@ static QTime currentTime()
 HB_FUNC_STATIC( QTIME_CURRENTTIME )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(0) )
+  if( ISNUMPAR(0) )
   {
 #endif
-      QTime * ptr = new QTime( QTime::currentTime () );
-      _qt5xhb_createReturnClass ( ptr, "QTIME", true );
+    auto ptr = new QTime( QTime::currentTime() );
+    Qt5xHb::createReturnClass( ptr, "QTIME", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
@@ -552,25 +556,25 @@ HB_FUNC_STATIC( QTIME_CURRENTTIME )
 /*
 static QTime fromString(const QString & string, Qt::DateFormat format = Qt::TextDate)
 */
-void QTime_fromString1 ()
+void QTime_fromString1()
 {
-
-      QTime * ptr = new QTime( QTime::fromString ( PQSTRING(1), ISNIL(2)? (Qt::DateFormat) Qt::TextDate : (Qt::DateFormat) hb_parni(2) ) );
-      _qt5xhb_createReturnClass ( ptr, "QTIME", true );
+  auto ptr = new QTime( QTime::fromString( PQSTRING(1), ISNIL(2)? (Qt::DateFormat) Qt::TextDate : (Qt::DateFormat) hb_parni(2) ) );
+  Qt5xHb::createReturnClass( ptr, "QTIME", true );
 }
 
 /*
 static QTime fromString(const QString & string, const QString & format)
 */
-void QTime_fromString2 ()
+void QTime_fromString2()
 {
-
-      QTime * ptr = new QTime( QTime::fromString ( PQSTRING(1), PQSTRING(2) ) );
-      _qt5xhb_createReturnClass ( ptr, "QTIME", true );
+  auto ptr = new QTime( QTime::fromString( PQSTRING(1), PQSTRING(2) ) );
+  Qt5xHb::createReturnClass( ptr, "QTIME", true );
 }
 
-//[1]QTime fromString(const QString & string, Qt::DateFormat format = Qt::TextDate)
-//[2]QTime fromString(const QString & string, const QString & format)
+/*
+[1]QTime fromString(const QString & string, Qt::DateFormat format = Qt::TextDate)
+[2]QTime fromString(const QString & string, const QString & format)
+*/
 
 HB_FUNC_STATIC( QTIME_FROMSTRING )
 {
@@ -584,7 +588,7 @@ HB_FUNC_STATIC( QTIME_FROMSTRING )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -594,25 +598,25 @@ HB_FUNC_STATIC( QTIME_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -639,13 +643,13 @@ HB_FUNC_STATIC( QTIME_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

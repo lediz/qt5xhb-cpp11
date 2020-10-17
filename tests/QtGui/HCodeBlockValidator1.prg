@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb Project - Test Program
+  Qt5xHb/C++11 Project - Test Program
 
   Copyright (C) 2020 Marcos Antonio Gambeta
 
@@ -8,7 +8,7 @@
   marcosgambeta AT outlook DOT com
 
   Website:
-  https://github.com/marcosgambeta/Qt5xHb
+  https://github.com/marcosgambeta/qt5xhb-cpp11
 
 */
 
@@ -19,7 +19,7 @@
 
 #include "qt5xhb.ch"
 
-PROCEDURE Main ()
+PROCEDURE Main()
 
    LOCAL oApp
    LOCAL oWindow
@@ -42,7 +42,7 @@ PROCEDURE Main ()
 
 RETURN
 
-STATIC FUNCTION dialogo (oParent)
+STATIC FUNCTION dialogo(oParent)
 
    LOCAL oDialog
    LOCAL oCBValidator1
@@ -104,14 +104,11 @@ STATIC FUNCTION dialogo (oParent)
 
    oDialog:exec()
 
-   ? oLineEdit1:onFocusOutEvent()
-   ? oLineEdit2:onFocusOutEvent()
-
    oDialog:delete()
 
 RETURN NIL
 
-STATIC FUNCTION RemoveAcentos (cTexto)
+STATIC FUNCTION RemoveAcentos(cTexto)
 
    // acento agudo
    cTexto := strtran(cTexto,"á","a")

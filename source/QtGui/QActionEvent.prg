@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -27,7 +27,7 @@ CLASS QActionEvent INHERIT QEvent
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QActionEvent
+PROCEDURE destroyObject() CLASS QActionEvent
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -44,7 +44,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtGui/QActionEvent>
@@ -59,25 +58,25 @@ HB_FUNC_STATIC( QACTIONEVENT_NEW )
 {
   if( ISBETWEEN(2,3) && ISNUM(1) && ISQACTION(2) && (ISQACTION(3)||ISNIL(3)) )
   {
-    QActionEvent * o = new QActionEvent ( PINT(1), PQACTION(2), OPQACTION(3,nullptr) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QActionEvent( PINT(1), PQACTION(2), OPQACTION(3,nullptr) );
+    Qt5xHb::returnNewObject( obj, false );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QACTIONEVENT_DELETE )
 {
-  QActionEvent * obj = (QActionEvent *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QActionEvent *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -90,7 +89,7 @@ QAction * action () const
 */
 HB_FUNC_STATIC( QACTIONEVENT_ACTION )
 {
-  QActionEvent * obj = (QActionEvent *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QActionEvent *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -98,13 +97,13 @@ HB_FUNC_STATIC( QACTIONEVENT_ACTION )
     if( ISNUMPAR(0) )
     {
 #endif
-      QAction * ptr = obj->action ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QACTION" );
+      QAction * ptr = obj->action();
+      Qt5xHb::createReturnQObjectClass( ptr, "QACTION" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -115,7 +114,7 @@ QAction * before () const
 */
 HB_FUNC_STATIC( QACTIONEVENT_BEFORE )
 {
-  QActionEvent * obj = (QActionEvent *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QActionEvent *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -123,13 +122,13 @@ HB_FUNC_STATIC( QACTIONEVENT_BEFORE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QAction * ptr = obj->before ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QACTION" );
+      QAction * ptr = obj->before();
+      Qt5xHb::createReturnQObjectClass( ptr, "QACTION" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

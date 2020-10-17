@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb Project - Test Program
+  Qt5xHb/C++11 Project - Test Program
 
   Copyright (C) 2020 Marcos Antonio Gambeta
 
@@ -8,13 +8,13 @@
   marcosgambeta AT outlook DOT com
 
   Website:
-  https://github.com/marcosgambeta/Qt5xHb
+  https://github.com/marcosgambeta/qt5xhb-cpp11
 
 */
 
 #include "qt5xhb.ch"
 
-PROCEDURE Main ()
+PROCEDURE Main()
 
    LOCAL oApp
    LOCAL oWindow
@@ -24,6 +24,9 @@ PROCEDURE Main ()
    LOCAL oLineEdit2
    LOCAL oLabel3
    LOCAL oLineEdit3
+   LOCAL o1
+   LOCAL o2
+   LOCAL o3
 
    oApp := QApplication():new()
 

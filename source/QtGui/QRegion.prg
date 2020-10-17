@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -46,7 +46,7 @@ CLASS QRegion
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QRegion
+PROCEDURE destroyObject() CLASS QRegion
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -63,7 +63,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtGui/QRegion>
@@ -72,63 +71,65 @@ RETURN
 /*
 QRegion()
 */
-void QRegion_new1 ()
+void QRegion_new1()
 {
-  QRegion * o = new QRegion ();
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QRegion();
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QRegion(int x, int y, int w, int h, RegionType t = Rectangle)
 */
-void QRegion_new2 ()
+void QRegion_new2()
 {
-  QRegion * o = new QRegion ( PINT(1), PINT(2), PINT(3), PINT(4), ISNIL(5)? (QRegion::RegionType) QRegion::Rectangle : (QRegion::RegionType) hb_parni(5) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QRegion( PINT(1), PINT(2), PINT(3), PINT(4), ISNIL(5)? (QRegion::RegionType) QRegion::Rectangle : (QRegion::RegionType) hb_parni(5) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QRegion(const QRect &r, RegionType t = Rectangle)
 */
-void QRegion_new3 ()
+void QRegion_new3()
 {
-  QRegion * o = new QRegion ( *PQRECT(1), ISNIL(2)? (QRegion::RegionType) QRegion::Rectangle : (QRegion::RegionType) hb_parni(2) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QRegion( *PQRECT(1), ISNIL(2)? (QRegion::RegionType) QRegion::Rectangle : (QRegion::RegionType) hb_parni(2) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QRegion(const QPolygon &pa, Qt::FillRule fillRule = Qt::OddEvenFill)
 */
-void QRegion_new4 ()
+void QRegion_new4()
 {
-  QRegion * o = new QRegion ( *PQPOLYGON(1), ISNIL(2)? (Qt::FillRule) Qt::OddEvenFill : (Qt::FillRule) hb_parni(2) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QRegion( *PQPOLYGON(1), ISNIL(2)? (Qt::FillRule) Qt::OddEvenFill : (Qt::FillRule) hb_parni(2) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QRegion(const QRegion &region)
 */
-void QRegion_new5 ()
+void QRegion_new5()
 {
-  QRegion * o = new QRegion ( *PQREGION(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QRegion( *PQREGION(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QRegion(const QBitmap &bitmap)
 */
-void QRegion_new6 ()
+void QRegion_new6()
 {
-  QRegion * o = new QRegion ( *PQBITMAP(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QRegion( *PQBITMAP(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
-//[1]QRegion()
-//[2]QRegion(int x, int y, int w, int h, RegionType t = Rectangle)
-//[3]QRegion(const QRect &r, RegionType t = Rectangle)
-//[4]QRegion(const QPolygon &pa, Qt::FillRule fillRule = Qt::OddEvenFill)
-//[5]QRegion(const QRegion &region)
-//[6]QRegion(const QBitmap &bitmap)
+/*
+[1]QRegion()
+[2]QRegion(int x, int y, int w, int h, RegionType t = Rectangle)
+[3]QRegion(const QRect &r, RegionType t = Rectangle)
+[4]QRegion(const QPolygon &pa, Qt::FillRule fillRule = Qt::OddEvenFill)
+[5]QRegion(const QRegion &region)
+[6]QRegion(const QBitmap &bitmap)
+*/
 
 HB_FUNC_STATIC( QREGION_NEW )
 {
@@ -158,20 +159,20 @@ HB_FUNC_STATIC( QREGION_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QREGION_DELETE )
 {
-  QRegion * obj = (QRegion *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRegion *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -184,7 +185,7 @@ void swap(QRegion &other)
 */
 HB_FUNC_STATIC( QREGION_SWAP )
 {
-  QRegion * obj = (QRegion *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRegion *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -192,12 +193,12 @@ HB_FUNC_STATIC( QREGION_SWAP )
     if( ISNUMPAR(1) && ISQREGION(1) )
     {
 #endif
-      obj->swap ( *PQREGION(1) );
+      obj->swap( *PQREGION(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -210,7 +211,7 @@ bool isEmpty() const
 */
 HB_FUNC_STATIC( QREGION_ISEMPTY )
 {
-  QRegion * obj = (QRegion *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRegion *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -218,12 +219,12 @@ HB_FUNC_STATIC( QREGION_ISEMPTY )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isEmpty () );
+      RBOOL( obj->isEmpty() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -234,7 +235,7 @@ bool isNull() const
 */
 HB_FUNC_STATIC( QREGION_ISNULL )
 {
-  QRegion * obj = (QRegion *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRegion *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -242,12 +243,12 @@ HB_FUNC_STATIC( QREGION_ISNULL )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isNull () );
+      RBOOL( obj->isNull() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -256,31 +257,33 @@ HB_FUNC_STATIC( QREGION_ISNULL )
 /*
 bool contains(const QPoint &p) const
 */
-void QRegion_contains1 ()
+void QRegion_contains1()
 {
-  QRegion * obj = (QRegion *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRegion *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RBOOL( obj->contains ( *PQPOINT(1) ) );
+    RBOOL( obj->contains( *PQPOINT(1) ) );
   }
 }
 
 /*
 bool contains(const QRect &r) const
 */
-void QRegion_contains2 ()
+void QRegion_contains2()
 {
-  QRegion * obj = (QRegion *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRegion *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RBOOL( obj->contains ( *PQRECT(1) ) );
+    RBOOL( obj->contains( *PQRECT(1) ) );
   }
 }
 
-//[1]bool contains(const QPoint &p) const
-//[2]bool contains(const QRect &r) const
+/*
+[1]bool contains(const QPoint &p) const
+[2]bool contains(const QRect &r) const
+*/
 
 HB_FUNC_STATIC( QREGION_CONTAINS )
 {
@@ -294,20 +297,20 @@ HB_FUNC_STATIC( QREGION_CONTAINS )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 /*
 void translate(int dx, int dy)
 */
-void QRegion_translate1 ()
+void QRegion_translate1()
 {
-  QRegion * obj = (QRegion *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRegion *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->translate ( PINT(1), PINT(2) );
+    obj->translate( PINT(1), PINT(2) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -316,20 +319,22 @@ void QRegion_translate1 ()
 /*
 void translate(const QPoint &p)
 */
-void QRegion_translate2 ()
+void QRegion_translate2()
 {
-  QRegion * obj = (QRegion *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRegion *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->translate ( *PQPOINT(1) );
+    obj->translate( *PQPOINT(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
 }
 
-//[1]void translate(int dx, int dy)
-//[2]void translate(const QPoint &p)
+/*
+[1]void translate(int dx, int dy)
+[2]void translate(const QPoint &p)
+*/
 
 HB_FUNC_STATIC( QREGION_TRANSLATE )
 {
@@ -343,40 +348,42 @@ HB_FUNC_STATIC( QREGION_TRANSLATE )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 /*
 QRegion translated(int dx, int dy) const
 */
-void QRegion_translated1 ()
+void QRegion_translated1()
 {
-  QRegion * obj = (QRegion *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRegion *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QRegion * ptr = new QRegion( obj->translated ( PINT(1), PINT(2) ) );
-      _qt5xhb_createReturnClass ( ptr, "QREGION", true );
+    auto ptr = new QRegion( obj->translated( PINT(1), PINT(2) ) );
+    Qt5xHb::createReturnClass( ptr, "QREGION", true );
   }
 }
 
 /*
 QRegion translated(const QPoint &p) const
 */
-void QRegion_translated2 ()
+void QRegion_translated2()
 {
-  QRegion * obj = (QRegion *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRegion *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QRegion * ptr = new QRegion( obj->translated ( *PQPOINT(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QREGION", true );
+    auto ptr = new QRegion( obj->translated( *PQPOINT(1) ) );
+    Qt5xHb::createReturnClass( ptr, "QREGION", true );
   }
 }
 
-//[1]QRegion translated(int dx, int dy) const
-//[2]QRegion translated(const QPoint &p) const
+/*
+[1]QRegion translated(int dx, int dy) const
+[2]QRegion translated(const QPoint &p) const
+*/
 
 HB_FUNC_STATIC( QREGION_TRANSLATED )
 {
@@ -390,40 +397,42 @@ HB_FUNC_STATIC( QREGION_TRANSLATED )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 /*
 QRegion united(const QRegion &r) const
 */
-void QRegion_united1 ()
+void QRegion_united1()
 {
-  QRegion * obj = (QRegion *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRegion *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QRegion * ptr = new QRegion( obj->united ( *PQREGION(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QREGION", true );
+    auto ptr = new QRegion( obj->united( *PQREGION(1) ) );
+    Qt5xHb::createReturnClass( ptr, "QREGION", true );
   }
 }
 
 /*
 QRegion united(const QRect &r) const
 */
-void QRegion_united2 ()
+void QRegion_united2()
 {
-  QRegion * obj = (QRegion *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRegion *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QRegion * ptr = new QRegion( obj->united ( *PQRECT(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QREGION", true );
+    auto ptr = new QRegion( obj->united( *PQRECT(1) ) );
+    Qt5xHb::createReturnClass( ptr, "QREGION", true );
   }
 }
 
-//[1]QRegion united(const QRegion &r) const
-//[2]QRegion united(const QRect &r) const
+/*
+[1]QRegion united(const QRegion &r) const
+[2]QRegion united(const QRect &r) const
+*/
 
 HB_FUNC_STATIC( QREGION_UNITED )
 {
@@ -437,7 +446,7 @@ HB_FUNC_STATIC( QREGION_UNITED )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -446,7 +455,7 @@ QRegion subtracted(const QRegion &r) const
 */
 HB_FUNC_STATIC( QREGION_SUBTRACTED )
 {
-  QRegion * obj = (QRegion *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRegion *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -454,13 +463,13 @@ HB_FUNC_STATIC( QREGION_SUBTRACTED )
     if( ISNUMPAR(1) && ISQREGION(1) )
     {
 #endif
-      QRegion * ptr = new QRegion( obj->subtracted ( *PQREGION(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QREGION", true );
+      auto ptr = new QRegion( obj->subtracted( *PQREGION(1) ) );
+      Qt5xHb::createReturnClass( ptr, "QREGION", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -471,7 +480,7 @@ QRegion xored(const QRegion &r) const
 */
 HB_FUNC_STATIC( QREGION_XORED )
 {
-  QRegion * obj = (QRegion *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRegion *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -479,13 +488,13 @@ HB_FUNC_STATIC( QREGION_XORED )
     if( ISNUMPAR(1) && ISQREGION(1) )
     {
 #endif
-      QRegion * ptr = new QRegion( obj->xored ( *PQREGION(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QREGION", true );
+      auto ptr = new QRegion( obj->xored( *PQREGION(1) ) );
+      Qt5xHb::createReturnClass( ptr, "QREGION", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -494,31 +503,33 @@ HB_FUNC_STATIC( QREGION_XORED )
 /*
 bool intersects(const QRegion &r) const
 */
-void QRegion_intersects1 ()
+void QRegion_intersects1()
 {
-  QRegion * obj = (QRegion *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRegion *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RBOOL( obj->intersects ( *PQREGION(1) ) );
+    RBOOL( obj->intersects( *PQREGION(1) ) );
   }
 }
 
 /*
 bool intersects(const QRect &r) const
 */
-void QRegion_intersects2 ()
+void QRegion_intersects2()
 {
-  QRegion * obj = (QRegion *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRegion *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RBOOL( obj->intersects ( *PQRECT(1) ) );
+    RBOOL( obj->intersects( *PQRECT(1) ) );
   }
 }
 
-//[1]bool intersects(const QRegion &r) const
-//[2]bool intersects(const QRect &r) const
+/*
+[1]bool intersects(const QRegion &r) const
+[2]bool intersects(const QRect &r) const
+*/
 
 HB_FUNC_STATIC( QREGION_INTERSECTS )
 {
@@ -532,7 +543,7 @@ HB_FUNC_STATIC( QREGION_INTERSECTS )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -541,7 +552,7 @@ QRect boundingRect() const
 */
 HB_FUNC_STATIC( QREGION_BOUNDINGRECT )
 {
-  QRegion * obj = (QRegion *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRegion *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -549,13 +560,13 @@ HB_FUNC_STATIC( QREGION_BOUNDINGRECT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QRect * ptr = new QRect( obj->boundingRect () );
-      _qt5xhb_createReturnClass ( ptr, "QRECT", true );
+      auto ptr = new QRect( obj->boundingRect() );
+      Qt5xHb::createReturnClass( ptr, "QRECT", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -566,7 +577,7 @@ int rectCount() const
 */
 HB_FUNC_STATIC( QREGION_RECTCOUNT )
 {
-  QRegion * obj = (QRegion *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QRegion *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -574,12 +585,12 @@ HB_FUNC_STATIC( QREGION_RECTCOUNT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->rectCount () );
+      RINT( obj->rectCount() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -591,25 +602,25 @@ HB_FUNC_STATIC( QREGION_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -636,13 +647,13 @@ HB_FUNC_STATIC( QREGION_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

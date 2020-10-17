@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -42,7 +42,7 @@ CLASS QWebEngineUrlRequestInfo
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QWebEngineUrlRequestInfo
+PROCEDURE destroyObject() CLASS QWebEngineUrlRequestInfo
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -59,7 +59,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtWebEngineCore/QWebEngineUrlRequestInfo>
@@ -78,7 +77,7 @@ ResourceType resourceType() const
 */
 HB_FUNC_STATIC( QWEBENGINEURLREQUESTINFO_RESOURCETYPE )
 {
-  QWebEngineUrlRequestInfo * obj = (QWebEngineUrlRequestInfo *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebEngineUrlRequestInfo *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -86,12 +85,12 @@ HB_FUNC_STATIC( QWEBENGINEURLREQUESTINFO_RESOURCETYPE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->resourceType () );
+      RENUM( obj->resourceType() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -102,7 +101,7 @@ NavigationType navigationType() const
 */
 HB_FUNC_STATIC( QWEBENGINEURLREQUESTINFO_NAVIGATIONTYPE )
 {
-  QWebEngineUrlRequestInfo * obj = (QWebEngineUrlRequestInfo *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebEngineUrlRequestInfo *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -110,12 +109,12 @@ HB_FUNC_STATIC( QWEBENGINEURLREQUESTINFO_NAVIGATIONTYPE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->navigationType () );
+      RENUM( obj->navigationType() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -126,7 +125,7 @@ QUrl requestUrl() const
 */
 HB_FUNC_STATIC( QWEBENGINEURLREQUESTINFO_REQUESTURL )
 {
-  QWebEngineUrlRequestInfo * obj = (QWebEngineUrlRequestInfo *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebEngineUrlRequestInfo *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -134,13 +133,13 @@ HB_FUNC_STATIC( QWEBENGINEURLREQUESTINFO_REQUESTURL )
     if( ISNUMPAR(0) )
     {
 #endif
-      QUrl * ptr = new QUrl( obj->requestUrl () );
-      _qt5xhb_createReturnClass ( ptr, "QURL", true );
+      auto ptr = new QUrl( obj->requestUrl() );
+      Qt5xHb::createReturnClass( ptr, "QURL", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -151,7 +150,7 @@ QUrl firstPartyUrl() const
 */
 HB_FUNC_STATIC( QWEBENGINEURLREQUESTINFO_FIRSTPARTYURL )
 {
-  QWebEngineUrlRequestInfo * obj = (QWebEngineUrlRequestInfo *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebEngineUrlRequestInfo *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -159,13 +158,13 @@ HB_FUNC_STATIC( QWEBENGINEURLREQUESTINFO_FIRSTPARTYURL )
     if( ISNUMPAR(0) )
     {
 #endif
-      QUrl * ptr = new QUrl( obj->firstPartyUrl () );
-      _qt5xhb_createReturnClass ( ptr, "QURL", true );
+      auto ptr = new QUrl( obj->firstPartyUrl() );
+      Qt5xHb::createReturnClass( ptr, "QURL", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -176,7 +175,7 @@ QByteArray requestMethod() const
 */
 HB_FUNC_STATIC( QWEBENGINEURLREQUESTINFO_REQUESTMETHOD )
 {
-  QWebEngineUrlRequestInfo * obj = (QWebEngineUrlRequestInfo *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebEngineUrlRequestInfo *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -184,13 +183,13 @@ HB_FUNC_STATIC( QWEBENGINEURLREQUESTINFO_REQUESTMETHOD )
     if( ISNUMPAR(0) )
     {
 #endif
-      QByteArray * ptr = new QByteArray( obj->requestMethod () );
-      _qt5xhb_createReturnClass ( ptr, "QBYTEARRAY", true );
+      auto ptr = new QByteArray( obj->requestMethod() );
+      Qt5xHb::createReturnClass( ptr, "QBYTEARRAY", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -201,7 +200,7 @@ bool changed() const
 */
 HB_FUNC_STATIC( QWEBENGINEURLREQUESTINFO_CHANGED )
 {
-  QWebEngineUrlRequestInfo * obj = (QWebEngineUrlRequestInfo *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebEngineUrlRequestInfo *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -209,12 +208,12 @@ HB_FUNC_STATIC( QWEBENGINEURLREQUESTINFO_CHANGED )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->changed () );
+      RBOOL( obj->changed() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -225,7 +224,7 @@ void block(bool shouldBlock)
 */
 HB_FUNC_STATIC( QWEBENGINEURLREQUESTINFO_BLOCK )
 {
-  QWebEngineUrlRequestInfo * obj = (QWebEngineUrlRequestInfo *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebEngineUrlRequestInfo *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -233,12 +232,12 @@ HB_FUNC_STATIC( QWEBENGINEURLREQUESTINFO_BLOCK )
     if( ISNUMPAR(1) && ISLOG(1) )
     {
 #endif
-      obj->block ( PBOOL(1) );
+      obj->block( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -251,7 +250,7 @@ void redirect(const QUrl &url)
 */
 HB_FUNC_STATIC( QWEBENGINEURLREQUESTINFO_REDIRECT )
 {
-  QWebEngineUrlRequestInfo * obj = (QWebEngineUrlRequestInfo *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebEngineUrlRequestInfo *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -259,12 +258,12 @@ HB_FUNC_STATIC( QWEBENGINEURLREQUESTINFO_REDIRECT )
     if( ISNUMPAR(1) && ISQURL(1) )
     {
 #endif
-      obj->redirect ( *PQURL(1) );
+      obj->redirect( *PQURL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -277,7 +276,7 @@ void setHttpHeader(const QByteArray &name, const QByteArray &value)
 */
 HB_FUNC_STATIC( QWEBENGINEURLREQUESTINFO_SETHTTPHEADER )
 {
-  QWebEngineUrlRequestInfo * obj = (QWebEngineUrlRequestInfo *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QWebEngineUrlRequestInfo *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -285,12 +284,12 @@ HB_FUNC_STATIC( QWEBENGINEURLREQUESTINFO_SETHTTPHEADER )
     if( ISNUMPAR(2) && ISQBYTEARRAY(1) && ISQBYTEARRAY(2) )
     {
 #endif
-      obj->setHttpHeader ( *PQBYTEARRAY(1), *PQBYTEARRAY(2) );
+      obj->setHttpHeader( *PQBYTEARRAY(1), *PQBYTEARRAY(2) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }

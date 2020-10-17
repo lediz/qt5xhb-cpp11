@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -36,7 +36,7 @@ CLASS QGraphicsLayout INHERIT QGraphicsLayoutItem
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QGraphicsLayout
+PROCEDURE destroyObject() CLASS QGraphicsLayout
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -53,7 +53,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtWidgets/QGraphicsLayout>
@@ -61,14 +60,14 @@ RETURN
 
 HB_FUNC_STATIC( QGRAPHICSLAYOUT_DELETE )
 {
-  QGraphicsLayout * obj = (QGraphicsLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGraphicsLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -81,7 +80,7 @@ void activate ()
 */
 HB_FUNC_STATIC( QGRAPHICSLAYOUT_ACTIVATE )
 {
-  QGraphicsLayout * obj = (QGraphicsLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGraphicsLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -89,12 +88,12 @@ HB_FUNC_STATIC( QGRAPHICSLAYOUT_ACTIVATE )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->activate ();
+      obj->activate();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -107,7 +106,7 @@ virtual int count () const = 0
 */
 HB_FUNC_STATIC( QGRAPHICSLAYOUT_COUNT )
 {
-  QGraphicsLayout * obj = (QGraphicsLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGraphicsLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -115,12 +114,12 @@ HB_FUNC_STATIC( QGRAPHICSLAYOUT_COUNT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->count () );
+      RINT( obj->count() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -131,7 +130,7 @@ virtual void invalidate ()
 */
 HB_FUNC_STATIC( QGRAPHICSLAYOUT_INVALIDATE )
 {
-  QGraphicsLayout * obj = (QGraphicsLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGraphicsLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -139,12 +138,12 @@ HB_FUNC_STATIC( QGRAPHICSLAYOUT_INVALIDATE )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->invalidate ();
+      obj->invalidate();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -157,7 +156,7 @@ bool isActivated () const
 */
 HB_FUNC_STATIC( QGRAPHICSLAYOUT_ISACTIVATED )
 {
-  QGraphicsLayout * obj = (QGraphicsLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGraphicsLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -165,12 +164,12 @@ HB_FUNC_STATIC( QGRAPHICSLAYOUT_ISACTIVATED )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isActivated () );
+      RBOOL( obj->isActivated() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -181,7 +180,7 @@ virtual QGraphicsLayoutItem * itemAt ( int i ) const = 0
 */
 HB_FUNC_STATIC( QGRAPHICSLAYOUT_ITEMAT )
 {
-  QGraphicsLayout * obj = (QGraphicsLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGraphicsLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -189,13 +188,13 @@ HB_FUNC_STATIC( QGRAPHICSLAYOUT_ITEMAT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      QGraphicsLayoutItem * ptr = obj->itemAt ( PINT(1) );
-      _qt5xhb_createReturnClass ( ptr, "QGRAPHICSLAYOUTITEM", false );
+      QGraphicsLayoutItem * ptr = obj->itemAt( PINT(1) );
+      Qt5xHb::createReturnClass( ptr, "QGRAPHICSLAYOUTITEM", false );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -206,7 +205,7 @@ virtual void removeAt ( int index ) = 0
 */
 HB_FUNC_STATIC( QGRAPHICSLAYOUT_REMOVEAT )
 {
-  QGraphicsLayout * obj = (QGraphicsLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGraphicsLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -214,12 +213,12 @@ HB_FUNC_STATIC( QGRAPHICSLAYOUT_REMOVEAT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->removeAt ( PINT(1) );
+      obj->removeAt( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -232,7 +231,7 @@ void setContentsMargins ( qreal left, qreal top, qreal right, qreal bottom )
 */
 HB_FUNC_STATIC( QGRAPHICSLAYOUT_SETCONTENTSMARGINS )
 {
-  QGraphicsLayout * obj = (QGraphicsLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGraphicsLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -240,12 +239,12 @@ HB_FUNC_STATIC( QGRAPHICSLAYOUT_SETCONTENTSMARGINS )
     if( ISNUMPAR(4) && ISNUM(1) && ISNUM(2) && ISNUM(3) && ISNUM(4) )
     {
 #endif
-      obj->setContentsMargins ( PQREAL(1), PQREAL(2), PQREAL(3), PQREAL(4) );
+      obj->setContentsMargins( PQREAL(1), PQREAL(2), PQREAL(3), PQREAL(4) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -258,7 +257,7 @@ virtual void widgetEvent ( QEvent * e )
 */
 HB_FUNC_STATIC( QGRAPHICSLAYOUT_WIDGETEVENT )
 {
-  QGraphicsLayout * obj = (QGraphicsLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGraphicsLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -266,12 +265,12 @@ HB_FUNC_STATIC( QGRAPHICSLAYOUT_WIDGETEVENT )
     if( ISNUMPAR(1) && ISQEVENT(1) )
     {
 #endif
-      obj->widgetEvent ( PQEVENT(1) );
+      obj->widgetEvent( PQEVENT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -284,7 +283,7 @@ virtual void getContentsMargins ( qreal * left, qreal * top, qreal * right, qrea
 */
 HB_FUNC_STATIC( QGRAPHICSLAYOUT_GETCONTENTSMARGINS )
 {
-  QGraphicsLayout * obj = (QGraphicsLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGraphicsLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -293,19 +292,19 @@ HB_FUNC_STATIC( QGRAPHICSLAYOUT_GETCONTENTSMARGINS )
     {
 #endif
       qreal par1;
-qreal par2;
-qreal par3;
-qreal par4;
-      obj->getContentsMargins ( &par1, &par2, &par3, &par4 );
+      qreal par2;
+      qreal par3;
+      qreal par4;
+      obj->getContentsMargins( &par1, &par2, &par3, &par4 );
       hb_stornd( par1, 1 );
-hb_stornd( par2, 2 );
-hb_stornd( par3, 3 );
-hb_stornd( par4, 4 );
+      hb_stornd( par2, 2 );
+      hb_stornd( par3, 3 );
+      hb_stornd( par4, 4 );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -318,7 +317,7 @@ virtual void updateGeometry ()
 */
 HB_FUNC_STATIC( QGRAPHICSLAYOUT_UPDATEGEOMETRY )
 {
-  QGraphicsLayout * obj = (QGraphicsLayout *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QGraphicsLayout *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -326,12 +325,12 @@ HB_FUNC_STATIC( QGRAPHICSLAYOUT_UPDATEGEOMETRY )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->updateGeometry ();
+      obj->updateGeometry();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -345,15 +344,15 @@ static bool instantInvalidatePropagation ()
 HB_FUNC_STATIC( QGRAPHICSLAYOUT_INSTANTINVALIDATEPROPAGATION )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(0) )
+  if( ISNUMPAR(0) )
   {
 #endif
-      RBOOL( QGraphicsLayout::instantInvalidatePropagation () );
+    RBOOL( QGraphicsLayout::instantInvalidatePropagation() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
@@ -364,15 +363,15 @@ static void setInstantInvalidatePropagation ( bool enable )
 HB_FUNC_STATIC( QGRAPHICSLAYOUT_SETINSTANTINVALIDATEPROPAGATION )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISLOG(1) )
+  if( ISNUMPAR(1) && ISLOG(1) )
   {
 #endif
-      QGraphicsLayout::setInstantInvalidatePropagation ( PBOOL(1) );
+    QGraphicsLayout::setInstantInvalidatePropagation( PBOOL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 

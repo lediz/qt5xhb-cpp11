@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -50,7 +50,7 @@ CLASS QHostInfo
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QHostInfo
+PROCEDURE destroyObject() CLASS QHostInfo
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -67,7 +67,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtNetwork/QHostInfo>
@@ -76,23 +75,25 @@ RETURN
 /*
 explicit QHostInfo(int lookupId = -1)
 */
-void QHostInfo_new1 ()
+void QHostInfo_new1()
 {
-  QHostInfo * o = new QHostInfo ( OPINT(1,-1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QHostInfo( OPINT(1,-1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QHostInfo ( const QHostInfo & other )
 */
-void QHostInfo_new2 ()
+void QHostInfo_new2()
 {
-  QHostInfo * o = new QHostInfo ( *PQHOSTINFO(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QHostInfo( *PQHOSTINFO(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
-//[1]explicit QHostInfo(int lookupId = -1)
-//[2]QHostInfo ( const QHostInfo & other )
+/*
+[1]explicit QHostInfo(int lookupId = -1)
+[2]QHostInfo ( const QHostInfo & other )
+*/
 
 HB_FUNC_STATIC( QHOSTINFO_NEW )
 {
@@ -106,7 +107,7 @@ HB_FUNC_STATIC( QHOSTINFO_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -115,14 +116,14 @@ HB_FUNC_STATIC( QHOSTINFO_NEW )
 */
 HB_FUNC_STATIC( QHOSTINFO_DELETE )
 {
-  QHostInfo * obj = (QHostInfo *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostInfo *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -136,7 +137,7 @@ void swap(QHostInfo &other) Q_DECL_NOTHROW
 HB_FUNC_STATIC( QHOSTINFO_SWAP )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,10,0))
-  QHostInfo * obj = (QHostInfo *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostInfo *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -144,12 +145,12 @@ HB_FUNC_STATIC( QHOSTINFO_SWAP )
     if( ISNUMPAR(1) && ISQHOSTINFO(1) )
     {
 #endif
-      obj->swap ( *PQHOSTINFO(1) );
+      obj->swap( *PQHOSTINFO(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -163,7 +164,7 @@ QString hostName() const
 */
 HB_FUNC_STATIC( QHOSTINFO_HOSTNAME )
 {
-  QHostInfo * obj = (QHostInfo *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostInfo *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -171,12 +172,12 @@ HB_FUNC_STATIC( QHOSTINFO_HOSTNAME )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->hostName () );
+      RQSTRING( obj->hostName() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -187,7 +188,7 @@ void setHostName(const QString &name)
 */
 HB_FUNC_STATIC( QHOSTINFO_SETHOSTNAME )
 {
-  QHostInfo * obj = (QHostInfo *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostInfo *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -195,12 +196,12 @@ HB_FUNC_STATIC( QHOSTINFO_SETHOSTNAME )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->setHostName ( PQSTRING(1) );
+      obj->setHostName( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -213,7 +214,7 @@ QList<QHostAddress> addresses() const
 */
 HB_FUNC_STATIC( QHOSTINFO_ADDRESSES )
 {
-  QHostInfo * obj = (QHostInfo *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostInfo *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -221,41 +222,40 @@ HB_FUNC_STATIC( QHOSTINFO_ADDRESSES )
     if( ISNUMPAR(0) )
     {
 #endif
-      QList<QHostAddress> list = obj->addresses ();
+      QList<QHostAddress> list = obj->addresses();
       PHB_DYNS pDynSym = hb_dynsymFindName( "QHOSTADDRESS" );
       PHB_ITEM pArray = hb_itemArrayNew(0);
-      int i;
-      for(i=0;i<list.count();i++)
+      if( pDynSym )
       {
-        if( pDynSym )
+        for( auto i = 0; i < list.count(); i++ )
         {
           hb_vmPushDynSym( pDynSym );
           hb_vmPushNil();
           hb_vmDo( 0 );
-          PHB_ITEM pObject = hb_itemNew( NULL );
+          PHB_ITEM pObject = hb_itemNew( nullptr );
           hb_itemCopy( pObject, hb_stackReturnItem() );
-          PHB_ITEM pItem = hb_itemNew( NULL );
-          hb_itemPutPtr( pItem, (QHostAddress *) new QHostAddress ( list[i] ) );
+          PHB_ITEM pItem = hb_itemNew( nullptr );
+          hb_itemPutPtr( pItem, (QHostAddress *) new QHostAddress( list[i] ) );
           hb_objSendMsg( pObject, "_POINTER", 1, pItem );
           hb_itemRelease( pItem );
-          PHB_ITEM pDestroy = hb_itemNew( NULL );
+          PHB_ITEM pDestroy = hb_itemNew( nullptr );
           hb_itemPutL( pDestroy, true );
           hb_objSendMsg( pObject, "_SELF_DESTRUCTION", 1, pDestroy );
           hb_itemRelease( pDestroy );
           hb_arrayAddForward( pArray, pObject );
           hb_itemRelease( pObject );
         }
-        else
-        {
-          hb_errRT_BASE( EG_NOFUNC, 1001, NULL, "QHOSTADDRESS", HB_ERR_ARGS_BASEPARAMS );
-        }
+      }
+      else
+      {
+        hb_errRT_BASE( EG_NOFUNC, 1001, nullptr, "QHOSTADDRESS", HB_ERR_ARGS_BASEPARAMS );
       }
       hb_itemReturnRelease(pArray);
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -266,7 +266,7 @@ void setAddresses(const QList<QHostAddress> &addresses)
 */
 HB_FUNC_STATIC( QHOSTINFO_SETADDRESSES )
 {
-  QHostInfo * obj = (QHostInfo *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostInfo *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -275,19 +275,18 @@ HB_FUNC_STATIC( QHOSTINFO_SETADDRESSES )
     {
 #endif
       QList<QHostAddress> par1;
-PHB_ITEM aList1 = hb_param(1, HB_IT_ARRAY);
-int i1;
-int nLen1 = hb_arrayLen(aList1);
-for (i1=0;i1<nLen1;i1++)
-{
-  par1 << *(QHostAddress *) hb_itemGetPtr( hb_objSendMsg( hb_arrayGetItemPtr( aList1, i1+1 ), "POINTER", 0 ) );
-}
-      obj->setAddresses ( par1 );
+      PHB_ITEM aList1 = hb_param(1, HB_IT_ARRAY);
+      int nLen1 = hb_arrayLen(aList1);
+      for( auto i1 = 0; i1 < nLen1; i1++ )
+      {
+        par1 << *(QHostAddress *) hb_itemGetPtr( hb_objSendMsg( hb_arrayGetItemPtr( aList1, i1+1 ), "POINTER", 0 ) );
+      }
+      obj->setAddresses( par1 );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -300,7 +299,7 @@ HostInfoError error() const
 */
 HB_FUNC_STATIC( QHOSTINFO_ERROR )
 {
-  QHostInfo * obj = (QHostInfo *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostInfo *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -308,12 +307,12 @@ HB_FUNC_STATIC( QHOSTINFO_ERROR )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->error () );
+      RENUM( obj->error() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -324,7 +323,7 @@ void setError(HostInfoError error)
 */
 HB_FUNC_STATIC( QHOSTINFO_SETERROR )
 {
-  QHostInfo * obj = (QHostInfo *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostInfo *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -332,12 +331,12 @@ HB_FUNC_STATIC( QHOSTINFO_SETERROR )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setError ( (QHostInfo::HostInfoError) hb_parni(1) );
+      obj->setError( (QHostInfo::HostInfoError) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -350,7 +349,7 @@ QString errorString() const
 */
 HB_FUNC_STATIC( QHOSTINFO_ERRORSTRING )
 {
-  QHostInfo * obj = (QHostInfo *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostInfo *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -358,12 +357,12 @@ HB_FUNC_STATIC( QHOSTINFO_ERRORSTRING )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->errorString () );
+      RQSTRING( obj->errorString() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -374,7 +373,7 @@ void setErrorString(const QString &errorString)
 */
 HB_FUNC_STATIC( QHOSTINFO_SETERRORSTRING )
 {
-  QHostInfo * obj = (QHostInfo *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostInfo *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -382,12 +381,12 @@ HB_FUNC_STATIC( QHOSTINFO_SETERRORSTRING )
     if( ISNUMPAR(1) && ISCHAR(1) )
     {
 #endif
-      obj->setErrorString ( PQSTRING(1) );
+      obj->setErrorString( PQSTRING(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -400,7 +399,7 @@ void setLookupId(int id)
 */
 HB_FUNC_STATIC( QHOSTINFO_SETLOOKUPID )
 {
-  QHostInfo * obj = (QHostInfo *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostInfo *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -408,12 +407,12 @@ HB_FUNC_STATIC( QHOSTINFO_SETLOOKUPID )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setLookupId ( PINT(1) );
+      obj->setLookupId( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -426,7 +425,7 @@ int lookupId() const
 */
 HB_FUNC_STATIC( QHOSTINFO_LOOKUPID )
 {
-  QHostInfo * obj = (QHostInfo *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QHostInfo *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -434,12 +433,12 @@ HB_FUNC_STATIC( QHOSTINFO_LOOKUPID )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->lookupId () );
+      RINT( obj->lookupId() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -451,15 +450,15 @@ static int lookupHost(const QString &name, QObject *receiver, const char *member
 HB_FUNC_STATIC( QHOSTINFO_LOOKUPHOST )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(3) && ISCHAR(1) && ISQOBJECT(2) && ISCHAR(3) )
+  if( ISNUMPAR(3) && ISCHAR(1) && ISQOBJECT(2) && ISCHAR(3) )
   {
 #endif
-      RINT( QHostInfo::lookupHost ( PQSTRING(1), PQOBJECT(2), PCONSTCHAR(3) ) );
+    RINT( QHostInfo::lookupHost( PQSTRING(1), PQOBJECT(2), PCONSTCHAR(3) ) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
@@ -470,15 +469,15 @@ static void abortHostLookup(int lookupId)
 HB_FUNC_STATIC( QHOSTINFO_ABORTHOSTLOOKUP )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISNUM(1) )
+  if( ISNUMPAR(1) && ISNUM(1) )
   {
 #endif
-      QHostInfo::abortHostLookup ( PINT(1) );
+    QHostInfo::abortHostLookup( PINT(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 
@@ -491,16 +490,16 @@ static QHostInfo fromName(const QString &name)
 HB_FUNC_STATIC( QHOSTINFO_FROMNAME )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(1) && ISCHAR(1) )
+  if( ISNUMPAR(1) && ISCHAR(1) )
   {
 #endif
-      QHostInfo * ptr = new QHostInfo( QHostInfo::fromName ( PQSTRING(1) ) );
-      _qt5xhb_createReturnClass ( ptr, "QHOSTINFO", true );
+    auto ptr = new QHostInfo( QHostInfo::fromName( PQSTRING(1) ) );
+    Qt5xHb::createReturnClass( ptr, "QHOSTINFO", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
@@ -511,15 +510,15 @@ static QString localHostName()
 HB_FUNC_STATIC( QHOSTINFO_LOCALHOSTNAME )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(0) )
+  if( ISNUMPAR(0) )
   {
 #endif
-      RQSTRING( QHostInfo::localHostName () );
+    RQSTRING( QHostInfo::localHostName() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
@@ -530,15 +529,15 @@ static QString localDomainName()
 HB_FUNC_STATIC( QHOSTINFO_LOCALDOMAINNAME )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(0) )
+  if( ISNUMPAR(0) )
   {
 #endif
-      RQSTRING( QHostInfo::localDomainName () );
+    RQSTRING( QHostInfo::localDomainName() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
@@ -553,25 +552,25 @@ HB_FUNC_STATIC( QHOSTINFO_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -598,13 +597,13 @@ HB_FUNC_STATIC( QHOSTINFO_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

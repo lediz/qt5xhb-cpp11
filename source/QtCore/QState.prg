@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -40,7 +40,7 @@ CLASS QState INHERIT QAbstractState
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QState
+PROCEDURE destroyObject() CLASS QState
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -57,7 +57,8 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtCore/QState>
@@ -68,23 +69,25 @@ RETURN
 /*
 QState ( QState * parent = nullptr )
 */
-void QState_new1 ()
+void QState_new1()
 {
-  QState * o = new QState ( OPQSTATE(1,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QState( OPQSTATE(1,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
 /*
 QState ( ChildMode childMode, QState * parent = nullptr )
 */
-void QState_new2 ()
+void QState_new2()
 {
-  QState * o = new QState ( (QState::ChildMode) hb_parni(1), OPQSTATE(2,nullptr) );
-  _qt5xhb_returnNewObject( o, false );
+  auto obj = new QState( (QState::ChildMode) hb_parni(1), OPQSTATE(2,nullptr) );
+  Qt5xHb::returnNewObject( obj, false );
 }
 
-//[1]QState ( QState * parent = nullptr )
-//[2]QState ( ChildMode childMode, QState * parent = nullptr )
+/*
+[1]QState ( QState * parent = nullptr )
+[2]QState ( ChildMode childMode, QState * parent = nullptr )
+*/
 
 HB_FUNC_STATIC( QSTATE_NEW )
 {
@@ -98,20 +101,22 @@ HB_FUNC_STATIC( QSTATE_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QSTATE_DELETE )
 {
-  QState * obj = (QState *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QState *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -122,13 +127,13 @@ HB_FUNC_STATIC( QSTATE_DELETE )
 /*
 void addTransition ( QAbstractTransition * transition )
 */
-void QState_addTransition1 ()
+void QState_addTransition1()
 {
-  QState * obj = (QState *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QState *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->addTransition ( PQABSTRACTTRANSITION(1) );
+    obj->addTransition( PQABSTRACTTRANSITION(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -137,34 +142,36 @@ void QState_addTransition1 ()
 /*
 QSignalTransition * addTransition ( QObject * sender, const char * signal, QAbstractState * target )
 */
-void QState_addTransition2 ()
+void QState_addTransition2()
 {
-  QState * obj = (QState *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QState *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QSignalTransition * ptr = obj->addTransition ( PQOBJECT(1), PCONSTCHAR(2), PQABSTRACTSTATE(3) );
-      _qt5xhb_createReturnClass ( ptr, "QSIGNALTRANSITION", false );
+    QSignalTransition * ptr = obj->addTransition( PQOBJECT(1), PCONSTCHAR(2), PQABSTRACTSTATE(3) );
+    Qt5xHb::createReturnClass( ptr, "QSIGNALTRANSITION", false );
   }
 }
 
 /*
 QAbstractTransition * addTransition ( QAbstractState * target )
 */
-void QState_addTransition3 ()
+void QState_addTransition3()
 {
-  QState * obj = (QState *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QState *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      QAbstractTransition * ptr = obj->addTransition ( PQABSTRACTSTATE(1) );
-      _qt5xhb_createReturnQObjectClass ( ptr, "QABSTRACTTRANSITION" );
+    QAbstractTransition * ptr = obj->addTransition( PQABSTRACTSTATE(1) );
+    Qt5xHb::createReturnQObjectClass( ptr, "QABSTRACTTRANSITION" );
   }
 }
 
-//[1]void addTransition ( QAbstractTransition * transition )
-//[2]QSignalTransition * addTransition ( QObject * sender, const char * signal, QAbstractState * target )
-//[3]QAbstractTransition * addTransition ( QAbstractState * target )
+/*
+[1]void addTransition ( QAbstractTransition * transition )
+[2]QSignalTransition * addTransition ( QObject * sender, const char * signal, QAbstractState * target )
+[3]QAbstractTransition * addTransition ( QAbstractState * target )
+*/
 
 HB_FUNC_STATIC( QSTATE_ADDTRANSITION )
 {
@@ -182,7 +189,7 @@ HB_FUNC_STATIC( QSTATE_ADDTRANSITION )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -191,7 +198,7 @@ void assignProperty ( QObject * object, const char * name, const QVariant & valu
 */
 HB_FUNC_STATIC( QSTATE_ASSIGNPROPERTY )
 {
-  QState * obj = (QState *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QState *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -199,12 +206,12 @@ HB_FUNC_STATIC( QSTATE_ASSIGNPROPERTY )
     if( ISNUMPAR(3) && ISQOBJECT(1) && ISCHAR(2) && ISQVARIANT(3) )
     {
 #endif
-      obj->assignProperty ( PQOBJECT(1), PCONSTCHAR(2), *PQVARIANT(3) );
+      obj->assignProperty( PQOBJECT(1), PCONSTCHAR(2), *PQVARIANT(3) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -217,7 +224,7 @@ ChildMode childMode () const
 */
 HB_FUNC_STATIC( QSTATE_CHILDMODE )
 {
-  QState * obj = (QState *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QState *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -225,12 +232,12 @@ HB_FUNC_STATIC( QSTATE_CHILDMODE )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->childMode () );
+      RENUM( obj->childMode() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -241,7 +248,7 @@ QAbstractState * errorState () const
 */
 HB_FUNC_STATIC( QSTATE_ERRORSTATE )
 {
-  QState * obj = (QState *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QState *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -249,13 +256,13 @@ HB_FUNC_STATIC( QSTATE_ERRORSTATE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QAbstractState * ptr = obj->errorState ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QABSTRACTSTATE" );
+      QAbstractState * ptr = obj->errorState();
+      Qt5xHb::createReturnQObjectClass( ptr, "QABSTRACTSTATE" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -266,7 +273,7 @@ QAbstractState * initialState () const
 */
 HB_FUNC_STATIC( QSTATE_INITIALSTATE )
 {
-  QState * obj = (QState *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QState *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -274,13 +281,13 @@ HB_FUNC_STATIC( QSTATE_INITIALSTATE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QAbstractState * ptr = obj->initialState ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QABSTRACTSTATE" );
+      QAbstractState * ptr = obj->initialState();
+      Qt5xHb::createReturnQObjectClass( ptr, "QABSTRACTSTATE" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -291,7 +298,7 @@ void removeTransition ( QAbstractTransition * transition )
 */
 HB_FUNC_STATIC( QSTATE_REMOVETRANSITION )
 {
-  QState * obj = (QState *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QState *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -299,12 +306,12 @@ HB_FUNC_STATIC( QSTATE_REMOVETRANSITION )
     if( ISNUMPAR(1) && ISQABSTRACTTRANSITION(1) )
     {
 #endif
-      obj->removeTransition ( PQABSTRACTTRANSITION(1) );
+      obj->removeTransition( PQABSTRACTTRANSITION(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -317,7 +324,7 @@ void setChildMode ( ChildMode mode )
 */
 HB_FUNC_STATIC( QSTATE_SETCHILDMODE )
 {
-  QState * obj = (QState *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QState *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -325,12 +332,12 @@ HB_FUNC_STATIC( QSTATE_SETCHILDMODE )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setChildMode ( (QState::ChildMode) hb_parni(1) );
+      obj->setChildMode( (QState::ChildMode) hb_parni(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -343,7 +350,7 @@ void setErrorState ( QAbstractState * state )
 */
 HB_FUNC_STATIC( QSTATE_SETERRORSTATE )
 {
-  QState * obj = (QState *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QState *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -351,12 +358,12 @@ HB_FUNC_STATIC( QSTATE_SETERRORSTATE )
     if( ISNUMPAR(1) && ISQABSTRACTSTATE(1) )
     {
 #endif
-      obj->setErrorState ( PQABSTRACTSTATE(1) );
+      obj->setErrorState( PQABSTRACTSTATE(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -369,7 +376,7 @@ void setInitialState ( QAbstractState * state )
 */
 HB_FUNC_STATIC( QSTATE_SETINITIALSTATE )
 {
-  QState * obj = (QState *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QState *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -377,12 +384,12 @@ HB_FUNC_STATIC( QSTATE_SETINITIALSTATE )
     if( ISNUMPAR(1) && ISQABSTRACTSTATE(1) )
     {
 #endif
-      obj->setInitialState ( PQABSTRACTSTATE(1) );
+      obj->setInitialState( PQABSTRACTSTATE(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -395,7 +402,7 @@ QList<QAbstractTransition *> transitions () const
 */
 HB_FUNC_STATIC( QSTATE_TRANSITIONS )
 {
-  QState * obj = (QState *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QState *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -403,37 +410,36 @@ HB_FUNC_STATIC( QSTATE_TRANSITIONS )
     if( ISNUMPAR(0) )
     {
 #endif
-      QList<QAbstractTransition *> list = obj->transitions ();
+      QList<QAbstractTransition *> list = obj->transitions();
       PHB_DYNS pDynSym = hb_dynsymFindName( "QABSTRACTTRANSITION" );
       PHB_ITEM pArray = hb_itemArrayNew(0);
-      int i;
-      for(i=0;i<list.count();i++)
+      if( pDynSym )
       {
-        if( pDynSym )
+        for( auto i = 0; i < list.count(); i++ )
         {
           hb_vmPushDynSym( pDynSym );
           hb_vmPushNil();
           hb_vmDo( 0 );
-          PHB_ITEM pObject = hb_itemNew( NULL );
+          PHB_ITEM pObject = hb_itemNew( nullptr );
           hb_itemCopy( pObject, hb_stackReturnItem() );
-          PHB_ITEM pItem = hb_itemNew( NULL );
+          PHB_ITEM pItem = hb_itemNew( nullptr );
           hb_itemPutPtr( pItem, (QAbstractTransition *) list[i] );
           hb_objSendMsg( pObject, "_POINTER", 1, pItem );
           hb_itemRelease( pItem );
           hb_arrayAddForward( pArray, pObject );
           hb_itemRelease( pObject );
         }
-        else
-        {
-          hb_errRT_BASE( EG_NOFUNC, 1001, NULL, "QABSTRACTTRANSITION", HB_ERR_ARGS_BASEPARAMS );
-        }
+      }
+      else
+      {
+        hb_errRT_BASE( EG_NOFUNC, 1001, nullptr, "QABSTRACTTRANSITION", HB_ERR_ARGS_BASEPARAMS );
       }
       hb_itemReturnRelease(pArray);
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -444,33 +450,34 @@ void finished()
 */
 HB_FUNC_STATIC( QSTATE_ONFINISHED )
 {
-  QState * sender = (QState *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QState *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("finished()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("finished()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QState::finished, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QSTATE" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QSTATE" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -481,9 +488,9 @@ HB_FUNC_STATIC( QSTATE_ONFINISHED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -503,33 +510,34 @@ void propertiesAssigned()
 */
 HB_FUNC_STATIC( QSTATE_ONPROPERTIESASSIGNED )
 {
-  QState * sender = (QState *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QState *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("propertiesAssigned()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("propertiesAssigned()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QState::propertiesAssigned, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QSTATE" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QSTATE" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -540,9 +548,9 @@ HB_FUNC_STATIC( QSTATE_ONPROPERTIESASSIGNED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }

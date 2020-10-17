@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -26,7 +26,7 @@ CLASS QStyleOptionFocusRect INHERIT QStyleOption
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QStyleOptionFocusRect
+PROCEDURE destroyObject() CLASS QStyleOptionFocusRect
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -43,7 +43,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtWidgets/QStyleOptionFocusRect>
@@ -52,28 +51,30 @@ RETURN
 /*
 QStyleOptionFocusRect()
 */
-void QStyleOptionFocusRect_new1 ()
+void QStyleOptionFocusRect_new1()
 {
-  QStyleOptionFocusRect * o = new QStyleOptionFocusRect ();
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QStyleOptionFocusRect();
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QStyleOptionFocusRect(const QStyleOptionFocusRect &other)
 */
-void QStyleOptionFocusRect_new2 ()
+void QStyleOptionFocusRect_new2()
 {
-  QStyleOptionFocusRect * o = new QStyleOptionFocusRect ( *PQSTYLEOPTIONFOCUSRECT(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QStyleOptionFocusRect( *PQSTYLEOPTIONFOCUSRECT(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QStyleOptionFocusRect(int version) [protected]
 */
 
-//[1]QStyleOptionFocusRect()
-//[2]QStyleOptionFocusRect(const QStyleOptionFocusRect &other)
-//[3]QStyleOptionFocusRect(int version) [protected]
+/*
+[1]QStyleOptionFocusRect()
+[2]QStyleOptionFocusRect(const QStyleOptionFocusRect &other)
+[3]QStyleOptionFocusRect(int version) [protected]
+*/
 
 HB_FUNC_STATIC( QSTYLEOPTIONFOCUSRECT_NEW )
 {
@@ -87,7 +88,7 @@ HB_FUNC_STATIC( QSTYLEOPTIONFOCUSRECT_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -96,34 +97,34 @@ QColor backgroundColor
 */
 HB_FUNC_STATIC( QSTYLEOPTIONFOCUSRECT_BACKGROUNDCOLOR )
 {
-  QStyleOptionFocusRect * obj = (QStyleOptionFocusRect *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionFocusRect *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(0) )
     {
-      QColor * ptr = new QColor( obj->backgroundColor  );
-      _qt5xhb_createReturnClass ( ptr, "QCOLOR", true );
+      auto ptr = new QColor( obj->backgroundColor );
+      Qt5xHb::createReturnClass( ptr, "QCOLOR", true );
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 }
 HB_FUNC_STATIC( QSTYLEOPTIONFOCUSRECT_SETBACKGROUNDCOLOR )
 {
-  QStyleOptionFocusRect * obj = (QStyleOptionFocusRect *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QStyleOptionFocusRect *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     if( ISNUMPAR(1) && ISQCOLOR(1) )
     {
-      obj->backgroundColor = *PQCOLOR(1);
+      obj->backgroundColor= *PQCOLOR(1);
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
   }
 

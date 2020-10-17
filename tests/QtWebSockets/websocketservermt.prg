@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb Project - Test Program
+  Qt5xHb/C++11 Project - Test Program
 
   Copyright (C) 2020 Marcos Antonio Gambeta
 
@@ -8,7 +8,7 @@
   marcosgambeta AT outlook DOT com
 
   Website:
-  https://github.com/marcosgambeta/Qt5xHb
+  https://github.com/marcosgambeta/qt5xhb-cpp11
 
 */
 
@@ -17,7 +17,7 @@
 
 //STATIC s_mutex := hb_mutexCreate()
 
-PROCEDURE Main ()
+PROCEDURE Main()
 
    LOCAL oApp
    LOCAL oWebSocketServer

@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -40,7 +40,7 @@ CLASS QDirIterator
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QDirIterator
+PROCEDURE destroyObject() CLASS QDirIterator
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -57,7 +57,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtCore/QDirIterator>
@@ -66,45 +65,45 @@ RETURN
 /*
 QDirIterator ( const QDir & dir, IteratorFlags flags = NoIteratorFlags )
 */
-void QDirIterator_new1 ()
+void QDirIterator_new1()
 {
-  QDirIterator * o = new QDirIterator ( *PQDIR(1), ISNIL(2)? (QDirIterator::IteratorFlags) QDirIterator::NoIteratorFlags : (QDirIterator::IteratorFlags) hb_parni(2) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QDirIterator( *PQDIR(1), ISNIL(2)? (QDirIterator::IteratorFlags) QDirIterator::NoIteratorFlags : (QDirIterator::IteratorFlags) hb_parni(2) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QDirIterator ( const QString & path, IteratorFlags flags = NoIteratorFlags )
 */
-void QDirIterator_new2 ()
+void QDirIterator_new2()
 {
-  QDirIterator * o = new QDirIterator ( PQSTRING(1), ISNIL(2)? (QDirIterator::IteratorFlags) QDirIterator::NoIteratorFlags : (QDirIterator::IteratorFlags) hb_parni(2) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QDirIterator( PQSTRING(1), ISNIL(2)? (QDirIterator::IteratorFlags) QDirIterator::NoIteratorFlags : (QDirIterator::IteratorFlags) hb_parni(2) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QDirIterator ( const QString & path, QDir::Filters filters, IteratorFlags flags = NoIteratorFlags )
 */
-void QDirIterator_new3 ()
+void QDirIterator_new3()
 {
-  QDirIterator * o = new QDirIterator ( PQSTRING(1), (QDir::Filters) hb_parni(2), ISNIL(3)? (QDirIterator::IteratorFlags) QDirIterator::NoIteratorFlags : (QDirIterator::IteratorFlags) hb_parni(3) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QDirIterator( PQSTRING(1), (QDir::Filters) hb_parni(2), ISNIL(3)? (QDirIterator::IteratorFlags) QDirIterator::NoIteratorFlags : (QDirIterator::IteratorFlags) hb_parni(3) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QDirIterator ( const QString & path, const QStringList & nameFilters, QDir::Filters filters = QDir::NoFilter, IteratorFlags flags = NoIteratorFlags )
 */
-void QDirIterator_new4 ()
+void QDirIterator_new4()
 {
-  QDirIterator * o = new QDirIterator ( PQSTRING(1), PQSTRINGLIST(2), ISNIL(3)? (QDir::Filters) QDir::NoFilter : (QDir::Filters) hb_parni(3), ISNIL(4)? (QDirIterator::IteratorFlags) QDirIterator::NoIteratorFlags : (QDirIterator::IteratorFlags) hb_parni(4) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QDirIterator( PQSTRING(1), PQSTRINGLIST(2), ISNIL(3)? (QDir::Filters) QDir::NoFilter : (QDir::Filters) hb_parni(3), ISNIL(4)? (QDirIterator::IteratorFlags) QDirIterator::NoIteratorFlags : (QDirIterator::IteratorFlags) hb_parni(4) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
-//[1]QDirIterator ( const QDir & dir, IteratorFlags flags = NoIteratorFlags )
-//[2]QDirIterator ( const QString & path, IteratorFlags flags = NoIteratorFlags )
-//[3]QDirIterator ( const QString & path, QDir::Filters filters, IteratorFlags flags = NoIteratorFlags )
-//[4]QDirIterator ( const QString & path, const QStringList & nameFilters, QDir::Filters filters = QDir::NoFilter, IteratorFlags flags = NoIteratorFlags )
-
-// TODO: resolver conflito entre [2] e [3] quando forem 2 parâmetros
+/*
+[1]QDirIterator ( const QDir & dir, IteratorFlags flags = NoIteratorFlags )
+[2]QDirIterator ( const QString & path, IteratorFlags flags = NoIteratorFlags )
+[3]QDirIterator ( const QString & path, QDir::Filters filters, IteratorFlags flags = NoIteratorFlags )
+[4]QDirIterator ( const QString & path, const QStringList & nameFilters, QDir::Filters filters = QDir::NoFilter, IteratorFlags flags = NoIteratorFlags )
+*/
 
 HB_FUNC_STATIC( QDIRITERATOR_NEW )
 {
@@ -126,20 +125,20 @@ HB_FUNC_STATIC( QDIRITERATOR_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QDIRITERATOR_DELETE )
 {
-  QDirIterator * obj = (QDirIterator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDirIterator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -152,7 +151,7 @@ QFileInfo fileInfo () const
 */
 HB_FUNC_STATIC( QDIRITERATOR_FILEINFO )
 {
-  QDirIterator * obj = (QDirIterator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDirIterator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -160,13 +159,13 @@ HB_FUNC_STATIC( QDIRITERATOR_FILEINFO )
     if( ISNUMPAR(0) )
     {
 #endif
-      QFileInfo * ptr = new QFileInfo( obj->fileInfo () );
-      _qt5xhb_createReturnClass ( ptr, "QFILEINFO", true );
+      auto ptr = new QFileInfo( obj->fileInfo() );
+      Qt5xHb::createReturnClass( ptr, "QFILEINFO", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -177,7 +176,7 @@ QString fileName () const
 */
 HB_FUNC_STATIC( QDIRITERATOR_FILENAME )
 {
-  QDirIterator * obj = (QDirIterator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDirIterator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -185,12 +184,12 @@ HB_FUNC_STATIC( QDIRITERATOR_FILENAME )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->fileName () );
+      RQSTRING( obj->fileName() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -201,7 +200,7 @@ QString filePath () const
 */
 HB_FUNC_STATIC( QDIRITERATOR_FILEPATH )
 {
-  QDirIterator * obj = (QDirIterator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDirIterator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -209,12 +208,12 @@ HB_FUNC_STATIC( QDIRITERATOR_FILEPATH )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->filePath () );
+      RQSTRING( obj->filePath() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -225,7 +224,7 @@ bool hasNext () const
 */
 HB_FUNC_STATIC( QDIRITERATOR_HASNEXT )
 {
-  QDirIterator * obj = (QDirIterator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDirIterator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -233,12 +232,12 @@ HB_FUNC_STATIC( QDIRITERATOR_HASNEXT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->hasNext () );
+      RBOOL( obj->hasNext() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -249,7 +248,7 @@ QString next ()
 */
 HB_FUNC_STATIC( QDIRITERATOR_NEXT )
 {
-  QDirIterator * obj = (QDirIterator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDirIterator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -257,12 +256,12 @@ HB_FUNC_STATIC( QDIRITERATOR_NEXT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->next () );
+      RQSTRING( obj->next() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -273,7 +272,7 @@ QString path () const
 */
 HB_FUNC_STATIC( QDIRITERATOR_PATH )
 {
-  QDirIterator * obj = (QDirIterator *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QDirIterator *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -281,12 +280,12 @@ HB_FUNC_STATIC( QDIRITERATOR_PATH )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->path () );
+      RQSTRING( obj->path() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -298,25 +297,25 @@ HB_FUNC_STATIC( QDIRITERATOR_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -343,13 +342,13 @@ HB_FUNC_STATIC( QDIRITERATOR_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

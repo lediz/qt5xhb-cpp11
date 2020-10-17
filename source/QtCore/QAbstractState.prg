@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -30,7 +30,7 @@ CLASS QAbstractState INHERIT QObject
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QAbstractState
+PROCEDURE destroyObject() CLASS QAbstractState
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -47,25 +47,28 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
+#include "qt5xhb_events.h"
+#include "qt5xhb_signals.h"
 
 #ifdef __XHARBOUR__
 #include <QtCore/QAbstractState>
 #endif
 
-#include <QtCore/QStateMachine>
 #include <QtCore/QState>
+#include <QtCore/QStateMachine>
 
 HB_FUNC_STATIC( QABSTRACTSTATE_DELETE )
 {
-  QAbstractState * obj = (QAbstractState *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractState *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
+    Qt5xHb::Events_disconnect_all_events( obj, true );
+    Qt5xHb::Signals_disconnect_all_signals( obj, true );
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -74,11 +77,11 @@ HB_FUNC_STATIC( QABSTRACTSTATE_DELETE )
 }
 
 /*
-QStateMachine * machine () const
+QStateMachine * machine() const
 */
 HB_FUNC_STATIC( QABSTRACTSTATE_MACHINE )
 {
-  QAbstractState * obj = (QAbstractState *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractState *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -86,24 +89,24 @@ HB_FUNC_STATIC( QABSTRACTSTATE_MACHINE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QStateMachine * ptr = obj->machine ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QSTATEMACHINE" );
+      QStateMachine * ptr = obj->machine();
+      Qt5xHb::createReturnQObjectClass( ptr, "QSTATEMACHINE" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
 }
 
 /*
-QState * parentState () const
+QState * parentState() const
 */
 HB_FUNC_STATIC( QABSTRACTSTATE_PARENTSTATE )
 {
-  QAbstractState * obj = (QAbstractState *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QAbstractState *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -111,13 +114,13 @@ HB_FUNC_STATIC( QABSTRACTSTATE_PARENTSTATE )
     if( ISNUMPAR(0) )
     {
 #endif
-      QState * ptr = obj->parentState ();
-      _qt5xhb_createReturnQObjectClass ( ptr, "QSTATE" );
+      QState * ptr = obj->parentState();
+      Qt5xHb::createReturnQObjectClass( ptr, "QSTATE" );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -128,33 +131,34 @@ void entered()
 */
 HB_FUNC_STATIC( QABSTRACTSTATE_ONENTERED )
 {
-  QAbstractState * sender = (QAbstractState *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAbstractState *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("entered()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("entered()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAbstractState::entered, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QABSTRACTSTATE" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QABSTRACTSTATE" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -165,9 +169,9 @@ HB_FUNC_STATIC( QABSTRACTSTATE_ONENTERED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }
@@ -187,33 +191,34 @@ void exited()
 */
 HB_FUNC_STATIC( QABSTRACTSTATE_ONEXITED )
 {
-  QAbstractState * sender = (QAbstractState *) hb_itemGetPtr( hb_objSendMsg( hb_stackSelfItem(), "POINTER", 0 ) );
+  auto sender = (QAbstractState *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( sender != nullptr )
   {
-    int index = sender->metaObject()->indexOfSignal("exited()");
+    int indexOfSignal = sender->metaObject()->indexOfSignal("exited()");
+    int indexOfCodeBlock = -1;
 
     if( hb_pcount() == 1 )
     {
-      if( Signals3_connection( sender, index ) )
+      if( Qt5xHb::Signals_connection( sender, indexOfSignal, indexOfCodeBlock ) )
       {
 
         QMetaObject::Connection connection = QObject::connect(sender, 
                                                               &QAbstractState::exited, 
-                                                              [sender,index]
+                                                              [sender, indexOfCodeBlock]
                                                               () {
-          PHB_ITEM cb = Signals3_return_codeblock( sender, index );
+          PHB_ITEM cb = Qt5xHb::Signals_return_codeblock( indexOfCodeBlock );
 
           if( cb != nullptr )
           {
-            PHB_ITEM pSender = Signals3_return_qobject ( (QObject *) sender, "QABSTRACTSTATE" );
-            hb_vmEvalBlockV( (PHB_ITEM) cb, 1, pSender );
+            PHB_ITEM pSender = Qt5xHb::Signals_return_qobject( (QObject *) sender, "QABSTRACTSTATE" );
+            hb_vmEvalBlockV( cb, 1, pSender );
             hb_itemRelease( pSender );
           }
 
         });
 
-        Signals3_store_connection( sender, index, connection );
+        Qt5xHb::Signals_store_connection( indexOfCodeBlock, connection );
 
         hb_retl( true );
       }
@@ -224,9 +229,9 @@ HB_FUNC_STATIC( QABSTRACTSTATE_ONEXITED )
     }
     else if( hb_pcount() == 0 )
     {
-      Signals3_disconnection( sender, index );
+      Qt5xHb::Signals_disconnection( sender, indexOfSignal );
 
-      QObject::disconnect( Signals3_get_connection( sender, index ) );
+      QObject::disconnect( Qt5xHb::Signals_get_connection( sender, indexOfSignal ) );
 
       hb_retl( true );
     }

@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -8,35 +8,35 @@
 
 #include "HCodeBlockValidator.h"
 
-HCodeBlockValidator::HCodeBlockValidator(QObject *parent) :
-    QValidator(parent)
+HCodeBlockValidator::HCodeBlockValidator( QObject *parent ) :
+    QValidator( parent )
 {
-  block = nullptr;
+  m_block = nullptr;
 }
 
-HCodeBlockValidator::HCodeBlockValidator(PHB_ITEM codeblock, QObject *parent) :
-    QValidator(parent)
+HCodeBlockValidator::HCodeBlockValidator( PHB_ITEM codeblock, QObject *parent ) :
+    QValidator( parent )
 {
-  block = hb_itemNew( codeblock );
+  m_block = hb_itemNew( codeblock );
 }
 
-HCodeBlockValidator::~HCodeBlockValidator ()
+HCodeBlockValidator::~HCodeBlockValidator()
 {
-  if( block != nullptr )
+  if( m_block != nullptr )
   {
-    hb_itemRelease( block );
-    block = nullptr;
+    hb_itemRelease( m_block );
+    m_block = nullptr;
   }
 }
 
-QValidator::State HCodeBlockValidator::validate ( QString & input, int & pos ) const
+QValidator::State HCodeBlockValidator::validate( QString & input, int & pos ) const
 {
   /*
     executa o codeblock de validação
   */
   PHB_ITEM pInput = hb_itemPutC( NULL, input.toLatin1().data() );
   PHB_ITEM pPos = hb_itemPutNI( NULL, pos );
-  PHB_ITEM pRet = hb_vmEvalBlockV( block, 2, pInput, pPos );
+  PHB_ITEM pRet = hb_vmEvalBlockV( m_block, 2, pInput, pPos );
   hb_itemRelease( pInput );
   hb_itemRelease( pPos );
 

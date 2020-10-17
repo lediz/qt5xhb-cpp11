@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb Project - Test Program
+  Qt5xHb/C++11 Project - Test Program
 
   Copyright (C) 2020 Marcos Antonio Gambeta
 
@@ -8,7 +8,7 @@
   marcosgambeta AT outlook DOT com
 
   Website:
-  https://github.com/marcosgambeta/Qt5xHb
+  https://github.com/marcosgambeta/qt5xhb-cpp11
 
 */
 
@@ -16,7 +16,7 @@
 
 STATIC aEstados
 
-PROCEDURE Main ()
+PROCEDURE Main()
 
    LOCAL oApp
    LOCAL oWindow
@@ -91,7 +91,7 @@ CLASS myModel INHERIT HAbstractTableModelV2
 
 END CLASS
 
-METHOD new (...) CLASS myModel
+METHOD new(...) CLASS myModel
 
    ::super:new(...)
 
@@ -102,16 +102,15 @@ METHOD new (...) CLASS myModel
 
 RETURN self
 
-METHOD rowCount () CLASS myModel
+METHOD rowCount() CLASS myModel
 RETURN len(aEstados)
 
-METHOD columnCount () CLASS myModel
+METHOD columnCount() CLASS myModel
 RETURN 2 // coluna 1=imagem coluna 2=nome
 
-METHOD data (pIndex, nRole) CLASS myModel
+METHOD data(oIndex, nRole) CLASS myModel
 
    LOCAL oVariant := QVariant():new()
-   LOCAL oIndex := QModelIndex():newFrom(pIndex)
    LOCAL nRow := oIndex:row()
    LOCAL nColumn := oIndex:column()
 
@@ -129,7 +128,7 @@ METHOD data (pIndex, nRole) CLASS myModel
 
 RETURN oVariant
 
-METHOD headerData (nSection, nOrientation, nRole) CLASS myModel
+METHOD headerData(nSection, nOrientation, nRole) CLASS myModel
 
    LOCAL oVariant := QVariant():new()
 

@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -17,17 +17,17 @@
 
 class HCodeBlockValidator : public QValidator
 {
-    Q_OBJECT
+  Q_OBJECT
 public:
-    explicit HCodeBlockValidator(QObject *parent = nullptr);
-    HCodeBlockValidator(PHB_ITEM codeblock, QObject *parent = nullptr);
-    ~HCodeBlockValidator();
+  explicit HCodeBlockValidator( QObject *parent = nullptr );
+  HCodeBlockValidator( PHB_ITEM codeblock, QObject *parent = nullptr );
+  ~HCodeBlockValidator();
 
-    QValidator::State validate ( QString & input, int & pos ) const;
-    void fixup( QString & input ) const;
+  QValidator::State validate( QString & input, int & pos ) const;
+  void fixup( QString & input ) const;
 
-    PHB_ITEM block;
-
+private:
+  PHB_ITEM m_block;
 };
 
 #endif /* HCODEBLOCKVALIDATOR_H */

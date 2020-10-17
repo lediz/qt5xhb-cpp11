@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -44,7 +44,7 @@ CLASS QMarginsF
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QMarginsF
+PROCEDURE destroyObject() CLASS QMarginsF
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -63,7 +63,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
@@ -74,39 +73,41 @@ RETURN
 /*
 QMarginsF()
 */
-void QMarginsF_new1 ()
+void QMarginsF_new1()
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QMarginsF * o = new QMarginsF ();
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QMarginsF();
+  Qt5xHb::returnNewObject( obj, true );
 #endif
 }
 
 /*
 QMarginsF(qreal left, qreal top, qreal right, qreal bottom)
 */
-void QMarginsF_new2 ()
+void QMarginsF_new2()
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QMarginsF * o = new QMarginsF ( PQREAL(1), PQREAL(2), PQREAL(3), PQREAL(4) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QMarginsF( PQREAL(1), PQREAL(2), PQREAL(3), PQREAL(4) );
+  Qt5xHb::returnNewObject( obj, true );
 #endif
 }
 
 /*
 QMarginsF(const QMargins &margins)
 */
-void QMarginsF_new3 ()
+void QMarginsF_new3()
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QMarginsF * o = new QMarginsF ( *PQMARGINS(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QMarginsF( *PQMARGINS(1) );
+  Qt5xHb::returnNewObject( obj, true );
 #endif
 }
 
-//[1]QMarginsF()
-//[2]QMarginsF(qreal left, qreal top, qreal right, qreal bottom)
-//[3]QMarginsF(const QMargins &margins)
+/*
+[1]QMarginsF()
+[2]QMarginsF(qreal left, qreal top, qreal right, qreal bottom)
+[3]QMarginsF(const QMargins &margins)
+*/
 
 HB_FUNC_STATIC( QMARGINSF_NEW )
 {
@@ -124,21 +125,21 @@ HB_FUNC_STATIC( QMARGINSF_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QMARGINSF_DELETE )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QMarginsF * obj = (QMarginsF *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QMarginsF *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -153,7 +154,7 @@ bool isNull() const
 HB_FUNC_STATIC( QMARGINSF_ISNULL )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QMarginsF * obj = (QMarginsF *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QMarginsF *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -161,12 +162,12 @@ HB_FUNC_STATIC( QMARGINSF_ISNULL )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isNull () );
+      RBOOL( obj->isNull() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -179,7 +180,7 @@ qreal left() const
 HB_FUNC_STATIC( QMARGINSF_LEFT )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QMarginsF * obj = (QMarginsF *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QMarginsF *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -187,12 +188,12 @@ HB_FUNC_STATIC( QMARGINSF_LEFT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQREAL( obj->left () );
+      RQREAL( obj->left() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -205,7 +206,7 @@ qreal top() const
 HB_FUNC_STATIC( QMARGINSF_TOP )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QMarginsF * obj = (QMarginsF *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QMarginsF *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -213,12 +214,12 @@ HB_FUNC_STATIC( QMARGINSF_TOP )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQREAL( obj->top () );
+      RQREAL( obj->top() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -231,7 +232,7 @@ qreal right() const
 HB_FUNC_STATIC( QMARGINSF_RIGHT )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QMarginsF * obj = (QMarginsF *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QMarginsF *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -239,12 +240,12 @@ HB_FUNC_STATIC( QMARGINSF_RIGHT )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQREAL( obj->right () );
+      RQREAL( obj->right() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -257,7 +258,7 @@ qreal bottom() const
 HB_FUNC_STATIC( QMARGINSF_BOTTOM )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QMarginsF * obj = (QMarginsF *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QMarginsF *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -265,12 +266,12 @@ HB_FUNC_STATIC( QMARGINSF_BOTTOM )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQREAL( obj->bottom () );
+      RQREAL( obj->bottom() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -283,7 +284,7 @@ void setLeft(qreal left)
 HB_FUNC_STATIC( QMARGINSF_SETLEFT )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QMarginsF * obj = (QMarginsF *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QMarginsF *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -291,12 +292,12 @@ HB_FUNC_STATIC( QMARGINSF_SETLEFT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setLeft ( PQREAL(1) );
+      obj->setLeft( PQREAL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -311,7 +312,7 @@ void setTop(qreal top)
 HB_FUNC_STATIC( QMARGINSF_SETTOP )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QMarginsF * obj = (QMarginsF *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QMarginsF *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -319,12 +320,12 @@ HB_FUNC_STATIC( QMARGINSF_SETTOP )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setTop ( PQREAL(1) );
+      obj->setTop( PQREAL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -339,7 +340,7 @@ void setRight(qreal right)
 HB_FUNC_STATIC( QMARGINSF_SETRIGHT )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QMarginsF * obj = (QMarginsF *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QMarginsF *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -347,12 +348,12 @@ HB_FUNC_STATIC( QMARGINSF_SETRIGHT )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setRight ( PQREAL(1) );
+      obj->setRight( PQREAL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -367,7 +368,7 @@ void setBottom(qreal bottom)
 HB_FUNC_STATIC( QMARGINSF_SETBOTTOM )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QMarginsF * obj = (QMarginsF *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QMarginsF *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -375,12 +376,12 @@ HB_FUNC_STATIC( QMARGINSF_SETBOTTOM )
     if( ISNUMPAR(1) && ISNUM(1) )
     {
 #endif
-      obj->setBottom ( PQREAL(1) );
+      obj->setBottom( PQREAL(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -395,7 +396,7 @@ QMargins toMargins() const
 HB_FUNC_STATIC( QMARGINSF_TOMARGINS )
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QMarginsF * obj = (QMarginsF *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QMarginsF *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -403,13 +404,13 @@ HB_FUNC_STATIC( QMARGINSF_TOMARGINS )
     if( ISNUMPAR(0) )
     {
 #endif
-      QMargins * ptr = new QMargins( obj->toMargins () );
-      _qt5xhb_createReturnClass ( ptr, "QMARGINS", true );
+      auto ptr = new QMargins( obj->toMargins() );
+      Qt5xHb::createReturnClass( ptr, "QMARGINS", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -422,25 +423,25 @@ HB_FUNC_STATIC( QMARGINSF_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -467,13 +468,13 @@ HB_FUNC_STATIC( QMARGINSF_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

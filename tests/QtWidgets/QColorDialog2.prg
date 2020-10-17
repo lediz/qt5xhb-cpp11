@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb Project - Test Program
+  Qt5xHb/C++11 Project - Test Program
 
   Copyright (C) 2020 Marcos Antonio Gambeta
 
@@ -8,7 +8,7 @@
   marcosgambeta AT outlook DOT com
 
   Website:
-  https://github.com/marcosgambeta/Qt5xHb
+  https://github.com/marcosgambeta/qt5xhb-cpp11
 
 */
 
@@ -18,7 +18,7 @@
 REQUEST HB_GT_WIN
 #endif
 
-PROCEDURE Main ()
+PROCEDURE Main()
 
    LOCAL oApp
    LOCAL oWindow
@@ -43,7 +43,7 @@ PROCEDURE Main ()
 
 RETURN
 
-STATIC FUNCTION ShowColorDialog (oWindow)
+STATIC FUNCTION ShowColorDialog(oWindow)
 
    LOCAL oColorDialog
 
@@ -59,7 +59,7 @@ STATIC FUNCTION ShowColorDialog (oWindow)
 
 RETURN NIL
 
-STATIC FUNCTION ShowColorSelected (oColor)
+STATIC FUNCTION ShowColorSelected(oColor)
 
    ? "name=",oColor:name()
    ? "red=",oColor:red()

@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -43,7 +43,7 @@ CLASS QSslCipher
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QSslCipher
+PROCEDURE destroyObject() CLASS QSslCipher
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -60,7 +60,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtNetwork/QSslCipher>
@@ -69,45 +68,47 @@ RETURN
 /*
 QSslCipher()
 */
-void QSslCipher_new1 ()
+void QSslCipher_new1()
 {
-  QSslCipher * o = new QSslCipher ();
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QSslCipher();
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 explicit QSslCipher(const QString &name)
 */
-void QSslCipher_new2 ()
+void QSslCipher_new2()
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
-  QSslCipher * o = new QSslCipher ( PQSTRING(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QSslCipher( PQSTRING(1) );
+  Qt5xHb::returnNewObject( obj, true );
 #endif
 }
 
 /*
 QSslCipher( const QString & name, QSsl::SslProtocol protocol )
 */
-void QSslCipher_new3 ()
+void QSslCipher_new3()
 {
-  QSslCipher * o = new QSslCipher ( PQSTRING(1), (QSsl::SslProtocol) hb_parni(2) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QSslCipher( PQSTRING(1), (QSsl::SslProtocol) hb_parni(2) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
 /*
 QSslCipher( const QSslCipher & other )
 */
-void QSslCipher_new4 ()
+void QSslCipher_new4()
 {
-  QSslCipher * o = new QSslCipher ( *PQSSLCIPHER(1) );
-  _qt5xhb_returnNewObject( o, true );
+  auto obj = new QSslCipher( *PQSSLCIPHER(1) );
+  Qt5xHb::returnNewObject( obj, true );
 }
 
-//[1]QSslCipher()
-//[2]explicit QSslCipher(const QString &name)
-//[3]QSslCipher( const QString & name, QSsl::SslProtocol protocol )
-//[4]QSslCipher( const QSslCipher & other )
+/*
+[1]QSslCipher()
+[2]explicit QSslCipher(const QString &name)
+[3]QSslCipher( const QString & name, QSsl::SslProtocol protocol )
+[4]QSslCipher( const QSslCipher & other )
+*/
 
 HB_FUNC_STATIC( QSSLCIPHER_NEW )
 {
@@ -129,7 +130,7 @@ HB_FUNC_STATIC( QSSLCIPHER_NEW )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -138,14 +139,14 @@ HB_FUNC_STATIC( QSSLCIPHER_NEW )
 */
 HB_FUNC_STATIC( QSSLCIPHER_DELETE )
 {
-  QSslCipher * obj = (QSslCipher *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSslCipher *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -158,7 +159,7 @@ QString authenticationMethod () const
 */
 HB_FUNC_STATIC( QSSLCIPHER_AUTHENTICATIONMETHOD )
 {
-  QSslCipher * obj = (QSslCipher *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSslCipher *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -166,12 +167,12 @@ HB_FUNC_STATIC( QSSLCIPHER_AUTHENTICATIONMETHOD )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->authenticationMethod () );
+      RQSTRING( obj->authenticationMethod() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -182,7 +183,7 @@ QString encryptionMethod () const
 */
 HB_FUNC_STATIC( QSSLCIPHER_ENCRYPTIONMETHOD )
 {
-  QSslCipher * obj = (QSslCipher *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSslCipher *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -190,12 +191,12 @@ HB_FUNC_STATIC( QSSLCIPHER_ENCRYPTIONMETHOD )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->encryptionMethod () );
+      RQSTRING( obj->encryptionMethod() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -206,7 +207,7 @@ bool isNull () const
 */
 HB_FUNC_STATIC( QSSLCIPHER_ISNULL )
 {
-  QSslCipher * obj = (QSslCipher *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSslCipher *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -214,12 +215,12 @@ HB_FUNC_STATIC( QSSLCIPHER_ISNULL )
     if( ISNUMPAR(0) )
     {
 #endif
-      RBOOL( obj->isNull () );
+      RBOOL( obj->isNull() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -230,7 +231,7 @@ QString keyExchangeMethod () const
 */
 HB_FUNC_STATIC( QSSLCIPHER_KEYEXCHANGEMETHOD )
 {
-  QSslCipher * obj = (QSslCipher *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSslCipher *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -238,12 +239,12 @@ HB_FUNC_STATIC( QSSLCIPHER_KEYEXCHANGEMETHOD )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->keyExchangeMethod () );
+      RQSTRING( obj->keyExchangeMethod() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -254,7 +255,7 @@ QString name () const
 */
 HB_FUNC_STATIC( QSSLCIPHER_NAME )
 {
-  QSslCipher * obj = (QSslCipher *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSslCipher *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -262,12 +263,12 @@ HB_FUNC_STATIC( QSSLCIPHER_NAME )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->name () );
+      RQSTRING( obj->name() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -278,7 +279,7 @@ QSsl::SslProtocol protocol () const
 */
 HB_FUNC_STATIC( QSSLCIPHER_PROTOCOL )
 {
-  QSslCipher * obj = (QSslCipher *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSslCipher *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -286,12 +287,12 @@ HB_FUNC_STATIC( QSSLCIPHER_PROTOCOL )
     if( ISNUMPAR(0) )
     {
 #endif
-      RENUM( obj->protocol () );
+      RENUM( obj->protocol() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -302,7 +303,7 @@ QString protocolString () const
 */
 HB_FUNC_STATIC( QSSLCIPHER_PROTOCOLSTRING )
 {
-  QSslCipher * obj = (QSslCipher *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSslCipher *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -310,12 +311,12 @@ HB_FUNC_STATIC( QSSLCIPHER_PROTOCOLSTRING )
     if( ISNUMPAR(0) )
     {
 #endif
-      RQSTRING( obj->protocolString () );
+      RQSTRING( obj->protocolString() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -326,7 +327,7 @@ int supportedBits () const
 */
 HB_FUNC_STATIC( QSSLCIPHER_SUPPORTEDBITS )
 {
-  QSslCipher * obj = (QSslCipher *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSslCipher *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -334,12 +335,12 @@ HB_FUNC_STATIC( QSSLCIPHER_SUPPORTEDBITS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->supportedBits () );
+      RINT( obj->supportedBits() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -350,7 +351,7 @@ int usedBits () const
 */
 HB_FUNC_STATIC( QSSLCIPHER_USEDBITS )
 {
-  QSslCipher * obj = (QSslCipher *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSslCipher *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -358,12 +359,12 @@ HB_FUNC_STATIC( QSSLCIPHER_USEDBITS )
     if( ISNUMPAR(0) )
     {
 #endif
-      RINT( obj->usedBits () );
+      RINT( obj->usedBits() );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -374,7 +375,7 @@ void swap(QSslCipher &other) Q_DECL_NOTHROW
 */
 HB_FUNC_STATIC( QSSLCIPHER_SWAP )
 {
-  QSslCipher * obj = (QSslCipher *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QSslCipher *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -382,12 +383,12 @@ HB_FUNC_STATIC( QSSLCIPHER_SWAP )
     if( ISNUMPAR(1) && ISQSSLCIPHER(1) )
     {
 #endif
-      obj->swap ( *PQSSLCIPHER(1) );
+      obj->swap( *PQSSLCIPHER(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -401,25 +402,25 @@ HB_FUNC_STATIC( QSSLCIPHER_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -446,13 +447,13 @@ HB_FUNC_STATIC( QSSLCIPHER_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );

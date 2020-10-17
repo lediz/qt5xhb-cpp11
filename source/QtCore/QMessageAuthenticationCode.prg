@@ -1,6 +1,6 @@
 /*
 
-  Qt5xHb - Bindings libraries for Harbour/xHarbour and Qt Framework 5
+  Qt5xHb/C++11 - Bindings libraries for Harbour/xHarbour and Qt Framework 5
 
   Copyright (C) 2020 Marcos Antonio Gambeta <marcosgambeta AT outlook DOT com>
 
@@ -39,7 +39,7 @@ CLASS QMessageAuthenticationCode
 
 END CLASS
 
-PROCEDURE destroyObject () CLASS QMessageAuthenticationCode
+PROCEDURE destroyObject() CLASS QMessageAuthenticationCode
    IF ::self_destruction
       ::delete()
    ENDIF
@@ -56,7 +56,6 @@ RETURN
 #include "qt5xhb_common.h"
 #include "qt5xhb_macros.h"
 #include "qt5xhb_utils.h"
-#include "qt5xhb_signals3.h"
 
 #ifdef __XHARBOUR__
 #include <QtCore/QMessageAuthenticationCode>
@@ -69,25 +68,25 @@ HB_FUNC_STATIC( QMESSAGEAUTHENTICATIONCODE_NEW )
 {
   if( ISBETWEEN(1,2) && ISNUM(1) && (ISQBYTEARRAY(2)||ISNIL(2)) )
   {
-    QMessageAuthenticationCode * o = new QMessageAuthenticationCode ( (QCryptographicHash::Algorithm) hb_parni(1), ISNIL(2)? QByteArray() : *(QByteArray *) _qt5xhb_itemGetPtr(2) );
-    _qt5xhb_returnNewObject( o, false );
+    auto obj = new QMessageAuthenticationCode( (QCryptographicHash::Algorithm) hb_parni(1), ISNIL(2)? QByteArray() : *(QByteArray *) Qt5xHb::itemGetPtr(2) );
+    Qt5xHb::returnNewObject( obj, true );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
 HB_FUNC_STATIC( QMESSAGEAUTHENTICATIONCODE_DELETE )
 {
-  QMessageAuthenticationCode * obj = (QMessageAuthenticationCode *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QMessageAuthenticationCode *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
     delete obj;
     obj = nullptr;
     PHB_ITEM self = hb_stackSelfItem();
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, NULL );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, nullptr );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
   }
@@ -100,7 +99,7 @@ void reset()
 */
 HB_FUNC_STATIC( QMESSAGEAUTHENTICATIONCODE_RESET )
 {
-  QMessageAuthenticationCode * obj = (QMessageAuthenticationCode *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QMessageAuthenticationCode *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -108,12 +107,12 @@ HB_FUNC_STATIC( QMESSAGEAUTHENTICATIONCODE_RESET )
     if( ISNUMPAR(0) )
     {
 #endif
-      obj->reset ();
+      obj->reset();
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -126,7 +125,7 @@ void setKey(const QByteArray &key)
 */
 HB_FUNC_STATIC( QMESSAGEAUTHENTICATIONCODE_SETKEY )
 {
-  QMessageAuthenticationCode * obj = (QMessageAuthenticationCode *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QMessageAuthenticationCode *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -134,12 +133,12 @@ HB_FUNC_STATIC( QMESSAGEAUTHENTICATIONCODE_SETKEY )
     if( ISNUMPAR(1) && ISQBYTEARRAY(1) )
     {
 #endif
-      obj->setKey ( *PQBYTEARRAY(1) );
+      obj->setKey( *PQBYTEARRAY(1) );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -150,13 +149,13 @@ HB_FUNC_STATIC( QMESSAGEAUTHENTICATIONCODE_SETKEY )
 /*
 void addData(const char *data, int length)
 */
-void QMessageAuthenticationCode_addData1 ()
+void QMessageAuthenticationCode_addData1()
 {
-  QMessageAuthenticationCode * obj = (QMessageAuthenticationCode *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QMessageAuthenticationCode *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->addData ( PCONSTCHAR(1), PINT(2) );
+    obj->addData( PCONSTCHAR(1), PINT(2) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -165,13 +164,13 @@ void QMessageAuthenticationCode_addData1 ()
 /*
 void addData(const QByteArray &data)
 */
-void QMessageAuthenticationCode_addData2 ()
+void QMessageAuthenticationCode_addData2()
 {
-  QMessageAuthenticationCode * obj = (QMessageAuthenticationCode *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QMessageAuthenticationCode *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      obj->addData ( *PQBYTEARRAY(1) );
+    obj->addData( *PQBYTEARRAY(1) );
   }
 
   hb_itemReturn( hb_stackSelfItem() );
@@ -180,19 +179,21 @@ void QMessageAuthenticationCode_addData2 ()
 /*
 bool addData(QIODevice *device)
 */
-void QMessageAuthenticationCode_addData3 ()
+void QMessageAuthenticationCode_addData3()
 {
-  QMessageAuthenticationCode * obj = (QMessageAuthenticationCode *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QMessageAuthenticationCode *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
-      RBOOL( obj->addData ( PQIODEVICE(1) ) );
+    RBOOL( obj->addData( PQIODEVICE(1) ) );
   }
 }
 
-//[1]void addData(const char *data, int length)
-//[2]void addData(const QByteArray &data)
-//[3]bool addData(QIODevice *device)
+/*
+[1]void addData(const char *data, int length)
+[2]void addData(const QByteArray &data)
+[3]bool addData(QIODevice *device)
+*/
 
 HB_FUNC_STATIC( QMESSAGEAUTHENTICATIONCODE_ADDDATA )
 {
@@ -210,7 +211,7 @@ HB_FUNC_STATIC( QMESSAGEAUTHENTICATIONCODE_ADDDATA )
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 }
 
@@ -219,7 +220,7 @@ QByteArray result() const
 */
 HB_FUNC_STATIC( QMESSAGEAUTHENTICATIONCODE_RESULT )
 {
-  QMessageAuthenticationCode * obj = (QMessageAuthenticationCode *) _qt5xhb_itemGetPtrStackSelfItem();
+  auto obj = (QMessageAuthenticationCode *) Qt5xHb::itemGetPtrStackSelfItem();
 
   if( obj != nullptr )
   {
@@ -227,13 +228,13 @@ HB_FUNC_STATIC( QMESSAGEAUTHENTICATIONCODE_RESULT )
     if( ISNUMPAR(0) )
     {
 #endif
-      QByteArray * ptr = new QByteArray( obj->result () );
-      _qt5xhb_createReturnClass ( ptr, "QBYTEARRAY", true );
+      auto ptr = new QByteArray( obj->result() );
+      Qt5xHb::createReturnClass( ptr, "QBYTEARRAY", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
     }
     else
     {
-      hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+      hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
     }
 #endif
   }
@@ -245,16 +246,16 @@ static QByteArray hash(const QByteArray &message, const QByteArray &key,QCryptog
 HB_FUNC_STATIC( QMESSAGEAUTHENTICATIONCODE_HASH )
 {
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
-    if( ISNUMPAR(3) && ISQBYTEARRAY(1) && ISQBYTEARRAY(2) && ISNUM(3) )
+  if( ISNUMPAR(3) && ISQBYTEARRAY(1) && ISQBYTEARRAY(2) && ISNUM(3) )
   {
 #endif
-      QByteArray * ptr = new QByteArray( QMessageAuthenticationCode::hash ( *PQBYTEARRAY(1), *PQBYTEARRAY(2), (QCryptographicHash::Algorithm) hb_parni(3) ) );
-      _qt5xhb_createReturnClass ( ptr, "QBYTEARRAY", true );
+    auto ptr = new QByteArray( QMessageAuthenticationCode::hash( *PQBYTEARRAY(1), *PQBYTEARRAY(2), (QCryptographicHash::Algorithm) hb_parni(3) ) );
+    Qt5xHb::createReturnClass( ptr, "QBYTEARRAY", true );
 #ifndef QT5XHB_DONT_CHECK_PARAMETERS
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 #endif
 }
@@ -265,25 +266,25 @@ HB_FUNC_STATIC( QMESSAGEAUTHENTICATIONCODE_NEWFROM )
 
   if( hb_pcount() == 1 && ISOBJECT(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_objSendMsg( hb_param(1, HB_IT_OBJECT ), "POINTER", 0 ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else if( hb_pcount() == 1 && ISPOINTER(1) )
   {
-    PHB_ITEM ptr = hb_itemPutPtr( NULL, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
+    PHB_ITEM ptr = hb_itemPutPtr( nullptr, (void *) hb_itemGetPtr( hb_param(1, HB_IT_POINTER ) ) );
     hb_objSendMsg( self, "_pointer", 1, ptr );
     hb_itemRelease( ptr );
-    PHB_ITEM des = hb_itemPutL( NULL, false );
+    PHB_ITEM des = hb_itemPutL( nullptr, false );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
@@ -310,13 +311,13 @@ HB_FUNC_STATIC( QMESSAGEAUTHENTICATIONCODE_SETSELFDESTRUCTION )
 
   if( hb_pcount() == 1 && ISLOG(1) )
   {
-    PHB_ITEM des = hb_itemPutL( NULL, hb_parl(1) );
+    PHB_ITEM des = hb_itemPutL( nullptr, hb_parl(1) );
     hb_objSendMsg( self, "_self_destruction", 1, des );
     hb_itemRelease( des );
   }
   else
   {
-    hb_errRT_BASE( EG_ARG, 3012, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+    hb_errRT_BASE( EG_ARG, 3012, nullptr, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
   }
 
   hb_itemReturn( self );
